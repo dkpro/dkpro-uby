@@ -22,6 +22,8 @@
 		<module>de.tudarmstadt.ukp.uby.integration.wikipedia-asl</module>
 		<module>de.tudarmstadt.ukp.uby.integration.wiktionary-asl</module>
 		<module>de.tudarmstadt.ukp.uby.integration.wordnet-asl</module>
+		<module>de.tudarmstadt.ukp.uby.persistence.lmfxml-asl</module>
+		<module>de.tudarmstadt.ukp.uby.persistence.transform-asl</module>
 	</modules>
 	<scm>
 		<connection>http://uby.googlecode.com/svn/de.tudarmstadt.ukp.uby/trunk/</connection>
@@ -47,17 +49,12 @@
 			</dependency>
 			<dependency>
 				<groupId>de.tudarmstadt.ukp.uby</groupId>
-				<artifactId>de.tudarmstadt.ukp.uby.integration.tools-nonfree</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>de.tudarmstadt.ukp.uby</groupId>
 				<artifactId>de.tudarmstadt.ukp.uby.integration.verbnet-asl</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>de.tudarmstadt.ukp.uby</groupId>
-				<artifactId>de.tudarmstadt.ukp.uby.integration.wordnet-nonfree</artifactId>
+				<artifactId>de.tudarmstadt.ukp.uby.integration.wordnet-asl</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
@@ -67,12 +64,12 @@
 			</dependency>
 			<dependency>
 				<groupId>de.tudarmstadt.ukp.uby</groupId>
-				<artifactId>de.tudarmstadt.ukp.uby.persistence.lmfxml-nonfree</artifactId>
+				<artifactId>de.tudarmstadt.ukp.uby.persistence.lmfxml-asl</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>de.tudarmstadt.ukp.uby</groupId>
-				<artifactId>de.tudarmstadt.ukp.uby.persistence.transform-nonfree</artifactId>
+				<artifactId>de.tudarmstadt.ukp.uby.persistence.transform-asl</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
