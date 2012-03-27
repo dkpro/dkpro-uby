@@ -16,6 +16,7 @@
 		<module>de.tudarmstadt.ukp.uby.lmf.api-asl</module>
 		<module>de.tudarmstadt.ukp.uby.integration.framenet-gpl</module>
 		<module>de.tudarmstadt.ukp.uby.integration.germanet-gpl</module>
+		<module>de.tudarmstadt.gsubcatlex-asl</module>
 	</modules>
 	<scm>
 		<connection>http://uby.googlecode.com/svn/de.tudarmstadt.ukp.uby/trunk/</connection>
@@ -31,7 +32,7 @@
 			</dependency>
 			<dependency>
 				<groupId>de.tudarmstadt.ukp.uby</groupId>
-				<artifactId>de.tudarmstadt.ukp.uby.integration.gsubcatlex-nonfree</artifactId>
+				<artifactId>de.tudarmstadt.ukp.uby.integration.gsubcatlex-asl</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
