@@ -21,6 +21,7 @@
 		<module>de.tudarmstadt.ukp.uby.integration.verbnet-asl</module>
 		<module>de.tudarmstadt.ukp.uby.integration.wikipedia-asl</module>
 		<module>de.tudarmstadt.ukp.uby.integration.wiktionary-asl</module>
+		<module>de.tudarmstadt.ukp.uby.integration.wordnet-asl</module>
 	</modules>
 	<scm>
 		<connection>http://uby.googlecode.com/svn/de.tudarmstadt.ukp.uby/trunk/</connection>
