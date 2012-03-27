@@ -32,13 +32,13 @@
   	</dependency>
   	<dependency>
   		<groupId>de.tudarmstadt.ukp.uby</groupId>
-  		<artifactId>de.tudarmstadt.ukp.uby.persistence.lmfxml-nonfree</artifactId>
+  		<artifactId>de.tudarmstadt.ukp.uby.persistence.lmfxml-asl</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   		<scope>compile</scope>
   	</dependency>
   	<dependency>
   		<groupId>de.tudarmstadt.ukp.uby</groupId>
-  		<artifactId>de.tudarmstadt.ukp.uby.persistence.transform-nonfree</artifactId>
+  		<artifactId>de.tudarmstadt.ukp.uby.persistence.transform-asl</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   		<scope>compile</scope>
   	</dependency>

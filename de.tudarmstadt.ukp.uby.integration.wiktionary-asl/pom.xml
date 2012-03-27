@@ -42,7 +42,7 @@
     </dependency>
     <dependency>
     	<groupId>de.tudarmstadt.ukp.uby</groupId>
-    	<artifactId>de.tudarmstadt.ukp.uby.persistence.transform-nonfree</artifactId>
+    	<artifactId>de.tudarmstadt.ukp.uby.persistence.transform-asl</artifactId>
     	<version>0.0.1-SNAPSHOT</version>
     	<type>jar</type>
     	<scope>compile</scope>
