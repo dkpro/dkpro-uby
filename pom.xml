@@ -15,7 +15,7 @@
 		<module>de.tudarmstadt.ukp.uby.lmf.model-asl</module>
 		<module>de.tudarmstadt.ukp.uby.lmf.api-asl</module>
 		<module>de.tudarmstadt.ukp.uby.integration.framenet-gpl</module>
-		<module>de.tudarmstadt.ukp.integration.germanet-gpl</module>
+		<module>de.tudarmstadt.ukp.uby.integration.germanet-gpl</module>
 	</modules>
 	<scm>
 		<connection>http://uby.googlecode.com/svn/de.tudarmstadt.ukp.uby/trunk/</connection>
