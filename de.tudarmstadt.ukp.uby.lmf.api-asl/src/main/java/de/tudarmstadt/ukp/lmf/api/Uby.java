@@ -18,6 +18,7 @@
 package de.tudarmstadt.ukp.lmf.api;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -41,7 +42,10 @@ import de.tudarmstadt.ukp.lmf.model.morphology.Lemma;
 import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticArgument;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
+import de.tudarmstadt.ukp.lmf.model.semantics.SynSemArgMap;
 import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
+import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrame;
+import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticArgument;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 
 /**
@@ -618,4 +622,127 @@ public class Uby
 		criteria=criteria.add(Restrictions.sqlRestriction("semanticArgumentId=\""+argumentId+"\""));
 		return (SemanticArgument) criteria.uniqueResult();
 	}
+
+    public List<SynSemArgMap> getSynSemArgMaps()
+    {
+
+        Criteria criteriaSynSem = session.createCriteria(SynSemArgMap.class);
+        List<SynSemArgMap> result = criteriaSynSem.list();
+
+        return result;
+    }
+    public String getSubcatFrameString(SubcategorizationFrame frame, String yourLemma){
+		StringBuilder sbFrame = new StringBuilder();
+		List<String> arguments = new ArrayList<String>();
+		for (int j = 0; j < frame.getSyntacticArguments().size(); j++) {
+			SyntacticArgument arg = frame.getSyntacticArguments().get(j);
+			StringBuilder sbArg = new StringBuilder();
+			sbArg.append(arg.getGrammaticalFunction().toString() +"_" +arg.getSyntacticCategory().toString());
+
+			List<String> additional = new ArrayList<String>();
+			if (arg.getComplementizer() != null){
+				additional.add(arg.getComplementizer().toString());
+			}
+			if (arg.getOptional() != null){
+				additional.add("isOptional=" +arg.getOptional().toString());
+			}
+			if (arg.getDeterminer() != null){
+				additional.add(arg.getDeterminer().toString());
+			}
+			if (arg.getCase() != null){
+				additional.add(arg.getCase().toString());
+			}
+			if (arg.getLexeme() != null){
+				additional.add(arg.getLexeme());
+			}
+			if (arg.getNumber() != null){
+				additional.add(arg.getNumber().toString());
+			}
+			if (arg.getPreposition() != null){
+				additional.add(arg.getPreposition());
+			}
+			if (arg.getPrepositionType() != null){
+				additional.add(arg.getPrepositionType());
+			}
+			if (arg.getTense() != null){
+				additional.add(arg.getTense().toString());
+			}
+			if (arg.getVerbForm() != null){
+				additional.add(arg.getVerbForm().toString());
+			}
+			if (additional.size() > 0) {
+				String additionalAsString = join(additional,",");
+
+				sbArg.append("(" +additionalAsString +")");
+			}
+
+			if (j == 0) {
+				sbArg.append(" " +yourLemma);
+			}
+			arguments.add(sbArg.toString());
+		}
+		String argumentString = this.join(arguments," ");
+		sbFrame.append(argumentString);
+		if (frame.getLexemeProperty() != null){
+			sbFrame.append(" - " +frame.getLexemeProperty().getSyntacticProperty().toString());
+		}
+		return sbFrame.toString();
+	}
+
+	public String getArgumentString(SyntacticArgument arg){
+			StringBuilder sbArg = new StringBuilder();
+			sbArg.append(arg.getGrammaticalFunction().toString() +"_" +arg.getSyntacticCategory().toString());
+
+			List<String> additional = new ArrayList<String>();
+			if (arg.getComplementizer() != null){
+				additional.add(arg.getComplementizer().toString());
+			}
+			if (arg.getOptional() != null){
+				additional.add("isOptional=" +arg.getOptional().toString());
+			}
+			if (arg.getDeterminer() != null){
+				additional.add(arg.getDeterminer().toString());
+			}
+			if (arg.getCase() != null){
+				additional.add(arg.getCase().toString());
+			}
+			if (arg.getLexeme() != null){
+				additional.add(arg.getLexeme());
+			}
+			if (arg.getNumber() != null){
+				additional.add(arg.getNumber().toString());
+			}
+			if (arg.getPreposition() != null){
+				additional.add(arg.getPreposition());
+			}
+			if (arg.getPrepositionType() != null){
+				additional.add(arg.getPrepositionType());
+			}
+			if (arg.getTense() != null){
+				additional.add(arg.getTense().toString());
+			}
+			if (arg.getVerbForm() != null){
+				additional.add(arg.getVerbForm().toString());
+			}
+			if (additional.size() > 0) {
+				String additionalAsString = join(additional,",");
+
+				sbArg.append("(" +additionalAsString +")");
+			}
+
+		return sbArg.toString();
+	}
+
+	public String join(List<String> list, String delimiter){
+		if (list == null || list.isEmpty()) {
+			return "";
+		}
+		Iterator<String> iter = list.iterator();
+		StringBuilder builder = new StringBuilder(iter.next());
+		while( iter.hasNext() ) {
+		  builder.append(delimiter).append(iter.next());
+		}
+		return builder.toString();
+	}
+
 }
