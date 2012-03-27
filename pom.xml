@@ -28,7 +28,7 @@
 	<scm>
 		<connection>http://uby.googlecode.com/svn/de.tudarmstadt.ukp.uby/trunk/</connection>
 		<developerConnection>scm:svn:https://uby.googlecode.com/svn/de.tudarmstadt.ukp.uby/trunk/</developerConnection>
-		<url>http://http://code.google.com/p/uby/source/browse/de.tudarmstadt.ukp.uby/trunk</url>
+		<url>http://code.google.com/p/uby/source/browse/de.tudarmstadt.ukp.uby/trunk</url>
 	</scm>
 	<dependencyManagement>
 		<dependencies>
