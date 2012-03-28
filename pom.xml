@@ -21,7 +21,7 @@
 		<module>de.tudarmstadt.ukp.uby.integration.verbnet-asl</module>
 		<module>de.tudarmstadt.ukp.uby.integration.wikipedia-asl</module>
 		<module>de.tudarmstadt.ukp.uby.integration.wiktionary-asl</module>
-		<module>de.tudarmstadt.ukp.uby.integration.wordnet-asl</module>
+		<module>de.tudarmstadt.ukp.uby.integration.wordnet-gpl</module>
 		<module>de.tudarmstadt.ukp.uby.persistence.lmfxml-asl</module>
 		<module>de.tudarmstadt.ukp.uby.persistence.transform-asl</module>
 	</modules>
