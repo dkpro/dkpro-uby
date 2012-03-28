@@ -23,7 +23,7 @@
 		<groupId>de.tudarmstadt.ukp.uby</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>de.tudarmstadt.ukp.uby.integration.wordnet-asl</artifactId>
+	<artifactId>de.tudarmstadt.ukp.uby.integration.wordnet-gpl</artifactId>
 	<name>Integration: WordNet</name>
 	<dependencies>
 		<dependency>
