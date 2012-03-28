@@ -25,14 +25,16 @@ import static org.uimafit.util.JCasUtil.select;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
 import org.uimafit.factory.JCasFactory;
 
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Lemma;
+import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordLemmatizer;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
-import de.tudarmstadt.ukp.dkpro.core.treetagger.TreeTaggerPosLemmaTT4J;
 
 /**
  * This class offers methods for lemmatizing lexemes in a sentence
@@ -58,13 +60,19 @@ public class WNConvUtil {
 			else {
 				jcas.reset();
 			}
+			sentence = sentence.replace("-", " ");
 			jcas.setDocumentLanguage("en");
 			jcas.setDocumentText(sentence);
 
 			if (ae == null) {
 				ae = createAggregate(createAggregateDescription(
 						createPrimitiveDescription(BreakIteratorSegmenter.class),
-						createPrimitiveDescription(TreeTaggerPosLemmaTT4J.class)));
+						
+						
+						createPrimitiveDescription(StanfordLemmatizer.class)
+						
+						
+						));
 			}
 			
 			ae.process(jcas);
@@ -76,7 +84,13 @@ public class WNConvUtil {
 			return lemmas;
 			
 		} catch (Exception e) {
+			StringBuffer sb = new StringBuffer(512);
+			sb.append("##########################");
+			sb.append(sentence);
+			sb.append("##########################");
+			Logger.getLogger(WNConvUtil.class.getName()).log(Level.SEVERE, sb.toString());
 			e.printStackTrace();
+			System.exit(1);
 		}
 		return null;
 	}
@@ -94,6 +108,5 @@ public class WNConvUtil {
 		return Arrays.asList(temp.split(" "));
 		
 	}
-	
 	
 }
