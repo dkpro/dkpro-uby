@@ -41,7 +41,7 @@
 		<dependency>
 			<groupId>de.tudarmstadt.ukp.omegawikiapi</groupId>
 			<artifactId>de.tudarmstadt.ukp.omegawikiapi-asl</artifactId>
-			<version>0.2.0-SNAPSHOT</version>
+			<version>0.2.0</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
