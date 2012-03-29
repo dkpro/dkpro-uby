@@ -332,8 +332,11 @@ public class Uby
 	}
 
 	/**
-	 * @param lemma
-	 * @return
+	 *
+	 *
+	 * @param Lemma
+	 * @return List of LexicalEntries with that lemma
+	 * No longer supported, use getLexcialEntries() instead
 	 */
 	@Deprecated
 	public List<LexicalEntry> getLexicalEntryByLemma(Lemma lemma){
@@ -409,9 +412,9 @@ public class Uby
 	}
 
 	/**
-	 *
+	 * This methods allows to retrieve senses by their exact id, if known
 	 * @param senseId
-	 * @return
+	 * @return The sense with the specified ID
 	 */
 	public Sense getSenseByExactId(String senseId){
 		Criteria criteria= session.createCriteria(Sense.class).add(Restrictions.sqlRestriction("senseId = \""+ senseId+"\""));
@@ -480,31 +483,13 @@ public class Uby
 		}
 
 		refId=refId+temp[0];
-
-		/* NEW VERSION */
-
-/*		Class.forName("com.mysql.jdbc.Driver");
-		Connection connection = DriverManager.getConnection("jdbc:mysql://"+dbConfig.getHost()+"/"+dbConfig.getDatabase(),dbConfig.getUser(), dbConfig.getPassword());
-		Statement statement = connection.createStatement();
-		ResultSet rs = statement.executeQuery("SELECT synsetId FROM MonolingualExternalRef WHERE externalReference = '"+refId.trim() +"'");
-		String ss_id ="";
-		while (rs.next())
-		{
-			ss_id = rs.getString("synsetId");
-
-		}
-		Criteria criteria=session.createCriteria(Sense.class);
-		criteria=criteria.add(Restrictions.sqlRestriction("synsetId='"+ss_id.trim()+"'"));
-		*/
-
-		/*OLD VERSION*/
 		Criteria criteria=session.createCriteria(Sense.class);
 		criteria=criteria.createCriteria("synset").createCriteria("monolingualExternalRefs").add(Restrictions.sqlRestriction("externalReference='"+refId.trim()+"'"));
 		return criteria.list();
 	}
 
 	/**
-	 * @param SynTransId
+	 * @param OmegaWiki SynTransId
 	 * @return list of senses in OmegaWiki by the SynTransId
 	 */
 	public List<Sense>getSensesByOWSynTransId(String SynTransId){
@@ -623,6 +608,10 @@ public class Uby
 		return (SemanticArgument) criteria.uniqueResult();
 	}
 
+	/**
+	 * Return all SynSemArgMaps
+	 * @return A list of all SynSemArgMaps
+	 */
     public List<SynSemArgMap> getSynSemArgMaps()
     {
 
@@ -631,6 +620,13 @@ public class Uby
 
         return result;
     }
+
+	/**
+	 * Returns the String describing a specific SubcatFrame
+	 * @param frame The SubCatFraem
+	 * @param yourLemma The lemma
+	 * @return String describing the SubcatFrame
+	 */
     public String getSubcatFrameString(SubcategorizationFrame frame, String yourLemma){
 		StringBuilder sbFrame = new StringBuilder();
 		List<String> arguments = new ArrayList<String>();
@@ -689,6 +685,11 @@ public class Uby
 		return sbFrame.toString();
 	}
 
+	/**
+	 * Returns the String describing a specific SyntacticArgument
+	 * @param arg The SyntacticArgument
+	 * @return String describing the SyntacticArgument
+	 */
 	public String getArgumentString(SyntacticArgument arg){
 			StringBuilder sbArg = new StringBuilder();
 			sbArg.append(arg.getGrammaticalFunction().toString() +"_" +arg.getSyntacticCategory().toString());
@@ -732,6 +733,13 @@ public class Uby
 
 		return sbArg.toString();
 	}
+
+	/**
+	 * Utility method for transforming a List of Strings into a String with delimiters
+	 * @param list The list of Strings
+	 * @param delimiter The delimiter to be used
+	 * @return String containing the concatenated list
+	 */
 
 	public String join(List<String> list, String delimiter){
 		if (list == null || list.isEmpty()) {
