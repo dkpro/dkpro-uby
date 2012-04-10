@@ -1,47 +1,49 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <artifactId>de.tudarmstadt.ukp.uby</artifactId>
-    <groupId>de.tudarmstadt.ukp.uby</groupId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  <artifactId>de.tudarmstadt.ukp.uby.lmf.api-asl</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>Uby API module</name>
-  <dependencies>
-  	<dependency>
-  		<groupId>jboss</groupId>
-  		<artifactId>javassist</artifactId>
-  		<version>3.7.ga</version>
-  		<type>jar</type>
-  		<scope>compile</scope>
-  	</dependency>
-  	<dependency>
-  		<groupId>org.springframework</groupId>
-  		<artifactId>spring-core</artifactId>
-  		<version>3.0.6.RELEASE</version>
-  		<type>jar</type>
-  		<scope>compile</scope>
-  	</dependency>
-  	<dependency>
-  		<groupId>de.tudarmstadt.ukp.uby</groupId>
-  		<artifactId>de.tudarmstadt.ukp.uby.lmf.model-asl</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
-  		<scope>compile</scope>
-  	</dependency>
-  	<dependency>
-  		<groupId>org.hibernate</groupId>
-  		<artifactId>hibernate-core</artifactId>
-  		<version>3.6.7.uby-1</version>
-  		<type>jar</type>
-  		<scope>compile</scope>
-  	</dependency>
-  	<dependency>
-  		<groupId>org.slf4j</groupId>
-  		<artifactId>slf4j-simple</artifactId>
-  		<version>1.6.1</version>
-  		<type>jar</type>
-  		<scope>compile</scope>
-  	</dependency>
-  </dependencies>
+<!--
+  Copyright 2012
+  Ubiquitous Knowledge Processing (UKP) Lab
+  Technische Universität Darmstadt
+  
+  All rights reserved. This program and the accompanying materials
+  are made available under the terms of the GNU Public License v3.0
+  which accompanies this distribution, and is available at
+  http://www.gnu.org/licenses/gpl-3.0.txt
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>de.tudarmstadt.ukp.uby</artifactId>
+		<groupId>de.tudarmstadt.ukp.uby</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>de.tudarmstadt.ukp.uby.lmf.api-asl</artifactId>
+	<name>Uby API module</name>
+	<licenses>
+		<license>
+			<name>Apache License Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+	<dependencies>
+		<dependency>
+			<groupId>de.tudarmstadt.ukp.uby</groupId>
+			<artifactId>de.tudarmstadt.ukp.uby.lmf.model-asl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>jboss</groupId>
+			<artifactId>javassist</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+		</dependency>
+	</dependencies>
 </project>
