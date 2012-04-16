@@ -2,13 +2,13 @@
  * Copyright 2012
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,6 +19,7 @@
 package de.tudarmstadt.ukp.lmf.transform;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -76,8 +77,9 @@ public class XMLToDBTransformer implements ElementHandler{
 	/**
 	 *
 	 * @param cfg Hibernate Configuration
+	 * @throws FileNotFoundException
 	 */
-	public XMLToDBTransformer(DBConfig dbConfig){
+	public XMLToDBTransformer(DBConfig dbConfig) throws FileNotFoundException{
 		this.dbConfig = dbConfig;
 		Configuration cfg = HibernateConnect.getConfiguration(dbConfig);
 		sessionFactory = cfg.buildSessionFactory();

@@ -2,13 +2,13 @@
  * Copyright 2012
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,6 +18,7 @@
 
 package de.tudarmstadt.ukp.lmf.transform;
 
+import java.io.FileNotFoundException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -64,8 +65,9 @@ public abstract class LMFDBTransformer extends LMFTransformer{
 	/**
 	 * Creates LMFTransformer, which writes to LMFXmlWriter
 	 * @param writer
+	 * @throws FileNotFoundException
 	 */
-	public LMFDBTransformer(DBConfig dbConfig){
+	public LMFDBTransformer(DBConfig dbConfig) throws FileNotFoundException{
 		super();
 		this.dbConfig = dbConfig;
 		cfg = HibernateConnect.getConfiguration(dbConfig);
@@ -173,8 +175,9 @@ public abstract class LMFDBTransformer extends LMFTransformer{
 	 * Saves transformed lexcialResource to XML
 	 * @param writer XML writer
 	 * @throws LMFWriterException
+	 * @throws FileNotFoundException
 	 */
-	public void saveToXML(LMFWriter writer) throws LMFWriterException{
+	public void saveToXML(LMFWriter writer) throws LMFWriterException, FileNotFoundException{
 		DBToXMLTransformer dbToXml = new DBToXMLTransformer(dbConfig, writer);
 		dbToXml.transform(lexicalResource);
 	}
