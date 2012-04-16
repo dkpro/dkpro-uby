@@ -183,15 +183,19 @@ public class Uby
 	 *
 	 * @param Name of the Lexicon to be obtained
 	 * @return The Lexicon
+	 * @throws UbyInvalidArgumentException if no lexicon with the given identifier is found
 	 */
-	public Lexicon getLexiconByName(String name)
+	public Lexicon getLexiconByName(String name) throws UbyInvalidArgumentException
 	{
 
 		Criteria criteria = session.createCriteria(Lexicon.class);
 		criteria = criteria.add(Restrictions.sqlRestriction("lexiconName = '"+name+"'"));
 		Lexicon result = (Lexicon) criteria.uniqueResult();
-
+		if (result==null) {
+			throw new UbyInvalidArgumentException(new Exception("Lexicon does not exist"));
+		}
 		return result;
+
 	}
 
 	/**
@@ -418,12 +422,16 @@ public class Uby
 	 * This methods allows to retrieve senses by their exact id, if known
 	 * @param senseId
 	 * @return The sense with the specified ID
+	 * @throws UbyInvalidArgumentException
 	 */
-	public Sense getSenseByExactId(String senseId){
+	public Sense getSenseByExactId(String senseId) throws UbyInvalidArgumentException{
 		Criteria criteria= session.createCriteria(Sense.class).add(Restrictions.sqlRestriction("senseId = \""+ senseId+"\""));
 		Sense ret=null;
 		if (criteria.list()!=null && criteria.list().size()>0){
 			ret=(Sense)criteria.list().get(0);
+		}
+		if (ret==null) {
+			throw new UbyInvalidArgumentException(new Exception("Sense with this ID does not exist"));
 		}
 		return ret;
 	}
