@@ -2,13 +2,13 @@
  * Copyright 2012
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,6 +17,7 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.transform.wikipedia;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -75,8 +76,9 @@ public abstract class WikipediaLMFTransformer extends LMFDBTransformer {
 	 * @param dbConfig
 	 * @param wiki
 	 * @throws WikiApiException
+	 * @throws FileNotFoundException
 	 */
-	public WikipediaLMFTransformer(DBConfig dbConfig, Wikipedia wiki, String dtd) throws WikiApiException {
+	public WikipediaLMFTransformer(DBConfig dbConfig, Wikipedia wiki, String dtd) throws WikiApiException, FileNotFoundException {
 		super(dbConfig);
 		this.wiki = wiki;
 		this.pageIterator = new PageIterator(wiki, true, 7000);
@@ -91,8 +93,10 @@ public abstract class WikipediaLMFTransformer extends LMFDBTransformer {
 
 	protected abstract String getHiddenCategoryName();
 
+	@Override
 	protected abstract String getResourceAlias();
 
+	@Override
 	protected abstract LexicalResource createLexicalResource();
 
 	@Override

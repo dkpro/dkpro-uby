@@ -2,13 +2,13 @@
  * Copyright 2012
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,6 +18,7 @@
 
 package de.tudarmstadt.ukp.lmf.transform;
 
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -37,8 +38,9 @@ public class LMFDBUtils {
 	/**
 	 * Create all LMF Tables in the database based on the hibernate mapping
 	 * @param dbConfig
+	 * @throws FileNotFoundException
 	 */
-	public static  void createTables(DBConfig dbConfig, boolean constraints){
+	public static  void createTables(DBConfig dbConfig, boolean constraints) throws FileNotFoundException{
 		System.out.println("CREATE TABLES");
 		Configuration cfg = HibernateConnect.getConfiguration(dbConfig);
 		SchemaExport  se = new SchemaExport(cfg);
@@ -157,8 +159,9 @@ public class LMFDBUtils {
 	 * Deletes Lexicon and all its elements from the database
 	 * @param lexicon
 	 * @param dbConfig
+	 * @throws FileNotFoundException
 	 */
-	public static void deleteLexiconFromDatabase(Lexicon lexicon, DBConfig dbConfig){
+	public static void deleteLexiconFromDatabase(Lexicon lexicon, DBConfig dbConfig) throws FileNotFoundException{
 
 		turnOnConstraints(dbConfig); // To be sure that all constraints are turned on
 									 // and cascade deleting will work

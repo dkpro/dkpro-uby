@@ -2,13 +2,13 @@
  * Copyright 2012
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,6 +17,7 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.transform.wiktionary;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -61,8 +62,8 @@ import de.tudarmstadt.ukp.wiktionary.api.Language;
 import de.tudarmstadt.ukp.wiktionary.api.Quotation;
 import de.tudarmstadt.ukp.wiktionary.api.WikiString;
 import de.tudarmstadt.ukp.wiktionary.api.entry.Pronunciation;
-import de.tudarmstadt.ukp.wiktionary.api.entry.Pronunciation.PronunciationType;
 import de.tudarmstadt.ukp.wiktionary.api.entry.WiktionaryIterator;
+import de.tudarmstadt.ukp.wiktionary.api.entry.Pronunciation.PronunciationType;
 
 /**
  * Base class for converting Wiktionary to LMF
@@ -80,14 +81,15 @@ public abstract class WiktionaryLMFTransformer extends LMFDBTransformer {
 	protected final HashMap<String, List<WordForm>> wordForms;			// Cache of unsaved word forms, that were extracted
 																// from Wiktionary FORM_OF context labels
 	protected final String dtd_version;
-	
+
 	static int exampleIdx = 1;
 
 	/**
 	 * @param dbConfig - Database configuration of LMF database
 	 * @param wkt - JWKTL Wiktionary Object
+	 * @throws FileNotFoundException
 	 */
-	public WiktionaryLMFTransformer(DBConfig dbConfig, IWiktionaryEdition wkt, Language wktLang, String dtd){
+	public WiktionaryLMFTransformer(DBConfig dbConfig, IWiktionaryEdition wkt, Language wktLang, String dtd) throws FileNotFoundException{
 		super(dbConfig);
 		this.wkt = wkt;
 		this.wktLang = wktLang;
@@ -220,7 +222,7 @@ public abstract class WiktionaryLMFTransformer extends LMFDBTransformer {
 			}
 		}
 		sense.setSenseExamples(examples);
-		
+
 		List<Context> contexts = new ArrayList<Context>(); // Create Contexts
 		if(wktSense.getQuotations() != null){
 			for(Quotation quotation : wktSense.getQuotations()){	// Save quotations as contexts of type EContextType.citation
@@ -230,9 +232,10 @@ public abstract class WiktionaryLMFTransformer extends LMFDBTransformer {
 				List<TextRepresentation> textRepsContext = new ArrayList<TextRepresentation>();
 				TextRepresentation textRepContext = new TextRepresentation();
 				StringBuilder writtenText = new StringBuilder();
-				for (WikiString line : quotation.getLines())
+				for (WikiString line : quotation.getLines()) {
 					writtenText.append(writtenText.length() == 0 ? "" : " ")
 							.append(line.getPlainText());
+				}
 				textRepContext.setWrittenText(StringUtils.replaceNonUtf8(writtenText.toString()));
 				textRepContext.setLanguageIdentifier(WiktionaryLMFMap.mapLanguage(wktEntry.getWordLanguage()));
 				textRepsContext.add(textRepContext);
@@ -268,9 +271,10 @@ public abstract class WiktionaryLMFTransformer extends LMFDBTransformer {
 		if(wktSense.getTranslations() !=null ){			// Save translations as SenseRelations of type ERelTypeSemantics.translation
 			for(IWiktionaryTranslation trans : wktSense.getTranslations()){
 				String targetForm = StringUtils.replaceNonUtf8(trans.getTranslation(),1000);
-				if (targetForm == null || targetForm.isEmpty())
+				if (targetForm == null || targetForm.isEmpty()) {
 					continue; // Do not save empty translations.
-				
+				}
+
 				SenseRelation senseRelation = new SenseRelation();
 				FormRepresentation targetFormRepresentation = new FormRepresentation();
 				targetFormRepresentation.setWrittenForm(targetForm);
@@ -287,7 +291,7 @@ public abstract class WiktionaryLMFTransformer extends LMFDBTransformer {
 
 	protected void saveLabels(Sense sense, IWiktionarySense wktSense,
 			LexicalEntry entry, IWiktionaryEntry wktEntry) {}
-	
+
 	/**
 	 * Extracts labels from the gloss and saves them to various LMF elements
 	 * @param gloss
