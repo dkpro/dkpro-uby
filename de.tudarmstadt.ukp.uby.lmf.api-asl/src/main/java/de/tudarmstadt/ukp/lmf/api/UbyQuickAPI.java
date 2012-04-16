@@ -17,6 +17,7 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.api;
 
+import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -58,8 +59,9 @@ public class UbyQuickAPI
 	 *
 	 * @param config
 	 *            : Configuration to connect to database
+	 * @throws FileNotFoundException
 	 */
-	public UbyQuickAPI(DBConfig config)
+	public UbyQuickAPI(DBConfig config) throws FileNotFoundException
 	{
 		setDbConfig(config);
 	}
@@ -80,8 +82,9 @@ public class UbyQuickAPI
 	 *
 	 * @param config
 	 *            : Configuration to connect to database
+	 * @throws FileNotFoundException
 	 */
-	public void setDbConfig(DBConfig config)
+	public void setDbConfig(DBConfig config) throws FileNotFoundException
 	{
 		this.dbconfig = config;
 		cfg = HibernateConnect.getConfiguration(dbconfig);

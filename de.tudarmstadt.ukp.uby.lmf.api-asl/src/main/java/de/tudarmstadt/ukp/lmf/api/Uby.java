@@ -17,6 +17,7 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.api;
 
+import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -66,8 +67,9 @@ public class Uby
 	 * Constructor to obtain the Uby object
 	 *
 	 * @param dbConfig Database configuration of the Uby database
+	 * @throws FileNotFoundException
 	 */
-	public Uby(DBConfig dbConfig)
+	public Uby(DBConfig dbConfig) throws FileNotFoundException
 	{
 		this.dbConfig = dbConfig;
 		cfg = HibernateConnect.getConfiguration(dbConfig);
@@ -86,8 +88,9 @@ public class Uby
 	 * Setting the configuration for the Uby database
 	 *
 	 * @param dbConfig Database configuration of the Uby database
+	 * @throws FileNotFoundException
 	 */
-	public void setDbConfig(DBConfig dbconfig){
+	public void setDbConfig(DBConfig dbconfig) throws FileNotFoundException{
 		this.dbConfig=dbconfig;
 		cfg = HibernateConnect.getConfiguration(dbConfig);
 		sessionFactory = cfg.buildSessionFactory();
