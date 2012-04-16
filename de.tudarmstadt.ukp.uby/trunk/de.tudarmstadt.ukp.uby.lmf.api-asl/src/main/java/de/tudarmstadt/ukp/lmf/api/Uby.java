@@ -422,7 +422,7 @@ public class Uby
 	 * This methods allows to retrieve senses by their exact id, if known
 	 * @param senseId
 	 * @return The sense with the specified ID
-	 * @throws UbyInvalidArgumentException
+	 * @throws UbyInvalidArgumentException if a sense with this ID does not exist
 	 */
 	public Sense getSenseByExactId(String senseId) throws UbyInvalidArgumentException{
 		Criteria criteria= session.createCriteria(Sense.class).add(Restrictions.sqlRestriction("senseId = \""+ senseId+"\""));
