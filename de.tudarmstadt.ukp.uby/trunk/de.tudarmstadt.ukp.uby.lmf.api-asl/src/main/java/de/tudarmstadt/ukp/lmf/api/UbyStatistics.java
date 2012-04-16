@@ -2,13 +2,13 @@
  * Copyright 2012
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,6 +17,7 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.api;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -50,8 +51,9 @@ public class UbyStatistics extends Uby{
 	/**
 	 * @param dbConfig
 	 *            Database configuration of the Uby database
+	 * @throws FileNotFoundException
 	 */
-	public UbyStatistics(DBConfig dbConfig){
+	public UbyStatistics(DBConfig dbConfig) throws FileNotFoundException{
 		super(dbConfig);
 	}
 
@@ -119,9 +121,9 @@ public class UbyStatistics extends Uby{
 
 
 	/**
-	 * Count the number of lemma+pos combinations per lexicon, 
-	 * 		part-of-speech prefix 
-	 * 		and language 
+	 * Count the number of lemma+pos combinations per lexicon,
+	 * 		part-of-speech prefix
+	 * 		and language
 	 * @param lexiconName
 	 * 			Name of the lexicon
 	 * @param prefix
@@ -137,10 +139,10 @@ public class UbyStatistics extends Uby{
 				res = l.size();
 			}
 			return res;
-	}	
-	
+	}
+
 	/**
-	 * Return a list of strings consisting of lemma+"_"+part-of-speech 
+	 * Return a list of strings consisting of lemma+"_"+part-of-speech
 	 * 		filtered by lexicon
 	 * @param lexiconName
 	 * 			Name of the lexicon
@@ -166,12 +168,12 @@ public class UbyStatistics extends Uby{
 				} else {
 					out.add((String)r[0] +"_null");
 				}
-				
+
 			}
 			HashSet<String> out2 = new HashSet<String>(out);
 		return out2;
 	}
-	
+
 	/**
 	 * Return a list of strings consisting of lemma+"_"+part-of-speech
 	 * 		filtered by lexicon, part-of-speech prefix and language
@@ -229,16 +231,16 @@ public class UbyStatistics extends Uby{
 		criteria = criteria.createCriteria("lexicon");
 		criteria = criteria.add(Restrictions.eq("name", lexiconName));
 		return (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
-	}	
-	
+	}
+
 	/**
 	 * Count the senses in Uby
 	 * @return the number of senses
 	 */
 	public long countSenses(){
-		return countClassEntities(Sense.class);		
+		return countClassEntities(Sense.class);
 	}
-	
+
 	/**
 	 * Count the lexical entries in Uby
 	 * @return the number of lexical entries
@@ -246,14 +248,14 @@ public class UbyStatistics extends Uby{
 	public long countLexicalEntries(){
 		return countClassEntities(LexicalEntry.class);
 	}
-	
+
 	/**
 	 * Count the number of sense axes in uby
 	 * @return a list of alignments in uby
 	 */
 	public long countSenseAxes() {
 		return countClassEntities(SenseAxis.class);
-	}	
+	}
 	/**
 	 * Count the class instances for the given class
 	 * @param ubyClass
@@ -262,13 +264,13 @@ public class UbyStatistics extends Uby{
 	public long countClassEntities(Class ubyClass){
 		return (Long) session.createCriteria(ubyClass).setProjection(Projections.rowCount()).uniqueResult();
 	}
-	
+
 
 
 	/**
-	 * Count the sense axes of a particular sense axis type 
+	 * Count the sense axes of a particular sense axis type
 	 * 		between two lexicons identified by their name.
-	 * 		! Note that lexicons are identified by senseId-prefixes 
+	 * 		! Note that lexicons are identified by senseId-prefixes
 	 * 		! and that sources of the alignments are not distinguished.
 	 * 		! and that only alignments between senses are considered;
 	 * @param type
@@ -299,7 +301,7 @@ public class UbyStatistics extends Uby{
 		String pref1 = "";
 		String pref2 = "";
 		if (res1!=null && res2!=null){
-			pref1 = res1.split("_")[0]; 
+			pref1 = res1.split("_")[0];
 			if (res1.split("_")[1].equals("en")  ||res1.split("_")[1].equals("de") ){
 				pref1 +=  "_" + res1.split("_")[1];
 			}
@@ -318,11 +320,11 @@ public class UbyStatistics extends Uby{
 			return 0L;
 		}
 	}
-	
+
 	/**
-	 * Count the sense axes of a particular sense axis type 
+	 * Count the sense axes of a particular sense axis type
 	 * 		between two lexicons identified by their name.
-	 * 		! Note that lexicons are identified by senseId-prefixes 
+	 * 		! Note that lexicons are identified by senseId-prefixes
 	 * 		! and that sources of the alignments are not distinguished.
 	 * 		! and that only alignments between senses are considered;
 	 * @param type
@@ -353,7 +355,7 @@ public class UbyStatistics extends Uby{
 		String pref1 = "";
 		String pref2 = "";
 		if (res1!=null && res2!=null){
-			pref1 = res1.split("_")[0]; 
+			pref1 = res1.split("_")[0];
 			if (res1.split("_")[1].equals("en")  ||res1.split("_")[1].equals("de") ){
 				pref1 +=  "_" + res1.split("_")[1];
 			}
