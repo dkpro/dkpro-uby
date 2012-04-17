@@ -3,7 +3,7 @@
   <parent>
     <artifactId>de.tudarmstadt.ukp.uby</artifactId>
     <groupId>de.tudarmstadt.ukp.uby</groupId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0</version>
   </parent>
   <artifactId>de.tudarmstadt.ukp.uby.distribution</artifactId>
   <packaging>pom</packaging>
