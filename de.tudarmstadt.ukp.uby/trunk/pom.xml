@@ -11,6 +11,10 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Ubiqtionary</name>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.target>1.6</java.target>
+	</properties>
 	<modules>
 		<module>de.tudarmstadt.ukp.uby.lmf.model-asl</module>
 		<module>de.tudarmstadt.ukp.uby.lmf.api-asl</module>
@@ -24,6 +28,7 @@
 		<module>de.tudarmstadt.ukp.uby.integration.wordnet-gpl</module>
 		<module>de.tudarmstadt.ukp.uby.persistence.lmfxml-asl</module>
 		<module>de.tudarmstadt.ukp.uby.persistence.transform-asl</module>
+		<module>de.tudarmstadt.ukp.uby.distribution</module>
 	</modules>
 	<scm>
 		<connection>http://uby.googlecode.com/svn/de.tudarmstadt.ukp.uby/trunk/</connection>
@@ -158,6 +163,21 @@
 				<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
 				<artifactId>de.tudarmstadt.ukp.dkpro.core.stanfordnlp-gpl</artifactId>
 				<version>1.3.0</version>
+			</dependency>
+			<dependency>
+				<groupId>de.tudarmstadt.ukp.uby</groupId>
+				<artifactId>de.tudarmstadt.ukp.uby.integration.framenet-gpl</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>de.tudarmstadt.ukp.uby</groupId>
+				<artifactId>de.tudarmstadt.ukp.uby.integration.wikipedia-asl</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>de.tudarmstadt.ukp.uby</groupId>
+				<artifactId>de.tudarmstadt.ukp.uby.integration.wiktionary-asl</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
