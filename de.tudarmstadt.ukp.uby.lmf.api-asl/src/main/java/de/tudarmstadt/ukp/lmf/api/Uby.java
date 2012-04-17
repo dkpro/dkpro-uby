@@ -436,6 +436,25 @@ public class Uby
 		return ret;
 	}
 
+
+	/**
+	 * This methods allows to retrieve synsets by their exact id, if known
+	 * @param synsetId
+	 * @return The synset with the specified ID
+	 * @throws UbyInvalidArgumentException if a synset with this ID does not exist
+	 */
+	public Synset getSynsetByExactId(String synsetId) throws UbyInvalidArgumentException{
+		Criteria criteria= session.createCriteria(Synset.class).add(Restrictions.sqlRestriction("synsetId = \""+ synsetId+"\""));
+		Synset ret=null;
+		if (criteria.list()!=null && criteria.list().size()>0){
+			ret=(Synset)criteria.list().get(0);
+		}
+		if (ret==null) {
+			throw new UbyInvalidArgumentException(new Exception("Synset with this ID does not exist"));
+		}
+		return ret;
+	}
+
 	/**
 	 *
 	 * @param extRef: ExternalReference of Sense, i.e: the original ID of sense in Wordnet
