@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<artifactId>dkpro-parent-pom</artifactId>
@@ -8,7 +7,7 @@
 	</parent>
 	<groupId>de.tudarmstadt.ukp.uby</groupId>
 	<artifactId>de.tudarmstadt.ukp.uby</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.0</version>
 	<packaging>pom</packaging>
 	<name>Ubiqtionary</name>
 	<properties>
@@ -31,56 +30,56 @@
 		<module>de.tudarmstadt.ukp.uby.distribution</module>
 	</modules>
 	<scm>
-		<connection>http://uby.googlecode.com/svn/de.tudarmstadt.ukp.uby/trunk/</connection>
-		<developerConnection>scm:svn:https://uby.googlecode.com/svn/de.tudarmstadt.ukp.uby/trunk/</developerConnection>
-		<url>http://code.google.com/p/uby/source/browse/de.tudarmstadt.ukp.uby/trunk</url>
+		<connection>http://uby.googlecode.com/svn/de.tudarmstadt.ukp.uby/tags/de.tudarmstadt.ukp.uby-0.1.0</connection>
+		<developerConnection>scm:svn:https://uby.googlecode.com/svn/de.tudarmstadt.ukp.uby/tags/de.tudarmstadt.ukp.uby-0.1.0</developerConnection>
+		<url>http://code.google.com/p/uby/source/browse/de.tudarmstadt.ukp.uby/tags/de.tudarmstadt.ukp.uby-0.1.0</url>
 	</scm>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>de.tudarmstadt.ukp.uby</groupId>
 				<artifactId>de.tudarmstadt.ukp.uby.integration.germanet-gpl</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>0.1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>de.tudarmstadt.ukp.uby</groupId>
 				<artifactId>de.tudarmstadt.ukp.uby.integration.gsubcatlex-asl</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>0.1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>de.tudarmstadt.ukp.uby</groupId>
 				<artifactId>de.tudarmstadt.ukp.uby.integration.omegawiki-asl</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>0.1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>de.tudarmstadt.ukp.uby</groupId>
 				<artifactId>de.tudarmstadt.ukp.uby.integration.verbnet-asl</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>0.1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>de.tudarmstadt.ukp.uby</groupId>
 				<artifactId>de.tudarmstadt.ukp.uby.integration.wordnet-gpl</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>0.1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>de.tudarmstadt.ukp.uby</groupId>
 				<artifactId>de.tudarmstadt.ukp.uby.lmf.model-asl</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>0.1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>de.tudarmstadt.ukp.uby</groupId>
 				<artifactId>de.tudarmstadt.ukp.uby.lmf.api-asl</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>0.1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>de.tudarmstadt.ukp.uby</groupId>
 				<artifactId>de.tudarmstadt.ukp.uby.persistence.lmfxml-asl</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>0.1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>de.tudarmstadt.ukp.uby</groupId>
 				<artifactId>de.tudarmstadt.ukp.uby.persistence.transform-asl</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>0.1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>germanet</groupId>
@@ -167,17 +166,17 @@
 			<dependency>
 				<groupId>de.tudarmstadt.ukp.uby</groupId>
 				<artifactId>de.tudarmstadt.ukp.uby.integration.framenet-gpl</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>0.1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>de.tudarmstadt.ukp.uby</groupId>
 				<artifactId>de.tudarmstadt.ukp.uby.integration.wikipedia-asl</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>0.1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>de.tudarmstadt.ukp.uby</groupId>
 				<artifactId>de.tudarmstadt.ukp.uby.integration.wiktionary-asl</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>0.1.0</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
