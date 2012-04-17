@@ -2,13 +2,13 @@
  * Copyright 2012
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,27 +31,27 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
  *
  */
 public class Synset implements IHasID, Comparable<Synset> {
-	
+
 	// Id of this Synset
 	@VarType(type = EVarType.ATTRIBUTE)
 	private String id;
-	
+
 	// Definitions of the Synset
 	@VarType(type = EVarType.CHILDREN)
 	private List<Definition> definitions;
-	
+
 	// Relations to other Synsets
 	@VarType(type = EVarType.CHILDREN)
 	private List<SynsetRelation> synsetRelations;
-	
+
 	// Reference to a external Resource
 	@VarType(type = EVarType.CHILDREN)
 	private List<MonolingualExternalRef> monolingualExternalRefs;
-	
-	
+
+
 	// Senses of this synset - not in the model, added for convenience
 	@VarType(type = EVarType.NONE)
-	private List<Sense> senses;	
+	private List<Sense> senses;
 
 	/**
 	 * @return the id
@@ -82,6 +82,9 @@ public class Synset implements IHasID, Comparable<Synset> {
 	}
 
 	/**
+	 * Returns all relations in which this Synset is the source.
+	 * Thus, it is guaranteed that s.equals(r.getSource()) is true for every SenseRelation r of a Synset s
+	 *
 	 * @return the synsetRelations
 	 */
 	public List<SynsetRelation> getSynsetRelations() {
@@ -109,7 +112,7 @@ public class Synset implements IHasID, Comparable<Synset> {
 			List<MonolingualExternalRef> monolingualExternalRefs) {
 		this.monolingualExternalRefs = monolingualExternalRefs;
 	}
-	
+
 	/**
 	 * @return the senses
 	 */
@@ -123,9 +126,9 @@ public class Synset implements IHasID, Comparable<Synset> {
 	public void setSenses(List<Sense> senses) {
 		this.senses = senses;
 	}
-	
+
 	/**
-	 * Creates gloss of this Synset by aggregating 
+	 * Creates gloss of this Synset by aggregating
 	 * defintion texts of all Senses
 	 * @return
 	 */
@@ -136,20 +139,24 @@ public class Synset implements IHasID, Comparable<Synset> {
 		}
 		return result.toString();
 	}
-	
+
 	/**
 	 * Returns writtenText of first TextRepresentation of first Definition
 	 * @return
 	 */
 	public String getDefinitionText(){
-		if(definitions.isEmpty())
+		if(definitions.isEmpty()) {
 			return "";
+		}
 		Definition firstDefinition = definitions.get(0);
-		if(firstDefinition.getTextRepresentations().isEmpty())
+		if(firstDefinition.getTextRepresentations().isEmpty()) {
 			return "";
-		else return firstDefinition.getTextRepresentations().get(0).getWrittenText();
+		}
+		else {
+			return firstDefinition.getTextRepresentations().get(0).getWrittenText();
+		}
 	}
-	
+
 	@Override
 	public String toString(){
 		return this.id == null?"":this.id.toString();
@@ -161,17 +168,19 @@ public class Synset implements IHasID, Comparable<Synset> {
 	}
 	@Override
 	public boolean equals(Object other) {
-	    if (this == other)
-	      return true;
-	    if (!(other instanceof Synset))
-	      return false;
+	    if (this == other) {
+			return true;
+		}
+	    if (!(other instanceof Synset)) {
+			return false;
+		}
 	    Synset otherSynset = (Synset) other;
-	    return this.id==null ? otherSynset.id==null : this.id.equals(otherSynset.id);	   
+	    return this.id==null ? otherSynset.id==null : this.id.equals(otherSynset.id);
 	 }
 	@Override
-	public int hashCode() { 
+	public int hashCode() {
 	    int hash = 1;
 	    hash = hash * 31 + this.id==null?0:this.id.hashCode();
 	    return hash;
-	}	
+	}
 }

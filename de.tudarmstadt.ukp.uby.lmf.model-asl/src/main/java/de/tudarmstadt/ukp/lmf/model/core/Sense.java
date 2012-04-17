@@ -2,13 +2,13 @@
  * Copyright 2012
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,32 +37,32 @@ public class Sense implements IHasID, Comparable<Sense>{
 	// Id of this Sense
 	@VarType(type = EVarType.ATTRIBUTE)
 	private String id;
-	
+
 	// Index of this source
 	@VarType(type = EVarType.ATTRIBUTE)
-	private int index;	
-	
+	private int index;
+
 	// Synset of this Sense
 	@VarType(type = EVarType.IDREF)
 	private Synset synset;
 
 	// Semantic Argument incorporated by this Sense
 	@VarType(type = EVarType.IDREF)
-	private SemanticArgument incorporatedSemArg;	
+	private SemanticArgument incorporatedSemArg;
 
 	// Sense has transparent Meaning
 	@VarType(type = EVarType.ATTRIBUTE)
-	private EYesNo transparentMeaning;	
+	private EYesNo transparentMeaning;
 
-	// Sense is a bound Lexeme 
+	// Sense is a bound Lexeme
 	@VarType(type = EVarType.ATTRIBUTE)
 	private EYesNo boundLexeme;
-	
+
 // Replace by SemanticLabel Class
 //	// Semantic Class Label of this Sense
 //	@VarType(type = EVarType.ATTRIBUTE)
 //	private String semanticClassLabel;
-	
+
 	// ?
 	@VarType(type = EVarType.CHILDREN)
 	private List<Sense> senses;
@@ -75,15 +75,15 @@ public class Sense implements IHasID, Comparable<Sense>{
 //	// Subject Fields fo this Sense
 //	@VarType(type = EVarType.CHILDREN)
 //	private List<SubjectField> subjectFields;
-	
+
 	// Predicative Representations of this Sense
 	@VarType(type = EVarType.CHILDREN)
 	private List<PredicativeRepresentation> predicativeRepresentations;
-	
+
 	// Sense Examples of this Sense
 	@VarType(type = EVarType.CHILDREN)
 	private List<SenseExample> senseExamples;
-	
+
 	// Definitions of this Sense
 	@VarType(type = EVarType.CHILDREN)
 	private List<Definition> definitions;
@@ -91,18 +91,18 @@ public class Sense implements IHasID, Comparable<Sense>{
 	// Sense Relations of this Sense
 	@VarType(type = EVarType.CHILDREN)
 	private List<SenseRelation> senseRelations;
-	
+
 	@VarType(type = EVarType.CHILDREN)
 	private List<MonolingualExternalRef> monolingualExternalRefs;
 
 	// Frequency information for this Sense
 	@VarType(type = EVarType.CHILDREN)
 	private List<Frequency> frequencies;
-	
+
 	// Semantic class informatin for this Sense
 	@VarType(type = EVarType.CHILDREN)
 	private List<SemanticLabel> semanticLabels;
-		
+
 	// Backlink to LexicalEntry added for convenience
 	@VarType(type = EVarType.NONE)
 	private LexicalEntry lexicalEntry;
@@ -165,7 +165,7 @@ public class Sense implements IHasID, Comparable<Sense>{
 //	}
 
 	/**
-	 * 
+	 *
 	 * @param incorporatedSemArg the incorporatedSemArg to set
 	 */
 	public void setIncorporatedSemArg(SemanticArgument incorporatedSemArg) {
@@ -173,7 +173,7 @@ public class Sense implements IHasID, Comparable<Sense>{
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the incorporatedSemArg
 	 */
 	public SemanticArgument getIncorporatedSemArg() {
@@ -181,7 +181,7 @@ public class Sense implements IHasID, Comparable<Sense>{
 	}
 
 	/**
-	 * 
+	 *
 	 * @param transparentMeaning the transparentMeaning to set
 	 */
 	public void setTransparentMeaning(EYesNo transparentMeaning) {
@@ -189,7 +189,7 @@ public class Sense implements IHasID, Comparable<Sense>{
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the transparentMeaning
 	 */
 	public EYesNo getTransparentMeaning() {
@@ -197,7 +197,7 @@ public class Sense implements IHasID, Comparable<Sense>{
 	}
 
 	/**
-	 * 
+	 *
 	 * @param boundLexeme the boundLexeme to set
 	 */
 	public void setBoundLexeme(EYesNo boundLexeme) {
@@ -205,7 +205,7 @@ public class Sense implements IHasID, Comparable<Sense>{
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the boundLexeme
 	 */
 	public EYesNo getBoundLexeme() {
@@ -298,6 +298,9 @@ public class Sense implements IHasID, Comparable<Sense>{
 	}
 
 	/**
+	 * Returns all relations in which this Sense is the source.
+	 * Thus, it is guaranteed that s.equals(r.getSource()) is true for every SenseRelation r of a Sense s
+	 *
 	 * @return the senseRelations
 	 */
 	public List<SenseRelation> getSenseRelations() {
@@ -325,7 +328,7 @@ public class Sense implements IHasID, Comparable<Sense>{
 			List<MonolingualExternalRef> monolingualExternalRefs) {
 		this.monolingualExternalRefs = monolingualExternalRefs;
 	}
-	
+
 	/**
 	 * @return the lexicalEntry
 	 */
@@ -339,22 +342,26 @@ public class Sense implements IHasID, Comparable<Sense>{
 	public void setLexicalEntry(LexicalEntry lexicalEntry) {
 		this.lexicalEntry = lexicalEntry;
 	}
-	
+
 	/**
 	 * Returns writtenText of first TextRepresentation of first Definition
 	 * @return
 	 */
 	public String getDefinitionText(){
-		if(definitions.isEmpty())
+		if(definitions.isEmpty()) {
 			return "";
+		}
 		Definition firstDefinition = definitions.get(0);
-		if(firstDefinition.getTextRepresentations().isEmpty())
+		if(firstDefinition.getTextRepresentations().isEmpty()) {
 			return "";
-		else return firstDefinition.getTextRepresentations().get(0).getWrittenText();
+		}
+		else {
+			return firstDefinition.getTextRepresentations().get(0).getWrittenText();
+		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param frequencies the frequencies to set
 	 */
 	public void setFrequencies(List<Frequency> frequencies) {
@@ -362,15 +369,15 @@ public class Sense implements IHasID, Comparable<Sense>{
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the frequencies
 	 */
 	public List<Frequency> getFrequencies() {
 		return frequencies;
-	}	
-	
+	}
+
 	/**
-	 * 
+	 *
 	 * @param semanticLabels the semanticLabels to set
 	 */
 	public void setSemanticLabels(List<SemanticLabel> semanticLabels) {
@@ -378,7 +385,7 @@ public class Sense implements IHasID, Comparable<Sense>{
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the semanticLabels
 	 */
 	public List<SemanticLabel> getSemanticLabels() {
@@ -396,17 +403,19 @@ public class Sense implements IHasID, Comparable<Sense>{
 	}
 	@Override
 	public boolean equals(Object other) {
-	    if (this == other)
-	      return true;
-	    if (!(other instanceof Sense))
-	      return false;
+	    if (this == other) {
+			return true;
+		}
+	    if (!(other instanceof Sense)) {
+			return false;
+		}
 	    Sense otherSense = (Sense) other;
-	    return this.id==null ? otherSense.id==null : this.id.equals(otherSense.id);	   
+	    return this.id==null ? otherSense.id==null : this.id.equals(otherSense.id);
 	 }
 	@Override
-	public int hashCode() { 
+	public int hashCode() {
 	    int hash = 1;
 	    hash = hash * 31 + this.id==null?0:this.id.hashCode();
 	    return hash;
-	}	
+	}
 }
