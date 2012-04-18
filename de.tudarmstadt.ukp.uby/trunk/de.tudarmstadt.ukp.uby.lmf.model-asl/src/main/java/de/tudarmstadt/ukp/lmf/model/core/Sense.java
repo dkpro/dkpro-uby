@@ -213,7 +213,10 @@ public class Sense implements IHasID, Comparable<Sense>{
 	}
 
 	/**
-	 * @return the senses
+	 * This method is reserved for future use.
+	 * Currently, there are no senses which have attached (sub-)senses.
+	 *
+	 * @return the (sub-)senses of this Sense
 	 */
 	public List<Sense> getSenses() {
 		return senses;
