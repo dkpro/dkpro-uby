@@ -2,13 +2,13 @@
  * Copyright 2012
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,66 +34,66 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
 public class SyntacticArgument implements IHasID, Comparable<SyntacticArgument>{
-	
+
 	// Id of this SyntacticArgument
 	@VarType(type = EVarType.ATTRIBUTE)
 	private String id;
-	
+
 	// Optional property of this SyntacticArgument
 	@VarType(type = EVarType.ATTRIBUTE)
 	private EYesNo optional;
-	
+
 	// Grammatical Function property of this SyntacticArgument
 	@VarType(type = EVarType.ATTRIBUTE)
 	private EGrammaticalFunction grammaticalFunction;
-	
+
 	// Syntactic Category property of this SyntacticArgument
 	@VarType(type = EVarType.ATTRIBUTE)
 	private ESyntacticCategory syntacticCategory;
-	
+
 	// Case Property of this SyntacticArgument
 	@VarType(type = EVarType.ATTRIBUTE)
 	private ECase _case;
-	
+
 	// Preposition property of this SyntacticArgument
 	@VarType(type = EVarType.ATTRIBUTE)
 	private String preposition;
-	
+
 	// Preposition type of this SyntacticArgument
 	@VarType(type = EVarType.ATTRIBUTE)
 	private String prepositionType;
-	
+
 	// Number property of this SyntacticArgument
 	@VarType(type = EVarType.ATTRIBUTE)
 	private ENumber number;
-	
+
 	// Lexeme of this SyntacticArgument: it, there or specific complementizer, e.g. dass, that, how, wie ...
 	@VarType(type = EVarType.ATTRIBUTE)
 	private String lexeme;
-	
+
 	// Verb Form property of this SyntacticArgument
 	@VarType(type = EVarType.ATTRIBUTE)
 	private EVerbForm verbForm;
-	
+
 	// Tense property of this SyntacticArgument
 	@VarType(type = EVarType.ATTRIBUTE)
 	private ETense tense;
-	
+
 	// Complimentizer property of this SyntacticArgument
 	@VarType(type = EVarType.ATTRIBUTE)
 	private EComplementizer complementizer;
-	
-	
+
+
 	// Determiner of this SyntacticArgument
 	@VarType(type = EVarType.ATTRIBUTE)
 	private EDeterminer determiner;
-	
+
 	// Frequency information for this SubcategorizationFrame
 	@VarType(type = EVarType.CHILDREN)
 	private List<Frequency> frequencies;
-	
+
 	/**
-	 * 
+	 *
 	 * @param frequencies the frequencies to set
 	 */
 	public void setFrequencies(List<Frequency> frequencies) {
@@ -101,13 +101,13 @@ public class SyntacticArgument implements IHasID, Comparable<SyntacticArgument>{
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the frequencies
 	 */
 	public List<Frequency> getFrequencies() {
 		return frequencies;
-	}	
-	
+	}
+
 	/**
 	 * @return the determiner
 	 */
@@ -139,9 +139,18 @@ public class SyntacticArgument implements IHasID, Comparable<SyntacticArgument>{
 	/**
 	 * @return the optional
 	 */
+	@Deprecated
 	public EYesNo getOptional() {
 		return optional;
 	}
+	/**
+	 *
+	 * @return true if the optional attribute is yes, false otherwise
+	 */
+	public boolean isOptional() {
+		return (optional.equals(EYesNo.yes)? true : false);
+	}
+
 
 	/**
 	 * @param optional the optional to set
@@ -291,7 +300,8 @@ public class SyntacticArgument implements IHasID, Comparable<SyntacticArgument>{
 	}
 
 
-	
+
+	@Override
 	public String toString(){
 		return this.id;
 	}
@@ -300,22 +310,26 @@ public class SyntacticArgument implements IHasID, Comparable<SyntacticArgument>{
 	public int compareTo(SyntacticArgument o) {
 		return this.id.toString().compareTo(o.id.toString());
 	}
-	
+
+	@Override
 	public boolean equals(Object other) {
-	    if (this == other)
-	      return true;
-	    if (!(other instanceof SyntacticArgument))
-	      return false;
+	    if (this == other) {
+			return true;
+		}
+	    if (!(other instanceof SyntacticArgument)) {
+			return false;
+		}
 	    SyntacticArgument otherSyntacticArgument = (SyntacticArgument) other;
-	    
+
 	    boolean result=this.id.equals(otherSyntacticArgument.id);
 	    return result;
 	  }
-	
-	public int hashCode() { 
+
+	@Override
+	public int hashCode() {
 	    int hash = 1;
 	    hash = hash * 31 + this.id.hashCode();
 	    return hash;
-	  }	
-	
+	  }
+
 }

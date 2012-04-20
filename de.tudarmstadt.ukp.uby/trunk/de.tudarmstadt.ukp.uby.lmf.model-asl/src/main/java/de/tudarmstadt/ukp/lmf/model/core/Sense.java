@@ -192,8 +192,17 @@ public class Sense implements IHasID, Comparable<Sense>{
 	 *
 	 * @return the transparentMeaning
 	 */
+	@Deprecated
 	public EYesNo getTransparentMeaning() {
 		return transparentMeaning;
+	}
+
+	/**
+	 *
+	 * @return true if the transparentMeaning attribute is yes, false otherwise
+	 */
+	public boolean isTransparentMeaning() {
+		return (transparentMeaning.equals(EYesNo.yes)? true : false);
 	}
 
 	/**
@@ -208,9 +217,20 @@ public class Sense implements IHasID, Comparable<Sense>{
 	 *
 	 * @return the boundLexeme
 	 */
+	@Deprecated
 	public EYesNo getBoundLexeme() {
 		return boundLexeme;
 	}
+
+	/**
+	 *
+	 * @return true if the boundLexeme attribute is yes, false otherwise
+	 */
+	public boolean isBoundLexeme() {
+		return (boundLexeme.equals(EYesNo.yes)? true : false);
+	}
+
+
 
 	/**
 	 * This method is reserved for future use.

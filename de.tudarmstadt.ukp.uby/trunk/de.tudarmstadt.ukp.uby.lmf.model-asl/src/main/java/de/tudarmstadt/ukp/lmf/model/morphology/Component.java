@@ -2,13 +2,13 @@
  * Copyright 2012
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,19 +32,19 @@ public class Component implements Comparable<Component> {
 	// targeted LexicalEntry
 	@VarType(type = EVarType.IDREF)
 	private LexicalEntry targetLexicalEntry;
-	
+
 	// component is head of multiword
 	@VarType(type = EVarType.ATTRIBUTE)
 	private EYesNo isHead;
-	
+
 	// position of component in multiword
 	@VarType(type = EVarType.ATTRIBUTE)
 	private int position;
-	
+
 	// component can be separated
 	@VarType(type = EVarType.ATTRIBUTE)
 	private EYesNo isBreakBefore;
-	
+
 	/**
 	 * @param target the target to set
 	 */
@@ -60,7 +60,7 @@ public class Component implements Comparable<Component> {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param isHead the isHead to set
 	 */
 	public void setIsHead(EYesNo isHead) {
@@ -68,15 +68,25 @@ public class Component implements Comparable<Component> {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return isHead
 	 */
+	@Deprecated
 	public EYesNo getIsHead() {
 		return isHead;
 	}
 
+
 	/**
-	 * 
+	 *
+	 * @return true if the isHead attribute is yes, false otherwise
+	 */
+	public boolean isHead() {
+		return (isHead.equals(EYesNo.yes)? true : false);
+	}
+
+	/**
+	 *
 	 * @param position the position to set
 	 */
 	public void setPosition(int position) {
@@ -84,7 +94,7 @@ public class Component implements Comparable<Component> {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the position
 	 */
 	public int getPosition() {
@@ -92,7 +102,7 @@ public class Component implements Comparable<Component> {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param breakBefore the breakBefore to set
 	 */
 	public void setIsBreakBefore(EYesNo breakBefore) {
@@ -100,15 +110,25 @@ public class Component implements Comparable<Component> {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the breakBefore
 	 */
+	@Deprecated
 	public EYesNo getIsBreakBefore() {
 		return isBreakBefore;
 	}
-	
+
+
+	/**
+	 *
+	 * @return true if the breakBefore attribute is yes, false otherwise
+	 */
+	public boolean isBreakBefore() {
+		return (isBreakBefore.equals(EYesNo.yes)? true : false);
+	}
 
 	// be warned: compareTo and hashCode method depend on this!
+	@Override
 	public String toString(){
 		StringBuffer sb = new StringBuffer(256);
 		sb.append("Component: ").append(" targetLexicalEntry: ").append(targetLexicalEntry);
@@ -121,18 +141,22 @@ public class Component implements Comparable<Component> {
 	public int compareTo(Component o) {
 		return this.toString().compareTo(o.toString());
 	}
-	
+
+	@Override
 	public int hashCode(){
 		int hash = 1;
 		hash = hash*31 + this.toString().hashCode();
 		return hash;
 	}
-	
+
+	@Override
 	public boolean equals(Object o){
-		if (this == o)
-		      return true;
-		    if (!(o instanceof Component))
-		      return false;
+		if (this == o) {
+			return true;
+		}
+		    if (!(o instanceof Component)) {
+				return false;
+			}
 		Component c = (Component) o;
 		return this.toString().equals(c.toString());
 	}
