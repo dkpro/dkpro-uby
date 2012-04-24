@@ -19,15 +19,22 @@ package de.tudarmstadt.ukp.lmf.hibernate;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.hibernate.cfg.Configuration;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 
 public class HibernateConnect {
+	
+	private static Logger logger = Logger.getLogger(HibernateConnect.class.getName());
 
 	/**
 	 * Create Hibernate Configuration,
@@ -37,50 +44,93 @@ public class HibernateConnect {
 	 */
 	public static Configuration getConfiguration(DBConfig dbConfig) throws FileNotFoundException {
         Configuration cfg = new Configuration()
-        .addProperties(getProperties(dbConfig.getJdbc_url(),dbConfig.getJdbc_driver_class(),dbConfig.getDb_vendor(), dbConfig.getUser(), dbConfig.getPassword(),
-        		dbConfig.isShowSQL()));
-        //if the hibernatemap is null, default set to use from
-        if (dbConfig.getHibernateMapPath() == null) {
-        	throw new FileNotFoundException();
-//        	PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-//			try {
-//				Resource[] res = resolver.getResources("classpath*:hibernatemap/access/**/*.hbm.xml");
-//				for (Resource r : res) {
-//					cfg.addURL(r.getURL());
-//				}
-//			}
-//			catch (Exception ex) {
-//				// path not found!
-//				System.out.println("Path not found! " + ex.getMessage());
-//			}
+        .addProperties(
+        		getProperties(
+        				dbConfig.getJdbc_url(),
+        				dbConfig.getJdbc_driver_class(),
+        				dbConfig.getDb_vendor(),
+        				dbConfig.getUser(),
+        				dbConfig.getPassword(),
+        				dbConfig.isShowSQL()));
+        
+        if(dbConfig.isLoadDefaultMappings()){
+        	// load default hibernate mappings
+        	ClassLoader cl = HibernateConnect.class.getClassLoader();
+        	PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(cl);
+        	Resource[] mappings = null;
+        	try {
+				if(dbConfig.isAccessMode())
+					// load access mappings
+					mappings = resolver.getResources("hibernatemap/access/**/*.hbm.xml");
+				else
+					// load transform (write) mappings
+					mappings = resolver.getResources("hibernatemap/transform/**/*.hbm.xml");
+				
+				for(Resource mapping : mappings)
+	        		cfg.addURL(mapping.getURL());
+				
+			} catch (IOException e) {
+				logger.log(Level.SEVERE, "Hibernate mappings not found!");
+				e.printStackTrace();
+			}
         }
-        else {
-	        File hibernateMapPath=new File(dbConfig.getHibernateMapPath());
-	        if (hibernateMapPath.exists()){
-		        for(File f : getAllFiles(hibernateMapPath)){
-		        	cfg.addFile(f);
-		        }
-	        }
-	        else{
-	        	throw new FileNotFoundException();
-//	        	PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-//				try {
-//					String path=dbConfig.getHibernateMapPath();
-//					if (path.endsWith("/")) {
-//						path=path.substring(0, path.length()-1);
-//					}
-//					Resource[] res = resolver.getResources("classpath*:"+path+"/**/*.hbm.xml");
-//					for (Resource r : res) {
-//						cfg.addURL(r.getURL());
-//					}
-//				}
-//				catch (Exception ex) {
-//					// path not found!
-//					System.out.println("Path not found! " + ex.getMessage());
-//				}
-	        }
+        else{
+        	// load custom Hibernate mappings
+        	File mappingsDir = dbConfig.getHibernateMapDirectory();
+        	if(!mappingsDir.isDirectory())
+    			throw new FileNotFoundException("Specified path of Hibernate mappings does not exist or not a directory");
+        	else
+        		for(File mapping : getAllFiles(mappingsDir))
+        			cfg.addFile(mapping);
         }
+        
         return cfg;
+//        ***********************************************************
+//        CODE FOSSILS
+//        //if the hibernatemap is null, default set to use from
+//        if (dbConfig.getHibernateMapPath() == null) {
+//        	throw new FileNotFoundException();
+////        	PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+////			try {
+////			Resource[] res = resolver.getResources("classpath*:hibernatemap/access/**/*.hbm.xml");
+////				for (Resource r : res) {
+////					cfg.addURL(r.getURL());
+////				}
+////			}
+////			catch (Exception ex) {
+////				// path not found!
+////				System.out.println("Path not found! " + ex.getMessage());
+////			}
+//        }
+//        else {
+//	        File hibernateMapPath=new File(dbConfig.getHibernateMapPath());
+//	        if (hibernateMapPath.exists()){
+//		        for(File f : getAllFiles(hibernateMapPath)){
+//		        	cfg.addFile(f);
+//		        }
+//	        }
+//	        else{
+//	        	throw new FileNotFoundException();
+////	        	PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+////				try {
+////					String path=dbConfig.getHibernateMapPath();
+////					if (path.endsWith("/")) {
+////						path=path.substring(0, path.length()-1);
+////					}
+////					Resource[] res = resolver.getResources("classpath*:"+path+"/**/*.hbm.xml");
+////					for (Resource r : res) {
+////						cfg.addURL(r.getURL());
+////					}
+////				}
+////				catch (Exception ex) {
+////					// path not found!
+////					System.out.println("Path not found! " + ex.getMessage());
+////				}
+//	        }
+//        }
+//        return cfg;
+//        / CODE FOSSILS
+//        ****************************************************************************
     }
 
 
