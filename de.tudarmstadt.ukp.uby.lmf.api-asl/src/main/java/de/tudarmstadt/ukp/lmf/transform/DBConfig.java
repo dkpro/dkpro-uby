@@ -17,6 +17,9 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.transform;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+
 /**
  * Holds database configuration of LMF Database
  *
@@ -35,9 +38,21 @@ public class DBConfig
 	private String user; // User for accessing the database
 	private String password; // Password for accessing the database
 	// private String database; // Database name
-	private String hibernateMapPath; // Path with Hibernate mapping files
+	private File hibernateMapDirectory; // Directory with Hibernate mapping files
 	private boolean showSQL = false; // If true all SQL queries are printed on
 										// the console
+	
+	/*
+	 * true only if the user wants to provide custom Hibernate Mapping files
+	 */
+	private boolean loadDefaultMappings=true;
+	
+	/*
+	 * true if the user wants to load default Hibernate mapping files used only for reading LMF database
+	 * false if the user wants to load default Hibernate mapping files used only for writing to LMF database
+	 * the value of this field is ignored if loadDefaultMappings is set to false
+	 */
+	private boolean accessMode = true; 
 
 	/**
 	 * This constructor do nothing to all attributes. If you use it, you have to
@@ -49,9 +64,13 @@ public class DBConfig
 	 * <li><b>password</b>: Password for accessing the database</li>
 	 * <li><b>database</b>: DB name</li>
 	 * <li><b>hibernateMapPath</b>: Path with Hibernate mapping files</li>
+	 * <li><b>loadDefaultMappings</b>: default=true; set to false if you want to provide custom hibernate Mapping files</li>
+	 * <li><b>accessMode</b>: default=true; set to false if you want to use default Hibernate mappings for writing to LMF database
+	 * <br><i>this field is ignored if loadDefaultMappings is set to false</i>.</li>
 	 * <li><b>showSQL</b>: default=false; set to true if you want to print all
 	 * sql queries.</li>
 	 * </ul>
+	 * 
 	 */
 	public DBConfig()
 	{
@@ -59,40 +78,74 @@ public class DBConfig
 	}
 
 	/**
-	 *
+	 * Creates a new configuration of LMF database based on the consumed parameters. <br><br>
+	 * Users of this constructor should provide a valid path to custom Hibernate mapping files used for reading/writing LMF database.<br>
+	 * For creating the configuration of LMF database with default Hibernate mappings, located in src/main/resources/,<br>use 
+	 * {@link DBConfig#DBConfig(String, String, String, String, String, boolean, boolean)}
+	 * 
 	 * @param url
 	 *            Host_to_the_database/database_name
 	 * @param jdbc_driver_class
 	 *            The jdbc driver class using to access database
 	 * @param db_vendor
 	 * @param user
-	 *            Password for accessing the database
+	 * 			  User name used for accessing the database
 	 * @param password
-	 *            Database name
+	 *            Password for accessing the database
 	 * @param hibernateMapPath
-	 *            Path with Hibernate mapping files<br>
-	 *            <ul>
-	 *            <li>if null: automatically search in
-	 *            classpath:hibernate/access/</li>
-	 *            <li>if !null: search files in the given path</li>
-	 *            <li>if FileNotFound: search in classpath:+ given path</li>
-	 *            </ul>
+	 *            Path with Hibernate mapping files
 	 * @param showSQL
 	 *            If true all SQL queries are printed on the console
+	 * @throws FileNotFoundException
+	 * 			  If the specified path of Hibernate mappings does not exist or not a directory 
 	 */
-
 	public DBConfig(String url, String jdbc_driver_class, String db_vendor,
 			String user, String password, String hibernateMapPath,
-			boolean showSQL)
+			boolean showSQL) throws FileNotFoundException
 	{
-		// this.host = host;
 		this.db_vendor = db_vendor;
 		this.jdbc_driver_class = jdbc_driver_class;
 		this.jdbc_url = url;
 		this.user = user;
 		this.password = password;
-		// this.database = database;
-		this.hibernateMapPath = hibernateMapPath;
+		this.hibernateMapDirectory = new File(hibernateMapPath);
+		this.loadDefaultMappings = false;
+		if(!this.hibernateMapDirectory.isDirectory())
+			throw new FileNotFoundException("Specified path of Hibernate mappings does not exist or not a directory");
+			
+		this.showSQL = showSQL;
+	}
+	
+	/**
+	 * Creates a new configuration of LMF database based on the consumed parameters. <br><br>
+	 * This constructor forces usage of default Hibernate mapping files, located in src/main/resources.<br>
+	 * For creating the configuration of LMF database with custom Hibernate mappings<br> use 
+	 * {@link DBConfig#DBConfig(String, String, String, String, String, String, boolean)}
+	 * @param url
+	 *            Host_to_the_database/database_name
+	 * @param jdbc_driver_class
+	 *            The jdbc driver class using to access database
+	 * @param db_vendor
+	 * @param user
+	 * 			  User name used for accessing the database
+	 * @param password
+	 *            Password for accessing the database
+	 * @param isAccess
+	 * 			  This argument should be true if mappings for reading the LMF database should be loaded,<br>
+	 * false for loading the mappings for writing to LMF database
+	 * @param showSQL
+	 *            If true all SQL queries are printed on the console
+	 */
+	public DBConfig(String url, String jdbc_driver_class, String db_vendor,
+			String user, String password, boolean isAccess,
+			boolean showSQL)
+	{
+		this.db_vendor = db_vendor;
+		this.jdbc_driver_class = jdbc_driver_class;
+		this.jdbc_url = url;
+		this.user = user;
+		this.password = password;
+		this.accessMode = isAccess;
 		this.showSQL = showSQL;
 	}
 
@@ -172,35 +225,6 @@ public class DBConfig
 		this.password = password;
 	}
 
-	// /**
-	// * @return the database
-	// */
-	// public String getDatabase() {
-	// return database;
-	// }
-	// /**
-	// * @param database the database to set
-	// */
-	// public void setDatabase(String database) {
-	// this.database = database;
-	// }
-	/**
-	 * @return the hibernateMapPath
-	 */
-	public String getHibernateMapPath()
-	{
-		return hibernateMapPath;
-	}
-
-	/**
-	 * @param hibernateMapPath
-	 *            the hibernateMapPath to set
-	 */
-	public void setHibernateMapPath(String hibernateMapPath)
-	{
-		this.hibernateMapPath = hibernateMapPath;
-	}
-
 	/**
 	 * @return the showSQL
 	 */
@@ -216,6 +240,62 @@ public class DBConfig
 	public void setShowSQL(boolean showSQL)
 	{
 		this.showSQL = showSQL;
+	}
+
+	/**
+	 * @return the loadDefaultMappings
+	 */
+	public boolean isLoadDefaultMappings() {
+		return loadDefaultMappings;
+	}
+
+	/**
+	 * @param loadDefaultMappings the loadDefaultMappings to set
+	 */
+	public void setLoadDefaultMappings(boolean loadDefaultMappings) {
+		this.loadDefaultMappings = loadDefaultMappings;
+	}
+
+	/**
+	 * @return the host
+	 */
+	public String getHost() {
+		return host;
+	}
+
+	/**
+	 * @param host the host to set
+	 */
+	public void setHost(String host) {
+		this.host = host;
+	}
+
+	/**
+	 * @return the hibernateMapDirectory
+	 */
+	public File getHibernateMapDirectory() {
+		return hibernateMapDirectory;
+	}
+
+	/**
+	 * @param hibernateMapDirectory the hibernateMapDirectory to set
+	 */
+	public void setHibernateMapDirectory(File hibernateMapDirectory) {
+		this.hibernateMapDirectory = hibernateMapDirectory;
+	}
+
+	/**
+	 * @return the accessMode
+	 */
+	public boolean isAccessMode() {
+		return accessMode;
+	}
+
+	/**
+	 * @param accessMode the accessMode to set
+	 */
+	public void setAccessMode(boolean accessMode) {
+		this.accessMode = accessMode;
 	}
 
 }
