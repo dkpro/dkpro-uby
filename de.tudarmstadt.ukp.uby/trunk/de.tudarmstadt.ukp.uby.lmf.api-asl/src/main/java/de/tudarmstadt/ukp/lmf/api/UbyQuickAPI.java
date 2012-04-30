@@ -18,7 +18,6 @@
 package de.tudarmstadt.ukp.lmf.api;
 
 import java.io.FileNotFoundException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -31,12 +30,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import de.tudarmstadt.ukp.lmf.hibernate.HibernateConnect;
-import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
-import de.tudarmstadt.ukp.lmf.model.morphology.Lemma;
 import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis;
-import de.tudarmstadt.ukp.lmf.mySQLAccess.MySQLConnect;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 
 public class UbyQuickAPI
@@ -51,7 +47,7 @@ public class UbyQuickAPI
 	private Configuration cfg;
 	private SessionFactory sessionFactory;
 
-	private MySQLConnect mysql;
+//	private MySQLConnect mysql;
 
 	private boolean useHibernate;
 	private boolean useTemporaryTables;
@@ -138,10 +134,10 @@ public class UbyQuickAPI
 		this.useHibernate=useHibernate;
 		if(useHibernate){
 			setDbConfig(config);
-		}else{
+		}/*else{
 			this.useTemporaryTables=useTemporaryTables;
 			mysql=new MySQLConnect(config,this.useTemporaryTables);
-		}
+		}*/
 	}
 
 	/**
@@ -172,7 +168,7 @@ public class UbyQuickAPI
 	public List<Lexicon> getLexicons() throws SQLException{
 		List<Lexicon>lexicons=new ArrayList<Lexicon>();
 		String sql="Select lexiconId,lexiconName from Lexicon";
-		if(mysql!=null){
+	/*	if(mysql!=null){
 			ResultSet rs=mysql.execute(sql);
 			if (rs!=null){
 				while (rs.next()){
@@ -182,7 +178,7 @@ public class UbyQuickAPI
 					lexicons.add(lexicon);
 				}
 			}
-		}else if(session!=null){
+		}else*/ if(session!=null){
 			SQLQuery query = session.createSQLQuery(sql);
 			Iterator iter = query.list().iterator();
 			while (iter.hasNext()) {
@@ -204,7 +200,7 @@ public class UbyQuickAPI
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<LexicalEntry> getLexicalEntries(String lemma, String Postag,String LexiconName) throws SQLException{
+/*	public List<LexicalEntry> getLexicalEntries(String lemma, String Postag,String LexiconName) throws SQLException{
 		List<LexicalEntry>lexicons=new ArrayList<LexicalEntry>();
 		String sql="Select lexicalEntryId,partOfSpeech,separableParticle,lemmaId,lexiconId,inflection,singularetantum,pluraletantum,listOfComponentsId from ";
 		ResultSet rs=mysql.execute(sql);
@@ -226,7 +222,7 @@ public class UbyQuickAPI
 			}
 		}
 		return lexicons;
-	}
+	}*/
 	/*d
 	 * This part for getting SenseAlignment in SenseAxis table
 	 */
