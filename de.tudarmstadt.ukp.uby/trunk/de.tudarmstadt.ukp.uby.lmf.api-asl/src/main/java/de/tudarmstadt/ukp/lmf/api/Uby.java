@@ -106,6 +106,9 @@ public class Uby
 		return dbConfig;
 	}
 
+	public SessionFactory getSessionFactory(){
+		return sessionFactory;
+	}
 	/**
 	 * Opens hibernate database session
 	 */
