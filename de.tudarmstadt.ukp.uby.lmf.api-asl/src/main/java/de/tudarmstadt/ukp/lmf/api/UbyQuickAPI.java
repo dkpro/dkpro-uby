@@ -18,6 +18,7 @@
 package de.tudarmstadt.ukp.lmf.api;
 
 import java.io.FileNotFoundException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -30,8 +31,12 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import de.tudarmstadt.ukp.lmf.hibernate.HibernateConnect;
+import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
+import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
+import de.tudarmstadt.ukp.lmf.model.morphology.Lemma;
 import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis;
+import de.tudarmstadt.ukp.lmf.mySQLAccess.MySQLConnect;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 
 public class UbyQuickAPI
@@ -45,6 +50,11 @@ public class UbyQuickAPI
 	private Session session;
 	private Configuration cfg;
 	private SessionFactory sessionFactory;
+
+	private MySQLConnect mysql;
+
+	private boolean useHibernate;
+	private boolean useTemporaryTables;
 
 	/**
 	 * Using this constructor, you have to call setDbConfig before using any
@@ -68,6 +78,18 @@ public class UbyQuickAPI
 
 	/**
 	 *
+	 * @param config: database's configuration
+	 * @param useHibernate: false for direct access; true connect via Hibernate
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 * @throws FileNotFoundException
+	 */
+	public UbyQuickAPI(DBConfig config, boolean useHibernate,boolean useTempTables) throws ClassNotFoundException, SQLException, FileNotFoundException{
+		setDBConfig(config,useHibernate,useTempTables);
+	}
+
+	/**
+	 *
 	 * @param session
 	 *            Session of hibernate connection. In case you don't run query
 	 *            directly
@@ -76,6 +98,15 @@ public class UbyQuickAPI
 	public UbyQuickAPI(Session session)
 	{
 		this.session = session;
+	}
+
+	/**
+	 *
+	 * @param sf
+	 */
+	public UbyQuickAPI(SessionFactory sf){
+		sessionFactory=sf;
+		session=sessionFactory.openSession();
 	}
 
 	/**
@@ -90,7 +121,27 @@ public class UbyQuickAPI
 		cfg = HibernateConnect.getConfiguration(dbconfig);
 		sessionFactory = cfg.buildSessionFactory();
 		openSession();
+		useHibernate=false;
+	}
 
+	/**
+	 *
+	 * @param config: Database's Configuration
+	 * @param useHibernate: true if you want to connect to database via Hibernate; false for direct access
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 * @throws FileNotFoundException
+	 *
+	 */
+	public void setDBConfig(DBConfig config,boolean useHibernate,boolean useTemporaryTables) throws ClassNotFoundException, SQLException, FileNotFoundException{
+		this.dbconfig = config;
+		this.useHibernate=useHibernate;
+		if(useHibernate){
+			setDbConfig(config);
+		}else{
+			this.useTemporaryTables=useTemporaryTables;
+			mysql=new MySQLConnect(config,this.useTemporaryTables);
+		}
 	}
 
 	/**
@@ -118,10 +169,67 @@ public class UbyQuickAPI
 		session.close();
 	}
 
-	/*
+	public List<Lexicon> getLexicons() throws SQLException{
+		List<Lexicon>lexicons=new ArrayList<Lexicon>();
+		String sql="Select lexiconId,lexiconName from Lexicon";
+		if(mysql!=null){
+			ResultSet rs=mysql.execute(sql);
+			if (rs!=null){
+				while (rs.next()){
+					Lexicon lexicon=new Lexicon();
+					lexicon.setId(rs.getString("lexiconId"));
+					lexicon.setName(rs.getString("lexiconName"));
+					lexicons.add(lexicon);
+				}
+			}
+		}else if(session!=null){
+			SQLQuery query = session.createSQLQuery(sql);
+			Iterator iter = query.list().iterator();
+			while (iter.hasNext()) {
+				Object[] row = (Object[]) iter.next();
+				Lexicon lexicon=new Lexicon();
+				lexicon.setId((String)row[0]);
+				lexicon.setName((String)row[1]);
+				lexicons.add(lexicon);
+			}
+		}
+		return lexicons;
+	}
+
+	/**
+	 * TODO: this function just provides a part of objects' information
+	 * @param lemma
+	 * @param Postag
+	 * @param LexiconName
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<LexicalEntry> getLexicalEntries(String lemma, String Postag,String LexiconName) throws SQLException{
+		List<LexicalEntry>lexicons=new ArrayList<LexicalEntry>();
+		String sql="Select lexicalEntryId,partOfSpeech,separableParticle,lemmaId,lexiconId,inflection,singularetantum,pluraletantum,listOfComponentsId from ";
+		ResultSet rs=mysql.execute(sql);
+		if (rs!=null){
+			while (rs.next()){
+				Lexicon lx=new Lexicon();
+				lx.setId(rs.getString("lexiconId"));
+				lx.setName(rs.getString("lexiconName"));
+
+				Lemma lm=new Lemma();
+				//lemma.setFormRepresentations(formRepresentations);
+
+				LexicalEntry le=new LexicalEntry();
+				le.setId(rs.getString("lexicalEntryId"));
+
+				le.setLexicon(lx);
+				le.setLemma(lm);
+
+			}
+		}
+		return lexicons;
+	}
+	/*d
 	 * This part for getting SenseAlignment in SenseAxis table
 	 */
-
 	/**
 	 *
 	 * @param sense
@@ -349,6 +457,8 @@ public class UbyQuickAPI
 		}
 		return sense;
 	}
+
+
 
 	@Override
 	protected void finalize()
