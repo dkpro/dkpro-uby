@@ -2,13 +2,13 @@
  * Copyright 2012
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -41,18 +41,18 @@ public class DBConfig
 	private File hibernateMapDirectory; // Directory with Hibernate mapping files
 	private boolean showSQL = false; // If true all SQL queries are printed on
 										// the console
-	
+
 	/*
 	 * true only if the user wants to provide custom Hibernate Mapping files
 	 */
 	private boolean loadDefaultMappings=true;
-	
+
 	/*
 	 * true if the user wants to load default Hibernate mapping files used only for reading LMF database
 	 * false if the user wants to load default Hibernate mapping files used only for writing to LMF database
 	 * the value of this field is ignored if loadDefaultMappings is set to false
 	 */
-	private boolean accessMode = true; 
+	private boolean accessMode = true;
 
 	/**
 	 * This constructor do nothing to all attributes. If you use it, you have to
@@ -70,7 +70,7 @@ public class DBConfig
 	 * <li><b>showSQL</b>: default=false; set to true if you want to print all
 	 * sql queries.</li>
 	 * </ul>
-	 * 
+	 *
 	 */
 	public DBConfig()
 	{
@@ -80,9 +80,9 @@ public class DBConfig
 	/**
 	 * Creates a new configuration of LMF database based on the consumed parameters. <br><br>
 	 * Users of this constructor should provide a valid path to custom Hibernate mapping files used for reading/writing LMF database.<br>
-	 * For creating the configuration of LMF database with default Hibernate mappings, located in src/main/resources/,<br>use 
+	 * For creating the configuration of LMF database with default Hibernate mappings, located in src/main/resources/,<br>use
 	 * {@link DBConfig#DBConfig(String, String, String, String, String, boolean, boolean)}
-	 * 
+	 *
 	 * @param url
 	 *            Host_to_the_database/database_name
 	 * @param jdbc_driver_class
@@ -97,7 +97,7 @@ public class DBConfig
 	 * @param showSQL
 	 *            If true all SQL queries are printed on the console
 	 * @throws FileNotFoundException
-	 * 			  If the specified path of Hibernate mappings does not exist or not a directory 
+	 * 			  If the specified path of Hibernate mappings does not exist or not a directory
 	 */
 	public DBConfig(String url, String jdbc_driver_class, String db_vendor,
 			String user, String password, String hibernateMapPath,
@@ -110,16 +110,17 @@ public class DBConfig
 		this.password = password;
 		this.hibernateMapDirectory = new File(hibernateMapPath);
 		this.loadDefaultMappings = false;
-		if(!this.hibernateMapDirectory.isDirectory())
+		if(!this.hibernateMapDirectory.isDirectory()) {
 			throw new FileNotFoundException("Specified path of Hibernate mappings does not exist or not a directory");
-			
+		}
+
 		this.showSQL = showSQL;
 	}
-	
+
 	/**
 	 * Creates a new configuration of LMF database based on the consumed parameters. <br><br>
 	 * This constructor forces usage of default Hibernate mapping files, located in src/main/resources.<br>
-	 * For creating the configuration of LMF database with custom Hibernate mappings<br> use 
+	 * For creating the configuration of LMF database with custom Hibernate mappings<br> use
 	 * {@link DBConfig#DBConfig(String, String, String, String, String, String, boolean)}
 	 * @param url
 	 *            Host_to_the_database/database_name
@@ -169,18 +170,6 @@ public class DBConfig
 		db_vendor = dbVendor;
 	}
 
-	// /**
-	// * @return the host
-	// */
-	// public String getHost() {
-	// return host;
-	// }
-	// /**
-	// * @param host the host to set
-	// */
-	// public void setHost(String host) {
-	// this.host = host;
-	// }
 	/**
 	 * @return the user
 	 */
