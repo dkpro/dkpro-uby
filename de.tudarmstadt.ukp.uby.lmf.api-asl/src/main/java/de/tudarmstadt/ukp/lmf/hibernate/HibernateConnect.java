@@ -33,7 +33,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 
 public class HibernateConnect {
-	
+
 	private static Logger logger = Logger.getLogger(HibernateConnect.class.getName());
 
 	/**
@@ -52,23 +52,26 @@ public class HibernateConnect {
         				dbConfig.getUser(),
         				dbConfig.getPassword(),
         				dbConfig.isShowSQL()));
-        
+
         if(dbConfig.isLoadDefaultMappings()){
         	// load default hibernate mappings
         	ClassLoader cl = HibernateConnect.class.getClassLoader();
         	PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver(cl);
         	Resource[] mappings = null;
         	try {
-				if(dbConfig.isAccessMode())
+				if(dbConfig.isAccessMode()) {
 					// load access mappings
 					mappings = resolver.getResources("hibernatemap/access/**/*.hbm.xml");
-				else
+				}
+				else {
 					// load transform (write) mappings
 					mappings = resolver.getResources("hibernatemap/transform/**/*.hbm.xml");
-				
-				for(Resource mapping : mappings)
-	        		cfg.addURL(mapping.getURL());
-				
+				}
+
+				for(Resource mapping : mappings) {
+					cfg.addURL(mapping.getURL());
+				}
+
 			} catch (IOException e) {
 				logger.log(Level.SEVERE, "Hibernate mappings not found!");
 				e.printStackTrace();
@@ -77,13 +80,16 @@ public class HibernateConnect {
         else{
         	// load custom Hibernate mappings
         	File mappingsDir = dbConfig.getHibernateMapDirectory();
-        	if(!mappingsDir.isDirectory())
-    			throw new FileNotFoundException("Specified path of Hibernate mappings does not exist or not a directory");
-        	else
-        		for(File mapping : getAllFiles(mappingsDir))
-        			cfg.addFile(mapping);
+        	if(!mappingsDir.isDirectory()) {
+				throw new FileNotFoundException("Specified path of Hibernate mappings does not exist or not a directory");
+			}
+			else {
+				for(File mapping : getAllFiles(mappingsDir)) {
+					cfg.addFile(mapping);
+				}
+			}
         }
-        
+
         return cfg;
 //        ***********************************************************
 //        CODE FOSSILS
@@ -164,6 +170,7 @@ public class HibernateConnect {
         p.setProperty("hibernate.c3p0.max_size","100");
         p.setProperty("hibernate.c3p0.timeout","0");
         p.setProperty("hibernate.c3p0.max_statements","500");
+        p.setProperty("hibernate.c3p0.idle_test_period","5");
 
         // Custom SQL dialect
         p.setProperty("hibernate.dialect","de.tudarmstadt.ukp.lmf.hibernate.CustomMySQLDialect");
@@ -173,7 +180,7 @@ public class HibernateConnect {
 
         // Disable the second-level cache
         p.setProperty("hibernate.cache.provider_class","org.hibernate.cache.NoCacheProvider");
-
+        //p.setProperty("hibernate.cache.provider_class","org.hibernate.connection.C3P0ConnectionProvider");
         p.setProperty("hibernate.order_inserts", "true");
         p.setProperty("hibernate.order_updates", "true");
 
