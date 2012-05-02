@@ -166,6 +166,9 @@ public class Uby
 	 * @return a list of names of all Lexicons in Uby
 	 */
 	public List<String> getLexiconNames(){
+		if(!session.isOpen()){
+			session=sessionFactory.openSession();
+		}
 		Criteria criteria = session.createCriteria(Lexicon.class);
 		criteria = criteria.setProjection(Property.forName("name"));
 		return criteria.list();
@@ -212,6 +215,9 @@ public class Uby
 	 */
 	public List<LexicalEntry> getLexicalEntries(String word, EPartOfSpeech pos, Lexicon lexicon)
 	{
+		if(!session.isOpen()){
+			session=sessionFactory.openSession();
+		}
 		Criteria criteria = session.createCriteria(LexicalEntry.class);
 		if (pos != null) {
 			criteria = criteria.add(Restrictions.eq("partOfSpeech", pos));
