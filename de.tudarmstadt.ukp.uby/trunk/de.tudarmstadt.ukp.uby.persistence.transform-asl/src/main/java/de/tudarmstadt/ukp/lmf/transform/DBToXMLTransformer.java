@@ -19,9 +19,6 @@
 package de.tudarmstadt.ukp.lmf.transform;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import javax.xml.transform.TransformerException;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -43,14 +40,12 @@ import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrame;
 import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrameSet;
 import de.tudarmstadt.ukp.lmf.writer.LMFWriter;
 import de.tudarmstadt.ukp.lmf.writer.LMFWriterException;
-import de.tudarmstadt.ukp.lmf.writer.xml.LMFXmlWriter;
 
 /**
  * Converts Uby saved in the Database (Hibernate) to XML
  * @author chebotar
  *
  */
-@SuppressWarnings("unchecked")
 public class DBToXMLTransformer {
 
 	private final SessionFactory sessionFactory;
@@ -121,25 +116,6 @@ public class DBToXMLTransformer {
 		}
 		writer.writeEndElement(lexicalResource);
 		writer.writeEndDocument();
-	}
-
-	/**
-	 * Main
-	 * @param args
-	 * @throws TransformerException
-	 * @throws IOException
-	 * @throws LMFWriterException
-	 */
-	public static void main(String[] args) throws IOException, TransformerException, LMFWriterException{
-		DBConfig dbConfig = new DBConfig("bender.ukp.informatik.tu-darmstadt.de/uby","com.mysql.jdbc.Driver","mysql", "student", "student",
-				"hibernatemap/access", false);
-		LMFWriter writer = new LMFXmlWriter("/home/chebotar/Desktop/lmfoutput/GermaNet.xml",null);
-
-		DBToXMLTransformer dbToXML = new DBToXMLTransformer(dbConfig, writer);
-
-		LexicalResource lexicalResource = new LexicalResource();
-		lexicalResource.setName("GermaNet");
-		dbToXML.transform(lexicalResource);
 	}
 
 }
