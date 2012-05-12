@@ -17,6 +17,7 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.core;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,6 +25,14 @@ import de.tudarmstadt.ukp.lmf.model.enums.EDefinitionType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
+/**
+ * Definition is a class representing a narrative description of a {@link Sense}.
+ * It is displayed for human 
+ * users to facilitate their understanding of the meaning of a {@link LexicalEntry}.
+ * 
+ * @author Zijad Maksuti
+ *
+ */
 public class Definition implements Comparable<Definition>{
 
 	// Definition Type of this Definition
@@ -32,11 +41,11 @@ public class Definition implements Comparable<Definition>{
 	
 	// Statements of this Definition
 	@VarType(type = EVarType.CHILDREN)
-	private List<Statement> statements;
+	private List<Statement> statements =  new ArrayList<Statement>();
 	
 	// Text Representations of this Definition
 	@VarType(type = EVarType.CHILDREN)
-	private List<TextRepresentation> textRepresentations;
+	private List<TextRepresentation> textRepresentations = new ArrayList<TextRepresentation>();
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
@@ -57,42 +66,56 @@ public class Definition implements Comparable<Definition>{
 	}
 
 	/**
-	 * @return the definitionType
+	 * Returns definition type of this {@link Definition} instance
+	 * @return this definitions type, or null if the type is not set
+	 * @see EDefinitionType
 	 */
 	public EDefinitionType getDefinitionType() {
 		return definitionType;
 	}
 
 	/**
-	 * @param definitionType the definitionType to set
+	 * Sets definition type of this {@link Definition} instance
+	 * @param definitionType the definition type to set
+	 * @see EDefinitionType
 	 */
 	public void setDefinitionType(EDefinitionType definitionType) {
 		this.definitionType = definitionType;
 	}
 
 	/**
-	 * @return the statements
+	 * Returns the list of this definitions statements
+	 * @return the statements of this {@link Definition} instance. <br>
+	 * The method returns an empty list if the definition has no statements.
+	 * @see Statement
 	 */
 	public List<Statement> getStatements() {
 		return statements;
 	}
 
 	/**
+	 * Sets a list of statements to this {@link Definition} instance
 	 * @param statements the statements to set
+	 * @see Statement
 	 */
 	public void setStatements(List<Statement> statements) {
 		this.statements = statements;
 	}
 
 	/**
-	 * @return the textRepresentations
+	 * Returns all text representations of this {@link Definition} instance
+	 * @return {@link List} of this definitions text representations. <br>
+	 * If the definition has no text representation, this method returns an empty list
+	 * @see TextRepresentation
 	 */
 	public List<TextRepresentation> getTextRepresentations() {
 		return textRepresentations;
 	}
 
 	/**
-	 * @param textRepresentations the textRepresentations to set
+	 * Sets a {@link List} of text representations to this {@link Definition} instance.
+	 * @param textRepresentations the text representations to set
+	 * @see TextRepresentation
 	 */
 	public void setTextRepresentations(List<TextRepresentation> textRepresentations) {
 		this.textRepresentations = textRepresentations;

@@ -21,8 +21,10 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
 /**
- * This class represents the GlobalInformation object
- * @author zijad
+ * GlobalInformation is a class representing administrative information and other general attributes
+ * of a {@link LexicalResource}.
+ * 
+ * @author Zijad Maksuti
  */
 public class GlobalInformation {
 	
@@ -31,6 +33,7 @@ public class GlobalInformation {
 	private String label;
 
 	/**
+	 * Sets label to this {@link GlobalInformation} instance.
 	 * @param label the label to set
 	 */
 	public void setLabel(String label) {
@@ -38,7 +41,8 @@ public class GlobalInformation {
 	}
 
 	/**
-	 * @return the label
+	 * Returns the label of this {@link GlobalInformation} instance.
+	 * @return the label of this GlobalInformation instance or null, if the label is not set
 	 */
 	public String getLabel() {
 		return label;
