@@ -34,8 +34,15 @@ import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticBehaviour;
 
 
 /**
- * This class represents a LexicalEntry
- * @author zijad
+ * LexicalEntry is a class representing a lexeme in a given language. The LexicalEntry is a 
+ * container for managing the Form and {@link Sense} classes.
+ * Therefore, the LexicalEntry manages the relationship between the forms and their related senses.
+ * <p> A  LexicalEntry instance can have from zero to many different senses.
+ * 
+ * @see RelatedForm
+ * @see WordForm
+ * 
+ * @author Zijad Maksuti
  *
  */
 public class LexicalEntry implements IHasID, Comparable<LexicalEntry>{
@@ -57,19 +64,19 @@ public class LexicalEntry implements IHasID, Comparable<LexicalEntry>{
 	
 	// Word Forms of this LexicalEntry
 	@VarType(type = EVarType.CHILDREN)
-	private List<WordForm> wordForms;
+	private List<WordForm> wordForms = new ArrayList<WordForm>();
 	
 	// Related Forms of this LexicalEntry
 	@VarType(type = EVarType.CHILDREN)
-	private List<RelatedForm> relatedForms;
+	private List<RelatedForm> relatedForms = new ArrayList<RelatedForm>();
 	
 	// Senses of this LexicalEntry
 	@VarType(type = EVarType.CHILDREN)
-	private List<Sense> senses;
+	private List<Sense> senses = new ArrayList<Sense>();
 	
 	// Syntactic Behaviours of this LexicalEntry
 	@VarType(type = EVarType.CHILDREN)
-	private List<SyntacticBehaviour> syntacticBehaviours;
+	private List<SyntacticBehaviour> syntacticBehaviours = new ArrayList<SyntacticBehaviour>();
 	
 	// List of components of this LexicalEntry
 	@VarType(type = EVarType.CHILD)
@@ -77,21 +84,23 @@ public class LexicalEntry implements IHasID, Comparable<LexicalEntry>{
 
 	// Frequency information for this LexicalEntry
 	@VarType(type = EVarType.CHILDREN)
-	private List<Frequency> frequencies;
+	private List<Frequency> frequencies = new ArrayList<Frequency>();
 	
 	// Backlink to Lexicon added for convenience
 	@VarType(type = EVarType.NONE)
 	private Lexicon lexicon;
 
 	
-	/**
-	 * @return the id
+	/** 
+	 * Returns the unique identifier of this {@link LexicalEntry} instance.
+	 * @return the id of this LexicalEntry instance, or null if the id is not set
 	 */
 	public String getId() {
 		return id;
 	}
 
 	/**
+	 * Sets a unique identifier to this {@link LexicalEntry} instance.
 	 * @param id the id to set
 	 */
 	public void setId(String id) {
@@ -99,14 +108,18 @@ public class LexicalEntry implements IHasID, Comparable<LexicalEntry>{
 	}
 
 	/**
-	 * @return the partOfSpeech
+	 * Returns the part of speech of this {@linki LexicalEntry} instance.
+	 * @return the LexicalEntrys part of speech, or null of the part of speech is not set
+	 * @see EPartOfSpeech
 	 */
 	public EPartOfSpeech getPartOfSpeech() {
 		return partOfSpeech;
 	}
 
 	/**
-	 * @param partOfSpeech the partOfSpeech to set
+	 * Sets the part of speech information to this {@link LexicalEntry} instance.
+	 * @param partOfSpeech the part of speech information to set
+	 * @see EPartOfSpeech
 	 */
 	public void setPartOfSpeech(EPartOfSpeech partOfSpeech) {
 		this.partOfSpeech = partOfSpeech;
@@ -115,27 +128,33 @@ public class LexicalEntry implements IHasID, Comparable<LexicalEntry>{
 
 
 	/**
-	 * @return the separableParticle
+	 * Returns the separable particle of this {@link LexicalEntry} instance.
+	 * @return the LexicalEntrys separable particle or null,
+	 * if the LexicalEntry does'n have a separable particle
 	 */
 	public String getSeparableParticle() {
 		return separableParticle;
 	}
 
 	/**
-	 * @param separableParticle the separableParticle to set
+	 * Sets a separable particle to this {@link LexicalEntry} instance.
+	 * @param separableParticle the separable particle to set
 	 */
 	public void setSeparableParticle(String separableParticle) {
 		this.separableParticle = separableParticle;
 	}
 
-	/**
-	 * @return the lemma
+	/** 
+	 * Returns this LexicalEntrys {@link Lemma}.
+	 * @return the lemma of this LexicalEntry or null, if the lemma is not set
+	 * @see LexicalEntry
 	 */
 	public Lemma getLemma() {
 		return lemma;
 	}
 
 	/**
+	 * Sets a {@link Lemma} to this {@link LexicalEntry} instance.
 	 * @param lemma the lemma to set
 	 */
 	public void setLemma(Lemma lemma) {
