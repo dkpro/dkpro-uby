@@ -25,6 +25,7 @@ import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
 import de.tudarmstadt.ukp.lmf.model.meta.Frequency;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
+import de.tudarmstadt.ukp.lmf.model.morphology.FormRepresentation;
 import de.tudarmstadt.ukp.lmf.model.morphology.Lemma;
 import de.tudarmstadt.ukp.lmf.model.morphology.ListOfComponents;
 import de.tudarmstadt.ukp.lmf.model.morphology.RelatedForm;
@@ -162,56 +163,69 @@ public class LexicalEntry implements IHasID, Comparable<LexicalEntry>{
 	}
 
 	/**
-	 * @return the wordForms
+	 * Returns a {@link List} of all {@link WordForm} instances of this {@link LexicalEntry}
+	 * @return all word forms of this lexical entry, or an empty list if the LexicalEntry has no word forms 
 	 */
 	public List<WordForm> getWordForms() {
 		return wordForms;
 	}
 
 	/**
-	 * @param wordForms the wordForms to set
+	 * Sets word forms to this {@link LexicalEntry} instance
+	 * @param wordForms the word forms to set
+	 * @see WordForm
 	 */
 	public void setWordForms(List<WordForm> wordForms) {
 		this.wordForms = wordForms;
 	}
 
 	/**
-	 * @return the relatedForms
+	 * Returns a {@link List} of all {@link RelatedForm} instances of this {@link LexicalEntry}
+	 * @return all related forms of this lexical entry, or an empty list if the LexicalEntry has no related forms 
 	 */
 	public List<RelatedForm> getRelatedForms() {
 		return relatedForms;
 	}
 
 	/**
-	 * @param relatedForms the relatedForms to set
+	 * Sets related forms to this {@link LexicalEntry} instance
+	 * @param relatedForms the related forms to set
+	 * @see RelatedForm
 	 */
 	public void setRelatedForms(List<RelatedForm> relatedForms) {
 		this.relatedForms = relatedForms;
 	}
 
 	/**
-	 * @return the senses
+	 * Returns a {@link List} of all {@link Sense} instances of this {@link LexicalEntry}
+	 * @return all senses of this LexicalEntry or an empty list, if this LexicalEntry has no senses set
 	 */
 	public List<Sense> getSenses() {
 		return senses;
 	}
 
 	/**
+	 * Sets senses of this {@link LexicalEntry} instance
 	 * @param senses the senses to set
+	 * @see Sense
 	 */
 	public void setSenses(List<Sense> senses) {
 		this.senses = senses;
 	}
 
 	/**
-	 * @return the syntacticBehaviours
+	 * Returns a {@link List}  of all {@link SyntacticBehaviour} instances of this {@link LexicalEntry}
+	 * @return a list of syntactic behaviors of this lexical entry or an empty list, if this lexical entry has no
+	 * syntactic behaviors set 
 	 */
 	public List<SyntacticBehaviour> getSyntacticBehaviours() {
 		return syntacticBehaviours;
 	}
 
 	/**
-	 * @param syntacticBehaviours the syntacticBehaviours to set
+	 * Sets the syntactic behaviours to this {@link LexicalEntry}
+	 * @param syntacticBehaviours the syntactic behaviours to set
+	 * @see SyntacticBehaviour
 	 */
 	public void setSyntacticBehaviours(List<SyntacticBehaviour> syntacticBehaviours) {
 		this.syntacticBehaviours = syntacticBehaviours;
@@ -219,13 +233,17 @@ public class LexicalEntry implements IHasID, Comparable<LexicalEntry>{
 	
 	
 	/**
-	 * @return the lexicon
+	 * Returns the {@link Lexicon} containing this {@link LexicalEntry} instance. <p>
+	 * <i>This backlink is not a part of Uby-LMF model and exists for convenience.</i>
+	 * @return the lexicon containing this lexical entry
 	 */
 	public Lexicon getLexicon() {
 		return lexicon;
 	}
 
 	/**
+	 * Sets the {@link Lexicon} containing this {@link LexicalEntry} instance.<p>
+	 * <i> This backlink is not a part of Uby-LMF model and exists for convenience.</i>
 	 * @param lexicon the lexicon to set
 	 */
 	public void setLexicon(Lexicon lexicon) {
@@ -234,8 +252,8 @@ public class LexicalEntry implements IHasID, Comparable<LexicalEntry>{
 	
 	
 	/**
-	 * Returns all Synsets of this LexicalEntry by aggregating them from all Senses
-	 * @return
+	 * Returns all {@link Synset} instances of this {@link LexicalEntry} by aggregating them from lexical entry's {@link Sense} instances
+	 * @return a {@link List} of all synsets of this lexical entry or an empty list, if none of lexical entry's senses has a synset
 	 */
 	public List<Synset> getSynsets(){
 		List<Synset> result = new ArrayList<Synset>();
@@ -247,42 +265,49 @@ public class LexicalEntry implements IHasID, Comparable<LexicalEntry>{
 	}
 	
 	/**
-	 * Returns writtenForm of first FormRepresentation of Lemma
-	 * @return
+	 * Returns the written form of this {@link LexicalEntry}'s {@link Lemma} first {@link FormRepresentation}.
+	 * @return the written form of the first form representation of this lexical entry's lemma or null, if the lemma has no form representations
 	 */
 	public String getLemmaForm(){
-		if(lemma.getFormRepresentations().isEmpty())			
-			return "";
-		else return lemma.getFormRepresentations().get(0).getWrittenForm();
+		List<FormRepresentation> temp = lemma.getFormRepresentations();
+		if(temp.isEmpty())			
+			return null;
+		else
+			return temp.get(0).getWrittenForm();
 	}
 		
 	/**
-	 * 
-	 * @param listOfComponents the listOfComponents to set
+	 * Sets the list of components of this {@link LexicalEntry} instance.
+	 * @param listOfComponents the list of components to set
+	 * @see ListOfComponents
 	 */
 	public void setListOfComponents(ListOfComponents listOfComponents) {
 		this.listOfComponents = listOfComponents;
 	}
 
 	/**
-	 * 
-	 * @return the listOfComponents
+	 * Returns the list of components of this {@link LexicalEntry} instance.
+	 * @return list of components of this lexical entry or null, if this lexical entry is not a multiword expression
+	 * or the list of components is not set
+	 * @see ListOfComponents
 	 */
 	public ListOfComponents getListOfComponents() {
 		return listOfComponents;
 	}
 
 	/**
-	 * 
+	 * Sets the {@link List} of {@link Frequency} instances to this lexical entry.
 	 * @param frequencies the frequencies to set
+	 * @see LexicalEntry
 	 */
 	public void setFrequencies(List<Frequency> frequencies) {
 		this.frequencies = frequencies;
 	}
 
 	/**
-	 * 
-	 * @return the frequencies
+	 * Returns a {@link List} of all {@link Frequency} instances of this lexical entry.
+	 * @return a list of all frequencies of this lexical entry or an empty list, if this lexical entry has no frequencies set
+	 * @see LexicalEntry
 	 */
 	public List<Frequency> getFrequencies() {
 		return frequencies;

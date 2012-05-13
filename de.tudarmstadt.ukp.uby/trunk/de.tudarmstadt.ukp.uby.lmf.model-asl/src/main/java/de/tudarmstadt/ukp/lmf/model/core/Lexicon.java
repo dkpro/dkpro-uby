@@ -17,6 +17,7 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.core;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
@@ -31,6 +32,14 @@ import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrame;
 import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrameSet;
 
+/**
+ * Lexicon is a class containing all the lexical entries of a given language within the entire 
+ * resource. A lexicon should contain at least one lexical entry.
+ * @see LexicalResource
+ * @see LexicalEntry
+ * @author Zijad Maksuti
+ *
+ */
 public class Lexicon implements IHasID, IHasLanguageIdentifier {
 	
 	// LanguageIdentifier of the Lexicon
@@ -47,31 +56,31 @@ public class Lexicon implements IHasID, IHasLanguageIdentifier {
 	
 	// List of all LexicalEntries of this Lexicon
 	@VarType(type = EVarType.CHILDREN)
-	private List<LexicalEntry> lexicalEntries;
+	private List<LexicalEntry> lexicalEntries = new ArrayList<LexicalEntry>();
 	
 	// List of all SubcategorizationFrames of this Lexicon
 	@VarType(type = EVarType.CHILDREN)
-	private List<SubcategorizationFrame> subcategorizationFrames;
+	private List<SubcategorizationFrame> subcategorizationFrames = new ArrayList<SubcategorizationFrame>();
 
 	// List of all  SubcategorizationFrameSets of this Lexicon
 	@VarType(type = EVarType.CHILDREN)
-	private List<SubcategorizationFrameSet> subcategorizationFrameSets;
+	private List<SubcategorizationFrameSet> subcategorizationFrameSets = new ArrayList<SubcategorizationFrameSet>();
 	
 	// List of all SemanticPredicates of this Lexicon
 	@VarType(type = EVarType.CHILDREN)
-	private List<SemanticPredicate> semanticPredicates;
+	private List<SemanticPredicate> semanticPredicates = new ArrayList<SemanticPredicate>();
 	
 	// List of all Synsets of this Lexicon
 	@VarType(type = EVarType.CHILDREN)
-	private List<Synset> synsets;
+	private List<Synset> synsets = new ArrayList<Synset>();
 	
 	// List of all SynSemCorrespondences of this Lexicon
 	@VarType(type = EVarType.CHILDREN)
-	private List<SynSemCorrespondence> synSemCorrespondences;
+	private List<SynSemCorrespondence> synSemCorrespondences = new ArrayList<SynSemCorrespondence>();
 	
 	// List of all ConstraintSets
 	@VarType(type = EVarType.CHILDREN)
-	private List<ConstraintSet> constraintSets;
+	private List<ConstraintSet> constraintSets = new ArrayList<ConstraintSet>();
 	
 	// Backlink to LexicalResource added for convenience
 	@VarType(type = EVarType.NONE)
@@ -79,7 +88,9 @@ public class Lexicon implements IHasID, IHasLanguageIdentifier {
 	
 
 	/**
-	 * @return the lexicalEntries
+	 * Returns a {@link List} of all {@link LexicalEntry} instances contained in this {@link Lexicon}.
+	 * @return a list of all lexical entries in the lexicon or an empty list, if this lexicon does not contain any
+	 * lexical entries.
 	 */
 	public List<LexicalEntry> getLexicalEntries() {
 		return lexicalEntries;
