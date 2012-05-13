@@ -17,6 +17,7 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.core;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
@@ -25,8 +26,10 @@ import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis;
 import de.tudarmstadt.ukp.lmf.model.core.GlobalInformation;
 
 /**
- * This Class represents a LexicalResource
- * @author zijad
+ * LexicalResource is a class representing the entire resource. 
+ * The Lexical Resource instance is a container for at least one or more lexicons.
+ * @see Lexicon
+ * @author Zijad Maksuti  
  *
  */
 public class LexicalResource {
@@ -45,20 +48,22 @@ public class LexicalResource {
 	
 	// Lexicons of this LexicalResource
 	@VarType(type = EVarType.CHILDREN)
-	private List<Lexicon> lexicons;
+	private List<Lexicon> lexicons = new ArrayList<Lexicon>();
 	
 	// SenseAxes of this LexicalResource
 	@VarType(type = EVarType.CHILDREN)
-	private List<SenseAxis> senseAxes;
+	private List<SenseAxis> senseAxes = new ArrayList<SenseAxis>();
 
 	/**
-	 * @return the name
+	 * Returns the name of the {@link LexicalResource}.
+	 * @return the name of the lexical resource or null, if the name is not set
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
+	 * Sets the name of the {@link LexicalResource}.
 	 * @param name the name to set
 	 */
 	public void setName(String name) {
@@ -66,27 +71,35 @@ public class LexicalResource {
 	}
 
 	/**
-	 * @return the globalInformation
+	 * Returns global (administrative) information of this {@link LexicalResource}.
+	 * @return the global information of this lexical resource or null, if the global information is not set
+	 * @see GlobalInformation
 	 */
 	public GlobalInformation getGlobalInformation() {
 		return globalInformation;
 	}
 
 	/**
-	 * @param globalInformation the globalInformation to set
+	 * Sets global (administrative) information of this {@link LexicalResource}.
+	 * @param globalInformation the global information to set
+	 * @see GlobalInformation
 	 */
 	public void setGlobalInformation(GlobalInformation globalInformation) {
 		this.globalInformation = globalInformation;
 	}
 
 	/**
-	 * @return the lexicons
+	 * Returns all lexicons of this {@link LexicalResource}.
+	 * @return the {@link List} of all lexicons contained in this lexical resource or an empty list, if this lexical
+	 * resource does not contain any lexicons.
+	 * @see Lexicon
 	 */
 	public List<Lexicon> getLexicons() {
 		return lexicons;
 	}
 
 	/**
+	 * Sets the {@link List} of {@link Lexicon} instances to this {@link LexicalResource}.
 	 * @param lexicons the lexicons to set
 	 */
 	public void setLexicons(List<Lexicon> lexicons) {
@@ -94,28 +107,33 @@ public class LexicalResource {
 	}
 
 	/**
-	 * @return the senseAxes
+	 * Returns a {@link List} of all {@link SenseAxis} instances contained in this {@link LexicalResource}. 
+	 * @return the list of all sense axes contained in this lexical resource or an empty list, if the lexical resource
+	 * does not contain any sense axes. 
 	 */
 	public List<SenseAxis> getSenseAxes() {
 		return senseAxes;
 	}
 
 	/**
-	 * @param senseAxes the senseAxes to set
+	 * Sets a {@link List} of {@link SenseAxis} instances to this {@link LexicalResource}.
+	 * @param senseAxes the sense axes to set
 	 */
 	public void setSenseAxes(List<SenseAxis> senseAxes) {
 		this.senseAxes = senseAxes;
 	}
 
 	/**
-	 * @return the dtdVersion
+	 * Returns the DTD (Document Type Definition) version of Uby-LMF, against which this {@link LexicalResource} is valid.
+	 * @return the DTD version against which this lexical resource is valid or null, if the DTD version is not set
 	 */
 	public String getDtdVersion() {
 		return dtdVersion;
 	}
 
 	/**
-	 * @param dtdVersion the dtdVersion to set
+	 * Sets the DTD (Document Type Definition) version of Uby-LMF, against which this {@link LexicalResource} is valid.
+	 * @param dtdVersion the DTD version against which this lexical resource is valid
 	 */
 	public void setDtdVersion(String dtdVersion) {
 		this.dtdVersion = dtdVersion;
