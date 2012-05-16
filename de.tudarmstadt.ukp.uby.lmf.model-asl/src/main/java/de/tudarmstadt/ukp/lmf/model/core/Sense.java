@@ -17,6 +17,7 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.core;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.enums.EYesNo;
@@ -33,6 +34,13 @@ import de.tudarmstadt.ukp.lmf.model.semantics.SenseExample;
 import de.tudarmstadt.ukp.lmf.model.semantics.SenseRelation;
 import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 
+/**
+ * Sense is a class representing one meaning of a lexical entry.<br>
+ * The  Sense class allows for hierarchical senses in that a sense may be more specific
+ * than another sense of the same lexical entry.
+ * @author Zijad Maksuti
+ *@see LexicalEntry
+ */
 public class Sense implements IHasID, Comparable<Sense>{
 	// Id of this Sense
 	@VarType(type = EVarType.ATTRIBUTE)
@@ -58,50 +66,40 @@ public class Sense implements IHasID, Comparable<Sense>{
 	@VarType(type = EVarType.ATTRIBUTE)
 	private EYesNo boundLexeme;
 
-// Replace by SemanticLabel Class
-//	// Semantic Class Label of this Sense
-//	@VarType(type = EVarType.ATTRIBUTE)
-//	private String semanticClassLabel;
-
-	// ?
+	// List of more specific senses
 	@VarType(type = EVarType.CHILDREN)
-	private List<Sense> senses;
+	private List<Sense> senses= new ArrayList<Sense>();
 
 	// Contexts of this Sense
 	@VarType(type = EVarType.CHILDREN)
-	private List<Context> contexts;
-
-// Replace by SemanticLabel class
-//	// Subject Fields fo this Sense
-//	@VarType(type = EVarType.CHILDREN)
-//	private List<SubjectField> subjectFields;
+	private List<Context> contexts = new ArrayList<Context>();
 
 	// Predicative Representations of this Sense
 	@VarType(type = EVarType.CHILDREN)
-	private List<PredicativeRepresentation> predicativeRepresentations;
+	private List<PredicativeRepresentation> predicativeRepresentations = new ArrayList<PredicativeRepresentation>();
 
 	// Sense Examples of this Sense
 	@VarType(type = EVarType.CHILDREN)
-	private List<SenseExample> senseExamples;
+	private List<SenseExample> senseExamples = new ArrayList<SenseExample>();
 
 	// Definitions of this Sense
 	@VarType(type = EVarType.CHILDREN)
-	private List<Definition> definitions;
+	private List<Definition> definitions = new ArrayList<Definition>();
 
 	// Sense Relations of this Sense
 	@VarType(type = EVarType.CHILDREN)
-	private List<SenseRelation> senseRelations;
+	private List<SenseRelation> senseRelations = new ArrayList<SenseRelation>();
 
 	@VarType(type = EVarType.CHILDREN)
-	private List<MonolingualExternalRef> monolingualExternalRefs;
+	private List<MonolingualExternalRef> monolingualExternalRefs = new ArrayList<MonolingualExternalRef>();
 
 	// Frequency information for this Sense
 	@VarType(type = EVarType.CHILDREN)
-	private List<Frequency> frequencies;
+	private List<Frequency> frequencies = new ArrayList<Frequency>();
 
 	// Semantic class informatin for this Sense
 	@VarType(type = EVarType.CHILDREN)
-	private List<SemanticLabel> semanticLabels;
+	private List<SemanticLabel> semanticLabels = new ArrayList<SemanticLabel>();
 
 	// Backlink to LexicalEntry added for convenience
 	@VarType(type = EVarType.NONE)
@@ -109,72 +107,69 @@ public class Sense implements IHasID, Comparable<Sense>{
 
 
 	/**
-	 * @return the id
+	 * Returns the unique identifier of this {@link Sense} instance.
+	 * @return the unique identifier ot this sense or null, if the identifier is not set
 	 */
 	public String getId() {
 		return id;
 	}
 
 	/**
-	 * @param id the id to set
+	 * Sets the unique identifier to this {@link Sense} instance.
+	 * @param id the identifier to set
 	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
 	/**
-	 * @return the index
+	 * Returns an integer representing the commonness of this {@link Sense} instance,
+	 * with respect to the {@link LexicalEntry} containing it.
+	 * @return the commonness of this sense or null, if the index is not set
 	 */
 	public int getIndex() {
 		return index;
 	}
 
 	/**
+	 * Sets the index to this {@link Sense} instance.<p>
+	 * Index is an integer representing the commonness of a sense with respect
+	 * to the lexical entry containing it.
 	 * @param index the index to set
+	 * @see LexicalEntry
 	 */
 	public void setIndex(int index) {
 		this.index = index;
 	}
 
 	/**
-	 * @return the synset
+	 * Returns the {@link Synset} instance associated to this {@link Sense}.
+	 * @return the synset associated to this sense or null, if the sense does not have an associated synset
 	 */
 	public Synset getSynset() {
 		return synset;
 	}
 
 	/**
-	 * @param synset the synset to set
+	 * Associates a {@link Synset} instance to this {@link Sense} instance.
+	 * @param synset the synset to associate
 	 */
 	public void setSynset(Synset synset) {
 		this.synset = synset;
 	}
 
-//	/**
-//	 * @return the semanticClassLabel
-//	 */
-//	public String getSemanticClassLabel() {
-//		return semanticClassLabel;
-//	}
-
-//	/**
-//	 * @param semanticClassLabel the semanticClassLabel to set
-//	 */
-//	public void setSemanticClassLabel(String semanticClassLabel) {
-//		this.semanticClassLabel = semanticClassLabel;
-//	}
-
 	/**
-	 *
-	 * @param incorporatedSemArg the incorporatedSemArg to set
+	 * Sets a {@link SemanticArgument} instance incorporated in this {@link Sense} instance.
+	 * @param incorporatedSemArg the incorporated semantic argument to set
 	 */
 	public void setIncorporatedSemArg(SemanticArgument incorporatedSemArg) {
 		this.incorporatedSemArg = incorporatedSemArg;
 	}
 
 	/**
-	 *
-	 * @return the incorporatedSemArg
+	 * Returns the {@link SemanticArgument} instance incorporated in this {@link Sense} instance.
+	 * @return the semantic argument incorporated in this sense or null, if this sense does not
+	 * incorporate a semantic argument
 	 */
 	public SemanticArgument getIncorporatedSemArg() {
 		return incorporatedSemArg;
@@ -183,23 +178,33 @@ public class Sense implements IHasID, Comparable<Sense>{
 	/**
 	 *
 	 * @param transparentMeaning the transparentMeaning to set
+	 * @deprecated This method is marked for removal, use {@link Sense#setTransparentMeaning(boolean)} instead
 	 */
+	@Deprecated
 	public void setTransparentMeaning(EYesNo transparentMeaning) {
 		this.transparentMeaning = transparentMeaning;
 	}
-
+	
+	
 	/**
-	 *
-	 * @return the transparentMeaning
+	 * Sets the transparent meaning flag to this {@link Sense} instance.<p>
+	 * Explanation:<br>
+	 * If the syntactic head of a phrase is not its semantic center, it has a transparent meaning,
+	 * i.e. it merely adds information to the semantic center of the phrase.
+	 * @param flag set it to true to indicate that the sense has a transparent meaning, or to false otherwise
 	 */
-	@Deprecated
-	public EYesNo getTransparentMeaning() {
-		return transparentMeaning;
+	public void setTransparentMeaning(boolean flag){
+		if(flag)
+			this.transparentMeaning = EYesNo.yes;
+		else
+			this.transparentMeaning = EYesNo.no;
+				
 	}
 
 	/**
-	 *
-	 * @return true if the transparentMeaning attribute is yes, false otherwise
+	 * Returns true if this {@link Sense} instance has a transparent meaning, false otherwise.
+	 * @return true if the sense has a transparent meaning, false otherwise
+	 * 
 	 */
 	public boolean isTransparentMeaning() {
 		return (transparentMeaning.equals(EYesNo.yes)? true : false);
@@ -208,9 +213,19 @@ public class Sense implements IHasID, Comparable<Sense>{
 	/**
 	 *
 	 * @param boundLexeme the boundLexeme to set
+	 * @deprecated This method is marked for removal, use {@link Sense#setBoundLexeme(boolean)} instead
 	 */
+	@Deprecated
 	public void setBoundLexeme(EYesNo boundLexeme) {
 		this.boundLexeme = boundLexeme;
+	}
+	
+	public void setBoundLexeme(boolean flag){
+		if(flag)
+			this.boundLexeme = EYesNo.yes;
+		else
+			this.boundLexeme = EYesNo.no;
+				
 	}
 
 	/**

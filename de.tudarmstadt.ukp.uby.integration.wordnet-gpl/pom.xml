@@ -33,14 +33,6 @@
 			<artifactId>dom4j</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>de.tudarmstadt.ukp.uby</groupId>
-			<artifactId>de.tudarmstadt.ukp.uby.persistence.lmfxml-asl</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>de.tudarmstadt.ukp.uby</groupId>
-			<artifactId>de.tudarmstadt.ukp.uby.persistence.transform-asl</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 		</dependency>

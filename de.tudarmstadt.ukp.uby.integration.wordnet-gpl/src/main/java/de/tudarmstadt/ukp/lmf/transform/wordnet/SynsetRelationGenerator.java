@@ -100,7 +100,7 @@ public class SynsetRelationGenerator {
 	
 	/**
 	 * This method iterates over all synsets, provided by synset-generator
-	 * and updates their {@link SynsetRelations}
+	 * and updates their {@link SynsetRelation}
 	 * @see Synset 
 	 */
 	public void updateSynsetRelations() {

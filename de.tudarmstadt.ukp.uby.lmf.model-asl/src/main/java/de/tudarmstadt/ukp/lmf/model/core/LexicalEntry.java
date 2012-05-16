@@ -235,7 +235,7 @@ public class LexicalEntry implements IHasID, Comparable<LexicalEntry>{
 	/**
 	 * Returns the {@link Lexicon} containing this {@link LexicalEntry} instance. <p>
 	 * <i>This backlink is not a part of Uby-LMF model and exists for convenience.</i>
-	 * @return the lexicon containing this lexical entry
+	 * @return the lexicon containing this lexical entry or null if the backlink is not set
 	 */
 	public Lexicon getLexicon() {
 		return lexicon;
