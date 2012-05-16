@@ -97,49 +97,59 @@ public class Lexicon implements IHasID, IHasLanguageIdentifier {
 	}
 
 	/**
-	 * @param lexicalEntries the lexicalEntries to set
+	 * Sets a {@link List} of all {@link LexicalEntry} instances contained in this {@link Lexicon}.
+	 * @param lexicalEntries the lexical entries to set
 	 */
 	public void setLexicalEntries(List<LexicalEntry> lexicalEntries) {
 		this.lexicalEntries = lexicalEntries;
 	}
 
 	/**
-	 * @return the subcategorizationFrames
+	 * Returns the {@link List} of all {@link SubcategorizationFrame} instances contained in this {@link Lexicon}
+	 * instance. 
+	 * @return a list of all subcategorization frames or an empty list, if the
+	 * lexicon does not contain subcategorization frames.
 	 */
 	public List<SubcategorizationFrame> getSubcategorizationFrames() {
 		return subcategorizationFrames;
 	}
 
 	/**
-	 * @param subcategorizationFrames the subcategorizationFrames to set
+	 * Sets the {@link List} of all {@link SubcategorizationFrame} instances contained in this {@link Lexicon}.
+	 * @param subcategorizationFrames the subcategorization frames to set
 	 */
-	public void setSubcategorizationFrames(
-			List<SubcategorizationFrame> subcategorizationFrames) {
+	public void setSubcategorizationFrames(List<SubcategorizationFrame> subcategorizationFrames) {
 		this.subcategorizationFrames = subcategorizationFrames;
 	}
 
 	/**
-	 * @return the semanticPredicates
+	 * Returns the {@link List} of all {@link SemanticPredicate} contained in this {@link Lexicon} instance.
+	 * @return a list of all semantic predicates of this lexicon or an empty list, if the lexicon
+	 * does not contain any semantic predicates
 	 */
 	public List<SemanticPredicate> getSemanticPredicates() {
 		return semanticPredicates;
 	}
 
 	/**
-	 * @param semanticPredicates the semanticPredicates to set
+	 * Sets the {@link List} of all {@link SemanticPredicate} instances contained in this {@link Lexicon} instance.
+	 * @param semanticPredicates the semantic predicates to set
 	 */
 	public void setSemanticPredicates(List<SemanticPredicate> semanticPredicates) {
 		this.semanticPredicates = semanticPredicates;
 	}
 
 	/**
-	 * @return the synsets
+	 * Returns the {@link List} of all {@link Synset} instances contained in this {@link Lexicon}.
+	 * @return a list of all synsets contained in this lexicon or an empty list, if the lexicon does not contain
+	 * any synsets
 	 */
 	public List<Synset> getSynsets() {
 		return synsets;
 	}
 
 	/**
+	 * Sets the {@link List} of all {@link Synset} instances to this {@link Lexicon} instance. 
 	 * @param synsets the synsets to set
 	 */
 	public void setSynsets(List<Synset> synsets) {
@@ -147,14 +157,17 @@ public class Lexicon implements IHasID, IHasLanguageIdentifier {
 	}
 
 	/**
-	 * @return the synSemCorrespondences
-	 */
+	 * Returns the {@link List} of all {@link SynSemCorrespondence} instances contained in this {@link Lexicon}. 
+	 * @return a list of all syntactic-semantic correspondences contained in this lexicon or an empty list, if
+	 * the lexicon does not contain any syntactic-semantic correspondences
+ 	 */
 	public List<SynSemCorrespondence> getSynSemCorrespondences() {
 		return synSemCorrespondences;
 	}
 
 	/**
-	 * @param synSemCorrespondences the synSemCorrespondences to set
+	 * Sets the {@link List} of all {@link SynSemCorrespondence} instances to this {@link Lexicon} instance.
+	 * @param synSemCorrespondences the list of syntactic-semantic correspondences to set
 	 */
 	public void setSynSemCorrespondences(
 			List<SynSemCorrespondence> synSemCorrespondences) {
@@ -162,87 +175,103 @@ public class Lexicon implements IHasID, IHasLanguageIdentifier {
 	}
 
 	/**
-	 * @return the constraintSets
+	 * Returns a {@link List} of all {@link ConstraintSet} instances associated to this {@link Lexicon}.
+	 * @return a list of all constraint sets associated to this lexicon or an empty list, if this lexicon does not have
+	 * any contraint sets associated  
 	 */
 	public List<ConstraintSet> getConstraintSets() {
 		return constraintSets;
 	}
 
 	/**
-	 * @param constraintSets the constraintSets to set
+	 * Associates a {@link List} of all {@link ConstraintSet} instances to this {@link Lexicon}.
+	 * @param constraintSets the list of constraint sets to associate
 	 */
 	public void setConstraintSets(List<ConstraintSet> constraintSets) {
 		this.constraintSets = constraintSets;
 	}
 
 	/**
-	 * @return the languageIdentifier
+	 * Returns the language identifier of this {@link Lexicon} instance.
+	 * @return the language identifier of this lexicon or null, if the language identifier of the
+	 * lexicon is not set
+	 * @see ELanguageIdentifier 
 	 */
 	public ELanguageIdentifier getLanguageIdentifier() {
 		return languageIdentifier;
 	}
 
 	/**
-	 * @param languageIdentifier the languageIdentifier to set
+	 * Sets the language identifier to this {@link Lexicon} instance.
+	 * @param languageIdentifier the language identifier to set
+	 * @see ELanguageIdentifier
 	 */
 	public void setLanguageIdentifier(ELanguageIdentifier languageIdentifier) {
 		this.languageIdentifier = languageIdentifier;
 	}
 
 	/**
-	 * @return the id
+	 * Returns the unique identifier of this {@link Lexicon} instance.
+	 * @return the unique identifier of this lexicon or null, if the identifier is not set
 	 */
 	public String getId() {
 		return id;
 	}
 
 	/**
-	 * @param id the id to set
+	 * Sets the unique identifier to this {@link Lexicon} instance.
+	 * @param id the unique identifier to set
 	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
 	/**
-	 * 
-	 * @param name the name of the lexicon
+	 * Sets the human readable name to this {@link Lexicon} instance.
+	 * @param name the name of the lexicon to set
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	/**
-	 * 
-	 * @return the name
+	 * Returns the human readable name of this {@link Lexicon} instance.
+	 * @return the name of this lexicon or null, if the name is not set
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * @return the subcategorizationFrameSets
+	 * Returns a {@link List} of all {@link SubcategorizationFrameSet} instances contained in this {@link Lexicon}.
+	 * @return the list of all subcategorization frame sets contained in this lexicon or an empty list,
+	 * if the lexicon does not contain any subcategorization frame sets
 	 */
 	public List<SubcategorizationFrameSet> getSubcategorizationFrameSets() {
 		return subcategorizationFrameSets;
 	}
 
 	/**
-	 * @param subcategorizationFrameSets the subcategorizationFrameSets to set
+	 * Sets a {@link List} of all {@link SubcategorizationFrameSet} instances to this {@link Lexicon}.
+	 * @param subcategorizationFrameSets the list of subcategorization frame sets to set
 	 */
-	public void setSubcategorizationFrameSets(
-			List<SubcategorizationFrameSet> subcategorizationFrameSets) {
+	public void setSubcategorizationFrameSets(List<SubcategorizationFrameSet> subcategorizationFrameSets) {
 		this.subcategorizationFrameSets = subcategorizationFrameSets;
 	}
 
 	/**
-	 * @return the lexicalResource
+	 * Returns the {@link LexicalResource} containing this {@link Lexicon} instance. <p>
+	 * <i>This backlink is not a part of Uby-LMF model and exists for convenience.</i>
+	 * @return the lexical resource containing this lexicon or null if the backlink is not set
 	 */
 	public LexicalResource getLexicalResource() {
 		return lexicalResource;
 	}
 
 	/**
-	 * @param lexicalResource the lexicalResource to set
+	 * Sets the {@link LexicalResource} containing this {@link Lexicon} instance.<p>
+	 * <i> This backlink is not a part of Uby-LMF model and exists for convenience.</i>
+	 * @param lexicon the lexicon to set
 	 */
 	public void setLexicalResource(LexicalResource lexicalResource) {
 		this.lexicalResource = lexicalResource;
