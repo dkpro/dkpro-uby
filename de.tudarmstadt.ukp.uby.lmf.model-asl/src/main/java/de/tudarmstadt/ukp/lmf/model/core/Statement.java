@@ -17,6 +17,7 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.core;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,6 +25,13 @@ import de.tudarmstadt.ukp.lmf.model.enums.EStatementType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
+/**
+ * Statement is a class representing a narrative description and refines or complements
+ * {@link Definition}.
+ * 
+ * @author Zijad Maksuti
+ *
+ */
 public class Statement implements Comparable<Statement> {
 	
 	// Statement Type of this Statement
@@ -32,31 +40,40 @@ public class Statement implements Comparable<Statement> {
 	
 	// Text Representations of this Statement
 	@VarType(type = EVarType.CHILDREN)
-	private List<TextRepresentation> textRepresentations;
+	private List<TextRepresentation> textRepresentations = new ArrayList<TextRepresentation>();
 
 	/**
-	 * @return the statementType
+	 * Returns the type of this {@link Statement} instance.
+	 * @return the statements type or null, if the type is not set
+	 * @see EStatementType
 	 */
 	public EStatementType getStatementType() {
 		return statementType;
 	}
 
 	/**
-	 * @param statementType the statementType to set
+	 * Sets the type of this {@link Statement} instance.
+	 * @param statementType the statement type to set
+	 * @see EStatementType
 	 */
 	public void setStatementType(EStatementType statementType) {
 		this.statementType = statementType;
 	}
 
 	/**
-	 * @return the textRepresentations
+	 * Returns the {@link List} of all {@link TextRepresentation} instances
+	 * representing different textual contents of this {@link Statement}.
+	 * @return all text representations of this statement or an empty list,
+	 * if the statement does not have any text representations set
 	 */
 	public List<TextRepresentation> getTextRepresentations() {
 		return textRepresentations;
 	}
 
 	/**
-	 * @param textRepresentations the textRepresentations to set
+	 * Sets the {@link List} of all {@link TextRepresentation} instances to this
+	 * {@link Statement} instance.
+	 * @param textRepresentations the list of text representations to set
 	 */
 	public void setTextRepresentations(List<TextRepresentation> textRepresentations) {
 		this.textRepresentations = textRepresentations;
@@ -67,8 +84,7 @@ public class Statement implements Comparable<Statement> {
 		sb.append("Statement ");
 		sb.append("statementType:").append(statementType);
 		sb.append(" textRepresentations:");
-		if(textRepresentations != null)
-			Collections.sort(textRepresentations);
+		Collections.sort(textRepresentations);
 		sb.append(textRepresentations);
 		return sb.toString();	
 	}

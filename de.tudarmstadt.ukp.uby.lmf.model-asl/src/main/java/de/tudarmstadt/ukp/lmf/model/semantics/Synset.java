@@ -135,7 +135,9 @@ public class Synset implements IHasID, Comparable<Synset> {
 	public String getGloss(){
 		StringBuilder result = new StringBuilder();
 		for(Sense sense : senses){
-			result.append(sense.getDefinitionText()+" ");
+			String definitionText = sense.getDefinitionText();
+			if(definitionText != null)
+				result.append(sense.getDefinitionText()+" ");
 		}
 		return result.toString();
 	}
