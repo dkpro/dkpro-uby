@@ -73,7 +73,7 @@ public class SubcategorizationFrameExtractor {
 	
 	/**
 	 * This method consumes a frame
-	 * and returns it's corresponding instance of {@link SubcategorizationFame} class
+	 * and returns it's corresponding instance of {@link SubcategorizationFrame} class
 	 * @param frame a frame for which subcategorization frame should be returned
 	 * @return subcategorization frame associated with the consumed frame
 	 */

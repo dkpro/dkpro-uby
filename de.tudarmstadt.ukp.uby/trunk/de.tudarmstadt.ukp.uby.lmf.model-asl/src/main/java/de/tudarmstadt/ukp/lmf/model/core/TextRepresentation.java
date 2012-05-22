@@ -26,9 +26,10 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
 /**
- * This class represents a LMF-TextRepresentation
- * @author maksuti
- *
+ * TextRepresentation is a class representing one textual content of {@link Definition} or {@link Statement}.
+ * 
+ * @author Zijad Maksuti
+ * 
  */
 public class TextRepresentation implements IHasLanguageIdentifier, Comparable<TextRepresentation>{
 
@@ -48,20 +49,9 @@ public class TextRepresentation implements IHasLanguageIdentifier, Comparable<Te
 	@VarType(type = EVarType.ATTRIBUTE)
 	private String writtenText;
 
-	/*
-	 * FOR DEBUGGING PURPOSES ONLY
-	 */
-	private static Set<String> tags;
-	static{
-		tags = new HashSet<String>();
-		tags.add("&lt;");
-		tags.add("&gt;");
-		tags.add("&#10;");
-		tags.add("&quot;");
-	}
-
 	/**
-	 * @return the languageIdentifier
+	 * Returns the 
+	 * @return the identifier of this 
 	 */
 	public ELanguageIdentifier getLanguageIdentifier() {
 		return languageIdentifier;
