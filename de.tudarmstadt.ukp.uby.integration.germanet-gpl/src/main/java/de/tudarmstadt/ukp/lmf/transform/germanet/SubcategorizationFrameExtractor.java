@@ -82,7 +82,7 @@ public class SubcategorizationFrameExtractor {
 	}
 	
 	/**
-	 * This method consumes an instance of {@link Frame}
+	 * This method consumes a frame string-representation
 	 * and returns it's corresponding instance of {@link SemanticPredicate} class
 	 * @param frame a frame for which semantic predicate should be returned
 	 * @return semantic predicate associated with the consumed frame
