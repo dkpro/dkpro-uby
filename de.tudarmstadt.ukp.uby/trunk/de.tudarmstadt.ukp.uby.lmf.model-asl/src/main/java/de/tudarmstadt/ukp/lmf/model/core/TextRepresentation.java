@@ -26,7 +26,8 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
 /**
- * TextRepresentation is a class representing one textual content of {@link Definition} or {@link Statement}.
+ * TextRepresentation is a class representing one textual content of
+ * {@link Definition} or {@link Statement}.
  * 
  * @author Zijad Maksuti
  * 
@@ -50,67 +51,82 @@ public class TextRepresentation implements IHasLanguageIdentifier, Comparable<Te
 	private String writtenText;
 
 	/**
-	 * Returns the 
-	 * @return the identifier of this 
+	 * Returns the language identifier of this {@link TextRepresentation} instance.
+	 * @return the language identifier of this text representation or null, if the
+	 * language identifier is not set
+	 * @see ELanguageIdentifier
 	 */
 	public ELanguageIdentifier getLanguageIdentifier() {
 		return languageIdentifier;
 	}
 
 	/**
-	 * @param languageIdentifier the languageIdentifier to set
+	 * Sets the language identifier to this {@link TextRepresentation} instance.
+	 * @param languageIdentifier the language identifier to set
+	 * @see ELanguageIdentifier
 	 */
 	public void setLanguageIdentifier(ELanguageIdentifier languageIdentifier) {
 		this.languageIdentifier = languageIdentifier;
 	}
 
 	/**
-	 * @return the orthographyName
+	 * Returns the name of the orthography used in this {@link TextRepresentation}.<p>
+	 * For instance, an orthographe name can be <i>"arabic"</i> or <i>"arabic unpointed"</i>.
+	 * @return the name of the orthography used in the written text of this text representation
+	 * or null, if the name of orthography is not set
 	 */
 	public String getOrthographyName() {
 		return orthographyName;
 	}
 
 	/**
-	 * @param orthographyName the ortographyName to set
+	 * Sets the name of the orthography used in this {@link TextRepresentation}.<p>
+	 * For instance, an orthographe name can be <i>"arabic"</i> or <i>"arabic unpointed"</i>.
+	 * @param orthographyName the name to set
 	 */
 	public void setOrthographyName(String orthographyName) {
 		this.orthographyName = orthographyName;
 	}
 
 	/**
-	 * @return the geographicalVariant
+	 * Returns another variant of the written text in this {@link TextRepresentation} instance
+	 * that is specific in a certain geographical region. 
+	 * @return another variant of written text of this text representation or null, if
+	 * the text representation does not have another geographical variant set 
+	 * @see TextRepresentation#getWrittenText()
 	 */
 	public String getGeographicalVariant() {
 		return geographicalVariant;
 	}
 
 	/**
-	 * @param geographicalVariant the geographicalVariant to set
+	 * Sets another variant of the written text used in this {@link TextRepresentation} instance
+	 * that is specific in a certain geographical region.
+	 * @param geographicalVariant the geographical variant to set
+	 * @see TextRepresentation#setWrittenText(String)
 	 */
 	public void setGeographicalVariant(String geographicalVariant) {
 		this.geographicalVariant = geographicalVariant;
 	}
 
 	/**
-	 * @return the writtenText
+	 * Returns the series of sentences expressed in natural language contained in this
+	 * {@link TextRepresentation}. 
+	 * @return the series of sentences expressed in natural language contained in this
+	 * text representation or null, if this text representation does not have any written text set <p>
+	 * <i> Note that written text is the essential part of a text representation and should
+	 * always be set under normal circumstances.</i>
 	 */
 	public String getWrittenText() {
 		return writtenText;
 	}
 
 	/**
-	 * @param writtenText the writtenText to set
+	 * Sets the series of sentences expressed in natural language contained in this
+	 * {@link TextRepresentation}.
+	 * @param writtenText sentences to set
 	 */
 	public void setWrittenText(String writtenText) {
-		/*
-		 * For DEBUGGING purposes only
-		 */
-	/*	for(String tag : tags)
-			if(writtenText.contains(tag)){
-				System.err.println("FNConveretr, Warning, TextRerpresentation.writtenText contains invalid characters: " + tag);
-				System.err.println(writtenText);
-			}*/
 		this.writtenText = writtenText;
 	}
 
