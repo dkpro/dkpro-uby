@@ -18,9 +18,8 @@
 package de.tudarmstadt.ukp.lmf.model.enums;
 
 /**
- * This Enumerator for all LanguageIdentifiers (German, English, ...)
- * ISO 639-1
- * @author zijad
+ * Enumeration of unique language identifiers specified in ISO 639.
+ * @author Zijad Maksuti
  *
  */
 public enum ELanguageIdentifier {

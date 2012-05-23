@@ -17,6 +17,11 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.enums;
 
+/**
+ * Enumeration of grammatical functions of a {@link SyntacticArgument}.
+ * @author Zijad Maksuti
+ *
+ */
 public enum EGrammaticalFunction {
 	subject,
 	subjectComplement,

@@ -17,6 +17,12 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.enums;
 
+/**
+ * Enumeration of possible example types.
+ * 
+ * @author Zijad Maksuti
+ *
+ */
 public enum EExampleType {
     subcatFrame,
     syntacticUsage,

@@ -18,8 +18,8 @@
 package de.tudarmstadt.ukp.lmf.model.enums;
 
 /**
- * Enumerator for grammatical genders
- * @author maksuti
+ * Enumerator of grammatical genders of {@link WordForm}.
+ * @author Zijad Maksuti
  *
  */
 public enum EGrammaticalGender {

@@ -17,6 +17,13 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.enums;
 
+/**
+ * Enumeration of different core types.<p>
+ * <i>Used in FrameNet to classify semantic arguments (i.e. frame elements in FrameNet)
+ * in terms of how central they are to a particular predicate (i.e. frame in FrameNet).</i>
+ * @author Zijad Maksuti
+ *
+ */
 public enum ECoreType {
 	core,
 	peripheral,

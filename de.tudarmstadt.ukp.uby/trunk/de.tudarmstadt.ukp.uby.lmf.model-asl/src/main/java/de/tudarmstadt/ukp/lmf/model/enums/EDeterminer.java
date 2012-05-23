@@ -17,6 +17,15 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.enums;
 
+/**
+ * Enumeration of different determiners.<p>
+ * <i> Determiner is word or affix that belongs to a class of noun modifiers
+ * that expresses the reference,
+ * including quantity, of a noun.
+ * 
+ * @author Zijad Maksuti
+ *
+ */
 public enum EDeterminer {
 	possessive,
 	indefinite
