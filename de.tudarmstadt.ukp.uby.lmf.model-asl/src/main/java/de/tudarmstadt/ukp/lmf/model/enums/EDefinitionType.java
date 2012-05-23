@@ -17,6 +17,11 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.enums;
 
+/**
+ * Enumeration of different definition types.
+ * @author Zijad Maksuti
+ *
+ */
 public enum EDefinitionType {
 	extensionalDefinition,
 	intensionalDefinition,

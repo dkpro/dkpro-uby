@@ -18,8 +18,8 @@
 package de.tudarmstadt.ukp.lmf.model.enums;
 
 /**
- * Enumerator for Cases
- * @author maksuti
+ * Enumerator of cases.
+ * @author Zijad Maksuti
  *
  */
 public enum ECase {

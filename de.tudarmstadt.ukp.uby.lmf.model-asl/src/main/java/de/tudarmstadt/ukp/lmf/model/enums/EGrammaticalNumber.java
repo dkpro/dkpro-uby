@@ -18,8 +18,12 @@
 package de.tudarmstadt.ukp.lmf.model.enums;
 
 /**
- * Enumerator for grammatical numbers (singular, plural)
- * @author maksuti
+ * Enumerator for grammatical numbers.<p>
+ * 
+ * <i>In many languages,
+ * the grammatical distinction that indicates the number of objects 
+ * referred to by the term or word.</i>
+ * @author Zijad Maksuti
  *
  */
 public enum EGrammaticalNumber {
