@@ -62,7 +62,7 @@ import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrameSet;
 import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticArgument;
 import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticBehaviour;
 /**
- * This class extracts information from a preprocessed version of VerbNet and fills in the corresponding LMF classes
+ * This class extracts information from a preprocessed version of a subset of IMSlex and fills in the corresponding LMF classes
  * @author Eckle-Kohler
  *
  */
@@ -106,9 +106,9 @@ public class GermanVcExtractor {
 
 	/**
 	 * Constructs a GermanVcExtractor
-	 * @param subcatMappings path of the File containing the mappings
-	 * @param resourceID name of the LMF Lexicon instance
-	 * @return SubcategorizationFrameExtractor
+	 * @param gvcInput path of the File containing the preprocessed version of the IMSlex subset
+	 * @param resourceName name of the LMF Lexicon instance
+	 * @return GermanVcExtractor
 	 * @throws IOException 
 	 */
 	public GermanVcExtractor(File gvcInput, String resourceName) throws IOException {
@@ -247,7 +247,6 @@ public class GermanVcExtractor {
 				Iterator<SubcategorizationFrame> frameIterator = classSCframeElementsMap.get(classKey).iterator();
 				while (frameIterator.hasNext()) {
 					SubcategorizationFrame scFrame = frameIterator.next();
-					//System.out.println(scFrame.getId());
 					SubcatFrameSetElement subcatFrameSetElement = new SubcatFrameSetElement();
 					subcatFrameSetElement.setElement(scFrame);
 					subcatFrameSetElements.add(subcatFrameSetElement);
@@ -343,7 +342,7 @@ public class GermanVcExtractor {
 				senses.add(sense);// Save Sense
 
 			}
-			//Save subclasses of lexicalEntry that require the complete VerbNet-Input to be processed
+			//Save subclasses of lexicalEntry that require the complete lexicon Input to be processed
 			lexicalEntry.setSenses(senses);			
 			lexicalEntry.setSyntacticBehaviours(syntacticBehaviours);	
 			
