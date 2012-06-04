@@ -221,22 +221,5 @@ public class XMLToDBTransformer implements ElementHandler{
 	}
 
 
-	public static void main(String[] args){
-
-//		try{
-////			DBConfig dbConfig = new DBConfig("localhost", "LmfXml5", "root", "",
-////			"hibernatemap/transform", false);
-//
-//	DBConfig dbConfig = new DBConfig("bender.ukp.informatik.tu-darmstadt.de/uby_test_mim2","com.mysql.jdbc.Driver","mysql", "matuschek", "p?h;fkyt",
-//		"src/main/resources/hibernatemap/transform", false);
-//	LMFDBUtils.createTables(dbConfig);
-//	XMLToDBTransformer xmlToDB = new XMLToDBTransformer(dbConfig);
-//	File xmlFile = new File("src/test/resources/ubyTest_back.xml");
-//	xmlToDB.transform(xmlFile, "UbyTest");
-//
-//		}catch (Exception ex){
-//			ex.printStackTrace();
-//		}
-	}
 
 }
