@@ -17,6 +17,11 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.enums;
 
+/**
+ * Enumeration of different types of a {@link SenseAxis} instance.
+ * @author Zijad Maksuti
+ *
+ */
 public enum ESenseAxisType {
 	monolingualSenseAlignment,
 	crosslingualSenseAlignment,

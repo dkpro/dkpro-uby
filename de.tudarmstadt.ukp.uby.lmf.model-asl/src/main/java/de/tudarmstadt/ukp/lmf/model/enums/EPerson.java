@@ -18,8 +18,11 @@
 package de.tudarmstadt.ukp.lmf.model.enums;
 
 /**
- * Enumerator for Persons (first, second, third)
- * @author maksuti
+ * Enumeration of different person properties.<br>
+ * Person property is the class of properties with a deictic dimension,
+ * interpreted relative to the speaker, encoding the participants in a speech situation.
+ * Usually a three-way contrast is found: first person (speaker), second person (addressee), and third person (neither speaker nor addressee).
+ * @author Zijad Maksuti
  *
  */
 public enum EPerson {

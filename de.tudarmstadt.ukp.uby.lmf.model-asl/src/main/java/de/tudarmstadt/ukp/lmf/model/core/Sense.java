@@ -30,6 +30,7 @@ import de.tudarmstadt.ukp.lmf.model.mrd.Context;
 import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
 import de.tudarmstadt.ukp.lmf.model.semantics.PredicativeRepresentation;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticArgument;
+import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
 import de.tudarmstadt.ukp.lmf.model.semantics.SenseExample;
 import de.tudarmstadt.ukp.lmf.model.semantics.SenseRelation;
 import de.tudarmstadt.ukp.lmf.model.semantics.Synset;

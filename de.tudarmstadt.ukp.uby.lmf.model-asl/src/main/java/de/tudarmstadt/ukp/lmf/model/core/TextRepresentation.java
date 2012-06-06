@@ -17,9 +17,6 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.core;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasLanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
