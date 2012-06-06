@@ -131,7 +131,7 @@ public class LexicalEntryGenerator {
 			posMappings.put("exclaiming pronoun", EPartOfSpeech.pronoun);
 			posMappings.put("Determinativpronomen", EPartOfSpeech.pronoun);
 
-			senseGenerator = new SenseGenerator(synsetGenerator,omegawiki);
+			senseGenerator = new SenseGenerator(synsetGenerator);
 
 			createLexicalEntries();
 			initialized = true;
