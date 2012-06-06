@@ -17,6 +17,12 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.enums;
 
+/**
+ * Enumeration of different part of speech properties
+ * assigned to a word based on its grammatical and semantic properties. 
+ * @author Zijad
+ *
+ */
 public enum EPartOfSpeech {
 	
 	adjective,
