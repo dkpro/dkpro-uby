@@ -22,11 +22,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
-import de.tudarmstadt.ukp.lmf.model.enums.ERegisterType;
 import de.tudarmstadt.ukp.lmf.model.enums.ERelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
 import de.tudarmstadt.ukp.lmf.model.semantics.SynsetRelation;
@@ -59,8 +58,6 @@ public class SynsetRelationGenerator {
 	private  HashMap<String, ERelTypeSemantics> relTypeMappings;
 
 	private final  Map<String, String> domainOfRegisterMappings = new HashMap<String,String>(); // <domainOfRelationKey, register>
-
-	private final  Map<String, ERegisterType> domainOfRegisterTypeMappings = new HashMap<String, ERegisterType>(); // <domainOfRelationKey, RegisterType>
 
 	/**
 	 * Constructs a SynsetRelationGenerator
@@ -331,9 +328,6 @@ public class SynsetRelationGenerator {
 		// Setting mappings related to domainOf Relations
 		domainOfRegisterMappings.put("is part of theme", "topic");
 		domainOfRegisterMappings.put("subject", "topic");
-
-		domainOfRegisterTypeMappings.put("is part of theme", ERegisterType.usage);
-		domainOfRegisterTypeMappings.put("subject", ERegisterType.usage);
 
 	}
 }

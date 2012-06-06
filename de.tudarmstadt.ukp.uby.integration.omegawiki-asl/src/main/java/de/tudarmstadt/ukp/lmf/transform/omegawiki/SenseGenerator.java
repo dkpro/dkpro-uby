@@ -32,7 +32,6 @@ import de.tudarmstadt.ukp.lmf.model.enums.EExampleType;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalGender;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalNumber;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
-import de.tudarmstadt.ukp.lmf.model.enums.ERegisterType;
 import de.tudarmstadt.ukp.lmf.model.enums.EStatementType;
 import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticProperty;
 import de.tudarmstadt.ukp.lmf.model.enums.EYesNo;
@@ -47,7 +46,6 @@ import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrame;
 import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticBehaviour;
 import de.tudarmstadt.ukp.omegawiki.api.Annotation;
 import de.tudarmstadt.ukp.omegawiki.api.DefinedMeaning;
-import de.tudarmstadt.ukp.omegawiki.api.OmegaWiki;
 import de.tudarmstadt.ukp.omegawiki.api.SynTrans;
 import de.tudarmstadt.ukp.omegawiki.exception.OmegaWikiException;
 
@@ -58,7 +56,6 @@ import de.tudarmstadt.ukp.omegawiki.exception.OmegaWikiException;
  */
 class SenseGenerator {
 	private final  ELanguageIdentifier GlobalLanguageLMF;
-	private final OmegaWiki omegawiki;
 
 	/*
 	 * Synset generator is needed for recovering
@@ -80,8 +77,7 @@ class SenseGenerator {
 	 * @param omegawiki
 	 * @param synsetGenerator a SynsetGenerator
 	 */
-	public SenseGenerator(SynsetGenerator synsetGenerator,OmegaWiki ow){
-		this.omegawiki = ow;
+	public SenseGenerator(SynsetGenerator synsetGenerator){
 		this.synsetGenerator = synsetGenerator;
 		this.GlobalLanguageLMF=synsetGenerator.getGlobalLanguageLMF();
 
@@ -289,15 +285,15 @@ class SenseGenerator {
 
 					sl = new SemanticLabel();
 					if(value.equals("vulgar")||value.equals("technical")||value.equals("poetic")||value.equals("pejorative")||value.equals("offensive")||value.equals("colloquial")||value.equals("medical")||value.equals("juvenile")||value.equals("informal")||value.equals("humorous")||value.equals("euphemistic")||value.equals("kindersprache")) {
-						sl.setType(ERegisterType.usage.toString());
+						sl.setType("usage");
 					}
 					else if(value.equals("archaic")||value.equals("alte deutsche Schreibweise")||value.equals("dated")||value.equals("neologism")||value.equals("obsolete")) {
-						sl.setType(ERegisterType.time.toString());
+						sl.setType("time");
 					}
 					else  {
-						sl.setType(ERegisterType.region.toString());
+						sl.setType("region");
 					}
-					sl.setType(ERegisterType.time.toString());
+					sl.setType("time");
 					sl.setLabel(value);
 
 				}
