@@ -22,6 +22,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Annotation type introduced for convenience reasons when converting
+ * Uby-LMF to an XML-file or to a database.
+ * @author Yevgen Chebotar
+ *
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface VarType {

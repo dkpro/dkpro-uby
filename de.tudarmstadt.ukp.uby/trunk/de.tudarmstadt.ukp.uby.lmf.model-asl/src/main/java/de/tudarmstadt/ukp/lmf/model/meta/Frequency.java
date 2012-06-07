@@ -21,25 +21,20 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
 /**
- * This class represents a LMF Meta class for corpus frequencies
- * @author sh
+ * This class represents a LMF meta class for storing of corpus frequencies of
+ * particular classes.
+ * @author Silvana Hartmann
  *
  */
 public class Frequency implements Comparable<Frequency> {
-/*	<!ELEMENT Frequency EMPTY>
-	<!--TODO: Needs ID attribute?-->
-	<!ATTLIST Frequency
-	    corpus CDATA #IMPLIED
-	    frequency CDATA #IMPLIED
-	    generator CDATA #IMPLIED>
-*/
+
 	// corpus frequencies stem from
 	@VarType(type = EVarType.ATTRIBUTE)
 	private String corpus;
 	
 	// corpus frequency count
 	@VarType(type = EVarType.ATTRIBUTE)
-	private Integer frequency; //Integer or String?
+	private Integer frequency;
 
 	// generator-conditions for frequency counts
 	@VarType(type = EVarType.ATTRIBUTE)

@@ -18,8 +18,10 @@
 package de.tudarmstadt.ukp.lmf.model.enums;
 
 /**
- * Enumeration of tenses
- * @author maksuti
+ * Enumeration of tenses.<br>
+ * Tense is the grammaticalisation of location in time.
+ * 
+ * @author Zijad Maksuti
  *
  */
 public enum ETense {

@@ -20,23 +20,22 @@ package de.tudarmstadt.ukp.lmf.model.meta;
 import java.util.Collections;
 import java.util.List;
 
+import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
+import de.tudarmstadt.ukp.lmf.model.semantics.SemanticArgument;
+import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
 
 /**
- * This class represents the semanticLabel class for diverse information types
- * @author sh
+ * This class models semantic labels for {@link Sense}, {@link SemanticArgument} and
+ * {@link SemanticPredicate} instances.
+ * 
+ * @author Silvana Hartmann
  *
  */
 public class SemanticLabel implements Comparable<SemanticLabel>{
-/* From DTD:
- * <!Element SemanticLabel (MonolingualExternalRef*)>
-<!ATTLIST SemanticLabel 
-    label CDATA #IMPLIED
-    type CDATA #IMPLIED
-    quantification CDATA #IMPLIED>
- */
+
 	// the label of the semantic class
 	@VarType(type = EVarType.ATTRIBUTE)
 	private String label;
@@ -47,7 +46,7 @@ public class SemanticLabel implements Comparable<SemanticLabel>{
 	
 	// the quantification of the label class
 	@VarType(type = EVarType.ATTRIBUTE)
-	private String quantification; //TODO: String or Float?
+	private String quantification;
 	
 	// Reference to a external Resource
 	@VarType(type = EVarType.CHILDREN)

@@ -17,6 +17,17 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.enums;
 
+import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticArgument;
+
+/**
+ * Enumeration of the different categories of a {@link SyntacticArgument}
+ * instance.<br>
+ * A syntactic category is a set of words and/or phrases in a language which share a
+ * significant number of common characteristics.
+ * 
+ * @author Zijad Maksuti
+ *
+ */
 public enum ESyntacticCategory {
 	nounPhrase,
 	reflexive,

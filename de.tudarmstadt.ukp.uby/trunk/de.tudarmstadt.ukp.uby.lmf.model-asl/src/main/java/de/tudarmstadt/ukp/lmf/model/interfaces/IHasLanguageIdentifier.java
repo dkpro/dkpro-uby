@@ -20,21 +20,25 @@ package de.tudarmstadt.ukp.lmf.model.interfaces;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 
 /**
- * Interface for all LMF Classes that have a LanguageIdentifier
- * @author zijad
+ * Interface for all LMF Classes that have a language identifier.
+ * 
+ * @author Zijad Maksuti
+ * @see ELanguageIdentifier
  *
  */
 public interface IHasLanguageIdentifier {
 	
 	/**
-	 * Get LanguageIdentifier of this Object
-	 * @return this Object's LanguageIdentifier
+	 * Get language identifier of this Object
+	 * @return this Objects LanguageIdentifier
+	 * @see ELanguageIdentifier
 	 */
 	public ELanguageIdentifier getLanguageIdentifier();
 	
 	/**
-	 * Set LanguageIdentifier of this Object
-	 * @param languageIdentifier LanguageIdentifier to be set
+	 * Set language identifier of this Object
+	 * @param languageIdentifier language identifier to be set
+	 * @see ELanguageIdentifier
 	 */
 	public void setLanguageIdentifier(ELanguageIdentifier languageIdentifier);
 }

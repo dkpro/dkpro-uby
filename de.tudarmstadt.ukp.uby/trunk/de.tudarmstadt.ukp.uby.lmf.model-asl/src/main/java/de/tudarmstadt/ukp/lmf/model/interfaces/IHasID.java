@@ -18,22 +18,23 @@
 package de.tudarmstadt.ukp.lmf.model.interfaces;
 
 /**
- * A interface for all LMF-Classes have an ID
- * @author zijad
+ * An interface for all LMF-Classes that have a unique identifier.
+ * 
+ * @author Zijad Maksuti
  *
  */
 public interface IHasID {
 
 	
 	/**
-	 * Returns the Id of the Object
-	 * @return the Id of the Object
+	 * Returns the unique identifier of the Object
+	 * @return the unique identifier of the Object
 	 */
 	public String getId();
 	
 	/**
-	 * Sets the Id of the Object
-	 * @param Id The Id to be set
+	 * Sets the unique identifier of the Object
+	 * @param id The unique identifier to set
 	 */
 	public void setId(String id);
 }
