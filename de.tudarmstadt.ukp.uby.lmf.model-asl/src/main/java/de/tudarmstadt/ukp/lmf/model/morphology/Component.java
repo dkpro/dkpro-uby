@@ -23,8 +23,11 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
 /**
- * This class represents a single multiword component
- * @author sh
+ * Component is a class representing a reference to a {@link LexicalEntry}
+ * for each lexical component aggregated in a {@link ListOfComponents} class and
+ * thus represents a single multiword component.
+ * 
+ * @author Silvana Hartmann
  *
  */
 public class Component implements Comparable<Component> {
@@ -46,56 +49,69 @@ public class Component implements Comparable<Component> {
 	private EYesNo isBreakBefore;
 
 	/**
-	 * @param target the target to set
+	 * Sets the {@link LexicalEntry} instance referenced by this {@link Component}.
+	 * @param target the referenced lexical entry to set
 	 */
 	public void setTargetLexicalEntry(LexicalEntry targetLexicalEntry) {
 		this.targetLexicalEntry = targetLexicalEntry;
 	}
 
 	/**
-	 * @return the target
+	 * Returns the {@link LexicalEntry} instance referenced by this {@link Component}.
+	 * @return the lexical entry referenced by this lexical component or null, if
+	 * the referenced lexical entry is not set <p>
+	 * <i> Note that Uby-LMF model specifies that a component should always
+	 * refer to a lexical entry. Absence of this reference may happen due to an
+	 * incomplete conversion of the original resource.</i>
 	 */
 	public LexicalEntry getTargetLexicalEntry() {
 		return targetLexicalEntry;
 	}
 
 	/**
-	 *
-	 * @param isHead the isHead to set
+	 * Use this method to set the headword property of the {@link Component} instance.<br>
+	 * 
+	 * @param isHead set to <i>true</i> if the component is the morphological head of a multiword expression,
+	 * set to <i>false</i> otherwise
 	 */
-	public void setIsHead(EYesNo isHead) {
-		this.isHead = isHead;
-	}
-
-	/**
-	 *
-	 * @return isHead
-	 */
-	@Deprecated
-	public EYesNo getIsHead() {
-		return isHead;
+	public void setHead(boolean isHead) {
+		if(isHead)
+			this.isHead = EYesNo.yes;
+		else
+			this.isHead = EYesNo.no;	
 	}
 
 
 	/**
-	 *
-	 * @return true if the isHead attribute is yes, false otherwise
+	 * Returns <i>true</i> if the headword property of this {@link Component} instance is set
+	 * to <i>true</i> or false if the headword property is set fo <i>false</i>.
+	 * @return true if the headword property is set to true or false, if the headword property
+	 * is set to false.<br>
+	 * If the headword property of the component is not set at all, this method returns null.
 	 */
-	public boolean isHead() {
-		return (isHead.equals(EYesNo.yes)? true : false);
+	public Boolean isHead() {
+		if(this.isHead == null)
+			return null;
+		else
+			return (isHead.equals(EYesNo.yes)? true : false);
 	}
 
 	/**
-	 *
-	 * @param position the position to set
+	 * Sets the position of the multiword component represented by this
+	 * {@link Component} instance in its multiword expression.
+	 * @param position the position of this multiword component in the multiword expression
+	 * @see ListOfComponents
 	 */
 	public void setPosition(int position) {
 		this.position = position;
 	}
 
 	/**
-	 *
-	 * @return the position
+	 * Returns the position of the multiword component,
+	 * represented by this {@link Component} instance, in its multiword expression.
+	 * @return the position of the component in its multiword expression or null
+	 * if the position is not set
+	 * @see ListOfComponents
 	 */
 	public int getPosition() {
 		return position;
@@ -104,27 +120,42 @@ public class Component implements Comparable<Component> {
 	/**
 	 *
 	 * @param breakBefore the breakBefore to set
+	 * @deprecated
+	 * Use {@link Component#setBreakBefore(boolean)} instead
 	 */
+	@Deprecated
 	public void setIsBreakBefore(EYesNo breakBefore) {
 		this.isBreakBefore = breakBefore;
 	}
-
+	
 	/**
-	 *
-	 * @return the breakBefore
+	 * Sets the break-before property to this {@link Component instance}.<br>
+	 * Break-before property describes the possibility to break a multiword expression, which contains
+	 * this multiword component, before the multiword component in order to insert additional constituents.
+	 * @param breakBefore set to true, if the component allows insertion of additional constituents before
+	 * it, otherwise set to false
 	 */
-	@Deprecated
-	public EYesNo getIsBreakBefore() {
-		return isBreakBefore;
+	public void setBreakBefore(boolean breakBefore) {
+		if(breakBefore)
+			this.isBreakBefore = EYesNo.yes;
+		else
+			this.isBreakBefore = EYesNo.no;
 	}
 
 
 	/**
-	 *
-	 * @return true if the breakBefore attribute is yes, false otherwise
+	 * Returns the value of break-before property of the multiword component represented
+	 * by this {@link Component} instance.<br>
+	 * Break-before property describes the possibility to break a multiword expression, which contains
+	 * this multiword component, before the multiword component in order to insert additional constituents.
+	 * @return true/false if the break-before property of the component is set to true/false.<br>
+	 * If the break-before property of this component is not set at all, this method returns null.
 	 */
-	public boolean isBreakBefore() {
-		return (isBreakBefore.equals(EYesNo.yes)? true : false);
+	public Boolean isBreakBefore() {
+		if(this.isBreakBefore == null)
+			return null;
+		else
+			return (isBreakBefore.equals(EYesNo.yes)? true : false);
 	}
 
 	// be warned: compareTo and hashCode method depend on this!

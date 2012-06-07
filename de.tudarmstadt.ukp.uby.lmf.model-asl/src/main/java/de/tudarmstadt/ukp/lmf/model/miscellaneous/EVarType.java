@@ -19,8 +19,10 @@ package de.tudarmstadt.ukp.lmf.model.miscellaneous;
 
 
 /**
- * Enumeration of all Annotations
- * @author maksuti
+ * Enumeration of all variable types used for the annotation
+ * defined in {@link VarType}.
+ * 
+ * @author Yevgen Chebotar
  *
  */
 public enum EVarType {

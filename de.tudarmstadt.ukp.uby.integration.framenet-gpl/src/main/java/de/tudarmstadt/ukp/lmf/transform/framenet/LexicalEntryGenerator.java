@@ -373,8 +373,8 @@ public class LexicalEntryGenerator {
 		for(Lexeme lexeme : lexemes){
 			// Create a Component for every lexeme
 			Component component = new Component();
-			component.setIsHead(FNUtils.booleanForHumans(lexeme.isHeadword()));
-			component.setIsBreakBefore(FNUtils.booleanForHumans(lexeme.isBreakBefore()));
+			component.setHead(lexeme.isHeadword());
+			component.setBreakBefore(lexeme.isBreakBefore());
 			component.setPosition(lexeme.getOrder());
 			PartOfSpeech pos = lexeme.getPartOfSpeech();
 			components.add(component);

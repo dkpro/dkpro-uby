@@ -21,8 +21,12 @@
 package de.tudarmstadt.ukp.lmf.model.enums;
 
 /**
- * Enumeration of Yes and No
- * @author maksuti
+ * This enumerator is used as a replacement for
+ * the boolean values <i>true</i> and <i>false</i>.<br>
+ * It is created for convenience reasons when converting the Uby-LMF
+ * to an XML-file or to a database.
+ * 
+ * @author Zijad Maksuti
  *
  */
 public enum EYesNo {
