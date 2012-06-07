@@ -14,6 +14,7 @@ de.tudarmstadt.ukp.lmf.transform
 de.tudarmstadt.ukp.lmf.transform.framenet
 de.tudarmstadt.ukp.lmf.transform.germanet
 de.tudarmstadt.ukp.lmf.transform.gvc
+de.tudarmstadt.ukp.lmf.transform.imslex
 de.tudarmstadt.ukp.lmf.transform.omegawiki
 de.tudarmstadt.ukp.lmf.transform.verbnet
 de.tudarmstadt.ukp.lmf.transform.wikipedia
