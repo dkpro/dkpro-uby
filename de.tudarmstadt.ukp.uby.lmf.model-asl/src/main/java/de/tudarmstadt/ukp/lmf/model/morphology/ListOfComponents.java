@@ -24,9 +24,12 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
 /**
- * This class represents a list of multiword components
- * @author sh
- *
+ * ListOfComponents is a class representing the aggregative aspect of a multiword expression.<br>
+ * The List Of Components class is in a zero or one aggregate relationship with the {@link LexicalEntry}class.
+ * Each ListOfComponents instance should have at least two {@link Component} instances.
+ * 
+ * @author Silvana Hartmann
+ * 
  */
 public class ListOfComponents implements Comparable<ListOfComponents> {
 	
@@ -35,8 +38,8 @@ public class ListOfComponents implements Comparable<ListOfComponents> {
 	private List<Component> components;
 	
 	/**
-	 * 
-	 * @param components the components to set
+	 * Sets the {@link List} of all {@link Components} contained in this {@link ListOfComponents} instance.
+	 * @param components list of all components to set
 	 */
 	public void setComponents(List<Component> components) {
 		this.components = components;
@@ -51,8 +54,14 @@ public class ListOfComponents implements Comparable<ListOfComponents> {
 	}
 
 	/**
-	 * 
-	 * @return the Components
+	 * Returns the {@link List} of all {@link Component} instances contained in this
+	 * {@link ListOfComponents}.
+	 * @return all components contained in this list of components or an empty list,
+	 * if the components are not set. <p>
+	 * <i> Note that Uby-LMF requires that all list of components should contain at least two
+	 * components. Absence of the components may happen as a result of an incomplete conversion
+	 * of the original resource.
+	 * </i>
 	 */
 	public List<Component> getComponents() {
 		return components;

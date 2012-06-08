@@ -58,42 +58,53 @@ public class FormRepresentation implements IHasLanguageIdentifier, Comparable<Fo
 	private String orthographyName;
 
 	/**
-	 * @return the languageIdentifier
+	 * Returns the unique language identifier of this {@link FormRepresentation} instance.
+	 * @return the unique language identifier of this form representation or null, if the
+	 * language identifier is not set
+	 * @see ELanguageIdentifier
 	 */
 	public ELanguageIdentifier getLanguageIdentifier() {
 		return languageIdentifier;
 	}
 
 	/**
-	 * @param languageIdentifier the languageIdentifier to set
+	 * Sets the unique language identifier of this {@link FormRepresentation} instance.
+	 * @param languageIdentifier the unique language identifier to set
+	 * @see ELanguageIdentifier
 	 */
 	public void setLanguageIdentifier(ELanguageIdentifier languageIdentifier) {
 		this.languageIdentifier = languageIdentifier;
 	}
 
 	/**
-	 * @return the writtenForm
+	 * Returns the written string that represents this {@link FormRepresentation} instance.
+	 * @return the written form representing the form representation or null, if the written form
+	 * is not set
 	 */
 	public String getWrittenForm() {
 		return writtenForm;
 	}
 
 	/**
-	 * @param writtenForm the writtenForm to set
+	 * Sets the written string that represents this {@link FormRepresentation} instance.
+	 * @param writtenForm the written string to set
 	 */
 	public void setWrittenForm(String writtenForm) {
 		this.writtenForm = writtenForm;
 	}
 
 	/**
-	 * @return the phoneticForm
+	 * Returns the spoken string of this {@link FormRepresentation} instance.
+	 * @return the spoken string of the form representation or null, if the spoken string
+	 * is not set
 	 */
 	public String getPhoneticForm() {
 		return phoneticForm;
 	}
 
 	/**
-	 * @param phoneticForm the phoneticForm to set
+	 * Sets the spoken string of this {@link FormRepresentation} instance.
+	 * @param phoneticForm the spoken string to set
 	 */
 	public void setPhoneticForm(String phoneticForm) {
 		this.phoneticForm = phoneticForm;
@@ -114,42 +125,71 @@ public class FormRepresentation implements IHasLanguageIdentifier, Comparable<Fo
 	}
 
 	/**
-	 * @return the geographicalVariant
+	 * Returns another variant of the written form in this {@link FormRepresentation} instance
+	 * that is specific in a certain geographical region. 
+	 * @return another variant of written text of this form representation or null, if
+	 * the form representation does not have another geographical variant set 
+	 * @see FormRepresentation#getWrittenForm()
 	 */
 	public String getGeographicalVariant() {
 		return geographicalVariant;
 	}
 
 	/**
-	 * @param geographicalVariant the geographicalVariant to set
+	 * Sets another variant of the written form used in this {@link FormRepresentation} instance
+	 * that is specific in a certain geographical region.
+	 * @param geographicalVariant the geographical variant to set
+	 * @see FormRepresentation#setWrittenForm(String)
 	 */
 	public void setGeographicalVariant(String geographicalVariant) {
 		this.geographicalVariant = geographicalVariant;
 	}
 
 	/**
-	 * @return the hyphenation
+	 * Returns the division of the written form of this {@link FormRepresentation} instance,
+	 * such as at the end of a line, according to a given set of rules.<p>
+	 * <i>Example (english): pho-ne-ti-cian <br>
+	 * Words are hyphenated in order to block text efficiently and attractively for printing.
+	 * Rules for syllabification and hyphenation can differ in some languages and in some situations.
+	 * </i>
+	 * @return the division of the written form of this form representation or null, if the
+	 * form representation does not have the division of its written form set
+	 * @see FormRepresentation#getWrittenForm()
 	 */
 	public String getHyphenation() {
 		return hyphenation;
 	}
 
 	/**
-	 * @param hyphenation the hyphenation to set
+	 * Sets the division of the written form of this {@link FormRepresentation} instance,
+	 * such as at the end of a line, according to a given set of rules.<p>
+	 * <i>Example (english): pho-ne-ti-cian <br>
+	 * Words are hyphenated in order to block text efficiently and attractively for printing.
+	 * Rules for syllabification and hyphenation can differ in some languages and in some situations.
+	 * </i>
+	 * @param hyphenation the division of the written form of this form representation to set
+	 * @see FormRepresentation#setWrittenForm(String)
 	 */
 	public void setHyphenation(String hyphenation) {
 		this.hyphenation = hyphenation;
 	}
 
 	/**
-	 * @return the ortographyName
+	 * Returns the name of the orthography used in this {@link FormRepresentation}.<p>
+	 * For instance, an orthographe name can be <i>"arabic"</i> or <i>"arabic unpointed"</i>.
+	 * @return the name of the orthography used in the written form of this form representation
+	 * or null, if the name of orthography is not set
+	 * @see FormRepresentation#getWrittenForm()
 	 */
 	public String getOrthographyName() {
 		return orthographyName;
 	}
 
 	/**
-	 * @param orthographyName the ortographyName to set
+	 * Sets the name of the orthography used in this {@link FormRepresentation} instance.<p>
+	 * For instance, an orthographe name can be <i>"arabic"</i> or <i>"arabic unpointed"</i>.
+	 * @param orthographyName the name to set
+	 * @see FormRepresentation#setWrittenForm(String)
 	 */
 	public void setOrthographyName(String orthographyName) {
 		this.orthographyName = orthographyName;
@@ -179,16 +219,7 @@ public class FormRepresentation implements IHasLanguageIdentifier, Comparable<Fo
 	    FormRepresentation otherFormRepresentation = (FormRepresentation) other;
 	    
 	    
-	    boolean result=
-	    	((this.languageIdentifier == null && otherFormRepresentation.languageIdentifier == null) || (
-	    	this.languageIdentifier != null && 	otherFormRepresentation.languageIdentifier != null &&	
-	    	this.languageIdentifier.toString().equals(otherFormRepresentation.languageIdentifier.toString())))
-	    && this.areEqual(this.writtenForm, otherFormRepresentation.writtenForm)
-	    && this.areEqual(this.phoneticForm, otherFormRepresentation.phoneticForm)
-	    && this.areEqual(this.sound, otherFormRepresentation.sound)
-	    && this.areEqual(this.geographicalVariant, otherFormRepresentation.geographicalVariant)
-	    && this.areEqual(this.orthographyName, otherFormRepresentation.orthographyName);
-	    return result;
+	   return this.toString().equals(otherFormRepresentation.toString());
 	  }
 	
 	public int hashCode() { 
@@ -202,24 +233,5 @@ public class FormRepresentation implements IHasLanguageIdentifier, Comparable<Fo
 	    hash = hash * 31 + (this.orthographyName == null ? 0 : this.orthographyName.hashCode());
 	    return hash;
 	  }
-	
-	/**
-	 * Checks if two consumed String are equal
-	 * this method is null-proof
-	 * @param s1
-	 * @param s2
-	 * @return true only if s1 and s2 are equal
-	 */
-	private boolean areEqual(String s1, String s2){
-		if(s1 == null)
-			if(s2 == null)
-				return true;
-			else return false;
-		else
-			if(s2 == null)
-				return false;
-			else return s1.equals(s2);	
-	}
-	
 	
 }

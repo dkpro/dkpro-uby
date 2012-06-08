@@ -17,6 +17,7 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.morphology;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.meta.Frequency;
@@ -24,26 +25,31 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
 /**
- * This class represents a Lemma
- * @author maksuti
+ * Lemma is a class representing a form chosen by convention to designate the {@link LexicalEntry}.
+ * The Lemma class is in a one to one aggregate association with the  lexical entry class and contains
+ * at least one {@link FormRepresentation} instance.
+ *  
+ * @author Zijad Maksuti
  *
  */
 public class Lemma {
 	
 	// FormRepresentations of this lemma
 	@VarType(type = EVarType.CHILDREN)
-	private List<FormRepresentation> formRepresentations;
+	private List<FormRepresentation> formRepresentations = new ArrayList<FormRepresentation>();
 	
 	private String lexicalEntryId;
 	
 	// frequency information for this lemma
 	@VarType(type = EVarType.CHILDREN)
-	private List<Frequency> frequencies;
+	private List<Frequency> frequencies  = new ArrayList<Frequency>();
 	
 	
 
 	/**
-	 * @return the lexicalEntryId
+	 * Returns the unique identifier of the {@link LexicalEntry} instance associated with this
+	 * {@link Lemma}.
+	 * @return the unique identifier of the lexical entry associated with this lemma
 	 */
 	public String getLexicalEntryId() {
 		return lexicalEntryId;
@@ -57,14 +63,20 @@ public class Lemma {
 	}
 
 	/**
-	 * @param formRepresentations the formRepresentations to set
+	 * Sets the {@link List} of all {@link FormRepresentation} instances of this {@link Lemma}.
+	 * @param formRepresentations the list of all form representations to set
 	 */
 	public void setFormRepresentations(List<FormRepresentation> formRepresentations) {
 		this.formRepresentations = formRepresentations;
 	}
 
 	/**
-	 * @return the formRepresentations
+	 * Returns the {@link List} of all {@link FormRepresentation} instances of this {@link Lemma}
+	 * instance.
+	 * @return all form representation of this lemma or an empty list, if the lemma does not have any form
+	 * representations set. <p>
+	 * <i> Note that Uby-LMF requires that every lemma has at least one form representation. Absence
+	 * of form representations may happen as a result of incomplete conversion of the original resource.</i>
 	 */
 	public List<FormRepresentation> getFormRepresentations() {
 		return formRepresentations;
