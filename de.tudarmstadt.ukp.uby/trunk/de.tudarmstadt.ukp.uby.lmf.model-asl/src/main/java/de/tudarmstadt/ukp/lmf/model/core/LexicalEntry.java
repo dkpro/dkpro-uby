@@ -36,7 +36,7 @@ import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticBehaviour;
 
 /**
  * LexicalEntry is a class representing a lexeme in a given language. The LexicalEntry is a 
- * container for managing the Form and {@link Sense} classes.
+ * container for managing the {@link RelatedForm}, {@link WordForm} and {@link Sense} classes.
  * Therefore, the LexicalEntry manages the relationship between the forms and their related senses.
  * <p> A  LexicalEntry instance can have from zero to many different senses.
  * 

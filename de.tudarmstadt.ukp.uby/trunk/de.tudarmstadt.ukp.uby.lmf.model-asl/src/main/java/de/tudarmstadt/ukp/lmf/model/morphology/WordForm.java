@@ -17,8 +17,10 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.morphology;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.enums.ECase;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalGender;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalNumber;
@@ -30,8 +32,11 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
 /**
- * This class represents a LMF-WordForm
- * @author maksuti
+ * WordForm is a class representing a form that a lexeme, represented by a {@link LexicalEntry}
+ * instance, can take when used in a sentence or a phrase. WordForm class contains
+ * at least one {@link FormRepresentation} instance.
+ * 
+ * @author Zijad Maksuti
  *
  */
 public class WordForm {
@@ -62,78 +67,114 @@ public class WordForm {
 	
 	// FormRepresentation of this WordForm
 	@VarType(type = EVarType.CHILDREN)
-	private List<FormRepresentation> formRepresentations;
+	private List<FormRepresentation> formRepresentations = new ArrayList<FormRepresentation>();
 	
 	// Frequency information for this WordForm
 	@VarType(type = EVarType.CHILDREN)
-	private List<Frequency> frequencies;
+	private List<Frequency> frequencies = new ArrayList<Frequency>();
 	
 
 	/**
-	 * @return the grammaticalNumber
+	 * Returns the grammatical number of this {@link WordForm} instance. 
+	 * @return the grammatical number of this word form or null, if the
+	 * word form does not have this attribute set
+	 * @see EGrammaticalNumber
+	 * @see #getFormRepresentations()
 	 */
 	public EGrammaticalNumber getGrammaticalNumber() {
 		return grammaticalNumber;
 	}
 
 	/**
-	 * @param grammaticalNumber the grammaticalNumber to set
+	 * Sets the grammatical number of this {@link WordForm} instance.
+	 * @param grammaticalNumber the grammatical number to set
+	 * @see EGrammaticalNumber
 	 */
 	public void setGrammaticalNumber(EGrammaticalNumber grammaticalNumber) {
 		this.grammaticalNumber = grammaticalNumber;
 	}
 
 	/**
-	 * @return the grammaticalGender
+	 * Returns the grammatical gender of this {@link WordForm} instance. 
+	 * @return the grammatical gender of this word form or null, if the
+	 * word form does not have this attribute set
+	 * @see EGrammaticalGender
+	 * @see #getFormRepresentations()
 	 */
 	public EGrammaticalGender getGrammaticalGender() {
 		return grammaticalGender;
 	}
 
 	/**
-	 * @param grammaticalGender the grammaticalGender to set
+	 * Sets the grammatical gender of this {@link WordForm} instance.
+	 * @param grammaticalGender the grammatical gender to set
+	 * @see EGrammaticalGender
 	 */
 	public void setGrammaticalGender(EGrammaticalGender grammaticalGender) {
 		this.grammaticalGender = grammaticalGender;
 	}
 
 	/**
-	 * @return the _case
+	 * Returns the case attribute of this {@link WordForm} instance.
+	 * @return the case of this word form or null, if the
+	 * word form does not have this attribute set
+	 * @see ECase
 	 */
 	public ECase getCase() {
 		return _case;
 	}
 
 	/**
-	 * @param case1 the _case to set
+	 * Sets the case attribute of this {@link WordForm} instance.
+	 * @param _case the case to set
+	 * @see ECase
 	 */
-	public void setCase(ECase case1) {
-		_case = case1;
+	public void setCase(ECase _case) {
+		this._case = _case;
 	}
 
 	/**
-	 * @return the person
+	 * Returns the person attribute of this {@link WordForm} instance.
+	 * 
+	 * @return the person of this word form or null, if the
+	 * attribute is not set
+	 * 
+	 * @see EPerson
 	 */
 	public EPerson getPerson() {
 		return person;
 	}
 
 	/**
-	 * @param person the person to set
+	 * Sets the person attribute of this {@link WordForm} instance.
+	 * 
+	 * @param person the person to set or null, if the
+	 * attribute is not set
+	 * 
+	 * @see EPerson
 	 */
 	public void setPerson(EPerson person) {
 		this.person = person;
 	}
 
 	/**
-	 * @return the tense
+	 * Returns the tense of this {@link WordForm} instance.
+	 * 
+	 * @return the tense attribute of this word  form or null,
+	 * if the attribute is not set
+	 * 
+	 * @see ETense
 	 */
 	public ETense getTense() {
 		return tense;
 	}
 
 	/**
-	 * @param tense the tense to set
+	 * Sets the tense attribute of this {@link WordForm} instance.
+	 * 
+	 * @param tense the tense attribute to set
+	 * 
+	 * @See ETense
 	 */
 	public void setTense(ETense tense) {
 		this.tense = tense;
@@ -154,30 +195,51 @@ public class WordForm {
 	}
 
 	/**
-	 * @return the formRepresentations
+	 * Returns the {@link List} of all {@link FormRepresentation} instances of this
+	 * {@link WordForm}.
+	 * 
+	 * @return the list of all form representations of this word form or an empty list,
+	 * if the word form does not have any form representations set. <p>
+	 * 
+	 * <i>Note that, according to Uby-LMF, every word form contains
+	 * at least one form representation. Absence of form representations in a word
+	 * form may indicate an error in the conversion of the original resource.</i>
 	 */
 	public List<FormRepresentation> getFormRepresentations() {
 		return formRepresentations;
 	}
 
 	/**
-	 * @param formRepresentations the formRepresentations to set
+	 * Sets the {@link List} of all {@link FormRepresentation} instances of this
+	 * {@link WordForm}.
+	 * 
+	 * @param formRepresentations the list of form representations to set. <p>
+	 * 
+	 * <i>Note that, according to Uby-LMF, every word form contains
+	 * at least one form representation.
+	 * </i>
+	 * 
 	 */
 	public void setFormRepresentations(List<FormRepresentation> formRepresentations) {
 		this.formRepresentations = formRepresentations;
 	}
 	
 	/**
-	 * 
-	 * @param frequencies the frequencies to set
+	 * Sets the {@link List} of all {@link Frequency} instances which
+	 * represent the commonness of this {@link WordForm}. 
+	 * @param frequencies the list of frequencies to set
 	 */
 	public void setFrequencies(List<Frequency> frequencies) {
 		this.frequencies = frequencies;
 	}
 
 	/**
+	 * Returns the {@link List} of all {@link Frequency} instances which
+	 * represent the commonness of this {@link WordForm}.
 	 * 
-	 * @return the frequencies
+	 * @return the list of frequencies which represent the commonness of this
+	 * word form or an empty list, if the word form does not have any
+	 * frequencies set
 	 */
 	public List<Frequency> getFrequencies() {
 		return frequencies;

@@ -25,6 +25,16 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 
+/**
+ * SenseAxis is a class representing the relationship between different closely related
+ * {@link Sense} instances in different languages and implements approach based on the
+ * interlingual pivot.
+ * The purpose is to describe the translation of lexemes, represented through
+ * {@link LexicalEntry} instances, from one language to another.
+ * 
+ * @author Zijad Maksuti
+ *
+ */
 public class SenseAxis {
 		 
 	// Id of this SenseAxis
