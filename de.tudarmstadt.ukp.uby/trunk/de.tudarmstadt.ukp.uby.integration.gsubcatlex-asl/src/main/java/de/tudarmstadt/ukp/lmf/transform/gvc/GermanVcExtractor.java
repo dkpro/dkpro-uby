@@ -21,7 +21,6 @@ package de.tudarmstadt.ukp.lmf.transform.gvc;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -40,8 +39,8 @@ import de.tudarmstadt.ukp.lmf.model.enums.ECase;
 import de.tudarmstadt.ukp.lmf.model.enums.EComplementizer;
 import de.tudarmstadt.ukp.lmf.model.enums.EDeterminer;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalFunction;
+import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalNumber;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
-import de.tudarmstadt.ukp.lmf.model.enums.ENumber;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
 import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticCategory;
 import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticProperty;
@@ -402,7 +401,7 @@ public class GermanVcExtractor {
 						syntacticArgument.setPrepositionType(splits[1]);
 					}
 					if(attName.equals("number")) {
-						syntacticArgument.setNumber(ENumber.valueOf(splits[1]));
+						syntacticArgument.setNumber(EGrammaticalNumber.valueOf(splits[1]));
 					}
 					if(attName.equals("lexeme")) {
 						syntacticArgument.setLexeme(splits[1]);

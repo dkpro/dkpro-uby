@@ -27,14 +27,20 @@ public interface IHasID {
 
 	
 	/**
-	 * Returns the unique identifier of the Object
-	 * @return the unique identifier of the Object
+	 * Returns the unique identifier of the UBY-LMF object.
+	 * @return the unique identifier of the UBY-LMF object or null,
+	 * if the object does not have the identifier set <p>
+	 * <i>
+	 * Note that all UBY-LMF classes implementing {@link IHasID} interface should
+	 * have this field set. Absence of the value of identifier field may indicate to an
+	 * incomplete conversion process of the original resource.
+	 * </i>
 	 */
 	public String getId();
 	
 	/**
-	 * Sets the unique identifier of the Object
-	 * @param id The unique identifier to set
+	 * Sets the unique identifier of this UBY-LMF object.
+	 * @param id the unique identifier to set
 	 */
 	public void setId(String id);
 }

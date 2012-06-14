@@ -255,7 +255,7 @@ public class SubcategorizationFrameExtractor {
 						syntacticArgument.setPrepositionType(splits[1]);
 					}
 					if(attName.equals("number")) {
-						syntacticArgument.setNumber(ENumber.valueOf(splits[1]));
+						syntacticArgument.setNumber(EGrammaticalNumber.valueOf(splits[1]));
 					}
 					if(attName.equals("lex")) {
 						syntacticArgument.setLexeme(splits[1]);

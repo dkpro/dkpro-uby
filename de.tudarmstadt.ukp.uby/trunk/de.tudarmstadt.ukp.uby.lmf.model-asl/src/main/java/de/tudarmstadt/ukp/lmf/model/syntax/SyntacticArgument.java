@@ -23,7 +23,7 @@ import de.tudarmstadt.ukp.lmf.model.enums.ECase;
 import de.tudarmstadt.ukp.lmf.model.enums.EComplementizer;
 import de.tudarmstadt.ukp.lmf.model.enums.EDeterminer;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalFunction;
-import de.tudarmstadt.ukp.lmf.model.enums.ENumber;
+import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalNumber;
 import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticCategory;
 import de.tudarmstadt.ukp.lmf.model.enums.ETense;
 import de.tudarmstadt.ukp.lmf.model.enums.EVerbForm;
@@ -65,7 +65,7 @@ public class SyntacticArgument implements IHasID, Comparable<SyntacticArgument>{
 
 	// Number property of this SyntacticArgument
 	@VarType(type = EVarType.ATTRIBUTE)
-	private ENumber number;
+	private EGrammaticalNumber number;
 
 	// Lexeme of this SyntacticArgument: it, there or specific complementizer, e.g. dass, that, how, wie ...
 	@VarType(type = EVarType.ATTRIBUTE)
@@ -232,14 +232,14 @@ public class SyntacticArgument implements IHasID, Comparable<SyntacticArgument>{
 	/**
 	 * @return the number
 	 */
-	public ENumber getNumber() {
+	public EGrammaticalNumber getNumber() {
 		return number;
 	}
 
 	/**
 	 * @param number the number to set
 	 */
-	public void setNumber(ENumber number) {
+	public void setNumber(EGrammaticalNumber number) {
 		this.number = number;
 	}
 

@@ -38,7 +38,7 @@ public class ListOfComponents implements Comparable<ListOfComponents> {
 	private List<Component> components;
 	
 	/**
-	 * Sets the {@link List} of all {@link Components} contained in this {@link ListOfComponents} instance.
+	 * Sets the {@link List} of all {@link Component} instances contained in this {@link ListOfComponents} instance.
 	 * @param components list of all components to set
 	 */
 	public void setComponents(List<Component> components) {
