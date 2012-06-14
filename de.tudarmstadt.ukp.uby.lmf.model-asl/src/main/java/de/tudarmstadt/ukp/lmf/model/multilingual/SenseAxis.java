@@ -17,10 +17,12 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.multilingual;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.enums.ESenseAxisType;
+import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
@@ -35,7 +37,7 @@ import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
  * @author Zijad Maksuti
  *
  */
-public class SenseAxis {
+public class SenseAxis implements IHasID {
 		 
 	// Id of this SenseAxis
 	@VarType(type = EVarType.ATTRIBUTE)
@@ -64,45 +66,53 @@ public class SenseAxis {
 	
 	// Relations of this SenseAxis
 	@VarType(type = EVarType.CHILDREN)
-	private List<SenseAxisRelation> senseAxisRelations; 
+	private List<SenseAxisRelation> senseAxisRelations = new ArrayList<SenseAxisRelation>(); 
 
-	/**
-	 * @return the id
-	 */
 	public String getId() {
 		return id;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
 	/**
-	 * @return senseOne
+	 * Returns the first of two {@link Sense} instances aligned by this
+	 * {@link SenseAxis} instance.
+	 * @return the first of the two senses aligned by this sense axis or null
+	 * if the first sense is not set
+	 * @see #getSenseTwo()
 	 */
 	public Sense getSenseOne() {
 		return senseOne;
 	}
 
 	/**
-	 * @param set senseOne 
+	 * Sets the first of two {@link Sense} instances aligned by this
+	 * {@link SenseAxis} instance.
+	 * @param senseOne the first of the two senses aligned by this sense axis
+	 * @see #setSenseOne(Sense)
 	 */
 	public void setSenseOne(Sense senseOne) {
 		this.senseOne = senseOne;
 	}
 
 	/**
-	 * @return senseTwo
+	 * Returns the second of two {@link Sense} instances aligned by this
+	 * {@link SenseAxis} instance.
+	 * @return the second of the two senses aligned by this sense axis or null
+	 * if the second sense is not set
+	 * @see #getSenseOne()
 	 */
 	public Sense getSenseTwo() {
 		return senseTwo;
 	}
 
 	/**
-	 * @param set senseTwo 
+	 * Sets the second of two {@link Sense} instances aligned by this
+	 * {@link SenseAxis} instance.
+	 * @param senseTwo the second of the two senses aligned by this sense axis
+	 * @see #setSenseOne(Sense)
 	 */
 	public void setSenseTwo(Sense senseTwo) {
 		this.senseTwo = senseTwo;
@@ -110,14 +120,24 @@ public class SenseAxis {
 
 	
 	/**
-	 * @return the synsetOne
+	 * Returns the {@link Synset} containing the first of two {@link Sense} instances
+	 * aligned by this {@link SenseAxis}.
+	 * @return the synset containing the first of the two sense instances aligened
+	 * by this sense axis or null if this attribute is not set
+	 * @see #getSynsetTwo()
+	 * @see #getSenseOne()
 	 */
 	public Synset getSynsetOne() {
 		return synsetOne;
 	}
 
 	/**
-	 * @param synsetOne the synsetOne to set
+	 * Sets the {@link Synset} containing the first of two {@link Sense} instances
+	 * aligned by this {@link SenseAxis}.
+	 * @param synsetOne the synset containing the first of the two sense aligned by
+	 * this sense axis
+	 * @see #setSynsetTwo(Synset)
+	 * @see #setSenseOne(Sense)
 	 */
 	public void setSynsetOne(Synset synsetOne) {
 		this.synsetOne = synsetOne;
@@ -125,42 +145,61 @@ public class SenseAxis {
 
 	
 	/**
-	 * @return the synsetTwo
+	 * Returns the {@link Synset} containing the second of two {@link Sense} instances
+	 * aligned by this {@link SenseAxis}.
+	 * @return the synset containing the second of the two sense instances aligened
+	 * by this sense axis or null if this attribute is not set
+	 * @see #getSynsetTwo()
+	 * @see #getSenseOne()
 	 */
 	public Synset getSynsetTwo() {
 		return synsetTwo;
 	}
 
 	/**
-	 * @param synsetTwo the synsetTwo to set
+	 * Sets the {@link Synset} containing the second of two {@link Sense} instances
+	 * aligned by this {@link SenseAxis}.
+	 * @param synsetOne the synset containing the second of the two sense aligned by
+	 * this sense axis
+	 * @see #setSynsetOne(Synset)
+	 * @see #setSenseTwo(Sense)
 	 */
 	public void setSynsetTwo(Synset synsetTwo) {
 		this.synsetTwo = synsetTwo;
 	}
 
 	/**
-	 * @return the senseAxisType
+	 * Returns the type of this {@link SenseAxis} instance.
+	 * @return the type of this sense axis or null if the type attribute is not set
+	 * @see ESenseAxisType
 	 */
 	public ESenseAxisType getSenseAxisType() {
 		return senseAxisType;
 	}
 
 	/**
-	 * @param senseAxisType the senseAxisType to set
+	 * Sets the type of this {@link SenseAxis} instance.
+	 * @param senseAxisType the type to set to this sense axis
 	 */
 	public void setSenseAxisType(ESenseAxisType senseAxisType) {
 		this.senseAxisType = senseAxisType;
 	}
 
 	/**
-	 * @param senseAxisRelations the senseAxisRelations to set
+	 * Sets the {@link List} of relations, represented by {@link SenseAxisRelation} instances,
+	 * which include this {@link SenseAxis} instance.
+	 * @param senseAxisRelations the list of sense axis relations which include this
+	 * sense axis
 	 */
 	public void setSenseAxisRelations(List<SenseAxisRelation> senseAxisRelations) {
 		this.senseAxisRelations = senseAxisRelations;
 	}
 
 	/**
-	 * @return the senseAxisRelations
+	 * Returns the {@link List} of relations, represented by {@link SenseAxisRelation} instances,
+	 * which include this {@link SenseAxis} instance.
+	 * @return the the list of sense axis relations which include this sense axis or
+	 * an empty list if the sense axis is not included by any relation 
 	 */
 	public List<SenseAxisRelation> getSenseAxisRelations() {
 		return senseAxisRelations;

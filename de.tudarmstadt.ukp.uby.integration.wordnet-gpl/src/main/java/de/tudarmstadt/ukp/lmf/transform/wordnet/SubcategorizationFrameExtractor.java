@@ -28,7 +28,7 @@ import de.tudarmstadt.ukp.lmf.model.enums.ECase;
 import de.tudarmstadt.ukp.lmf.model.enums.EComplementizer;
 import de.tudarmstadt.ukp.lmf.model.enums.EDeterminer;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalFunction;
-import de.tudarmstadt.ukp.lmf.model.enums.ENumber;
+import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalNumber;
 import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticCategory;
 import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticProperty;
 import de.tudarmstadt.ukp.lmf.model.enums.ETense;
@@ -277,7 +277,7 @@ public class SubcategorizationFrameExtractor {
 										}
 										else
 											if(attName.equals("number")) {
-												syntacticArgument.setNumber(ENumber.valueOf(splits[1]));
+												syntacticArgument.setNumber(EGrammaticalNumber.valueOf(splits[1]));
 											}
 											else
 												if(attName.equals("lex")) {

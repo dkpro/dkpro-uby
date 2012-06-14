@@ -39,7 +39,7 @@ import de.tudarmstadt.ukp.lmf.model.enums.EComplementizer;
 import de.tudarmstadt.ukp.lmf.model.enums.EDeterminer;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalFunction;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
-import de.tudarmstadt.ukp.lmf.model.enums.ENumber;
+import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalNumber;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
 import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticCategory;
 import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticProperty;
@@ -524,7 +524,7 @@ public class IMSlexExtractor {
 						syntacticArgument.setPrepositionType(splits[1]);
 					}
 					if(attName.equals("number")) {
-						syntacticArgument.setNumber(ENumber.valueOf(splits[1]));
+						syntacticArgument.setNumber(EGrammaticalNumber.valueOf(splits[1]));
 					}
 					if(attName.equals("lexeme")) {
 						syntacticArgument.setLexeme(splits[1]);
