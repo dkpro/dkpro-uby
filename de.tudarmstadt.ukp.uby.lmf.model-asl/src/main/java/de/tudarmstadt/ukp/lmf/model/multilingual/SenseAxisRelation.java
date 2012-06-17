@@ -20,6 +20,13 @@ package de.tudarmstadt.ukp.lmf.model.multilingual;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
+/**
+ * SenseAxisRelation class represents the relationship between two different
+ * {@link SenseAxis} instances.
+ * 
+ * @author Zijad Maksuti
+ *
+ */
 public class SenseAxisRelation {
 	// Targets of this SenseAxisRelation
 	@VarType(type = EVarType.IDREF)
@@ -34,42 +41,50 @@ public class SenseAxisRelation {
 	private String relName;
 
 	/**
-	 * @return the targets
+	 * Returns the {@link SenseAxis} instance targeted by this {@ink SenseAxisRelation}.
+	 * @return the sense axis targeted by this relation or null if the relation does not
+	 * have the target set
 	 */
 	public SenseAxis getTarget() {
 		return target;
 	}
 
 	/**
-	 * @param targets the targets to set
+	 * Sets the {@link SenseAxis} instance targeted by this {@link SenseAxisRelation}.
+	 * @param target the sense axis to set
 	 */
 	public void setTarget(SenseAxis target) {
 		this.target = target;
 	}
 
 	/**
-	 * @return the relType
+	 * Returns the type of this {@link SenseAxisRelation} instance.
+	 * @return the type of this relation or null if the type is not set
 	 */
 	public String getRelType() {
 		return relType;
 	}
 
 	/**
-	 * @param relType the relType to set
+	 * Sets the type of this {@link SenseAxisRelation} instance.
+	 * @param relType the type of the relation to set
 	 */
 	public void setRelType(String relType) {
 		this.relType = relType;
 	}
 	
 	/**
-	 * @param relName the relName to set
+	 * Sets the name of the relation represented by this {@link SenseAxisRelation} instance.
+	 * @param relName the name to set
 	 */
 	public void setRelName(String relName) {
 		this.relName = relName;
 	}
 
 	/**
-	 * @return the relName
+	 * Returns the name of the relation represented by this {@link SenseAxisRelation} instance.
+	 * @return the name of the relation represented by this sense axis relation or null
+	 * if the name is not set
 	 */
 	public String getRelName() {
 		return relName;

@@ -21,9 +21,10 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
 /**
- * This class represent a reference of a LMF-Class to
- * an external Resource
- * @author maksuti
+ * MonolingualExternalRef is a class representing the relationship between a UBY-LMF
+ * class instance and an external system. 
+ * 
+ * @author Zijad Maksuti
  *
  */
 public class MonolingualExternalRef implements Comparable<MonolingualExternalRef> {
@@ -37,31 +38,67 @@ public class MonolingualExternalRef implements Comparable<MonolingualExternalRef
 	private String externalReference;
 
 	/**
-	 * @param externalSystem the externalSystem to set
+	 * Sets a {@link String} representation of an external system that this
+	 * {@link MonolingualExternalRef} instance is pointing to. Together with the
+	 * external reference attribute, this value fully identifies a link of a LMF class instance
+	 * to an external system.
+	 * @param externalSystem string representation of the external system to which this
+	 * monolingual external reference is pointing to
+	 * 
+	 * @see #setExternalSystem(String)
 	 */
 	public void setExternalSystem(String externalSystem) {
 		this.externalSystem = externalSystem;
 	}
 
 	/**
+	 * Returns a {@link String} representation of an external system that this
+	 * {@link MonolingualExternalRef} instance is pointing to. Together with the
+	 * external reference attribute, this value fully identifies a link of a LMF class instance
+	 * to an external system.
 	 * 
-	 * @return the externalSystem
+	 * @return externalSystem string representation of the external system to which this
+	 * monolingual external reference is pointing to or null if this attribute is not set<p>
+	 * <i>
+	 * Note that according to UBY-LMF, all instances of MonolingualExternalRef class
+	 * should have the value of this attribute set. Absence of external system information
+	 * may indicate to incomplete conversion process of the original resource.
+	 * </i>
+	 * 
+	 * @see #getExternalReference()
 	 */
 	public String getExternalSystem() {
 		return externalSystem;
 	}
 
 	/**
+	 * Sets the {@link String} representation of a particular node of an external system.
+	 * Together with the external system attribute, this value fully identifies a link of a
+	 * LMF class instance to an external system.
+	 *  
+	 * @param externalReference string representation a particular node of the external system to which this
+	 * monolingual external reference is pointing to
 	 * 
-	 * @param externalReference the externalReference to set
+	 * @see #setExternalSystem(String)
 	 */
 	public void setExternalReference(String externalReference) {
 		this.externalReference = externalReference;
 	}
 
 	/**
+	 * Returns the {@link String} representation of a particular node of an external system.
+	 * Together with the external system attribute, this value fully identifies a link of a
+	 * LMF class instance to an external system. 
 	 * 
-	 * @return the externalReference
+	 * @return string representation a particular node of the external system to which this
+	 * monolingual external reference is pointing to or null if this attribute is not set<p>
+	 * <i>
+	 * Note that according to UBY-LMF, all instances of MonolingualExternalRef class
+	 * should have the value of this attribute set. Absence of external reference information
+	 * may indicate to incomplete conversion process of the original resource.
+	 * </i>
+	 * 
+	 * @see #getExternalSystem()
 	 */
 	public String getExternalReference() {
 		return externalReference;
