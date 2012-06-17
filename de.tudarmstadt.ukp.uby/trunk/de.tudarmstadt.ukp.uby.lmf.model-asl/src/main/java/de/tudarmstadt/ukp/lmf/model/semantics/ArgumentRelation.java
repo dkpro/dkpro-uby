@@ -21,17 +21,10 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
 /**
- * This class represents a Relation of a SemanticArgument
- * to other SemanticArguments
- * @author maksuti
- *
- */
-/*
- * <!ELEMENT ArgumentRelation EMPTY>
-<!ATTLIST ArgumentRelation
-    target      IDREF #IMPLIED
-    relType    CDATA #IMPLIED
-    relName  CDATA #IMPLIED>
+ * This class represents an oriented relationship between {@link SemanticArgument} instances.
+ * 
+ * @author Zijad Maksuti
+ * 
  */
 public class ArgumentRelation implements Comparable<ArgumentRelation> {
 	
@@ -48,46 +41,50 @@ public class ArgumentRelation implements Comparable<ArgumentRelation> {
 	private String relName;
 	
 	/**
-	 * @return the targets
+	 * Returns the {@link SemanticArgument} instance targeted by this {@link ArgumentRelation}.
+	 * @return the semantic argument targeted by this argument relation or null if the
+	 * target is not set
 	 */
 	public SemanticArgument getTarget() {
 		return target;
 	}
 
 	/**
-	 * @param targets the targets to set
+	 * Sets the {@link SemanticArgument} instance targeted by this {@link ArgumentRelation}.
+	 * @param target the targeted semantic argument to set 
 	 */
 	public void setTarget(SemanticArgument target) {
 		this.target = target;
 	}
 
 	/**
-	 * 
-	 * @param relType the relType to set
+	 * Sets the type of this {@link ArgumentRelation}.
+	 * @param relType the type to set to this argument relation
 	 */
 	public void setRelType(String relType) {
 		this.relType = relType;
 	}
 
 	/**
+	 * Returns the type of this {@link ArgumentRelation} instance.
 	 * 
-	 * @return the relType
+	 * @return the type of this argument relation or null if the type is not set
 	 */
 	public String getRelType() {
 		return relType;
 	}
 
 	/**
-	 * 
-	 * @param relName the relName to set
+	 * Sets the name of the relation represented by this {@link ArgumentRelation} instance.
+	 * @param relName the name to set to this argument relation
 	 */
 	public void setRelName(String relName) {
 		this.relName = relName;
 	}
 
 	/**
-	 * 
-	 * @return the relName
+	 * Returns the name of the relation represented by this {@link ArgumentRelation} instance.
+	 * @return the name of this argument relation or null if the name is not set
 	 */
 	public String getRelName() {
 		return relName;

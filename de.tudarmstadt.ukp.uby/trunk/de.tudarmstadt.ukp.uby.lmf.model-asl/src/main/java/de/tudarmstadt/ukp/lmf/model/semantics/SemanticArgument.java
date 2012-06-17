@@ -17,6 +17,7 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.semantics;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,17 +31,10 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
 /**
- * This class represents an argument of a
- * semantic predicate
- * @author maksuti
+ * SemanticArgument is a class representing an argument of a given {@link SemanticPredicate}.
+ * 
+ * @author Zijad Maksuti
  *
- */
-/*<!ELEMENT SemanticArgument (ArgumentRelation*, Frequency*, SemanticLabel*)>
- * <!ATTLIST SemanticArgument
-    id                      ID #REQUIRED
-    semanticRole  CDATA #IMPLIED
-    semanticTypes IDREFS #IMPLIED
-    coreType (core|peripheral|coreUnexpressed|extraThematic) #IMPLIED>
  */
 public class SemanticArgument implements IHasID, Comparable<SemanticArgument>{
 
@@ -58,7 +52,7 @@ public class SemanticArgument implements IHasID, Comparable<SemanticArgument>{
 
 	// Relations to other semantic arguments
 	@VarType(type = EVarType.CHILDREN)
-	private List<ArgumentRelation> argumentRelations;
+	private List<ArgumentRelation> argumentRelations = new ArrayList<ArgumentRelation>();
 
 	// links to one or more synset instances
 	//@VarType(type = EVarType.IDREFS)
@@ -66,15 +60,15 @@ public class SemanticArgument implements IHasID, Comparable<SemanticArgument>{
 
 	// Frequency information for this argument
 	@VarType(type = EVarType.CHILDREN)
-	private List<Frequency> frequencies;
+	private List<Frequency> frequencies = new ArrayList<Frequency>();
 
 	// Semantic class information for this argument
 	@VarType(type = EVarType.CHILDREN)
-	private List<SemanticLabel> semanticLabels;
+	private List<SemanticLabel> semanticLabels = new ArrayList<SemanticLabel>();
 
 	// Definitions of this semantic argument
 	@VarType(type = EVarType.CHILDREN)
-	private List<Definition> definitions;
+	private List<Definition> definitions = new ArrayList<Definition>();
 
 	// incorporatedSemanticArgument yes/no?
 	@VarType(type = EVarType.ATTRIBUTE)

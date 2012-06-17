@@ -17,23 +17,43 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.semantics;
 
+import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
+/**
+ * PredicativeRepresentation class is a class representing the link between the {@link Sense} instance
+ *  and the {@link SemanticPredicate} instances.
+ *   
+ * @author Zijad Maksuti
+ *
+ */
 public class PredicativeRepresentation {
 	// Semantic Predicate of this PredicativeRepresentation
 	@VarType(type = EVarType.IDREF)
 	private SemanticPredicate predicate;
 
 	/**
-	 * @return the predicate
+	 * Returns the {@link SemanticPredicate} pointed by this {@link PredicativeRepresentation} instance.
+	 * 
+	 * @return the semantic predicate pointed by this predicative representation or null if the
+	 * predicate is not set.<p>
+	 * <i> Note that UBY-LMF requres that all instances of PredicativeRepresentation class should
+	 * have the semantic predicate attribute set. Absence of this attribute may indicate to
+	 * incomplete conversion process of the original resource.
+	 * </i> 
 	 */
 	public SemanticPredicate getPredicate() {
 		return predicate;
 	}
 
 	/**
-	 * @param predicate the predicate to set
+	 * Sets the {@link SemanticPredicate} pointed by this {@link PredicativeRepresentation} instance.
+	 * 
+	 * @param predicate the semantic predicate pointed by this predicative representation to set<p>
+	 * <i> Note that UBY-LMF requres that all instances of PredicativeRepresentation class should
+	 * have the semantic predicate attribute set.
+	 * </i>
 	 */
 	public void setPredicate(SemanticPredicate predicate) {
 		this.predicate = predicate;

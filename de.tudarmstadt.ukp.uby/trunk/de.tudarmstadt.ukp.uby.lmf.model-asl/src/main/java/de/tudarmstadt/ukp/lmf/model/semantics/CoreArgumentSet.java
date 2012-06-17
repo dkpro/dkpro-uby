@@ -23,10 +23,6 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
 public class CoreArgumentSet {
-/*	<!ELEMENT CoreArgumentSet EMPTY>
-	<!ATTLIST CoreArgumentSet
-	    elements IDREFS # IMPLIED>
-	    */
 	
 	// semantic types of this SemanticPredicate
 	@VarType(type = EVarType.IDREFS)
