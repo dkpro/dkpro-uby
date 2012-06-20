@@ -24,7 +24,9 @@ import java.util.List;
 import de.tudarmstadt.ukp.lmf.model.core.Definition;
 import de.tudarmstadt.ukp.lmf.model.enums.ECoreType;
 import de.tudarmstadt.ukp.lmf.model.enums.EYesNo;
+import de.tudarmstadt.ukp.lmf.model.interfaces.IHasDefinitions;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
+import de.tudarmstadt.ukp.lmf.model.interfaces.IHasSemanticLabels;
 import de.tudarmstadt.ukp.lmf.model.meta.Frequency;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
@@ -36,7 +38,7 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
  * @author Zijad Maksuti
  *
  */
-public class SemanticArgument implements IHasID, Comparable<SemanticArgument>{
+public class SemanticArgument implements IHasID, IHasDefinitions, IHasSemanticLabels, Comparable<SemanticArgument>{
 
 	// ID of this SemanticArgument
 	@VarType(type = EVarType.ATTRIBUTE)
@@ -53,10 +55,6 @@ public class SemanticArgument implements IHasID, Comparable<SemanticArgument>{
 	// Relations to other semantic arguments
 	@VarType(type = EVarType.CHILDREN)
 	private List<ArgumentRelation> argumentRelations = new ArrayList<ArgumentRelation>();
-
-	// links to one or more synset instances
-	//@VarType(type = EVarType.IDREFS)
-	//private List<Synset> semanticTypes;
 
 	// Frequency information for this argument
 	@VarType(type = EVarType.CHILDREN)
@@ -75,123 +73,136 @@ public class SemanticArgument implements IHasID, Comparable<SemanticArgument>{
 	private EYesNo isIncorporated;
 
 	/**
-	 * @return the definitions
+	 * Returns a {@link List} of {@link Definition} instances representing narrative description
+	 * of this {@link SemanticArgument} instance.
+	 * @return the list of definitons describing this semantic argument or an empty list
+	 * if the semantic argument does not have any definitions associated 
 	 */
 	public List<Definition> getDefinitions() {
 		return definitions;
 	}
 
 	/**
-	 * @param definitions the definitions to set
+	 * Sets the {@link List} of {@link Definition} instances representing narrative description
+	 * of this {@link SemanticArgument} instance.
+	 * @param definitions the list of definitions to set
 	 */
 	public void setDefinitions(List<Definition> definitions) {
 		this.definitions = definitions;
 	}
 
-
-
-
-	/**
-	 * @return the id
-	 */
 	public String getId() {
 		return id;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
 	/**
-	 * @return the semanticRole
+	 * Returns the {@link String} describing the semantic role of this {@link SemanticArgument} instance.<br>
+	 * Abstract semantic roles include thematic roles, such as agent, theme, and instrument, and secondary
+	 * roles such as location, time, and manner.
+	 * @return the semantic role of this semantic argument or null if the role is not set
 	 */
 	public String getSemanticRole() {
 		return semanticRole;
 	}
 
 	/**
-	 * @param semanticRole the semanticRole to set
+	 * Sets the {@link String} describing the semantic role of this {@link SemanticArgument} instance.<br>
+	 * @param semanticRole the semantic role to set
 	 */
 	public void setSemanticRole(String semanticRole) {
 		this.semanticRole = semanticRole;
 	}
 
 	/**
-	 * @return the argumentRelations
+	 * Returns the {@link List} of all relations, represented by {@link ArgumentRelation} instances,
+	 * in which this {@link SemanticArgument} participates.
+	 * @return the list of all relations in which this semantic argument participates or an empty list
+	 * if the semantic argument does not have any relations set
 	 */
 	public List<ArgumentRelation> getArgumentRelations() {
 		return argumentRelations;
 	}
 
 	/**
-	 *
-	 * @param coreType the coreType to set
+	 * Sets the core type of this {@link SemanticArgument} instance.
+	 * @param coreType the type to set
+	 * @see ECoreType
 	 */
 	public void setCoreType(ECoreType coreType) {
 		this.coreType = coreType;
 	}
 
 	/**
-	 *
-	 * @return the coreType
+	 * Returns the core type of this {@link SemanticArgument} instance.
+	 * @return the core type of this semantic argument or null if the type is not set
+	 * @see ECoreType
 	 */
 	public ECoreType getCoreType() {
 		return coreType;
 	}
 
 	/**
-	 * @param argumentRelations the argumentRelations to set
+	 * Sets the {@link List} of all relations, represented by {@link ArgumentRelation} instances,
+	 * in which this {@link SemanticArgument} participates.
+	 * @param argumentRelations the list of all relations in which this semantic argument participates to set
 	 */
 	public void setArgumentRelations(List<ArgumentRelation> argumentRelations) {
 		this.argumentRelations = argumentRelations;
 	}
 
 	/**
-	 *
-	 * @param frequencies the frequencies to set
+	 * Sets the {@link List} of all {@link Frequency} instances representing the corpus
+	 * frequency of this {@link SemanticArgument}.
+	 * @param frequencies the list of frequencies to set
 	 */
 	public void setFrequencies(List<Frequency> frequencies) {
 		this.frequencies = frequencies;
 	}
 
 	/**
-	 *
-	 * @return the frequencies
+	 * Returns the {@link List} of all {@link Frequency} instances representing the corpus
+	 * frequency of this {@link SemanticArgument}.
+	 * @return the list of all corpus frequencies of this semantic argument
 	 */
 	public List<Frequency> getFrequencies() {
 		return frequencies;
 	}
 
 	/**
-	 *
-	 * @param semanticLabels the semanticLabels to set
+	 * Associates a {@link List} of {@link SemanticLabel} instances to this
+	 * {@link SemanticArgument}.
+	 * @param semanticLabels the list of semantic labels to associate with this semantic argument
 	 */
 	public void setSemanticLabels(List<SemanticLabel> semanticLabels) {
 		this.semanticLabels = semanticLabels;
 	}
 
 	/**
-	 *
-	 * @return the semanticLabels
+	 * Returns the {@link List} of {@link SemanticLabel} instances associated with this
+	 * {@link SemanticArgument}.
+	 * @return the list of semantic labels associated with this semantic argument
 	 */
 	public List<SemanticLabel> getSemanticLabels() {
 		return semanticLabels;
 	}
 
 	/**
-	 * @return the isIncorporated
-	 */
-	@Deprecated
-	public EYesNo getIsIncorporated() {
-		return isIncorporated;
-	}
-
-	/**
-	 *
-	 * @return true if the isIncorporated attribute is yes, false otherwise
+	 * Returns true if and only if this {@link SemanticArgument} instance is incorporated
+	 * by a verb.<p>
+	 * <i>
+	 * Some verbs incorporate information about a particular semantic argument
+	 * (a semantic argument corresponds to a Frame Element in FrameNet terminology) in their
+	 * definition: such a semantic argument is called incorporated in FrameNet.<br>
+	 * In the case of smile, grimace, frown, pout, and scowl, the affected body part
+	 * is not separately expressed; it is said to be incorporated.
+	 * Likewise, in the FrameNet Placing frame, many verbs incorporate the Goal (i.e. the place where the Theme ends up)
+	 * such as bag.v, bin.v, bottle.v, box.v, cage.v, crate.v, file.v, garage.v.
+	 * </i>
+	 * @return true if this semantic argument is incorporated by a verb, false otherwise
 	 */
 	public boolean isIncorporated() {
 		return (isIncorporated.equals(EYesNo.yes)? true : false);
@@ -199,9 +210,23 @@ public class SemanticArgument implements IHasID, Comparable<SemanticArgument>{
 
 	/**
 	 * @param isIncorporated the isIncorporated to set
+	 * @deprecated use {@link #setIncorporated(boolean)} instead
 	 */
+	@Deprecated
 	public void setIsIncorporated(EYesNo isIncorporated) {
 		this.isIncorporated = isIncorporated;
+	}
+	
+	/**
+	 * Sets the incorporated attribute of this {@link SemanticArgument} instance.
+	 * @param incorporated set to true if this semantic argument instance is incorporated
+	 * by a verb, otherwise set to false
+	 */
+	public void setIncorporated(boolean incorporated) {
+		if(incorporated)
+			this.isIncorporated = EYesNo.yes;
+		else
+			this.isIncorporated = EYesNo.no;
 	}
 
 	@Override
@@ -215,21 +240,13 @@ public class SemanticArgument implements IHasID, Comparable<SemanticArgument>{
 		sb.append("SemanticArgument ").append("id").append(id);
 		sb.append(" semanticRole: ").append(semanticRole);
 		sb.append(" coreType: ").append(coreType);
-		if(argumentRelations != null) {
-			Collections.sort(argumentRelations);
-		}
+		Collections.sort(argumentRelations);
 		sb.append( "argumentRelations: ").append(argumentRelations);
-		if(frequencies != null) {
-			Collections.sort(frequencies);
-		}
+		Collections.sort(frequencies);
 		sb.append(" frequencies: ").append(frequencies);
-		if(semanticLabels != null) {
-			Collections.sort(semanticLabels);
-		}
+		Collections.sort(semanticLabels);
 		sb.append(" semanticLabels: ").append(semanticLabels);
-		if(definitions != null) {
-			Collections.sort(definitions);
-		}
+		Collections.sort(definitions);
 		sb.append(" definitions: ").append(definitions);
 		sb.append(" isIncorporated: ").append(isIncorporated);
 

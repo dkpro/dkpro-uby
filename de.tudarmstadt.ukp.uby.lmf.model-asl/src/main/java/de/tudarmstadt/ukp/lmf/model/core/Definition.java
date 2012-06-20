@@ -24,11 +24,13 @@ import java.util.List;
 import de.tudarmstadt.ukp.lmf.model.enums.EDefinitionType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
+import de.tudarmstadt.ukp.lmf.model.semantics.SemanticArgument;
 
 /**
  * Definition is a class representing a narrative description of a {@link Sense}.
- * It is displayed for human 
- * users to facilitate their understanding of the meaning of a {@link LexicalEntry}.
+ * It is displayed for human users to facilitate their understanding of the meaning of a
+ * {@link LexicalEntry}.<br>
+ * Instances of Definition class are also used for narrative description of a {@link SemanticArgument} instance.
  * 
  * @author Zijad Maksuti
  *

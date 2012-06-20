@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
+import de.tudarmstadt.ukp.lmf.model.interfaces.IHasFrequencies;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
 import de.tudarmstadt.ukp.lmf.model.meta.Frequency;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
@@ -46,7 +47,7 @@ import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticBehaviour;
  * @author Zijad Maksuti
  *
  */
-public class LexicalEntry implements IHasID, Comparable<LexicalEntry>{
+public class LexicalEntry implements IHasID, IHasFrequencies, Comparable<LexicalEntry>{
 	// Id of this LexicalEntry
 	@VarType(type = EVarType.ATTRIBUTE)
 	private String id;

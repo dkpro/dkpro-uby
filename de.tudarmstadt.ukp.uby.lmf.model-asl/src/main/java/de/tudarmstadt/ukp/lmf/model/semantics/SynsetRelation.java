@@ -20,6 +20,7 @@ package de.tudarmstadt.ukp.lmf.model.semantics;
 import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.enums.ERelTypeSemantics;
+import de.tudarmstadt.ukp.lmf.model.interfaces.IHasFrequencies;
 import de.tudarmstadt.ukp.lmf.model.meta.Frequency;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
@@ -29,7 +30,7 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
  * @author maksuti
  *
  */
-public class SynsetRelation {
+public class SynsetRelation implements IHasFrequencies{
 	
 	// Synsets targeted by this Relation
 	@VarType(type = EVarType.IDREF)

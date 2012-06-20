@@ -28,12 +28,13 @@ import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticCategory;
 import de.tudarmstadt.ukp.lmf.model.enums.ETense;
 import de.tudarmstadt.ukp.lmf.model.enums.EVerbForm;
 import de.tudarmstadt.ukp.lmf.model.enums.EYesNo;
+import de.tudarmstadt.ukp.lmf.model.interfaces.IHasFrequencies;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
 import de.tudarmstadt.ukp.lmf.model.meta.Frequency;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
-public class SyntacticArgument implements IHasID, Comparable<SyntacticArgument>{
+public class SyntacticArgument implements IHasID, IHasFrequencies, Comparable<SyntacticArgument>{
 
 	// Id of this SyntacticArgument
 	@VarType(type = EVarType.ATTRIBUTE)

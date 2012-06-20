@@ -17,33 +17,28 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.semantics;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.core.Definition;
 import de.tudarmstadt.ukp.lmf.model.enums.EYesNo;
+import de.tudarmstadt.ukp.lmf.model.interfaces.IHasDefinitions;
+import de.tudarmstadt.ukp.lmf.model.interfaces.IHasFrequencies;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
+import de.tudarmstadt.ukp.lmf.model.interfaces.IHasSemanticLabels;
 import de.tudarmstadt.ukp.lmf.model.meta.Frequency;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
 /**
- * This class represents a SemanticPredicate
- * @author maksuti
+ * SemanticPredicate is a class representing an abstract meaning together with its association
+ * with the {@link SemanticArgument} class.
+ * 
+ * @author Zijad Maksuti
  *
  */
-/*
- * <!ELEMENT SemanticPredicate (Definition*, SemanticArgument*, PredicateRelation*, Frequency*, SemanticLabel*, CoreArgumentSet*)>
-<!--	attribute name		comment
-	semanticTypes		links to one or more synset instances -->
-<!ATTLIST SemanticPredicate
-    id                      ID #REQUIRED
-    label CDATA #IMPLIED
-    semanticTypes IDREFS #IMPLIED
-    lexicalized (yes|no) #IMPLIED
-    perspectivalized (yes|no) #IMPLIED>
- */
-public class SemanticPredicate implements IHasID, Comparable<SemanticPredicate>{
+public class SemanticPredicate implements IHasID, IHasDefinitions, IHasFrequencies, IHasSemanticLabels, Comparable<SemanticPredicate>{
 
 	// Id of the SemanticPredicate
 	@VarType(type = EVarType.ATTRIBUTE)
@@ -55,7 +50,7 @@ public class SemanticPredicate implements IHasID, Comparable<SemanticPredicate>{
 
 	// semantic types of this SemanticPredicate
 	@VarType(type = EVarType.IDREFS)
-	private List<Synset> semanticTypes;
+	private List<Synset> semanticTypes = new ArrayList<Synset>();
 
 	// Semantic predicate is lexicalized
 	@VarType(type = EVarType.ATTRIBUTE)
@@ -67,98 +62,86 @@ public class SemanticPredicate implements IHasID, Comparable<SemanticPredicate>{
 
 	// Definitions of this SemanticPredicate
 	@VarType(type = EVarType.CHILDREN)
-	private List<Definition> definitions;
+	private List<Definition> definitions = new ArrayList<Definition>();
 
 	// Semantic Arguments of this SemanticPredicate
 	@VarType(type = EVarType.CHILDREN)
-	private List<SemanticArgument> semanticArguments;
+	private List<SemanticArgument> semanticArguments = new ArrayList<SemanticArgument>();
 
 	// Predicate Relations of this SemanticPredicate
 	@VarType(type = EVarType.CHILDREN)
-	private List<PredicateRelation> predicateRelations;
+	private List<PredicateRelation> predicateRelations = new ArrayList<PredicateRelation>();
 
 	// Frequency information for this SubcategorizationFrame
 	@VarType(type = EVarType.CHILDREN)
-	private List<Frequency> frequencies;
+	private List<Frequency> frequencies = new ArrayList<Frequency>();
 
 	// Semantic class information for this Sense
 	@VarType(type = EVarType.CHILDREN)
-	private List<SemanticLabel> semanticLabels;
+	private List<SemanticLabel> semanticLabels = new ArrayList<SemanticLabel>();
 
 	// Semantic class information for this Sense
 	@VarType(type = EVarType.CHILDREN)
-	private List<CoreArgumentSet> coreArgumentSets;
+	private List<CoreArgumentSet> coreArgumentSets = new ArrayList<CoreArgumentSet>();
 
-	/**
-	 * @return the definitions
-	 */
 	public List<Definition> getDefinitions() {
 		return definitions;
 	}
 
-	/**
-	 * @param definitions the definitions to set
-	 */
 	public void setDefinitions(List<Definition> definitions) {
 		this.definitions = definitions;
 	}
 
 	/**
-	 * @return the semanticArguments
+	 * Returns the {@link List} of all {@link SemanticArgument} instances associated
+	 * with this {@link SemanticPredicate}.
+	 * @return the list of all semantic arguments associated with this semantic predicate class or an empty list
+	 * if the semantic predicate does not have any associated arguments
 	 */
 	public List<SemanticArgument> getSemanticArguments() {
 		return semanticArguments;
 	}
 
 	/**
-	 * @param semanticArguments the semanticArguments to set
+	 * Sets the {@link List} of all {@link SemanticArgument} instances associated
+	 * with this {@link SemanticPredicate}.
+	 * @param the list of all associated semantic arguments to set
 	 */
 	public void setSemanticArguments(List<SemanticArgument> semanticArguments) {
 		this.semanticArguments = semanticArguments;
 	}
 
 	/**
-	 * @return the predicateRelations
+	 * Returns the {@link List} of all relations, represented by {@link PredicateRelation} instances,
+	 * in which this {@link SemanticArgument} instance participates.
+	 * @return the list of all predicate relations in which this semantic predicate participates or an empty
+	 * list if the semantic predicate does not participate in any relation
 	 */
 	public List<PredicateRelation> getPredicateRelations() {
 		return predicateRelations;
 	}
 
 	/**
-	 * @param predicateRelations the predicateRelations to set
+	 * Sets the {@link List} of all relations, represented by {@link PredicateRelation} instances,
+	 * in which this {@link SemanticArgument} instance participates.
+	 * @param the list of all predicate relations in which this semantic predicate participates to set
 	 */
 	public void setPredicateRelations(List<PredicateRelation> predicateRelations) {
 		this.predicateRelations = predicateRelations;
 	}
 
-	/**
-	 *
-	 * @param frequencies the frequencies to set
-	 */
 	public void setFrequencies(List<Frequency> frequencies) {
 		this.frequencies = frequencies;
 	}
 
-	/**
-	 *
-	 * @return the frequencies
-	 */
 	public List<Frequency> getFrequencies() {
 		return frequencies;
 	}
 
-	/**
-	 *
-	 * @param semanticLabels the semanticLabels to set
-	 */
 	public void setSemanticLabels(List<SemanticLabel> semanticLabels) {
 		this.semanticLabels = semanticLabels;
 	}
 
-	/**
-	 *
-	 * @return the semanticLabels
-	 */
 	public List<SemanticLabel> getSemanticLabels() {
 		return semanticLabels;
 	}

@@ -20,6 +20,7 @@ package de.tudarmstadt.ukp.lmf.model.morphology;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.tudarmstadt.ukp.lmf.model.interfaces.IHasFrequencies;
 import de.tudarmstadt.ukp.lmf.model.meta.Frequency;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
@@ -32,7 +33,7 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
  * @author Zijad Maksuti
  *
  */
-public class Lemma {
+public class Lemma implements IHasFrequencies {
 	
 	// FormRepresentations of this lemma
 	@VarType(type = EVarType.CHILDREN)
