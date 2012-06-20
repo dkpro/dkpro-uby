@@ -21,6 +21,7 @@ import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.core.Definition;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
+import de.tudarmstadt.ukp.lmf.model.interfaces.IHasDefinitions;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
@@ -30,7 +31,7 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
  * @author maksuti
  *
  */
-public class Synset implements IHasID, Comparable<Synset> {
+public class Synset implements IHasID, IHasDefinitions, Comparable<Synset> {
 
 	// Id of this Synset
 	@VarType(type = EVarType.ATTRIBUTE)

@@ -20,6 +20,7 @@ package de.tudarmstadt.ukp.lmf.model.morphology;
 import java.util.Collections;
 import java.util.List;
 
+import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 

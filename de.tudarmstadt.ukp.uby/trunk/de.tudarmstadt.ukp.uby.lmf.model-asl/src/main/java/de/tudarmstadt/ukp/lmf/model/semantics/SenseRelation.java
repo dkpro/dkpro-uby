@@ -22,6 +22,7 @@ import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.enums.ERelTypeSemantics;
+import de.tudarmstadt.ukp.lmf.model.interfaces.IHasFrequencies;
 import de.tudarmstadt.ukp.lmf.model.meta.Frequency;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
@@ -32,7 +33,7 @@ import de.tudarmstadt.ukp.lmf.model.morphology.FormRepresentation;
  * @author maksuti
  *
  */
-public class SenseRelation implements Comparable<SenseRelation>{
+public class SenseRelation implements IHasFrequencies, Comparable<SenseRelation>{
 	
 	
 	// Frequency information for this SenseRelation

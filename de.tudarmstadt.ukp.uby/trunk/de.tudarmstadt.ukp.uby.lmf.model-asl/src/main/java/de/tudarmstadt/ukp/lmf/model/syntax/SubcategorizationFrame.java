@@ -20,12 +20,13 @@ package de.tudarmstadt.ukp.lmf.model.syntax;
 import java.util.Collections;
 import java.util.List;
 
+import de.tudarmstadt.ukp.lmf.model.interfaces.IHasFrequencies;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
 import de.tudarmstadt.ukp.lmf.model.meta.Frequency;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
-public class SubcategorizationFrame implements IHasID, Comparable<SubcategorizationFrame>{
+public class SubcategorizationFrame implements IHasID, IHasFrequencies, Comparable<SubcategorizationFrame>{
 	// Id of this SubcategorizationFrame
 	@VarType(type = EVarType.ATTRIBUTE)
 	private String id;

@@ -21,7 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.enums.EYesNo;
+import de.tudarmstadt.ukp.lmf.model.interfaces.IHasDefinitions;
+import de.tudarmstadt.ukp.lmf.model.interfaces.IHasFrequencies;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
+import de.tudarmstadt.ukp.lmf.model.interfaces.IHasSemanticLabels;
 import de.tudarmstadt.ukp.lmf.model.meta.Frequency;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
@@ -42,7 +45,7 @@ import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
  * @author Zijad Maksuti
  *@see LexicalEntry
  */
-public class Sense implements IHasID, Comparable<Sense>{
+public class Sense implements IHasID, IHasDefinitions, IHasFrequencies, IHasSemanticLabels, Comparable<Sense>{
 	// Id of this Sense
 	@VarType(type = EVarType.ATTRIBUTE)
 	private String id;
