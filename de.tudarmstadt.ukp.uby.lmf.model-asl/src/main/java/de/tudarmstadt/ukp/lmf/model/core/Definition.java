@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.enums.EDefinitionType;
+import de.tudarmstadt.ukp.lmf.model.interfaces.IHasTextRepresentations;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticArgument;
@@ -35,7 +36,7 @@ import de.tudarmstadt.ukp.lmf.model.semantics.SemanticArgument;
  * @author Zijad Maksuti
  *
  */
-public class Definition implements Comparable<Definition>{
+public class Definition implements IHasTextRepresentations, Comparable<Definition>{
 
 	// Definition Type of this Definition
 	@VarType(type = EVarType.ATTRIBUTE)

@@ -17,20 +17,24 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.semantics;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.core.TextRepresentation;
 import de.tudarmstadt.ukp.lmf.model.enums.EExampleType;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
+import de.tudarmstadt.ukp.lmf.model.interfaces.IHasTextRepresentations;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
 /**
- * This class represents the particular meaning of a Sense
- * @author maksuti
- *
+ * SenseExample is a class used to illustrate the particular meaning of a {@link Sense} instance.
+ * A Sense can have zero to many examples. 
+ * 
+ * @author Zijad Maksuti
  */
-public class SenseExample implements IHasID, Comparable<SenseExample> {
+public class SenseExample implements IHasID, IHasTextRepresentations, Comparable<SenseExample> {
 	
 	// Unique Id of this SenseExample
 	@VarType(type = EVarType.ATTRIBUTE)
@@ -38,50 +42,42 @@ public class SenseExample implements IHasID, Comparable<SenseExample> {
 	
 	// TextRepresentation of this SenseExample
 	@VarType(type = EVarType.CHILDREN)
-	private List<TextRepresentation> textRepresentations;
+	private List<TextRepresentation> textRepresentations = new ArrayList<TextRepresentation>();
 	
 	// Example type of this Sense Example
 	@VarType(type = EVarType.ATTRIBUTE)
 	private EExampleType exampleType;
 	
 	/**
-	 * @return the exampleType
+	 * Returns the type of this {@link SenseExample} instance.
+	 * @return the type of this sense example or null the type is not set.
+	 * @see EExampleType
 	 */
 	public EExampleType getExampleType() {
 		return exampleType;
 	}
 
 	/**
-	 * @param exampleType the exampleType to set
+	 * Sets the type of this {@link SenseExample} instance.
+	 * @param exampleType the type of this sense example to set
+	 * @see EExampleType
 	 */
 	public void setExampleType(EExampleType exampleType) {
 		this.exampleType = exampleType;
 	}
 
-	/**
-	 * @return the id
-	 */
 	public String getId() {
 		return id;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
-	/**
-	 * @return the textRepresentations
-	 */
 	public List<TextRepresentation> getTextRepresentations() {
 		return textRepresentations;
 	}
 
-	/**
-	 * @param textRepresentations the textRepresentations to set
-	 */
 	public void setTextRepresentations(List<TextRepresentation> textRepresentations) {
 		this.textRepresentations = textRepresentations;
 	}

@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.enums.EStatementType;
+import de.tudarmstadt.ukp.lmf.model.interfaces.IHasTextRepresentations;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
@@ -32,7 +33,7 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
  * @author Zijad Maksuti
  *
  */
-public class Statement implements Comparable<Statement> {
+public class Statement implements IHasTextRepresentations, Comparable<Statement> {
 	
 	// Statement Type of this Statement
 	@VarType(type = EVarType.ATTRIBUTE)

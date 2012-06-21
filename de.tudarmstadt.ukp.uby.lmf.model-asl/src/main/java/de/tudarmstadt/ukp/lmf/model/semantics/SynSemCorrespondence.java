@@ -17,6 +17,7 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.semantics;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
@@ -24,10 +25,9 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
 /**
- * This class represents a set of
- * SynSemArgMap instances
- * @author maksuti
- *
+ * SynSemCorrespondence is a class representing a set of {@link SynSemArgMap} instances.
+ * 
+ * @author Zijad Maksuti
  */
 public class SynSemCorrespondence implements IHasID {
 	
@@ -37,31 +37,32 @@ public class SynSemCorrespondence implements IHasID {
 
 	// List of SynSemArgMaps
 	@VarType(type = EVarType.CHILDREN)
-	private List<SynSemArgMap> synSemArgMaps;
+	private List<SynSemArgMap> synSemArgMaps = new ArrayList<SynSemArgMap>();
 	
-	/**
-	 * @return the id
-	 */
 	public String getId() {
 		return id;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
 	/**
-	 * @return the synSemArgMaps
+	 * Returns a {@link List} of all {@link SynSemArgMap} instances contained in this
+	 * {@link SynSemCorrespondence}.
+	 * 
+	 * @return the list of all syntactic predicate - semantic predicate mappings contained in this
+	 * SynSemCorrespondence instance or an empty list if no mappings are set
 	 */
 	public List<SynSemArgMap> getSynSemArgMaps() {
 		return synSemArgMaps;
 	}
 
 	/**
-	 * @param synSemArgMaps the synSemArgMaps to set
+	 * Sets a {@link List} of all {@link SynSemArgMap} instances contained in this
+	 * {@link SynSemCorrespondence}.
+	 * 
+	 * @param synSemArgMaps the list of syntactic argument - semantic argument mappings to set
 	 */
 	public void setSynSemArgMaps(List<SynSemArgMap> synSemArgMaps) {
 		this.synSemArgMaps = synSemArgMaps;
