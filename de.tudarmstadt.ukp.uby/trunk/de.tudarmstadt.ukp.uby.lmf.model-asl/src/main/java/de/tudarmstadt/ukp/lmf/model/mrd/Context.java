@@ -22,6 +22,7 @@ import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.core.TextRepresentation;
 import de.tudarmstadt.ukp.lmf.model.enums.EContextType;
+import de.tudarmstadt.ukp.lmf.model.interfaces.IHasTextRepresentations;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 import de.tudarmstadt.ukp.lmf.model.morphology.Lemma;
@@ -40,7 +41,7 @@ import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
  * @author Zijad Maksuti
  *
  */
-public class Context {
+public class Context implements IHasTextRepresentations {
 	
 
 	// Source of this Context, required for contextType=citation

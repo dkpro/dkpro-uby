@@ -17,28 +17,31 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.semantics;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.enums.ERelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasFrequencies;
+import de.tudarmstadt.ukp.lmf.model.interfaces.ISemanticRelation;
 import de.tudarmstadt.ukp.lmf.model.meta.Frequency;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 import de.tudarmstadt.ukp.lmf.model.morphology.FormRepresentation;
 
 /**
- * This class represents an oriented relationship between Senses
- * @author maksuti
+ * SenseRelation is a class represents an oriented relationship between {@link Sense} instances.
+ * 
+ * @author Zijad Maksuti
  *
  */
-public class SenseRelation implements IHasFrequencies, Comparable<SenseRelation>{
+public class SenseRelation implements IHasFrequencies, ISemanticRelation<SenseRelation,Sense>, Comparable<SenseRelation>{
 	
 	
 	// Frequency information for this SenseRelation
 	@VarType(type = EVarType.CHILDREN)
-	private List<Frequency> frequencies;
+	private List<Frequency> frequencies = new ArrayList<Frequency>();
 	
 	// Sense targeted by this relation
 	@VarType(type = EVarType.IDREF)
@@ -59,20 +62,23 @@ public class SenseRelation implements IHasFrequencies, Comparable<SenseRelation>
 	private Sense source;
 	
 	/**
-	 * @return the target
+	 * Returns the targeted {@link Sense} of this {@link SenseRelation} instance.
+	 * @return the sense targeted by this relation or null if the target is not set
 	 */
 	public Sense getTarget() {
 		return target;
 	}
 
 	/**
-	 * @param target the target to set
+	 * Sets the targeted {@link Sense} of this {@link SenseRelation} instance.
+	 * @param target the targeted sense to set
 	 */
 	public void setTarget(Sense target) {
 		this.target = target;
 	}
 
 	/**
+	 * 
 	 * @return the targetFormRepresentation
 	 */
 	public FormRepresentation getTargetFormRepresentation() {
@@ -87,15 +93,16 @@ public class SenseRelation implements IHasFrequencies, Comparable<SenseRelation>
 	}
 
 	/**
-	 * @return the relType
+	 * Returns the type of the relation represented by this {@link SenseRelation} instance.
+	 * 
+	 * @return the type of the sense relation
+	 * 
+	 * @see ERelTypeSemantics
 	 */
 	public ERelTypeSemantics getRelType() {
 		return relType;
 	}
 
-	/**
-	 * @param relType the relType to set
-	 */
 	public void setRelType(ERelTypeSemantics relType) {
 		this.relType = relType;
 	}
@@ -107,8 +114,7 @@ public class SenseRelation implements IHasFrequencies, Comparable<SenseRelation>
 		.append(" relType: ").append(this.relType).append("relName: ").append(this.relName);
 		sb.append("source: ").append(source);
 		sb.append("frequencies: ");
-		if(this.frequencies != null)
-			Collections.sort(frequencies);
+		Collections.sort(frequencies);
 		sb.append(frequencies);
 		
 		return sb.toString();
@@ -135,48 +141,39 @@ public class SenseRelation implements IHasFrequencies, Comparable<SenseRelation>
 	  }
 	
 
-
-	/**
-	 * @param relName the relName to set
-	 */
 	public void setRelName(String relName) {
 		this.relName = relName;
 	}
 
-	/**
-	 * @return the relName
-	 */
 	public String getRelName() {
 		return relName;
 	}
 
 	/**
-	 * @return the source
+	 * Returns the {@link Sense} instance representing the source of this {@link SenseRelation}.<p>
+	 * Note that this backlink is not a part of UBY-LMF and is added for convenience reasons.
+	 * @return the source of the semantic relation or null if the source is not set
 	 */
 	public Sense getSource() {
 		return source;
 	}
 
 	/**
+	 * Sets the {@link Sense} instance representing the source of this {@link SenseRelation}.<p>
+	 * Note that this backlink is not a part of UBY-LMF and is added for convenience reasons.
 	 * @param source the source to set
 	 */
 	public void setSource(Sense source) {
 		this.source = source;
 	}
-	/**
-	 * 
-	 * @param frequencies the frequencies to set
-	 */
+
 	public void setFrequencies(List<Frequency> frequencies) {
 		this.frequencies = frequencies;
 	}
 
-	/**
-	 * 
-	 * @return the frequencies
-	 */
+
 	public List<Frequency> getFrequencies() {
 		return frequencies;
-	}	
+	}
 	
 }

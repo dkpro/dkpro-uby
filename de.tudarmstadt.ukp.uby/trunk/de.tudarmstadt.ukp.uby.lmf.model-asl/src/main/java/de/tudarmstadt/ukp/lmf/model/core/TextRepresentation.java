@@ -21,10 +21,11 @@ import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasLanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
+import de.tudarmstadt.ukp.lmf.model.semantics.SenseExample;
 
 /**
  * TextRepresentation is a class representing one textual content of
- * {@link Definition} or {@link Statement}.
+ * diverse Uby-LMF classes, such as {@link Definition}, {@link SenseExample} or {@link Statement}.
  * 
  * @author Zijad Maksuti
  * 

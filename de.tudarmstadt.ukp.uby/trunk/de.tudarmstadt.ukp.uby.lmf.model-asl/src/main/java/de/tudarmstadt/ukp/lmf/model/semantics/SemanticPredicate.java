@@ -162,28 +162,28 @@ public class SemanticPredicate implements IHasID, IHasDefinitions, IHasFrequenci
 		return coreArgumentSets;
 	}
 
-	/**
-	 * @return the id
-	 */
 	public String getId() {
 		return id;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
 	/**
-	 * @return the label
+	 * Returns a {@link String} representing the textual label of this {@link SemanticPredicate} instance.<br>
+	 * Example: In case of FrameNet, every frame represents a semantic predicate and frames name (i.e. <i>Make_agreement_on_action</i> ) is
+	 * the label of the semantic predicate.
+	 * @return the label of this semantic predicate or null if the label is not set
 	 */
 	public String getLabel() {
 		return label;
 	}
 
 	/**
+	 * Sets a {@link String} representing the textual label of this {@link SemanticPredicate} instance.<br>
+	 * Example: In case of FrameNet, every frame represents a semantic predicate and frames name (i.e. <i>Make_agreement_on_action</i> ) is
+	 * the label of the semantic predicate.
 	 * @param label the label to set
 	 */
 	public void setLabel(String label) {
@@ -191,6 +191,7 @@ public class SemanticPredicate implements IHasID, IHasDefinitions, IHasFrequenci
 	}
 
 	/**
+	 * Returns the 
 	 * @return the semanticTypes
 	 */
 	public List<Synset> getSemanticTypes() {
@@ -205,24 +206,24 @@ public class SemanticPredicate implements IHasID, IHasDefinitions, IHasFrequenci
 	}
 
 	/**
-	 *
+	 * 
 	 * @param lexicalized the lexicalized to set
+	 * @deprecated use {@link #setLexicalized(boolean)} isntead
 	 */
+	@Deprecated
 	public void setLexicalized(EYesNo lexicalized) {
 		this.lexicalized = lexicalized;
 	}
-
-	/**
-	 *
-	 * @return the lexicalized
-	 */
-	@Deprecated
-	public EYesNo getLexicalized() {
-		return lexicalized;
+	
+	public void setLexicalized(boolean lexicalized){
+		if(lexicalized)
+			this.lexicalized = EYesNo.yes;
+		else
+			this.lexicalized = EYesNo.no;	
 	}
 
 	/**
-	 *
+	 * 
 	 * @return true if the lexicalized attribute is yes, false otherwise
 	 */
 	public boolean isLexicalized() {
@@ -230,25 +231,41 @@ public class SemanticPredicate implements IHasID, IHasDefinitions, IHasFrequenci
 	}
 
 	/**
-	 *
+	 * 
 	 * @param perspectivalized the perspectivalized to set
+	 * @depreca use {@link #setPerspectivalized(boolean)} instead
 	 */
+	@Deprecated
 	public void setPerspectivalized(EYesNo perspectivalized) {
 		this.perspectivalized = perspectivalized;
 	}
-
+	
 	/**
-	 *
-	 * @return the perspectivalized
+	 * Sets the perspectivalized attribute of this {@link SemanticPredicate} instance.
+	 * @param perspectivalized the boolean value of the attribute to set
 	 */
-	@Deprecated
-	public EYesNo getPerspectivalized() {
-		return perspectivalized;
+	public void setPerspectivalized(boolean perspectivalized){
+		if(perspectivalized)
+			this.perspectivalized = EYesNo.yes;
+		else
+			this.perspectivalized = EYesNo.no;
 	}
 
 	/**
-	 *
-	 * @return true if the perspectivalized attribute is yes, false otherwise
+	 * Returns true if the perspectivalized attribute of this {@link SemanticPredicate}
+	 * instance is set to true, false otherwise.<p>
+	 * 
+	 * This attribute is used when converting FrameNet to Uby-LMF. FrameNet frames which
+	 * have a great diversity of lexical units, all of which share a kind of scene as a
+	 * background are called non-perspectivalized frames. Such frames do not have a consistent
+	 * set of semantic arguments (FEs in FrameNet terminology) for the target predicates,
+	 * a consistent time assigned to the events or participants,
+	 * or (most especially) a consistent point-of-view between target predicates.<p>
+	 * 
+	 * An example of a non-perspectivalized frame is the <i>Performers</i> and <i>roles</i> frame,
+	 * which contains such diverse verbs as co-star, feature.
+	 * 
+	 * @return true if the perspectivalized attribute of the semantic predicate is set, false otherwise
 	 */
 	public boolean isPerspectivalized() {
 		return (perspectivalized.equals(EYesNo.yes)? true : false);

@@ -22,9 +22,10 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticArgument;
 
 /**
- * This class represents the links between a 
- * semantic argument and a syntactic argument
- * @author maksuti
+ * This class represents a mapping between a 
+ * {@link SemanticArgument} instance and a {@link SyntacticArgument} instance.
+ * 
+ * @author Zijad Maksuti
  *
  */
 public class SynSemArgMap {
@@ -38,28 +39,42 @@ public class SynSemArgMap {
 	private SemanticArgument semanticArgument;
 
 	/**
-	 * @return the syntacticArgument
+	 * Returns the {@link SyntacticArgument} contained in this {@link SynSemArgMap} instance.
+	 * 
+	 * @return the syntactic argument contained in this mapping or null if the syntactic argument is not set.<p>
+	 * 
+	 * Note that UBY-LMF requires the presence of a SyntacticArgument in every SynSemArgMap instance.
+	 * Its absence may indicate to incomplete conversion of the original resource. 
 	 */
 	public SyntacticArgument getSyntacticArgument() {
 		return syntacticArgument;
 	}
 
 	/**
-	 * @param syntacticArgument the syntacticArgument to set
+	 * Sets the {@link SyntacticArgument} contained in this {@link SynSemArgMap} instance.
+	 * 
+	 * @param syntacticArgument the syntactic argument to set
 	 */
 	public void setSyntacticArgument(SyntacticArgument syntacticArgument) {
 		this.syntacticArgument = syntacticArgument;
 	}
 
 	/**
-	 * @return the semanticArgument
+	 * Returns the {@link SemanticArgument} contained in this {@link SynSemArgMap} instance.
+	 * 
+	 * @return the semantic argument contained in this mapping or null if the semantic argument is not set.<p>
+	 * 
+	 * Note that UBY-LMF requires the presence of a SemanticArgument in every SynSemArgMap instance.
+	 * Its absence may indicate to incomplete conversion of the original resource. 
 	 */
 	public SemanticArgument getSemanticArgument() {
 		return semanticArgument;
 	}
 
 	/**
-	 * @param semanticArgument the semanticArgument to set
+	 * Sets the {@link SemanticArgument} contained in this {@link SynSemArgMap} instance.
+	 * 
+	 * @param semanticArgument the syntactic argument to set
 	 */
 	public void setSemanticArgument(SemanticArgument semanticArgument) {
 		this.semanticArgument = semanticArgument;
