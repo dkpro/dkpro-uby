@@ -22,7 +22,7 @@ import java.util.List;
 import de.tudarmstadt.ukp.lmf.model.meta.Frequency;
 
 /**
- * An interface for all Uby-LMF classes that are associated with one or more {@link Frequency} instances.
+ * An interface for Uby-LMF classes that are associated with one or more {@link Frequency} instances.
  * 
  * @author Zijad Maksuti
  *

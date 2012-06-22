@@ -41,7 +41,7 @@ public class SenseAxisRelation {
 	private String relName;
 
 	/**
-	 * Returns the {@link SenseAxis} instance targeted by this {@ink SenseAxisRelation}.
+	 * Returns the {@link SenseAxis} instance targeted by this {@link SenseAxisRelation}.
 	 * @return the sense axis targeted by this relation or null if the relation does not
 	 * have the target set
 	 */

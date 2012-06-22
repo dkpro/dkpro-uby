@@ -20,8 +20,8 @@ package de.tudarmstadt.ukp.lmf.model.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.tudarmstadt.ukp.lmf.model.abstracts.HasFrequencies;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
-import de.tudarmstadt.ukp.lmf.model.interfaces.IHasFrequencies;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
 import de.tudarmstadt.ukp.lmf.model.meta.Frequency;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
@@ -47,7 +47,7 @@ import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticBehaviour;
  * @author Zijad Maksuti
  *
  */
-public class LexicalEntry implements IHasID, IHasFrequencies, Comparable<LexicalEntry>{
+public class LexicalEntry extends HasFrequencies implements IHasID, Comparable<LexicalEntry>{
 	// Id of this LexicalEntry
 	@VarType(type = EVarType.ATTRIBUTE)
 	private String id;
@@ -83,10 +83,6 @@ public class LexicalEntry implements IHasID, IHasFrequencies, Comparable<Lexical
 	// List of components of this LexicalEntry
 	@VarType(type = EVarType.CHILD)
 	private ListOfComponents listOfComponents;
-
-	// Frequency information for this LexicalEntry
-	@VarType(type = EVarType.CHILDREN)
-	private List<Frequency> frequencies = new ArrayList<Frequency>();
 	
 	// Backlink to Lexicon added for convenience
 	@VarType(type = EVarType.NONE)
@@ -302,7 +298,7 @@ public class LexicalEntry implements IHasID, IHasFrequencies, Comparable<Lexical
 	 * @see LexicalEntry
 	 */
 	public void setFrequencies(List<Frequency> frequencies) {
-		this.frequencies = frequencies;
+		super.setFrequencies(frequencies);
 	}
 
 	/**
@@ -311,7 +307,7 @@ public class LexicalEntry implements IHasID, IHasFrequencies, Comparable<Lexical
 	 * @see LexicalEntry
 	 */
 	public List<Frequency> getFrequencies() {
-		return frequencies;
+		return super.getFrequencies();
 	}	
 	
 	@Override

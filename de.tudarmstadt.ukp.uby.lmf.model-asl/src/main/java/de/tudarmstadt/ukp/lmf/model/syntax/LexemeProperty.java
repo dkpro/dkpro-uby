@@ -17,44 +17,65 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.syntax;
 
+import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.enums.EAuxiliary;
 import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticProperty;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
+/**
+ * LexemeProperty is a class representing the central node of the {@link SubcategorizationFrame}.
+ * A  LexemeProperty instance connected to a SubcategorizationFrame instance is shared by all the {@link LexicalEntry}
+ * instances that have the same syntactic behaviour.
+ *  
+ * @author Zijad Maksuti
+ *
+ */
 public class LexemeProperty {
 	
 	// Auxiliary property of this LexemeProperty
 	@VarType(type = EVarType.ATTRIBUTE)
 	private EAuxiliary auxiliary;
 	
-	// Syntactic propertyof this LexemeProperty
+	// Syntactic property of this LexemeProperty
 	@VarType(type = EVarType.ATTRIBUTE)
 	private ESyntacticProperty syntacticProperty;
 
 	/**
-	 * @return the auxiliary
+	 * Returns the auxiliary property of the {@link LexicalEntry} connected to this {@link LexemeProperty} instance.
+	 * 
+	 * @return the auxiliary property of the connected lexical entries or null if the attribute is not set
+	 * 
+	 * @see EAuxiliary
 	 */
 	public EAuxiliary getAuxiliary() {
 		return auxiliary;
 	}
 
 	/**
-	 * @param auxiliary the auxiliary to set
+	 * Sets the auxiliary property of the {@link LexicalEntry} connected to this {@link LexemeProperty} instance .
+	 * 
+	 * @param auxiliary the property to set
+	 * 
+	 * @see EAuxiliary
 	 */
 	public void setAuxiliary(EAuxiliary auxiliary) {
 		this.auxiliary = auxiliary;
 	}
 
 	/**
-	 * @return the syntacticProperty
+	 * Returns the syntactic property of a {@link LexicalEntry} connected to this {@link LexemeProperty} instance.
+	 * 
+	 * @return the syntactic property of the connected lexical entries or null if the attribute is not set
 	 */
 	public ESyntacticProperty getSyntacticProperty() {
 		return syntacticProperty;
 	}
 
 	/**
-	 * @param syntacticProperty the syntacticProperty to set
+	 * Sets the syntactic property of a {@link LexicalEntry} connected to this {@link LexemeProperty} instance.
+	 * 
+	 * @param syntacticProperty the syntactic property to set
 	 */
 	public void setSyntacticProperty(ESyntacticProperty syntacticProperty) {
 		this.syntacticProperty = syntacticProperty;

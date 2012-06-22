@@ -20,7 +20,8 @@ package de.tudarmstadt.ukp.lmf.model.morphology;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.tudarmstadt.ukp.lmf.model.interfaces.IHasFrequencies;
+import de.tudarmstadt.ukp.lmf.model.abstracts.HasFrequencies;
+import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.meta.Frequency;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
@@ -33,18 +34,13 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
  * @author Zijad Maksuti
  *
  */
-public class Lemma implements IHasFrequencies {
+public class Lemma extends HasFrequencies {
 	
 	// FormRepresentations of this lemma
 	@VarType(type = EVarType.CHILDREN)
 	private List<FormRepresentation> formRepresentations = new ArrayList<FormRepresentation>();
 	
 	private String lexicalEntryId;
-	
-	// frequency information for this lemma
-	@VarType(type = EVarType.CHILDREN)
-	private List<Frequency> frequencies  = new ArrayList<Frequency>();
-	
 	
 
 	/**
@@ -84,11 +80,11 @@ public class Lemma implements IHasFrequencies {
 	}
 
 	public void setFrequencies(List<Frequency> frequencies) {
-		this.frequencies = frequencies;
+		super.setFrequencies(frequencies);
 	}
 
 	public List<Frequency> getFrequencies() {
-		return frequencies;
+		return super.getFrequencies();
 	}
 
 

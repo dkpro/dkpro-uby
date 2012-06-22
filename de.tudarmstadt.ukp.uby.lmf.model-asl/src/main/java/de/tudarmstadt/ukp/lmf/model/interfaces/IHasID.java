@@ -18,7 +18,7 @@
 package de.tudarmstadt.ukp.lmf.model.interfaces;
 
 /**
- * An interface for all LMF-Classes that have a unique identifier.
+ * An interface for UBY-LMF classes that have a unique identifier.
  * 
  * @author Zijad Maksuti
  *

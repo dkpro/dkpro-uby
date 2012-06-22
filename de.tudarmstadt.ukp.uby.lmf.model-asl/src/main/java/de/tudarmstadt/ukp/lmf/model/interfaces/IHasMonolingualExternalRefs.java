@@ -19,29 +19,30 @@ package de.tudarmstadt.ukp.lmf.model.interfaces;
 
 import java.util.List;
 
-import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
+import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
 
 /**
- * Interface for Uby-LMF classes containing one or more semantic labels.
- *  
+ * Interface for UBY-LMF classes containing one or more
+ * references to an external system, represented by {@link MonolingualExternalRef} instances.
+ * 
  * @author Zijad Maksuti
  *
  */
-public interface IHasSemanticLabels {
+public interface IHasMonolingualExternalRefs {
 	
 	/**
-	 * Returns the list of all {@link SemanticLabel} instances attached to this
-	 * Uby-LMF class instance.
-	 * @return the list of all semantic labels attached to this Uby-LMF class instance
-	 * or an empty list, if the instance does not have any semantic labels attached
+	 * Returns the {@link List} of all {@link MonolingualExternalRef} instances which
+	 * link this UBY-LMF class instance to an external system.
+	 * @return the list of all monolingual external references of this UBY-LMF class instance or an empty
+	 * list if the instance does not have any monolingual external references set
 	 */
-	public List<SemanticLabel> getSemanticLabels();
-	
+	public List<MonolingualExternalRef> getMonolingualExternalRefs();
+
 	/**
-	 * Sets the {@link List} of all {@link SemanticLabel} instances attached to
-	 * this Uby-LMF class instance instance.
-	 * @param semanticLabels the list of all semantic labels to set
+	 * Sets the {@link List} of all {@link MonolingualExternalRef} instances to this
+	 * UBY-LMF class instance.
+	 * @param monolingualExternalRefs the monolingual external references to set
 	 */
-	public void setSemanticLabels(List<SemanticLabel> semanticLabels);
+	public void setMonolingualExternalRefs(List<MonolingualExternalRef> monolingualExternalRefs);
 	
 }

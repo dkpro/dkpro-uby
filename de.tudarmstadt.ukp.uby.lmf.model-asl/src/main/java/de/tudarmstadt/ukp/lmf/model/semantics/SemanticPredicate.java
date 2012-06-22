@@ -20,13 +20,12 @@ package de.tudarmstadt.ukp.lmf.model.semantics;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.tudarmstadt.ukp.lmf.model.abstracts.HasFrequencies;
 import de.tudarmstadt.ukp.lmf.model.core.Definition;
 import de.tudarmstadt.ukp.lmf.model.enums.EYesNo;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasDefinitions;
-import de.tudarmstadt.ukp.lmf.model.interfaces.IHasFrequencies;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasSemanticLabels;
-import de.tudarmstadt.ukp.lmf.model.meta.Frequency;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
@@ -38,7 +37,7 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
  * @author Zijad Maksuti
  *
  */
-public class SemanticPredicate implements IHasID, IHasDefinitions, IHasFrequencies, IHasSemanticLabels, Comparable<SemanticPredicate>{
+public class SemanticPredicate extends HasFrequencies implements IHasID, IHasDefinitions, IHasSemanticLabels, Comparable<SemanticPredicate>{
 
 	// Id of the SemanticPredicate
 	@VarType(type = EVarType.ATTRIBUTE)
@@ -71,10 +70,6 @@ public class SemanticPredicate implements IHasID, IHasDefinitions, IHasFrequenci
 	// Predicate Relations of this SemanticPredicate
 	@VarType(type = EVarType.CHILDREN)
 	private List<PredicateRelation> predicateRelations = new ArrayList<PredicateRelation>();
-
-	// Frequency information for this SubcategorizationFrame
-	@VarType(type = EVarType.CHILDREN)
-	private List<Frequency> frequencies = new ArrayList<Frequency>();
 
 	// Semantic class information for this Sense
 	@VarType(type = EVarType.CHILDREN)
@@ -128,14 +123,6 @@ public class SemanticPredicate implements IHasID, IHasDefinitions, IHasFrequenci
 	 */
 	public void setPredicateRelations(List<PredicateRelation> predicateRelations) {
 		this.predicateRelations = predicateRelations;
-	}
-
-	public void setFrequencies(List<Frequency> frequencies) {
-		this.frequencies = frequencies;
-	}
-
-	public List<Frequency> getFrequencies() {
-		return frequencies;
 	}
 
 	public void setSemanticLabels(List<SemanticLabel> semanticLabels) {

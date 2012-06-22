@@ -17,21 +17,29 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.semantics;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import de.tudarmstadt.ukp.lmf.model.abstracts.HasMonolingualExternalRefs;
 import de.tudarmstadt.ukp.lmf.model.core.Definition;
+import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
+import de.tudarmstadt.ukp.lmf.model.core.TextRepresentation;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasDefinitions;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
 /**
- * This class represents a LMF-Synset
- * @author maksuti
- *
+ * Synset is a class representing the set of shared meanings within the same language. Synset
+ * links synonyms forming a synonym set. A  Synset can link {@link Sense} instances of different 
+ * {@link LexicalEntry} instances with the same part of speech.
+ * 
+ * @author Zijad Maksuti
+ * @author Silvana Hartmann
+ * 
  */
-public class Synset implements IHasID, IHasDefinitions, Comparable<Synset> {
+public class Synset extends HasMonolingualExternalRefs implements IHasID, IHasDefinitions, Comparable<Synset> {
 
 	// Id of this Synset
 	@VarType(type = EVarType.ATTRIBUTE)
@@ -39,113 +47,106 @@ public class Synset implements IHasID, IHasDefinitions, Comparable<Synset> {
 
 	// Definitions of the Synset
 	@VarType(type = EVarType.CHILDREN)
-	private List<Definition> definitions;
+	private List<Definition> definitions = new ArrayList<Definition>();
 
 	// Relations to other Synsets
 	@VarType(type = EVarType.CHILDREN)
-	private List<SynsetRelation> synsetRelations;
-
-	// Reference to a external Resource
-	@VarType(type = EVarType.CHILDREN)
-	private List<MonolingualExternalRef> monolingualExternalRefs;
+	private List<SynsetRelation> synsetRelations = new ArrayList<SynsetRelation>();
 
 
 	// Senses of this synset - not in the model, added for convenience
 	@VarType(type = EVarType.NONE)
 	private List<Sense> senses;
 
-	/**
-	 * @return the id
-	 */
 	public String getId() {
 		return id;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
-	/**
-	 * @return the definitions
-	 */
 	public List<Definition> getDefinitions() {
 		return definitions;
 	}
 
-	/**
-	 * @param definitions the definitions to set
-	 */
 	public void setDefinitions(List<Definition> definitions) {
 		this.definitions = definitions;
 	}
 
 	/**
-	 * Returns all relations in which this Synset is the source.
-	 * Thus, it is guaranteed that s.equals(r.getSource()) is true for every SenseRelation r of a Synset s
+	 * Returns all {@link SynsetRelation} instances in which this {@link Synset} is the
+	 * source of the relation.
 	 *
-	 * @return the synsetRelations
+	 * @return the list of all relations in which this synset is the source of the relation or an empty list
+	 * if the synset is not the source of any relation
 	 */
 	public List<SynsetRelation> getSynsetRelations() {
 		return synsetRelations;
 	}
 
 	/**
-	 * @param synsetRelations the synsetRelations to set
+	 * Sets all {@link SynsetRelation} instances in which this {@link Synset} is the
+	 * source of the relation.
+	 *
+	 * @param synsetRelations the list of all relations in which this synset is the source of the relation
+	 * 
 	 */
 	public void setSynsetRelations(List<SynsetRelation> synsetRelations) {
 		this.synsetRelations = synsetRelations;
 	}
 
 	/**
-	 * @return the monolingualExternalRefs
-	 */
-	public List<MonolingualExternalRef> getMonolingualExternalRefs() {
-		return monolingualExternalRefs;
-	}
-
-	/**
-	 * @param monolingualExternalRefs the monolingualExternalRefs to set
-	 */
-	public void setMonolingualExternalRefs(
-			List<MonolingualExternalRef> monolingualExternalRefs) {
-		this.monolingualExternalRefs = monolingualExternalRefs;
-	}
-
-	/**
-	 * @return the senses
+	 * Returns all {@link Sense} instances contained in this
+	 * {@link Synset}.<p>
+	 * Note that this reference is not a part of UBY-LMF model and is added for convenience reasons.
+	 * 
+	 * @return the list of senses contained in this synset or an empty list if
+	 * the senses are not set
 	 */
 	public List<Sense> getSenses() {
-		return senses;
+		return this.senses;
 	}
 
 	/**
-	 * @param senses the senses to set
+	 * Sets all {@link Sense} instances contained in this
+	 * {@link Synset}.<p>
+	 * Note that this reference is not a part of UBY-LMF model and is added for convenience reasons.
+	 * 
+	 * @param senses the list of senses contained in this synset
+	 * 
 	 */
 	public void setSenses(List<Sense> senses) {
 		this.senses = senses;
 	}
 
 	/**
-	 * Creates gloss of this Synset by aggregating
-	 * defintion texts of all Senses
-	 * @return
+	 * Returns the gloss instance by aggregating defintion texts of all {@link Sense} instances
+	 * of this {@link Synset}.
+	 * 
+	 * @return gloss of this synset instance
+	 * 
+	 * @see Sense#getDefinitionText()
 	 */
 	public String getGloss(){
 		StringBuilder result = new StringBuilder();
 		for(Sense sense : senses){
 			String definitionText = sense.getDefinitionText();
 			if(definitionText != null)
-				result.append(sense.getDefinitionText()+" ");
+				result.append(sense.getDefinitionText()).append(" ");
 		}
 		return result.toString();
 	}
 
 	/**
-	 * Returns writtenText of first TextRepresentation of first Definition
-	 * @return
+	 * Returns the definition text of this {@link Synset} instance.
+	 * 
+	 * The returned text is extracted from first {@link TextRepresentation} instance
+	 * of the first {@link Definition} of this synset.<br> If the first definition
+	 * of this synset does not have a text representation, this method returns null.
+	 *
+	 * @return definition text of this synset or null if this synset does not have a definition
+	 * text set
 	 */
 	public String getDefinitionText(){
 		if(definitions.isEmpty()) {
@@ -153,7 +154,7 @@ public class Synset implements IHasID, IHasDefinitions, Comparable<Synset> {
 		}
 		Definition firstDefinition = definitions.get(0);
 		if(firstDefinition.getTextRepresentations().isEmpty()) {
-			return "";
+			return null;
 		}
 		else {
 			return firstDefinition.getTextRepresentations().get(0).getWrittenText();
