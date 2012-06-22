@@ -20,16 +20,15 @@ package de.tudarmstadt.ukp.lmf.model.interfaces;
 import de.tudarmstadt.ukp.lmf.model.enums.ERelTypeSemantics;
 
 /**
- * ISemanticRelation is an interface for all Uby-LMF class which represent
+ * ISemanticRelation is an interface for UBY-LMF class which represent
  * a semantic relation.
  * 
- * @param <Carrier> The class representing the releation
  * @param <Target> The class targeted by the relation
  * 
  * @author Zijad Maksuti
  *
  */
-public interface ISemanticRelation<Carrier,Target> {
+public interface ISemanticRelation<Target> {
 	
 	/**
 	 * Returns the type of the semantic relation represented by this Uby-LMF class instance.

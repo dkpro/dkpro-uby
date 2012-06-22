@@ -20,6 +20,8 @@ package de.tudarmstadt.ukp.lmf.model.mrd;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.tudarmstadt.ukp.lmf.model.abstracts.HasMonolingualExternalRefs;
+import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.core.TextRepresentation;
 import de.tudarmstadt.ukp.lmf.model.enums.EContextType;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasTextRepresentations;
@@ -41,7 +43,7 @@ import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
  * @author Zijad Maksuti
  *
  */
-public class Context implements IHasTextRepresentations {
+public class Context extends HasMonolingualExternalRefs implements IHasTextRepresentations {
 	
 
 	// Source of this Context, required for contextType=citation
@@ -56,10 +58,6 @@ public class Context implements IHasTextRepresentations {
 	// Text Representations of this Context
 	@VarType(type = EVarType.CHILDREN)
 	private List<TextRepresentation> textRepresentations = new ArrayList<TextRepresentation>();
-	
-	// External reference of this Context
-	@VarType(type = EVarType.CHILDREN)
-	private List<MonolingualExternalRef> monolingualExternalRefs = new ArrayList<MonolingualExternalRef>();
 
 	/**
 	 * Returns the {@link List} of all {@link TextRepresentation} instances associated with

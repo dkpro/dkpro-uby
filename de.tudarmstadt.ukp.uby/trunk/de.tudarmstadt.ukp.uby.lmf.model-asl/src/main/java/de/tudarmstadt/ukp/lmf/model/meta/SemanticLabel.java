@@ -20,6 +20,7 @@ package de.tudarmstadt.ukp.lmf.model.meta;
 import java.util.Collections;
 import java.util.List;
 
+import de.tudarmstadt.ukp.lmf.model.abstracts.HasMonolingualExternalRefs;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
@@ -34,7 +35,7 @@ import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
  * @author Silvana Hartmann
  *
  */
-public class SemanticLabel implements Comparable<SemanticLabel>{
+public class SemanticLabel extends HasMonolingualExternalRefs implements Comparable<SemanticLabel>{
 
 	// the label of the semantic class
 	@VarType(type = EVarType.ATTRIBUTE)
@@ -47,11 +48,6 @@ public class SemanticLabel implements Comparable<SemanticLabel>{
 	// the quantification of the label class
 	@VarType(type = EVarType.ATTRIBUTE)
 	private String quantification;
-	
-	// Reference to a external Resource
-	@VarType(type = EVarType.CHILDREN)
-	private List<MonolingualExternalRef> monolingualExternalRefs;
-	
 	
 	private String parentId;
 	

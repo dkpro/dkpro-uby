@@ -22,7 +22,7 @@ import java.util.List;
 import de.tudarmstadt.ukp.lmf.model.core.TextRepresentation;
 
 /**
- * Interface for all Uby-LMF classes containing one or more
+ * Interface for UBY-LMF classes containing one or more
  * {@link TextRepresentation} instances.
  * 
  * @author Zijad Maksuti

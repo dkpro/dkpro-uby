@@ -22,7 +22,7 @@ import java.util.List;
 import de.tudarmstadt.ukp.lmf.model.core.Definition;
 
 /**
- * An interface for all Uby-LMF classes that are associated to one or more {@link Definition} instances.
+ * An interface for Uby-LMF classes that are associated to one or more {@link Definition} instances.
  * 
  * @author Zijad Maksuti
  *

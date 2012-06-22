@@ -91,7 +91,7 @@ public class TextRepresentation implements IHasLanguageIdentifier, Comparable<Te
 	 * that is specific in a certain geographical region. 
 	 * @return another variant of written text of this text representation or null, if
 	 * the text representation does not have another geographical variant set 
-	 * @see TextRepresentation#getWrittenText()
+	 * @see #getWrittenText()
 	 */
 	public String getGeographicalVariant() {
 		return geographicalVariant;
@@ -101,7 +101,7 @@ public class TextRepresentation implements IHasLanguageIdentifier, Comparable<Te
 	 * Sets another variant of the written text used in this {@link TextRepresentation} instance
 	 * that is specific in a certain geographical region.
 	 * @param geographicalVariant the geographical variant to set
-	 * @see TextRepresentation#setWrittenText(String)
+	 * @see #setWrittenText(String)
 	 */
 	public void setGeographicalVariant(String geographicalVariant) {
 		this.geographicalVariant = geographicalVariant;

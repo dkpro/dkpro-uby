@@ -17,15 +17,11 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.semantics;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
+import de.tudarmstadt.ukp.lmf.model.abstracts.SemanticRelation;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.enums.ERelTypeSemantics;
-import de.tudarmstadt.ukp.lmf.model.interfaces.IHasFrequencies;
-import de.tudarmstadt.ukp.lmf.model.interfaces.ISemanticRelation;
-import de.tudarmstadt.ukp.lmf.model.meta.Frequency;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 import de.tudarmstadt.ukp.lmf.model.morphology.FormRepresentation;
@@ -36,30 +32,10 @@ import de.tudarmstadt.ukp.lmf.model.morphology.FormRepresentation;
  * @author Zijad Maksuti
  *
  */
-public class SenseRelation implements IHasFrequencies, ISemanticRelation<SenseRelation,Sense>, Comparable<SenseRelation>{
-	
-	
-	// Frequency information for this SenseRelation
-	@VarType(type = EVarType.CHILDREN)
-	private List<Frequency> frequencies = new ArrayList<Frequency>();
-	
-	// Sense targeted by this relation
-	@VarType(type = EVarType.IDREF)
-	private Sense target;
+public class SenseRelation extends SemanticRelation<Sense> implements Comparable<SenseRelation>{
 	
 	@VarType(type = EVarType.CHILD)
 	private FormRepresentation targetFormRepresentation;
-	
-	// rough classification of this relation
-	@VarType(type = EVarType.ATTRIBUTE)
-	private ERelTypeSemantics relType;
-	
-	@VarType(type = EVarType.ATTRIBUTE)
-	private String relName;
-	
-	// Backlink to source Sense added for convenience
-	@VarType(type = EVarType.NONE)
-	private Sense source;
 	
 	/**
 	 * Returns the targeted {@link Sense} of this {@link SenseRelation} instance.
@@ -155,7 +131,7 @@ public class SenseRelation implements IHasFrequencies, ISemanticRelation<SenseRe
 	 * @return the source of the semantic relation or null if the source is not set
 	 */
 	public Sense getSource() {
-		return source;
+		return super.getSource();
 	}
 
 	/**
@@ -164,16 +140,7 @@ public class SenseRelation implements IHasFrequencies, ISemanticRelation<SenseRe
 	 * @param source the source to set
 	 */
 	public void setSource(Sense source) {
-		this.source = source;
-	}
-
-	public void setFrequencies(List<Frequency> frequencies) {
-		this.frequencies = frequencies;
-	}
-
-
-	public List<Frequency> getFrequencies() {
-		return frequencies;
+		super.setSource(source);
 	}
 	
 }

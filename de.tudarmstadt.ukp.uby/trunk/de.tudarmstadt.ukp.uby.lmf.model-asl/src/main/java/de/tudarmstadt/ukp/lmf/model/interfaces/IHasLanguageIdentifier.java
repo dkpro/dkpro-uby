@@ -20,7 +20,7 @@ package de.tudarmstadt.ukp.lmf.model.interfaces;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 
 /**
- * Interface for all LMF Classes that have a language identifier.
+ * Interface for UBY-LMF classes that have a language identifier.
  * 
  * @author Zijad Maksuti
  * @see ELanguageIdentifier
