@@ -21,7 +21,11 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
 /**
- * @author zijad
+ * SubcatFrameSetElement is a class representing a syntactic construction. It acts as a container
+ * of a single {@link SubcategorizationFrame} instance.
+ * 
+ * @author Zijad Maksuti
+ * @author Judith Eckle-Kohler
  */
 public class SubcatFrameSetElement implements Comparable<SubcatFrameSetElement>{
 	
@@ -30,14 +34,21 @@ public class SubcatFrameSetElement implements Comparable<SubcatFrameSetElement>{
 	private SubcategorizationFrame element;
 
 	/**
-	 * @return the element
+	 * Returns the element, represented by a {@link SubcategorizationFrame} instance,
+	 * contained in this {@link SubcatFrameSetElement} instance.
+	 * 
+	 * @return the subcategorization frame representing a syntactic construction or null if the
+	 * frame is not set
 	 */
 	public SubcategorizationFrame getElement() {
 		return element;
 	}
 
 	/**
-	 * @param element the element to set
+	 * Sets the element, represented by a {@link SubcategorizationFrame} instance,
+	 * contained in this {@link SubcatFrameSetElement} instance.
+	 * 
+	 * @param element the subcategorization frame representing a syntactic construction
 	 */
 	public void setElement(SubcategorizationFrame element) {
 		this.element = element;

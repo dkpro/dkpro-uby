@@ -202,7 +202,7 @@ public abstract class WikipediaLMFTransformer extends LMFDBTransformer {
 					FormRepresentation targetForm = new FormRepresentation();
 					targetForm.setLanguageIdentifier(wikiLmfLang);
 					targetForm.setWrittenForm(redirect);
-					senseRelation.setTargetFormRepresentation(targetForm);
+					senseRelation.setFormRepresentation(targetForm);
 					senseRelation.setRelName("redirect");
 					senseRelation.setRelType(ERelTypeSemantics.association);
 					sense.getSenseRelations().add(senseRelation);

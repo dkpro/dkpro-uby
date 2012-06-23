@@ -25,7 +25,7 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
 /**
  * LexemeProperty is a class representing the central node of the {@link SubcategorizationFrame}.
- * A  LexemeProperty instance connected to a SubcategorizationFrame instance is shared by all the {@link LexicalEntry}
+ * A LexemeProperty instance connected to a SubcategorizationFrame instance is shared by all the {@link LexicalEntry}
  * instances that have the same syntactic behaviour.
  *  
  * @author Zijad Maksuti

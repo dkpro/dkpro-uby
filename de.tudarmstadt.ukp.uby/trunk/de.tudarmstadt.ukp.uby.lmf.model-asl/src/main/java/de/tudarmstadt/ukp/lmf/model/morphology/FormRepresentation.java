@@ -23,8 +23,11 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
 /**
- * This class represent a LMF-FormRepresentation
- * @author maksuti
+ * FormRepresentation class is a class representing a lexeme, a morphological variant of a lexeme or
+ * a morph. The class manages one or more orthographical variants of the written form
+ * as well as data categories that describe the attributes of the word form (e.g. lemma, pronunciation, syllabification).
+ * 
+ * @author Zijad Maksuti
  *
  */
 public class FormRepresentation implements IHasLanguageIdentifier, Comparable<FormRepresentation>{
@@ -111,14 +114,23 @@ public class FormRepresentation implements IHasLanguageIdentifier, Comparable<Fo
 	}
 
 	/**
-	 * @return the sound
+	 * Returns a link to an external system containing the pronunciation of the
+	 * lexeme or morph represented by this {@link FormRepresentation} instance.
+	 * 
+	 * @return the link to an external system containing the pronunciation of this form representation
+	 * or null if the link is not set
 	 */
 	public String getSound() {
 		return sound;
 	}
 
 	/**
-	 * @param sound the sound to set
+	 * Sets a link to an external system containing the pronunciation of the
+	 * lexeme or morph represented by this {@link FormRepresentation} instance.
+	 * 
+	 * @return the link to an external system containing the pronunciation of this form representation
+	 * to set
+	 * 
 	 */
 	public void setSound(String sound) {
 		this.sound = sound;

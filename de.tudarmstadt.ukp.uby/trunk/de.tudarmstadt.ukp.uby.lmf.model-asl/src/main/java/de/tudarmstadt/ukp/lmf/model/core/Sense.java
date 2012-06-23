@@ -378,8 +378,7 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 	 * {@link Sense}.
 	 * @param monolingualExternalRefs the monolingual external references to set
 	 */
-	public void setMonolingualExternalRefs(
-			List<MonolingualExternalRef> monolingualExternalRefs) {
+	public void setMonolingualExternalRefs(List<MonolingualExternalRef> monolingualExternalRefs) {
 		this.monolingualExternalRefs = monolingualExternalRefs;
 	}
 

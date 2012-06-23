@@ -918,9 +918,8 @@ public class Uby
 			if (arg.getComplementizer() != null){
 				additional.add(arg.getComplementizer().toString());
 			}
-			if (arg.getOptional() != null){
-				additional.add("isOptional=" +arg.getOptional().toString());
-			}
+			additional.add("isOptional=" +arg.isOptional());
+			
 			if (arg.getDeterminer() != null){
 				additional.add(arg.getDeterminer().toString());
 			}
@@ -977,9 +976,10 @@ public class Uby
 			if (arg.getComplementizer() != null){
 				additional.add(arg.getComplementizer().toString());
 			}
-			if (arg.getOptional() != null){
-				additional.add("isOptional=" +arg.getOptional().toString());
-			}
+			
+			additional.add("isOptional=" +arg.isOptional());
+			
+			
 			if (arg.getDeterminer() != null){
 				additional.add(arg.getDeterminer().toString());
 			}

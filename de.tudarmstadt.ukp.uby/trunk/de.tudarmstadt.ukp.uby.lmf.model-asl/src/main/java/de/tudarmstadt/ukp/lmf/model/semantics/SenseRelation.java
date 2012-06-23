@@ -35,7 +35,7 @@ import de.tudarmstadt.ukp.lmf.model.morphology.FormRepresentation;
 public class SenseRelation extends SemanticRelation<Sense> implements Comparable<SenseRelation>{
 	
 	@VarType(type = EVarType.CHILD)
-	private FormRepresentation targetFormRepresentation;
+	private FormRepresentation formRepresentation;
 	
 	/**
 	 * Returns the targeted {@link Sense} of this {@link SenseRelation} instance.
@@ -55,17 +55,17 @@ public class SenseRelation extends SemanticRelation<Sense> implements Comparable
 
 	/**
 	 * 
-	 * @return the targetFormRepresentation
+	 * @return the formRepresentation
 	 */
-	public FormRepresentation getTargetFormRepresentation() {
-		return targetFormRepresentation;
+	public FormRepresentation getFormRepresentation() {
+		return formRepresentation;
 	}
 
 	/**
-	 * @param targetFormRepresentation the targetFormRepresentation to set
+	 * @param formRepresentation the targetFormRepresentation to set
 	 */
-	public void setTargetFormRepresentation(FormRepresentation targetFormRepresentation) {
-		this.targetFormRepresentation = targetFormRepresentation;
+	public void setFormRepresentation(FormRepresentation formRepresentation) {
+		this.formRepresentation = formRepresentation;
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class SenseRelation extends SemanticRelation<Sense> implements Comparable
 	public String toString(){
 		StringBuffer sb = new StringBuffer(512);
 		sb.append("SenseRelation ").append("target:")
-		.append(this.target).append(" targetLemma: ").append(this.targetFormRepresentation)
+		.append(this.target).append(" targetLemma: ").append(this.formRepresentation)
 		.append(" relType: ").append(this.relType).append("relName: ").append(this.relName);
 		sb.append("source: ").append(source);
 		sb.append("frequencies: ");

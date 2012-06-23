@@ -18,7 +18,10 @@
 package de.tudarmstadt.ukp.lmf.model.enums;
 
 /**
- * Enumerator of cases.
+ * Enumerator of cases.<p>
+ * Case is a grammatical category appropriate for inflecting grammatical classes displaying nominal or adjectival features,
+ * as well as for prepositions where case is understood as a governed case.
+ * 
  * @author Zijad Maksuti
  *
  */
