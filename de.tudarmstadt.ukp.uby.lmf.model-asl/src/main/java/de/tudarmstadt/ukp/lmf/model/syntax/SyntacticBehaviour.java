@@ -17,11 +17,22 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.syntax;
 
+import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
+import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
+/**
+ * SyntacticBehaviour is a class representing one of the possible behaviours of a lexeme.
+ * The SyntacticBehaviour instance is attached to the {@link LexicalEntry} instance and a {@link Sense} instance.
+ * The presence in a given {@link Lexicon} instance of one SyntacticBehaviour instance for a lexical entry
+ * means that this lexeme can have this behaviour in the language of the lexicon.
+ *  
+ * @author Zijad Maksuti
+ *
+ */
 public class SyntacticBehaviour implements IHasID, Comparable<SyntacticBehaviour>{
 	// Id of this SyntacticBehaviour
 	@VarType(type = EVarType.ATTRIBUTE)
@@ -40,42 +51,54 @@ public class SyntacticBehaviour implements IHasID, Comparable<SyntacticBehaviour
 	private SubcategorizationFrameSet subcategorizationFrameSet;
 	
 	/**
-	 * @return the subcategorizationFrameSet
+	 * Returns a {@link SubcategorizationFrameSet} instance that groups different syntactic uses
+	 * ("surface alternations") associated with the {@link LexicalEntry} attached to this {@link SyntacticBehaviour}
+	 * instance.
+	 * 
+	 * @return the set of subcategorization frames that groups different syntactic uses of the
+	 * lexical entry attached to this syntactic behavior.<br>
+	 * If this syntactic behavior does not have a subcategorization frame set set, this method returns null.
+	 * 
+	 * @see SubcategorizationFrame
 	 */
 	public SubcategorizationFrameSet getSubcategorizationFrameSet() {
 		return subcategorizationFrameSet;
 	}
 
 	/**
-	 * @param subcategorizationFrameSet the subcategorizationFrameSet to set
+	 * Sets a {@link SubcategorizationFrameSet} instance that groups different syntactic uses
+	 * ("surface alternations") associated with the {@link LexicalEntry} attached to this {@link SyntacticBehaviour}
+	 * instance.
+	 * 
+	 * @param subcategorizationFrameSet the set of subcategorization frames that groups different syntactic uses of the
+	 * lexical entry attached to this syntactic behavior to set
+	 * 
+	 * @see SubcategorizationFrame
 	 */
-	public void setSubcategorizationFrameSet(
-			SubcategorizationFrameSet subcategorizationFrameSet) {
+	public void setSubcategorizationFrameSet(SubcategorizationFrameSet subcategorizationFrameSet) {
 		this.subcategorizationFrameSet = subcategorizationFrameSet;
 	}
 
-	/**
-	 * @return the id
-	 */
 	public String getId() {
 		return id;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
 	/**
-	 * @return the sense
+	 * Returns the {@link Sense} instance attached to this {@link SyntacticBehaviour} instance.
+	 * 
+	 * @return the sense attached to this syntactic behavior or null if the sense is not set
 	 */
 	public Sense getSense() {
 		return sense;
 	}
 
 	/**
+	 * Sets the {@link Sense} instance attached to this {@link SyntacticBehaviour} instance.
+	 * 
 	 * @param sense the sense to set
 	 */
 	public void setSense(Sense sense) {
@@ -83,17 +106,25 @@ public class SyntacticBehaviour implements IHasID, Comparable<SyntacticBehaviour
 	}
 
 	/**
-	 * @return the subcategorizationFrame
+	 * Returns the {@link SubcategorizationFrame} instance which represents a detailed
+	 * description of the {@link LexicalEntry} attached to this {@link SyntacticBehaviour} instance.
+	 * 
+	 * @return the subcategorization frame describing the detailed syntactic behaviour of the
+	 * attached lexical entry.<br>If the subcategorization frame is not set for this syntactic
+	 * behaviour instance, this method returns null.
 	 */
 	public SubcategorizationFrame getSubcategorizationFrame() {
 		return subcategorizationFrame;
 	}
 
 	/**
-	 * @param subcategorizationFrame the subcategorizationFrame to set
+	 * Sets the {@link SubcategorizationFrame} instance which represents a detailed
+	 * description of the {@link LexicalEntry} attached to this {@link SyntacticBehaviour} instance.
+	 * 
+	 * @param subcategorizationFrame the subcategorization frame describing the detailed syntactic behaviour of the
+	 * attached lexical entry to set
 	 */
-	public void setSubcategorizationFrame(
-			SubcategorizationFrame subcategorizationFrame) {
+	public void setSubcategorizationFrame(SubcategorizationFrame subcategorizationFrame) {
 		this.subcategorizationFrame = subcategorizationFrame;
 	}
 	

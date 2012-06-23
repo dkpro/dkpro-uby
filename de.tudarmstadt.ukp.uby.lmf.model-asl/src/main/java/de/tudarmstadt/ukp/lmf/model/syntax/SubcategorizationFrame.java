@@ -17,16 +17,28 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.syntax;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import de.tudarmstadt.ukp.lmf.model.interfaces.IHasFrequencies;
+import de.tudarmstadt.ukp.lmf.model.abstracts.HasFrequencies;
+import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
-import de.tudarmstadt.ukp.lmf.model.meta.Frequency;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
-public class SubcategorizationFrame implements IHasID, IHasFrequencies, Comparable<SubcategorizationFrame>{
+/**
+ * SubcategorizationFrame  is a class representing one syntactic construction.
+ * A SubcategorizationFrame instance is shared by all {@link LexicalEntry} instances that have the same
+ * syntactic behaviour in the same language. A  SubcategorizationFrame can inherit
+ * relationships and attributes from another more generic SubcategorizationFrame.
+ * Therefore, it is possible to integrate a hierarchical structure of SubcategorizationFrame instances.
+ * 
+ * @author Zijad Maksuti
+ * @author Judith Eckle-Kohler
+ *
+ */
+public class SubcategorizationFrame extends HasFrequencies implements IHasID, Comparable<SubcategorizationFrame>{
 	// Id of this SubcategorizationFrame
 	@VarType(type = EVarType.ATTRIBUTE)
 	private String id;
@@ -45,97 +57,94 @@ public class SubcategorizationFrame implements IHasID, IHasFrequencies, Comparab
 	
 	// Syntactic Arguments of this SubcategorizationFrame
 	@VarType(type = EVarType.CHILDREN)
-	private List<SyntacticArgument> syntacticArguments;
+	private List<SyntacticArgument> syntacticArguments = new ArrayList<SyntacticArgument>();
 	
-	// Frequency information for this SubcategorizationFrame
-	@VarType(type = EVarType.CHILDREN)
-	private List<Frequency> frequencies;
-	
-	/**
-	 * @return the id
-	 */
 	public String getId() {
 		return id;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
 	/**
-	 * @return the targets
+	 * Returns the more generic "parent" {@link SubcategorizationFrame} instance
+	 * of this SubcategorizationFrame instance.
+	 * 
+	 * @return more generic "parent" subcategorization frame or null if the
+	 * subcategorization frame does not have a parent
 	 */
 	public SubcategorizationFrame getParentSubcatFrame() {
 		return parentSubcatFrame;
 	}
 
 	/**
-	 * @param parentSubcatFrame the targets to set
+	 * Sets the more generic "parent" {@link SubcategorizationFrame} instance
+	 * of this SubcategorizationFrame instance.
+	 * 
+	 * @param parentSubcatFrame more generic "parent" subcategorization frame to set
 	 */
 	public void setParentSubcatFrame(SubcategorizationFrame parentSubcatFrame) {
 		this.parentSubcatFrame = parentSubcatFrame;
 	}
 
 	/**
-	 * @return the subcatLabel
+	 * Returns a {@link String} representing the label of this {@link SubcategorizationFrame} instance.
+	 * 
+	 * @return the label of this subcategorization frame or null if the label is not set
 	 */
 	public String getSubcatLabel() {
 		return subcatLabel;
 	}
 
 	/**
-	 * @param subcatLabel the subcatLabel to set
+	 * Sets a {@link String} representing the label of this {@link SubcategorizationFrame} instance.
+	 * 
+	 * @param subcatLabel the label to set
 	 */
 	public void setSubcatLabel(String subcatLabel) {
 		this.subcatLabel = subcatLabel;
 	}
 
 	/**
-	 * @return the lexemeProperty
+	 * Returns the {@link LexemeProperty} instance attached to this {@link SubcategorizationFrame} instance.
+	 * 
+	 * @return the lexeme property attached to this subcategorization frame or null
+	 * if the lexeme property is not set
 	 */
 	public LexemeProperty getLexemeProperty() {
 		return lexemeProperty;
 	}
 
 	/**
-	 * @param lexemeProperty the lexemeProperty to set
+	 * Sets the {@link LexemeProperty} instance attached to this {@link SubcategorizationFrame} instance.
+	 * 
+	 * @param lexemeProperty the lexeme property attached to this subcategorization frame to set
 	 */
 	public void setLexemeProperty(LexemeProperty lexemeProperty) {
 		this.lexemeProperty = lexemeProperty;
 	}
 
 	/**
-	 * @return the syntacticArguments
+	 * Returns the {@link List} of all {@link SyntacticArgument} instances, representing
+	 * the arguments of this {@link SubcategorizationFrame} instance.
+	 * 
+	 * @return the list of this subcategorization frames arguments or an empty list
+	 * if the frame does not have any arguments
 	 */
 	public List<SyntacticArgument> getSyntacticArguments() {
 		return syntacticArguments;
 	}
 
 	/**
-	 * @param syntacticArguments the syntacticArguments to set
+	 * Sets the {@link List} of all {@link SyntacticArgument} instances, representing
+	 * the arguments of this {@link SubcategorizationFrame} instance.
+	 * 
+	 * @param syntacticArguments the list of this subcategorization frames arguments to set
 	 */
 	public void setSyntacticArguments(List<SyntacticArgument> syntacticArguments) {
 		this.syntacticArguments = syntacticArguments;
 	}
-	
-	/**
-	 * 
-	 * @param frequencies the frequencies to set
-	 */
-	public void setFrequencies(List<Frequency> frequencies) {
-		this.frequencies = frequencies;
-	}
-
-	/**
-	 * 
-	 * @return the frequencies
-	 */
-	public List<Frequency> getFrequencies() {
-		return frequencies;
-	}	
 	
 	public String toString(){
 		StringBuffer sb = new StringBuffer();
@@ -144,11 +153,9 @@ public class SubcategorizationFrame implements IHasID, IHasFrequencies, Comparab
 		sb.append(" parentSubcatFrame:").append(parentSubcatFrame);
 		sb.append(" subcatLabel:").append(subcatLabel);
 		sb.append(" lexemeProperty:").append(lexemeProperty);
-		if(syntacticArguments != null)
-			Collections.sort(syntacticArguments);
+		Collections.sort(syntacticArguments);
 		sb.append(" syntacticArguments:").append(syntacticArguments);
-		if(frequencies != null)
-			Collections.sort(frequencies);
+		Collections.sort(frequencies);
 		sb.append(" frequencies").append(frequencies);
 		
 		return sb.toString();

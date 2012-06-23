@@ -263,7 +263,7 @@ public abstract class WiktionaryLMFTransformer extends LMFDBTransformer {
 				FormRepresentation targetFormRepresentation = new FormRepresentation();
 				targetFormRepresentation.setWrittenForm(StringUtils.replaceNonUtf8(wktRelation.getTarget(),1000));
 				targetFormRepresentation.setLanguageIdentifier(WiktionaryLMFMap.mapLanguage(wktEntry.getWordLanguage()));
-				senseRelation.setTargetFormRepresentation(targetFormRepresentation); // Save target word as targetFormRepresentation
+				senseRelation.setFormRepresentation(targetFormRepresentation); // Save target word as targetFormRepresentation
 				senseRelations.add(senseRelation);
 			}
 		}
@@ -281,7 +281,7 @@ public abstract class WiktionaryLMFTransformer extends LMFDBTransformer {
 				targetFormRepresentation.setLanguageIdentifier(WiktionaryLMFMap.mapLanguage(trans.getLanguage()));
 				senseRelation.setRelName(WiktionaryLMFMap.mapLanguage(trans.getLanguage())+"Translation");
 				senseRelation.setRelType(ERelTypeSemantics.translation);
-				senseRelation.setTargetFormRepresentation(targetFormRepresentation);
+				senseRelation.setFormRepresentation(targetFormRepresentation);
 				senseRelations.add(senseRelation);
 			}
 		}

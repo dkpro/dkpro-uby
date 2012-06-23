@@ -17,8 +17,9 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.syntax;
 
-import java.util.List;
-
+import de.tudarmstadt.ukp.lmf.model.abstracts.HasFrequencies;
+import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
+import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.enums.ECase;
 import de.tudarmstadt.ukp.lmf.model.enums.EComplementizer;
 import de.tudarmstadt.ukp.lmf.model.enums.EDeterminer;
@@ -28,13 +29,19 @@ import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticCategory;
 import de.tudarmstadt.ukp.lmf.model.enums.ETense;
 import de.tudarmstadt.ukp.lmf.model.enums.EVerbForm;
 import de.tudarmstadt.ukp.lmf.model.enums.EYesNo;
-import de.tudarmstadt.ukp.lmf.model.interfaces.IHasFrequencies;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
-import de.tudarmstadt.ukp.lmf.model.meta.Frequency;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
+import de.tudarmstadt.ukp.lmf.model.semantics.SynSemArgMap;
 
-public class SyntacticArgument implements IHasID, IHasFrequencies, Comparable<SyntacticArgument>{
+/**
+ * SyntacticArgument is a class representing an argument of a given {@link SubcategorizationFrame} instance.
+ * SyntacticArgument allows the connection with a semantic argument by means of a {@link SynSemArgMap} instance.
+ *  
+ * @author Zijad Maksuti
+ *
+ */
+public class SyntacticArgument extends HasFrequencies implements IHasID, Comparable<SyntacticArgument>{
 
 	// Id of this SyntacticArgument
 	@VarType(type = EVarType.ATTRIBUTE)
@@ -89,63 +96,39 @@ public class SyntacticArgument implements IHasID, IHasFrequencies, Comparable<Sy
 	@VarType(type = EVarType.ATTRIBUTE)
 	private EDeterminer determiner;
 
-	// Frequency information for this SubcategorizationFrame
-	@VarType(type = EVarType.CHILDREN)
-	private List<Frequency> frequencies;
-
 	/**
-	 *
-	 * @param frequencies the frequencies to set
-	 */
-	public void setFrequencies(List<Frequency> frequencies) {
-		this.frequencies = frequencies;
-	}
-
-	/**
-	 *
-	 * @return the frequencies
-	 */
-	public List<Frequency> getFrequencies() {
-		return frequencies;
-	}
-
-	/**
-	 * @return the determiner
+	 * Returns the determiner of this {@link SyntacticArgument} instance.
+	 * 
+	 * @return the determiner of this syntactic argument or null if the determiner is not set
+	 * @see EDeterminer
 	 */
 	public EDeterminer getDeterminer() {
 		return determiner;
 	}
 
 	/**
+	 * Sets the determiner of this {@link SyntacticArgument} instance.
+	 * 
 	 * @param determiner the determiner to set
+	 * @see EDeterminer
 	 */
 	public void setDeterminer(EDeterminer determiner) {
 		this.determiner = determiner;
 	}
 
-	/**
-	 * @return the id
-	 */
 	public String getId() {
 		return id;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
 	/**
-	 * @return the optional
-	 */
-	@Deprecated
-	public EYesNo getOptional() {
-		return optional;
-	}
-	/**
-	 *
+	 * Returns true if this {@link SyntacticArgument} has the optional attribute set.<br>
+	 * An optional syntactic argument is a complement of a verb (or a noun or an adjective) that can be omitted.<p>
+	 * Example: In the sentence "She paid the bill to her mother",
+	 * the argument "the bill" is not an optional syntactic argument, because it cannot be omitted: "*She paid to her mother".
 	 * @return true if the optional attribute is yes, false otherwise
 	 */
 	public boolean isOptional() {
@@ -155,61 +138,102 @@ public class SyntacticArgument implements IHasID, IHasFrequencies, Comparable<Sy
 
 	/**
 	 * @param optional the optional to set
+	 * @deprecated use {@link #setOptional(boolean)} instead
 	 */
+	@Deprecated
 	public void setOptional(EYesNo optional) {
 		this.optional = optional;
 	}
+	
+	/**
+	 * Sets the optional attribute of this {@link SyntacticArgument} instance.
+	 * An optional syntactic argument is a complement of a verb (or a noun or an adjective) that can be omitted.<p>
+	 * Example: In the sentence "She paid the bill to her mother",
+	 * the argument "the bill" is not an optional syntactic argument, because it cannot be omitted: "*She paid to her mother".
+	 * @param optional boolean value of the attribute to set
+	 */
+	public void setOptional(boolean optional) {
+		if(optional)
+			this.optional = EYesNo.yes;
+		else
+			this.optional = EYesNo.no;
+	}
 
 	/**
-	 * @return the grammaticalFunction
+	 * Returns the grammatical function of this {@link SyntacticArgument} instance.
+	 * 
+	 * @return the grammatical function of this syntactic argument or null if the
+	 * grammatical function is not set
+	 * @see EGrammaticalFunction
 	 */
 	public EGrammaticalFunction getGrammaticalFunction() {
 		return grammaticalFunction;
 	}
 
 	/**
-	 * @param grammaticalFunction the grammaticalFunction to set
+	 * Sets the grammatical function of this {@link SyntacticArgument} instance.
+	 * 
+	 * @param grammaticalFunction the grammatical function to set
+	 * @see EGrammaticalFunction
 	 */
 	public void setGrammaticalFunction(EGrammaticalFunction grammaticalFunction) {
 		this.grammaticalFunction = grammaticalFunction;
 	}
 
 	/**
-	 * @return the syntacticCategory
+	 * Returns the syntactic category of this {@link SyntacticArgument} instance.
+	 * 
+	 * @return the syntactic category of the syntactic argument
+	 * @see ESyntacticCategory
 	 */
 	public ESyntacticCategory getSyntacticCategory() {
 		return syntacticCategory;
 	}
 
 	/**
-	 * @param syntacticCategory the syntacticCategory to set
+	 * Sets the syntactic category of this {@link SyntacticArgument} instance.
+	 * 
+	 * @param syntacticCategory the syntactic category to set
+	 * @see ESyntacticCategory
 	 */
 	public void setSyntacticCategory(ESyntacticCategory syntacticCategory) {
 		this.syntacticCategory = syntacticCategory;
 	}
 
 	/**
-	 * @return the _case
+	 * Returns the case of this {@link SyntacticArgument} instance.
+	 * 
+	 * @return the case of this syntactic argument or null if the case is not set
+	 * @see ECase
 	 */
 	public ECase getCase() {
 		return _case;
 	}
 
 	/**
-	 * @param case1 the _case to set
+	 * Sets the case of this {@link SyntacticArgument} instance.
+	 * 
+	 * @param _case the case of this syntactic argument to set
+	 * @see ECase
 	 */
-	public void setCase(ECase case1) {
-		_case = case1;
+	public void setCase(ECase _case) {
+		this._case = _case;
 	}
 
 	/**
-	 * @return the preposition
+	 * Returns the {@link String} representing the preposition of this {@link SyntacticArgument} instance.
+	 * Usually, a preposition indicates position, direction, time or an abstract relation. Example: "into the woods"
+	 * 
+	 * @return the preposition of this syntactic argument instance or null if the preposition is not set
 	 */
 	public String getPreposition() {
 		return preposition;
 	}
 
 	/**
+	 * Sets the {@link String} representing the preposition of this {@link SyntacticArgument} instance.
+	 * Usually, a preposition indicates position, direction, time or an abstract relation. Example: "into the woods"
+	 * 
 	 * @param preposition the preposition to set
 	 */
 	public void setPreposition(String preposition) {
@@ -217,42 +241,70 @@ public class SyntacticArgument implements IHasID, IHasFrequencies, Comparable<Sy
 	}
 
 	/**
-	 * @param prepositionType the prepositionType to set
+	 * Sets the {@link String} representing the type of this {@link SyntacticArgument} instances preposition.<p>
+	 * A preposition type is a node in a hierarchy of prepositions. For example in VerbNet, the preposition type "dir"
+	 * is subordinated to the preposition type "path"; the preposition type "dir" comprises prepositions such as "across",
+	 * "along" and "around".
+	 * 
+	 * @param prepositionType the preposition type to set
+	 * @see #setPreposition(String)
 	 */
 	public void setPrepositionType(String prepositionType) {
 		this.prepositionType = prepositionType;
 	}
 
 	/**
-	 * @return the prepositionType
+	 * Returns the {@link String} representing the type of this {@link SyntacticArgument} instances preposition.<p>
+	 * A preposition type is a node in a hierarchy of prepositions. For example in VerbNet, the preposition type "dir"
+	 * is subordinated to the preposition type "path"; the preposition type "dir" comprises prepositions such as "across",
+	 * "along" and "around".
+	 * 
+	 * @return the type of this syntactic arguments preposition or null if the type is not sett
+	 * @see #getPreposition()
 	 */
 	public String getPrepositionType() {
 		return prepositionType;
 	}
 
 	/**
-	 * @return the number
+	 * Returns the grammatical number of this {@link SyntacticArgument} instance.
+	 * 
+	 * @return the grammatical number of this syntactic argument or null if the attribute is not set
+	 * @see EGrammaticalNumber
 	 */
 	public EGrammaticalNumber getNumber() {
 		return number;
 	}
 
 	/**
-	 * @param number the number to set
+	 * Sets the grammatical number of this {@link SyntacticArgument} instance.
+	 * 
+	 * @param number the grammatical number to set
+	 * @see EGrammaticalNumber
 	 */
 	public void setNumber(EGrammaticalNumber number) {
 		this.number = number;
 	}
 
 	/**
-	 * @return the lexeme
+	 * Returns a {@link String} representing a lexeme of this {@link SyntacticArgument} instance.<p>
+	 * 
+	 * A lexeme is a minimal unit of language which has a semantic interpretation and embodies a distinct cultural concept.
+	 * In UBY-LMF, a lexeme is not a lexical entry. A lexeme is a pair {@link LexicalEntry} / {@link Sense}.
+	 * 
+	 * @return the string representing the lexeme of this syntactic argument or null if the lexeme is not set
 	 */
 	public String getLexeme() {
 		return lexeme;
 	}
 
 	/**
-	 * @param lexeme the lexeme to set
+	 * Sets the {@link String} representing the lexeme of this {@link SyntacticArgument} instance.<p>
+	 * 
+	 * A lexeme is a minimal unit of language which has a semantic interpretation and embodies a distinct cultural concept.
+	 * In UBY-LMF, a lexeme is not a lexical entry. A lexeme is a pair {@link LexicalEntry} / {@link Sense}.
+	 * 
+	 * @param lexeme the string representing the lexeme of this syntactic argument to set
 	 */
 	public void setLexeme(String lexeme) {
 		this.lexeme = lexeme;
@@ -273,28 +325,39 @@ public class SyntacticArgument implements IHasID, IHasFrequencies, Comparable<Sy
 	}
 
 	/**
-	 * @return the tense
+	 * Returns the tense property of this {@link SyntacticArgument} instance.
+	 * 
+	 * @return the tense property of this syntactic argument or null if the property is not set
+	 * @see ETense
 	 */
 	public ETense getTense() {
 		return tense;
 	}
 
 	/**
-	 * @param tense the tense to set
+	 * Sets the tense property of this {@link SyntacticArgument} instance.
+	 * 
+	 * @param tense the tense property of this syntactic argument to set
+	 * @see ETense
 	 */
 	public void setTense(ETense tense) {
 		this.tense = tense;
 	}
 
 	/**
-	 * @return the complementizer
+	 * Returns the complementizer of this {@link SyntacticArgument} instance.
+	 * @return the complementizer of this syntactic argument instance or null
+	 * if the complementizer of this syntactic argument is not set
+	 * @see EComplementizer
 	 */
 	public EComplementizer getComplementizer() {
 		return complementizer;
 	}
 
 	/**
+	 * Sets the complementizer of this {@link SyntacticArgument} instance.
 	 * @param complementizer the complementizer to set
+	 * @see EComplementizer
 	 */
 	public void setComplementizer(EComplementizer complementizer) {
 		this.complementizer = complementizer;

@@ -17,12 +17,15 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.miscellaneous;
 
+import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
+
 /**
  * This class represents a group of constraints
- * associated with a Lexicon
- * @author maksuti
+ * associated with a {@link Lexicon} instance.
+ * 
+ * @author Zijad Maksuti
  *
  */
 public class ConstraintSet {
-	// not sure what to put here....
+	// TODO
 }

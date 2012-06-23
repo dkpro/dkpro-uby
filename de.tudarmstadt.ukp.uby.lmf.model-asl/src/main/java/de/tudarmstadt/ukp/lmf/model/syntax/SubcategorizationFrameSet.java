@@ -17,6 +17,7 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.syntax;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -26,8 +27,13 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
 
 /**
- * This class represents a subcategorization frame set
- * @author maksuti
+ * SubcategorizationFrameSet  is a class representing a set of syntactic constructions,
+ * represented by {@link SubcatFrameSetElement} instances. A SubcategorizationFrameSet can
+ * inherit attributes from another more generic SubcategorizationFrameSet.
+ * Therefore, it is possible to integrate a hierarchical structure of SubcategorizationFrameSet instances.
+ * 
+ * @author Zijad Maksuti
+ * @author Judith Eckle-Kohler
  *
  */
 
@@ -40,80 +46,101 @@ public class SubcategorizationFrameSet implements IHasID, Comparable<Subcategori
 	private String name;
 
 	@VarType(type = EVarType.CHILDREN)
-	private List<SubcatFrameSetElement> subcatFrameSetElements;
+	private List<SubcatFrameSetElement> subcatFrameSetElements = new ArrayList<SubcatFrameSetElement>();
 	
 	@VarType(type = EVarType.CHILDREN)
-	private List<SynArgMap> synArgMaps;
+	private List<SynArgMap> synArgMaps = new ArrayList<SynArgMap>();
 		
 	@VarType(type = EVarType.IDREF)
 	private SubcategorizationFrameSet parentSubcatFrame;
 
 	/**
-	 * @return the subcatFrameSetElements
+	 * Returns a set of syntactic constructions, represented by a {@link List} of {@link SubcatFrameSetElement} instances,
+	 * of this {@link SubcategorizationFrameSet}.
+	 * 
+	 * @return the list of elements of this subcategorization frame set or an empty list
+	 * if this set does not contain any elements
 	 */
 	public List<SubcatFrameSetElement> getSubcatFrameSetElements() {
 		return subcatFrameSetElements;
 	}
 
 	/**
-	 * @param subcatFrameSetElements the subcatFrameSetElements to set
+	 * Sets a set of syntactic constructions, represented by a {@link List} of {@link SubcatFrameSetElement} instances,
+	 * of this {@link SubcategorizationFrameSet}.
+	 * 
+	 * @param subcatFrameSetElements the list of elements of this subcategorization frame set to set
 	 */
-	public void setSubcatFrameSetElements(
-			List<SubcatFrameSetElement> subcatFrameSetElements) {
+	public void setSubcatFrameSetElements(List<SubcatFrameSetElement> subcatFrameSetElements) {
 		this.subcatFrameSetElements = subcatFrameSetElements;
 	}
 
 	/**
-	 * @return the synArgMaps
+	 * Returns a {@link List} of {@link SynArgMap} instances which represent the relationship
+	 * that maps various  {@link SyntacticArgument} instances of this {@link SubcategorizationFrameSet} instance.
+	 *  
+	 * @return the list of syntactic argument mappings of this subcategorization frame set or an empty list
+	 * if the subcategorization frame set does not contain any mappings
 	 */
 	public List<SynArgMap> getSynArgMaps() {
 		return synArgMaps;
 	}
 
 	/**
-	 * @param synArgMaps the synArgMaps to set
+	 * Sets a {@link List} of {@link SynArgMap} instances which represent the relationship
+	 * that maps various  {@link SyntacticArgument} instances of this {@link SubcategorizationFrameSet} instance.
+	 *  
+	 * @param synArgMaps the list of syntactic argument mappings of this subcategorization frame set to set
+	 * 
 	 */
 	public void setSynArgMaps(List<SynArgMap> synArgMaps) {
 		this.synArgMaps = synArgMaps;
 	}
 
-	/**
-	 * @return the id
-	 */
 	public String getId() {
 		return id;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
 	/**
-	 * @return the name
+	 * Returns a {@link String} which represents the name of this {@link SubcategorizationFrameSet} instance.
+	 * 
+	 * @return the name of this subcategorization frame set instance or null if the name is not set
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * @param id the name to set
+	 * Sets a {@link String} which represents the name of this {@link SubcategorizationFrameSet} instance.
+	 * 
+	 * @param the name of this subcategorization frame set instance to set
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	/**
-	 * @return the parentSubcatFrame
+	 * Returns a more generic "parent" {@link SubcategorizationFrameSet} instance of this
+	 * SubcategorizationFrameSet instance.
+	 * 
+	 * @return the more generic "parent" subcategorization frame set or null if this
+	 * subcategorization frame set does not have a parent
+	 * 
 	 */
 	public SubcategorizationFrameSet getParentSubcatFrame() {
 		return parentSubcatFrame;
 	}
 
 	/**
-	 * @param parentSubcatFrame the parentSubcatFrame to set
+	 * Sets a more generic "parent" {@link SubcategorizationFrameSet} instance of this
+	 * SubcategorizationFrameSet instance.
+	 * 
+	 * @param the more generic "parent" subcategorization frame set to set
+	 * 
 	 */
 	public void setParentSubcatFrame(SubcategorizationFrameSet parentSubcatFrame) {
 		this.parentSubcatFrame = parentSubcatFrame;
@@ -124,11 +151,9 @@ public class SubcategorizationFrameSet implements IHasID, Comparable<Subcategori
 		StringBuffer sb = new StringBuffer(512);
 		sb.append("SubcategorizationFrame ").append("id:")
 		.append(this.id).append(" name: ").append(this.name);
-		if(this.subcatFrameSetElements != null)
-			Collections.sort(subcatFrameSetElements);
+		Collections.sort(subcatFrameSetElements);
 		sb.append(" subcatFrameSetElements: ").append(this.subcatFrameSetElements);
-		if(this.synArgMaps != null)
-			Collections.sort(this.synArgMaps);
+		Collections.sort(this.synArgMaps);
 		sb.append("parentSubcatFrame: ").append(this.parentSubcatFrame);
 		return sb.toString();
 	}
