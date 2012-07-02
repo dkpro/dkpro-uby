@@ -37,7 +37,7 @@
 	</property>
 	<property name="number" column="number" node="@number">    
 	   	<type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">
-	       	<param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.ENumber</param>         	
+	       	<param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalNumber</param>         	
 	   	</type>
 	</property>
 	<property name="verbForm" column="verbForm" node="@verbForm">    
