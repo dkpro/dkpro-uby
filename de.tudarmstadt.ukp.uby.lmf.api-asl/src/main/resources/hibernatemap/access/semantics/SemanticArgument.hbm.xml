@@ -11,7 +11,10 @@
         <type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">
          	<param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.ECoreType</param>         	
       	</type>
-  	</property> 	
+  	</property> 
+  	
+  	<property name="isIncorporated" column="isIncorporated" node="@isIncorporated" type="boolean"></property>
+  		
   	<list name="definitions"  node=".">
           <key column="semanticArgumentId" />
           <index column="idx"/>            

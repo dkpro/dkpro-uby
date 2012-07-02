@@ -9,16 +9,16 @@
 
   	<property name="label" column="label" node="@label" type="string"/>
   		  
-    <property name="lexicalized" column="lexicalized" node="@lexicalized"> 
-        <type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">
-         	<param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.EYesNo</param>         	
-      	</type>
+    <property name="lexicalized" column="lexicalized" node="@lexicalized" type="boolean"> 
+        <!-- <type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">  -->	
+         <!-- 	<param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.EYesNo</param>    -->	       	
+      	<!-- </type>  -->	
   	</property>  
 
-    <property name="perspectivalized" column="perspectivalized" node="@perspectivalized"> 
-        <type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">
-         	<param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.EYesNo</param>         	
-      	</type>
+    <property name="perspectivalized" column="perspectivalized" node="@perspectivalized" type="boolean"> 
+       <!--  <type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">  -->	
+         <!-- 	<param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.EYesNo</param>  -->	         	
+      	<!-- </type>  -->	
   	</property>
   	    	
   	<list name="semanticLabels"  node=".">
