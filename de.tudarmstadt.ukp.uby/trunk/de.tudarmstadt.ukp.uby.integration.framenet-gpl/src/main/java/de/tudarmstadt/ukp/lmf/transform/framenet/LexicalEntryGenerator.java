@@ -217,8 +217,13 @@ public class LexicalEntryGenerator {
 					if(semTypeID.equals("9")) //lexicalized
 						sense.setTransparentMeaning(EYesNo.yes);
 					else
-						if(semTypeID.equals("223"))// perspectivalized
-							sense.setBoundLexeme(EYesNo.yes);
+						if(semTypeID.equals("223")){ // perspectivalized
+							SemanticLabel semanticLabel =
+									new SemanticLabel(
+											"Support or Bound_dependent_LU", "fn_bound",null, sense, null
+											);
+							sense.addSemanticLabel(semanticLabel);
+						}
 						else{
 							// the underlying checks for semTypeIDs 68 and 182 are because of a bug in FN-API
 							SemanticType semanticType = null;

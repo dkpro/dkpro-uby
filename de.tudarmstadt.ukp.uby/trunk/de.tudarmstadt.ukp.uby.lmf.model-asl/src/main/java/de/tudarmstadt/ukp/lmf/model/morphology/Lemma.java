@@ -40,6 +40,8 @@ public class Lemma extends HasFrequencies {
 	@VarType(type = EVarType.CHILDREN)
 	private List<FormRepresentation> formRepresentations = new ArrayList<FormRepresentation>();
 	
+	// backlink
+	@VarType(type = EVarType.NONE)
 	private String lexicalEntryId;
 	
 

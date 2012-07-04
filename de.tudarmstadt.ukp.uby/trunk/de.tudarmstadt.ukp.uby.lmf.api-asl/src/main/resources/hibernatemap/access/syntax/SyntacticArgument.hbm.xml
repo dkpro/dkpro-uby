@@ -10,10 +10,10 @@
     <property name="prepositionType" column="prepositionType" node="@prepositionType" type="string"/>
 	<property name="lexeme" column="lexeme" node="@lexeme" type="string"/>    
     
-    <property name="optional" column="optional" node="@optional" type="boolean">    
-	   	<!-- <type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">  -->	
-	      <!--  	<param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.EYesNo</param>     -->	      	
-	   <!-- 	</type>  -->	
+    <property name="optional" column="optional" node="@optional" access="field">    
+	   	<type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">	
+	      <param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.EYesNo</param>	      	
+	   </type>
 	</property>
 	<property name="grammaticalFunction" column="grammaticalFunction" node="@grammaticalFunction">    
 	   	<type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">

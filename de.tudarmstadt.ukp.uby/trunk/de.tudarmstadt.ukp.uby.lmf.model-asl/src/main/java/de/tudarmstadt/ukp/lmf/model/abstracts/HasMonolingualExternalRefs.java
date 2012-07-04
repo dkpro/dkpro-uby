@@ -45,7 +45,8 @@ public class HasMonolingualExternalRefs implements IHasMonolingualExternalRefs {
 
 	@Override
 	public void setMonolingualExternalRefs(List<MonolingualExternalRef> monolingualExternalRefs) {
-		this.monolingualExternalRefs =  monolingualExternalRefs;
+		if(this.monolingualExternalRefs != null)
+			this.monolingualExternalRefs =  monolingualExternalRefs;
 	}
 	
 }

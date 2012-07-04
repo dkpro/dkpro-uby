@@ -67,10 +67,6 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 	@VarType(type = EVarType.ATTRIBUTE)
 	private EYesNo transparentMeaning;
 
-	// Sense is a bound Lexeme
-	@VarType(type = EVarType.ATTRIBUTE)
-	private EYesNo boundLexeme;
-
 	// List of more specific senses
 	@VarType(type = EVarType.CHILDREN)
 	private List<Sense> senses= new ArrayList<Sense>();
@@ -211,44 +207,6 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 	public boolean isTransparentMeaning() {
 		return (transparentMeaning.equals(EYesNo.yes)? true : false);
 	}
-
-	/**
-	 *
-	 * @param boundLexeme the boundLexeme to set
-	 * @deprecated This method is marked for removal, use {@link Sense#setBoundLexeme(boolean)} instead
-	 */
-	@Deprecated
-	public void setBoundLexeme(EYesNo boundLexeme) {
-		this.boundLexeme = boundLexeme;
-	}
-	
-	
-	public void setBoundLexeme(boolean flag){
-		if(flag)
-			this.boundLexeme = EYesNo.yes;
-		else
-			this.boundLexeme = EYesNo.no;
-				
-	}
-
-	/**
-	 *
-	 * @return the boundLexeme
-	 */
-	@Deprecated
-	public EYesNo getBoundLexeme() {
-		return boundLexeme;
-	}
-
-	/**
-	 *
-	 * @return true if the boundLexeme attribute is yes, false otherwise
-	 */
-	public boolean isBoundLexeme() {
-		return (boundLexeme.equals(EYesNo.yes)? true : false);
-	}
-
-
 
 	/**
 	 * Returns the {@link List} of more specific {@link Sense} instances.<p>
@@ -459,6 +417,23 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 	 */
 	public List<SemanticLabel> getSemanticLabels() {
 		return semanticLabels;
+	}
+	
+	/**
+	 * Attaches a {@link SemanticLabel} instance to this {@link Sense} instance.
+	 * 
+	 * @param semanticLabel the semantic label to attach to this sense
+	 * 
+	 * @return true if semanticLabel is not already attached to this sense, false if not or semanticLabel
+	 * is null
+	 */
+	public boolean addSemanticLabel(SemanticLabel semanticLabel){
+		if(semanticLabel == null || this.semanticLabels.contains(semanticLabel))
+			return false;
+		else{
+			this.semanticLabels.add(semanticLabel);
+			return true;
+		}
 	}
 
 	@Override

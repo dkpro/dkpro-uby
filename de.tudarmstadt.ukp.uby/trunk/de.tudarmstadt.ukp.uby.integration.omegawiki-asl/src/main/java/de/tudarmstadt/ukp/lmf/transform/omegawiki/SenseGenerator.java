@@ -312,7 +312,7 @@ class SenseGenerator {
 
 			if(sl!=null)
 			{
-				sl.setParentId(sense.getId());
+				sl.setParent(sense);
 				if(sense.getSemanticLabels()==null) {
 					sense.setSemanticLabels(new LinkedList<SemanticLabel>());
 				}

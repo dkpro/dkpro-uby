@@ -7,10 +7,10 @@
     <property name="index" column="_index" node="@index" type="integer"/>    
        
   	
-  	 <property name="transparentMeaning" column="transparentMeaning" node="@transparentMeaning" type="boolean"> 
-        <!-- <type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType"> -->	
-         <!-- 	<param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.EYesNo</param>  -->	        	
-      	<!-- </type> -->	
+  	 <property name="transparentMeaning" column="transparentMeaning" node="@transparentMeaning" access="field"> 
+        <type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">	
+         <param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.EYesNo</param>	        	
+      	</type>
   	</property>  
   	 
   	

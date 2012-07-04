@@ -8,16 +8,16 @@
            <generator class="increment"/>
     </id>         
 
-    <property name="isBreakBefore" column="isBreakBefore" node="@isBreakBefore" type="boolean">    
-    	<!-- <type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">-->	
-         <!-- 	<param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.EYesNo</param>   -->	      	
-      	<!-- </type> -->	
+    <property name="isBreakBefore" column="isBreakBefore" node="@isBreakBefore" access="field">    
+    	<type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">	
+         <param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.EYesNo</param>	      	
+      	</type>
   	</property>  
     
-    <property name="isHead" column="isHead" node="@isHead"  type="boolean">    
-    	<!-- <type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">  -->	      	
-         <!-- 	<param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.EYesNo</param>     -->	      	      	
-      <!-- 	</type>  -->	      	
+    <property name="isHead" column="isHead" node="@isHead"  access="field">    
+    	<type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">	      	
+         <param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.EYesNo</param>	      	      	
+      </type>
   	</property>  	
   	
     <property name="position" column="position" node="@position" type="integer"/>

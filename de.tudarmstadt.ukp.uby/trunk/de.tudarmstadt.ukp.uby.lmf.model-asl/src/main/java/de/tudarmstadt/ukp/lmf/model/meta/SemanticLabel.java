@@ -22,6 +22,7 @@ import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.abstracts.HasMonolingualExternalRefs;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
+import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
@@ -49,25 +50,64 @@ public class SemanticLabel extends HasMonolingualExternalRefs implements Compara
 	@VarType(type = EVarType.ATTRIBUTE)
 	private String quantification;
 	
-	private String parentId;
+	// backlink to the parent, not part of UBY-LMF
+	@VarType(type = EVarType.NONE)
+	private IHasID parent;
 	
 	/**
-	 * 
-	 * @param parentId the parentId to set
+	 * Creates a {@link SemanticLabel} instance based on the consumed parameters.
+	 * @param label the label of the semantic label
+	 * @param type the type of the semantic label
+	 * @param quantification the numerical representation of the semantic labels quantification
+	 * @param parent the parent UBY-LMF class instance containing the semantic label
+	 * @param monolingualExternalRefs {@link List} containing monolingual external references of the semantic label
 	 */
-	public void setParentId(String parentId) {
-		this.parentId = parentId;
+	public SemanticLabel(String label, String type, String quantification,
+			IHasID parent, List<MonolingualExternalRef> monolingualExternalRefs){
+		
+		this.setLabel(label);
+		this.setParent(parent);
+		this.setType(type);
+		this.setQuantification(quantification);
+		this.setMonolingualExternalRefs(monolingualExternalRefs);
+	}
+	
+	/**
+	 * Creates an empty {@link SemanticLabel} instance.<p>
+	 * 
+	 * Use {@link #SemanticLabel(String, String, String, IHasID, List)} to create an instance
+	 * by specifying attribute values.
+	 * 
+	 */
+	public SemanticLabel(){
+		
+	}
+	
+	/**
+	 * Sets the parent class containing this {@link SemanticLabel} instance.
+	 * The parent class has to impement {@link IHasID} interface.
+	 * 
+	 * @param parent the parent to set
+	 */
+	public void setParent(IHasID parent) {
+		this.parent = parent;
 	}
 
 	/**
+	 * Returns the parent containing this {@link SemanticLabel} instance.
 	 * 
-	 * @return the parentId
+	 * @return the parent containing this semantic label or null if the parent is not set <p>
+	 * <i>
+	 * Note that this attribute is not a part of UBY-LMF. Therefore a semantic label may not have
+	 * a parent set. In this case, this method returns null
+	 * </i>
 	 */
-	public String getParentId() {
-		return parentId;
+	public IHasID getParent() {
+		return this.parent;
 	}
 
 	/**
+	 * Sets the {@link String} instance representing the written label of this {@link SemanticLabel} instance.
 	 * 
 	 * @param label the label to set
 	 */
@@ -76,24 +116,27 @@ public class SemanticLabel extends HasMonolingualExternalRefs implements Compara
 	}
 
 	/**
+	 * Returns the {@link String} instance representing the written label of this {@link SemanticLabel} instance.
 	 * 
-	 * @return the label
+	 * @return the label of this semantic label or null if the label is not set
 	 */
 	public String getLabel() {
 		return label;
 	}
 
 	/**
+	 * Sets the {@link String} instance representing the type of this {@link SemanticLabel} instance.
 	 * 
-	 * @param type the type to set
+	 * @param type the type of the semantic label to set
 	 */
 	public void setType(String type) {
 		this.type = type;
 	}
 
 	/**
+	 * Returns the {@link String} instance representing the type of this {@link SemanticLabel} instance.
 	 * 
-	 * @return the type
+	 * @return the type of semantic label or null if the type is not set
 	 */
 	public String getType() {
 		return type;
@@ -108,26 +151,12 @@ public class SemanticLabel extends HasMonolingualExternalRefs implements Compara
 	}
 
 	/**
+	 * Returns a {@link String} representing the numerical quantification of this {@link SemanticLabel} instance.
 	 * 
-	 * @return the quantification
+	 * @return the quantification of the semantic label or null if the quantification is not set
 	 */
 	public String getQuantification() {
 		return quantification;
-	}
-	
-	/**
-	 * @return the monolingualExternalRefs
-	 */
-	public List<MonolingualExternalRef> getMonolingualExternalRefs() {
-		return monolingualExternalRefs;
-	}
-
-	/**
-	 * @param monolingualExternalRefs the monolingualExternalRefs to set
-	 */
-	public void setMonolingualExternalRefs(
-			List<MonolingualExternalRef> monolingualExternalRefs) {
-		this.monolingualExternalRefs = monolingualExternalRefs;
 	}
 	
 	public String toString(){
