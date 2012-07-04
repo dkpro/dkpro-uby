@@ -13,7 +13,11 @@
       	</type>
   	</property> 
   	
-  	<property name="isIncorporated" column="isIncorporated" node="@isIncorporated" type="boolean"></property>
+  	<property name="isIncorporated" column="isIncorporated" node="@isIncorporated" access="field">
+  		<type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">	      	
+         <param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.EYesNo</param>	      	      	
+      </type>
+  	</property>
   		
   	<list name="definitions"  node=".">
           <key column="semanticArgumentId" />

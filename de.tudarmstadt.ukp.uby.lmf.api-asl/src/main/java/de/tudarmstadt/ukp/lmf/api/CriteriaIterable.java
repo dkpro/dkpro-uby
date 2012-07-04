@@ -23,7 +23,7 @@ import org.hibernate.Criteria;
 
 /**
  * Iterable for CriteriaIterator
- * @author chebotar
+ * @author Yevgen Chebotar
  *
  * @param <T> Class of the object that is iterated
  */

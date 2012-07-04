@@ -19,8 +19,8 @@
 	<many-to-one name="target" class="de.tudarmstadt.ukp.lmf.model.core.Sense" column="target" 
 			node="@target" foreign-key="none" not-found="ignore"/>
 			
-	<many-to-one name="targetFormRepresentation" class="de.tudarmstadt.ukp.lmf.model.morphology.FormRepresentation" 
-		entity-name="FormRepresentation_SenseRelation" column="formRepresentationId" 
+	<many-to-one name="formRepresentation" class="de.tudarmstadt.ukp.lmf.model.morphology.FormRepresentation" 
+		entity-name="FormRepresentation_SenseRelation" column="formRepresentation" 
 		node="FormRepresentation" unique="true" foreign-key="none"/>
 		
 	<list name="frequencies" node=".">
