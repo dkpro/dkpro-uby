@@ -181,14 +181,23 @@ public class WordForm {
 	}
 
 	/**
-	 * @return the verbFormMood
+	 * Return the mood of the verb described by this {@link WordForm} instance.
+	 *  
+	 * @return the mood of the verb described by this word form or null
+	 * if the mood is not set
+	 * 
+	 * @see EVerbFormMood
 	 */
 	public EVerbFormMood getVerbFormMood() {
 		return verbFormMood;
 	}
 
 	/**
-	 * @param verbFormMood the verbFormMood to set
+	 * Sets the mood of the verb described by this {@link WordForm} instance.
+	 * 
+	 * @param verbFormMood the mood to set
+	 * 
+	 * @see EVerbFormMood
 	 */
 	public void setVerbFormMood(EVerbFormMood verbFormMood) {
 		this.verbFormMood = verbFormMood;

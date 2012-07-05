@@ -38,7 +38,11 @@ public class SubcatFrameSetElement implements Comparable<SubcatFrameSetElement>{
 	 * contained in this {@link SubcatFrameSetElement} instance.
 	 * 
 	 * @return the subcategorization frame representing a syntactic construction or null if the
-	 * frame is not set
+	 * frame is not set. <p>
+	 * 
+	 * Note that UBY-LMF requires that every SubcatFrameSetElement should contains
+	 * a reference to an existing SubcategorizationFrame. Absence of this attribute may indicate to
+	 * an incomplete conversion process of the original resource.
 	 */
 	public SubcategorizationFrame getElement() {
 		return element;
@@ -48,7 +52,11 @@ public class SubcatFrameSetElement implements Comparable<SubcatFrameSetElement>{
 	 * Sets the element, represented by a {@link SubcategorizationFrame} instance,
 	 * contained in this {@link SubcatFrameSetElement} instance.
 	 * 
-	 * @param element the subcategorization frame representing a syntactic construction
+	 * @param element the subcategorization frame representing a syntactic construction.<p>
+	 * 
+	 * Note that UBY-LMF requires that every SubcatFrameSetElemnt should contain
+	 * a reference to an existing SubcategorizationFrame.
+	 * 
 	 */
 	public void setElement(SubcategorizationFrame element) {
 		this.element = element;

@@ -47,10 +47,6 @@ public class SemanticPredicate extends HasFrequencies implements IHasID, IHasDef
 	@VarType(type = EVarType.ATTRIBUTE)
 	private String label;
 
-	// semantic types of this SemanticPredicate
-	@VarType(type = EVarType.IDREFS)
-	private List<Synset> semanticTypes = new ArrayList<Synset>();
-
 	// Semantic predicate is lexicalized
 	@VarType(type = EVarType.ATTRIBUTE)
 	private EYesNo lexicalized;
@@ -74,15 +70,20 @@ public class SemanticPredicate extends HasFrequencies implements IHasID, IHasDef
 	// Semantic class information for this Sense
 	@VarType(type = EVarType.CHILDREN)
 	private List<SemanticLabel> semanticLabels = new ArrayList<SemanticLabel>();
-
-	// Semantic class information for this Sense
-	@VarType(type = EVarType.CHILDREN)
-	private List<CoreArgumentSet> coreArgumentSets = new ArrayList<CoreArgumentSet>();
-
+	
+	/**
+	 * Returns the {@link List} of all {@link Definition} instances of this {@link SemanticPredicate} instance.
+	 * @return all definitions of this semantic predicate or an empty list if the semantic predicate
+	 * does not have any definitions assigned
+	 */
 	public List<Definition> getDefinitions() {
 		return definitions;
 	}
 
+	/**
+	 * Sets the {@link List} of all {@link Definition} instances of this {@link SemanticPredicate} instance.
+	 * @param definitions list of all definitions to set
+	 */
 	public void setDefinitions(List<Definition> definitions) {
 		this.definitions = definitions;
 	}
@@ -133,22 +134,6 @@ public class SemanticPredicate extends HasFrequencies implements IHasID, IHasDef
 		return semanticLabels;
 	}
 
-	/**
-	 *
-	 * @param coreArgumentSets the coreArgumentsSets
-	 */
-	public void setCoreArgumentSet(List<CoreArgumentSet> coreArgumentSets) {
-		this.coreArgumentSets = coreArgumentSets;
-	}
-
-	/**
-	 *
-	 * @return the coreArgumentSets
-	 */
-	public List<CoreArgumentSet> getCoreArgumentSet() {
-		return coreArgumentSets;
-	}
-
 	public String getId() {
 		return id;
 	}
@@ -175,21 +160,6 @@ public class SemanticPredicate extends HasFrequencies implements IHasID, IHasDef
 	 */
 	public void setLabel(String label) {
 		this.label = label;
-	}
-
-	/**
-	 * Returns the 
-	 * @return the semanticTypes
-	 */
-	public List<Synset> getSemanticTypes() {
-		return semanticTypes;
-	}
-
-	/**
-	 * @param semanticTypes the semanticTypes to set
-	 */
-	public void setSemanticTypes(List<Synset> semanticTypes) {
-		this.semanticTypes = semanticTypes;
 	}
 
 	/**

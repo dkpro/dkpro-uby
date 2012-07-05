@@ -17,6 +17,15 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.enums;
 
+import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticArgument;
+
+/**
+ * Enumeration of verb forms described by {@link SyntacticArgument}
+ * instance.
+ * 
+ * @author Zijad Maksuti
+ *
+ */
 public enum EVerbForm {
 	toInfinitive,
 	bareInfinitive,
