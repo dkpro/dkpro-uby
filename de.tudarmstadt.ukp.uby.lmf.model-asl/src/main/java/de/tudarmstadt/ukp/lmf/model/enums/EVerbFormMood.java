@@ -17,9 +17,13 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.enums;
 
+import de.tudarmstadt.ukp.lmf.model.morphology.WordForm;
+
 /**
- * Enumerator for moods of a verb
- * @author maksuti
+ * Enumerator for moods of a verb described by a
+ * {@link WordForm} instance.
+ * 
+ * @author Zijad Maksuti
  *
  */
 public enum EVerbFormMood {

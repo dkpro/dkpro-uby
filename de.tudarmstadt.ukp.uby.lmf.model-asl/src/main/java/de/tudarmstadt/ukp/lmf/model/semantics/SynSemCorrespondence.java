@@ -52,7 +52,11 @@ public class SynSemCorrespondence implements IHasID {
 	 * {@link SynSemCorrespondence}.
 	 * 
 	 * @return the list of all syntactic predicate - semantic predicate mappings contained in this
-	 * SynSemCorrespondence instance or an empty list if no mappings are set
+	 * SynSemCorrespondence instance or an empty list if no mappings are set.<p>
+	 * 
+	 * Note that UBY-LMF requires that every SynSemCorrespondence contains at least one
+	 * SynSemArgMap instance. Absence of at least one SynSemArgMap instance may indicate to
+	 * incomplete conversion process of the original resource.
 	 */
 	public List<SynSemArgMap> getSynSemArgMaps() {
 		return synSemArgMaps;
@@ -62,7 +66,10 @@ public class SynSemCorrespondence implements IHasID {
 	 * Sets a {@link List} of all {@link SynSemArgMap} instances contained in this
 	 * {@link SynSemCorrespondence}.
 	 * 
-	 * @param synSemArgMaps the list of syntactic argument - semantic argument mappings to set
+	 * @param synSemArgMaps the list of syntactic argument - semantic argument mappings to set.<p>
+	 * 
+	 * Note that UBY-LMF requires that every SynSemCorrespondence contains at least one
+	 * SynSemArgMap.
 	 */
 	public void setSynSemArgMaps(List<SynSemArgMap> synSemArgMaps) {
 		this.synSemArgMaps = synSemArgMaps;

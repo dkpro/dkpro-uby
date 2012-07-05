@@ -253,10 +253,8 @@ public class LMFXmlWriterDOM {
 			synsets2.add(synset4);
 			
 			SemanticPredicate semanticPredicate1 = new SemanticPredicate();
-			semanticPredicate1.setSemanticTypes(synsets1);
 			
 			SemanticPredicate semanticPredicate2 = new SemanticPredicate();
-			semanticPredicate2.setSemanticTypes(synsets2);
 			
 			List<SemanticPredicate> semanticPredicates = new ArrayList<SemanticPredicate>();
 			semanticPredicates.add(semanticPredicate1);

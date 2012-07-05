@@ -311,14 +311,21 @@ public class SyntacticArgument extends HasFrequencies implements IHasID, Compara
 	}
 
 	/**
-	 * @return the verbForm
+	 * Returns a form of the verb described by this {@link SyntacticArgument} instance.
+	 * 
+	 * @return the form of the verb described by this syntactic argument or null
+	 * if the verb form is not set
+	 * @see EVerbForm
 	 */
 	public EVerbForm getVerbForm() {
 		return verbForm;
 	}
 
 	/**
-	 * @param verbForm the verbForm to set
+	 * Sets the form of the verb described by this {@link SyntacticArgument} instance.
+	 * 
+	 * @param verbForm the form to set
+	 * @see EVerbForm
 	 */
 	public void setVerbForm(EVerbForm verbForm) {
 		this.verbForm = verbForm;

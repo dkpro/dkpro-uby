@@ -20,6 +20,7 @@ package de.tudarmstadt.ukp.lmf.model.semantics;
 import java.util.Collections;
 
 import de.tudarmstadt.ukp.lmf.model.abstracts.SemanticRelation;
+import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.enums.ERelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
@@ -54,15 +55,28 @@ public class SenseRelation extends SemanticRelation<Sense> implements Comparable
 	}
 
 	/**
+	 * Returns a {@link FormRepresentation} instance which contains
+	 * the written form of the {@link Sense} targeted by this
+	 * {@link SenseRelation} instance.<p>
+	 * Note that this reference is set only if the {@link LexicalEntry}
+	 * containing the targeted Sense does not exist.
 	 * 
-	 * @return the formRepresentation
+	 * @return the form representation of the sense targeted by this
+	 * sense relation or null if the form representation is not set
 	 */
 	public FormRepresentation getFormRepresentation() {
 		return formRepresentation;
 	}
 
 	/**
-	 * @param formRepresentation the targetFormRepresentation to set
+	 * Sets a {@link FormRepresentation} instance which contains
+	 * the written form of the {@link Sense} targeted by this
+	 * {@link SenseRelation} instance.<p>
+	 * Note that this reference should only be set if the {@link LexicalEntry}
+	 * containing the targeted Sense does not exist.
+	 * 
+	 * @param formRepresentation the form representation containing the written form
+	 * of the sense targeted by this sense relation or null if the form representation is not set
 	 */
 	public void setFormRepresentation(FormRepresentation formRepresentation) {
 		this.formRepresentation = formRepresentation;
