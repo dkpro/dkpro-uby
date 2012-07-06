@@ -23,9 +23,12 @@ import java.util.List;
 import org.hibernate.Criteria;
 
 /**
- * Universal iterator that can be used for iteration over any LMF element. 
+ * Universal {@link Iterator} that can be used for iteration over any UBY-LMF element.
+ *  
  * Needs a Hibernate-Criteria object with predefined selection/filtering settings
- * @author chebotar
+ * 
+ * @author Yevgen Chebotar
+ * 
  *
  * @param <T> Class of the object that is iterated
  */
@@ -66,6 +69,7 @@ public class CriteriaIterator<T>  implements Iterator<T> {
 	 * @return
 	 */
 	private boolean fillBuffer(){
+		@SuppressWarnings("rawtypes")
 		List result = criteria.setFirstResult(firstResult)
 			.setMaxResults(bufferSize).list();		
 		

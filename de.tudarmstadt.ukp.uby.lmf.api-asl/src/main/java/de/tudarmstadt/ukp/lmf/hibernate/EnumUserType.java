@@ -29,16 +29,18 @@ import org.hibernate.usertype.EnhancedUserType;
 import org.hibernate.usertype.ParameterizedType;
 
 /**
- * Custom EnumUserType for all Enums in the LMF model
- * @author chebotar
+ * Custom {@link EnumUserType} for all enumerators in the UBY-LMF model.
+ * 
+ * @author Yevgen Chebotar
  *
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class EnumUserType implements EnhancedUserType, ParameterizedType {
     
 	private Class<Enum> enumClass;
  
-    public void setParameterValues(Properties parameters) {
+    @SuppressWarnings("unchecked")
+	public void setParameterValues(Properties parameters) {
         String enumClassName = parameters.getProperty("enumClassName");
         try {
             enumClass = (Class<Enum>) Class.forName(enumClassName);
@@ -73,7 +75,8 @@ public class EnumUserType implements EnhancedUserType, ParameterizedType {
         return false;
     }
  
-    public Object nullSafeGet(ResultSet rs, String[] names, Object owner) 
+    @SuppressWarnings("unchecked")
+	public Object nullSafeGet(ResultSet rs, String[] names, Object owner) 
     throws HibernateException, SQLException {
         String name = rs.getString( names[0] );
         return rs.wasNull() ? null : Enum.valueOf(enumClass, name);
@@ -102,7 +105,8 @@ public class EnumUserType implements EnhancedUserType, ParameterizedType {
         return new int[] { Types.VARCHAR };
     }
  
-    public Object fromXMLString(String xmlValue) {
+    @SuppressWarnings("unchecked")
+	public Object fromXMLString(String xmlValue) {
         return Enum.valueOf(enumClass, xmlValue);
     }
  

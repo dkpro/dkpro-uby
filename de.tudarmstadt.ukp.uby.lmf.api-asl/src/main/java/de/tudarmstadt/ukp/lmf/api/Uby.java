@@ -68,9 +68,8 @@ public class Uby
 	 * Constructor to obtain the Uby object
 	 *
 	 * @param dbConfig Database configuration of the Uby database
-	 * @throws FileNotFoundException
 	 */
-	public Uby(DBConfig dbConfig) throws FileNotFoundException
+	public Uby(DBConfig dbConfig)
 	{
 		this.dbConfig = dbConfig;
 		cfg = HibernateConnect.getConfiguration(dbConfig);
