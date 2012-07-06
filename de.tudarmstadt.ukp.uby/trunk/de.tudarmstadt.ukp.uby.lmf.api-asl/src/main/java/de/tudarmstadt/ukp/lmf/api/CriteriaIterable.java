@@ -22,7 +22,8 @@ import java.util.Iterator;
 import org.hibernate.Criteria;
 
 /**
- * Iterable for CriteriaIterator
+ * This class represents an {@link Iterable} for {@link CriteriaIterator}.
+ * 
  * @author Yevgen Chebotar
  *
  * @param <T> Class of the object that is iterated

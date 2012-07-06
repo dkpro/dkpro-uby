@@ -19,9 +19,10 @@ package de.tudarmstadt.ukp.lmf.transform;
 
 
 /**
- * Holds database configuration of LMF Database
+ * Instance of this class holds database configuration of UBY-LMF Database.
  *
- * @author chebotar
+ * @author Yevgen Chebotar
+ * @author Zijad Maksuti
  *
  */
 
@@ -65,13 +66,14 @@ public class DBConfig
 
 
 	/**
-	 * Creates a new configuration of LMF database based on the consumed parameters. <br><br>
+	 * Creates a new configuration of UBY-LMF database based on the consumed parameters. <br><br>
 	 * 
 	 * @param url
 	 *            Host_to_the_database/database_name
 	 * @param jdbc_driver_class
 	 *            The jdbc driver class using to access database
 	 * @param db_vendor
+	 * 			  vendor name of the accessed database
 	 * @param user
 	 * 			  User name used for accessing the database
 	 * @param password
@@ -95,34 +97,69 @@ public class DBConfig
 		this.showSQL = showSQL;
 	}
 
+	/**
+	 * Returns the jdbc driver class used by this {@link DBConfig} instance to access the database.
+	 * 
+	 * @return the jdbc driver class assigned to this DBConfig or null if the driver class is not set
+	 */
 	public String getJdbc_driver_class()
 	{
 		return jdbc_driver_class;
 	}
 
+	/**
+	 * Sets the jdbc driver class used by this {@link DBConfig} instance to access the database.
+	 * 
+	 * @param jdbcDriverClass the jdbc driver class to set
+	 */
 	public void setJdbc_driver_class(String jdbcDriverClass)
 	{
 		jdbc_driver_class = jdbcDriverClass;
 	}
 
+	/**
+	 * Returns the name the vendors name of the database accessed by this {@link DBConfig} instance.
+	 * 
+	 * @return the vendor of the accessed database or null if the name is not set
+	 */
 	public String getDb_vendor()
 	{
 		return db_vendor;
 	}
 
+	/**
+	 * Sets the the vendors name of the database accessed by this {@link DBConfig} instance.
+	 * 
+	 * @param dbVendor the vendor name of the accessed database to set
+	 */
 	public void setDb_vendor(String dbVendor)
 	{
 		db_vendor = dbVendor;
 	}
 
 	/**
-	 * @return the user
+	 * Returns a {@link String} instance representing the user name
+	 * needed to access the database.
+	 * 
+	 * @return the user name needed to access the database or null if the
+	 * user name is not set
+	 * 
+	 * @see DBConfig
 	 */
 	public String getUser()
 	{
 		return user;
 	}
 
+	/**
+	 * Returns the {@link String} instance representing the user name
+	 * needed to access the database.
+	 * 
+	 * @return the user name needed to access the database or null if the
+	 * user name is not set
+	 * 
+	 * @see DBConfig
+	 */
 	public String getJdbc_url()
 	{
 		return jdbc_url;
@@ -134,8 +171,12 @@ public class DBConfig
 	}
 
 	/**
-	 * @param user
-	 *            the user to set
+	 * Sets the {@link String} instance representing the user name
+	 * needed to access the database.
+	 * 
+	 * @param user the user name to set
+	 * 
+	 * @see DBConfig
 	 */
 	public void setUser(String user)
 	{
@@ -143,7 +184,13 @@ public class DBConfig
 	}
 
 	/**
-	 * @return the password
+	 * Returns the {@link String} instance representing the password
+	 * needed to access the database.
+	 * 
+	 * @return the password needed to access the database or null
+	 * if the password is not set
+	 * 
+	 * @see DBConfig
 	 */
 	public String getPassword()
 	{
@@ -151,8 +198,12 @@ public class DBConfig
 	}
 
 	/**
-	 * @param password
-	 *            the password to set
+	 * Sets the {@link String} instance representing the password
+	 * needed to access the database.
+	 * 
+	 * @param password the password to set
+	 * 
+	 * @see DBConfig
 	 */
 	public void setPassword(String password)
 	{
@@ -160,7 +211,11 @@ public class DBConfig
 	}
 
 	/**
-	 * @return the showSQL
+	 * Returns true if the SQL queries to the database, accessed using
+	 * this {@link DBConfig} instance, should be printed to the console.
+	 * 
+	 * @return true if the SQL queries should be printed to the 
+	 * console, false otherwise
 	 */
 	public boolean isShowSQL()
 	{
@@ -168,8 +223,14 @@ public class DBConfig
 	}
 
 	/**
-	 * @param showSQL
-	 *            the showSQL to set
+	 * 
+	 * Specifies if the SQL queries to the database, accessed using this
+	 * {@link DBConfig} instance, should be printed to the console.<p>
+	 * 
+	 * By default, the SQL queries to the database are printed to console.
+	 * 
+	 * @param showSQL set to true if the SQL queries should be printed to the 
+	 * console, set to false otherwise
 	 */
 	public void setShowSQL(boolean showSQL)
 	{
@@ -177,28 +238,49 @@ public class DBConfig
 	}
 
 	/**
-	 * @return the host
+	 * Returns the {@link String} instance representing the name of the
+	 * accessed databases' host.
+	 * 
+	 * @return the name of the accessed databases' host or null if the name
+	 * is not set
+	 * 
+	 * @see DBConfig
 	 */
 	public String getHost() {
 		return host;
 	}
 
 	/**
-	 * @param host the host to set
+	 * Sets the {@link String} instance representing the name of the
+	 * accessed databases' host.
+	 * 
+	 * @param the name of the accessed databases' host to set
+	 * 
+	 * @see DBConfig
 	 */
 	public void setHost(String host) {
 		this.host = host;
 	}
 
 	/**
-	 * @return the accessMode
+	 * Returns true if the UBY database accessed using this {@link DBConfig} instance
+	 * is used only for access read.<p>
+	 *  
+	 * @return true if the accessed UBY database is used only for reading, false
+	 * if the database is used only for writing
 	 */
 	public boolean isAccessMode() {
 		return accessMode;
 	}
 
 	/**
-	 * @param accessMode the accessMode to set
+	 * Specifies if UBY database used by this {@link DBConfig} instance is used for reading or
+	 * writing.<p>
+	 * 
+	 * By default, every DBConfig instance is set to access (read) mode.
+	 * 
+	 * @param accessMode set to true, in order to only read from UBY database, set to false
+	 * in order to write to UBY database
 	 */
 	public void setAccessMode(boolean accessMode) {
 		this.accessMode = accessMode;

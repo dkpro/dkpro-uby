@@ -21,8 +21,10 @@ import org.hibernate.dialect.MySQL5InnoDBDialect;
 
 
 /**
- * This class resolves the issue of correct UTF-8 encoding when creating MySQL tables with Hibernate SchemaExport-Tool 
- * @author chebotar
+ * This class resolves the issue of correct UTF-8 encoding when creating MySQL tables
+ * with Hibernate SchemaExport-Tool.
+ *  
+ * @author Yevgen Chebotar
  *
  */
 public class CustomMySQLDialect extends MySQL5InnoDBDialect {

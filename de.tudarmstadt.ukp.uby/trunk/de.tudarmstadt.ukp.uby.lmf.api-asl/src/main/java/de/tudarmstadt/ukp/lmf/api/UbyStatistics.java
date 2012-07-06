@@ -17,7 +17,6 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.api;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -36,33 +35,42 @@ import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
 import de.tudarmstadt.ukp.lmf.model.enums.ESenseAxisType;
+import de.tudarmstadt.ukp.lmf.model.morphology.FormRepresentation;
+import de.tudarmstadt.ukp.lmf.model.morphology.Lemma;
 import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis;
 import de.tudarmstadt.ukp.lmf.model.semantics.SenseRelation;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 
 /**
- * An extension of the Uby API to support collecting resource statistics
- * (Could be integrated to Uby.java)
- * @author sh
+ * This class represents an extension of the Uby API to support collecting resource statistics.
+ * 
+ * @author Silvana Hartmann
  *
  */
 public class UbyStatistics extends Uby{
 
 	/**
+	 * Creates a {@link UbyStatistics} instance based on the consumed parameter.
+	 * 
 	 * @param dbConfig
-	 *            Database configuration of the Uby database
-	 * @throws FileNotFoundException
+	 *            Configuration holder of the UBY database used for generating the statistics
+	 *            
+	 * @see DBConfig
 	 */
-	public UbyStatistics(DBConfig dbConfig) throws FileNotFoundException{
+	public UbyStatistics(DBConfig dbConfig) {
 		super(dbConfig);
 	}
 
 
 	/**
-	 * Count the number of senses in the given lexicon
+	 * Counts the number of {@link Sense} instances in the {@link Lexicon}
+	 * specified by the given name.
+	 * 
 	 * @param lexiconName
-	 * 			Name of the lexicon
-	 * @return the number of senses in the lexicon
+	 * 			name of the lexicon which senses should be counted
+	 * 
+	 * @return the number of senses in the lexicon or zero, if the
+	 * lexicon with the specified name does not exist
 	 */
 	public long countSensesPerLexicon(String lexiconName){
 		Criteria criteria = session.createCriteria(Sense.class);
@@ -73,10 +81,14 @@ public class UbyStatistics extends Uby{
 	}
 
 	/**
-	 * Count the number of lexical entries in the given lexicon
+	 * Counts the number of {@link LexicalEntry} instances in the {@link Lexicon}
+	 * specified by the given name.
+	 * 
 	 * @param lexiconName
-	 * 			Name of the lexicon
-	 * @return the number of lexical entries in the lexicon
+	 * 			name of the lexicon which lexical entries should be counted
+	 * 
+	 * @return the number of lexical entries in the lexicon or zero, if the
+	 * lexicon with the specified name does not exist
 	 */
 	public long countLexicalEntriesPerLexicon(String lexiconName){
 		Criteria criteria = session.createCriteria(LexicalEntry.class);
@@ -142,11 +154,18 @@ public class UbyStatistics extends Uby{
 	}
 
 	/**
-	 * Return a list of strings consisting of lemma+"_"+part-of-speech
-	 * 		filtered by lexicon
+	 * Return a {@link Set} of {@link String} instances consisting of <code>lemma+"_"+part-of-speech</code>,
+	 * 		filtered by given {@link Lexicon} name.<br>
+	 * The lemma is obtained from the written form of the first {@link FormRepresentation} of the {@link Lemma}
+	 * instance.
 	 * @param lexiconName
-	 * 			Name of the lexicon
-	 * @return a list of strings containing lemma and pos information
+	 * 			name of the lexicon which lemmas should be used
+	 * @return a set of strings containing lemma and part-of-speech of the specified lexicon.
+	 * This method returns an empty set if the lexicon with the specified name does no exist.
+	 * 
+	 * @see Lemma#getFormRepresentations()
+	 * @see FormRepresentation#getWrittenForm()
+	 * @see EPartOfSpeech
 	 */
 	public Set<String> getLemmaPosPerLexicon(String lexiconName){
 			Criteria criteria = session.createCriteria(Lexicon.class,"l");
@@ -163,7 +182,7 @@ public class UbyStatistics extends Uby{
 			ArrayList<String> out = new ArrayList<String>();
 			while (res.next()){
 				Object[] r = res.get();
-				if (r[1] != null){ // some resources do not have pOS
+				if (r[1] != null){ // some resources do not have POS
 					out.add((String)r[0] +"_"+((EPartOfSpeech)r[1]).toString());
 				} else {
 					out.add((String)r[0] +"_null");

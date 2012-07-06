@@ -31,14 +31,23 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 
+/**
+ * This class offers methods for conecting to a database.
+ * 
+ * @author Yevgen Chebotar
+ * @author Zijad Maksuti
+ *
+ */
 public class HibernateConnect {
 
 	private static Logger logger = Logger.getLogger(HibernateConnect.class.getName());
 
 	/**
 	 * Creates Hibernate {@link Configuration} and
-	 * adds all files from Hibernate mapping folder to the model
-	 * @param dbConfig
+	 * adds all files from Hibernate mapping folder to the model.
+	 * 
+	 * @param dbConfig database configuration holder
+	 * 
 	 * @return the created Hibernate Configuration
 	 */
 	public static Configuration getConfiguration(DBConfig dbConfig) {
@@ -77,13 +86,17 @@ public class HibernateConnect {
 
 
 	/**
-	 * Create Hibernate Properties
-	 * @param host
-	 * @param user
-	 * @param password
-	 * @param db
-	 * @param showSQL
-	 * @return
+	 * This method creates and returns Hibernate Properties.
+	 * @param jdbc_url Host_to_the_database/database_name
+	 * @param jdbc_driver_class driver used to connect
+	 * @param db_vendor database vendor
+	 * @param user user name
+	 * @param password password 
+	 * @param showSQL set to true in order to print all SQL-queries to the console
+	 * 
+	 * @return hibernate properties based on the consumed parameters
+	 * 
+	 * @see Properties
 	 */
 	public static Properties getProperties(String jdbc_url, String jdbc_driver_class, String db_vendor,String user, String password, boolean showSQL) {
 
@@ -145,7 +158,9 @@ public class HibernateConnect {
 	 * Returns all files from the folder and its subfolders
 	 * @param folder
 	 * @return
+	 * @deprecated this method is marked for deletion
 	 */
+	@Deprecated
 	public static Set<File> getAllFiles(File folder){
 		Set<File> result = new HashSet<File>();
 		if(folder.isFile() && folder.getName().endsWith(".hbm.xml")){
