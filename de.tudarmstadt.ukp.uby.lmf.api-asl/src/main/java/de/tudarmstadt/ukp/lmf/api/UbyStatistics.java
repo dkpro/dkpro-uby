@@ -30,6 +30,7 @@ import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
+import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
@@ -160,7 +161,8 @@ public class UbyStatistics extends Uby{
 	 * instance.
 	 * @param lexiconName
 	 * 			name of the lexicon which lemmas should be used
-	 * @return a set of strings containing lemma and part-of-speech of the specified lexicon.
+	 * 
+	 * @return a set of strings containing lemma and part-of-speech of the specified lexicon.<br>
 	 * This method returns an empty set if the lexicon with the specified name does no exist.
 	 * 
 	 * @see Lemma#getFormRepresentations()
@@ -194,15 +196,28 @@ public class UbyStatistics extends Uby{
 	}
 
 	/**
-	 * Return a list of strings consisting of lemma+"_"+part-of-speech
-	 * 		filtered by lexicon, part-of-speech prefix and language
+	 * Return a {@link Set} of {@link String} instances consisting of <code>lemma+"_"+part-of-speech</code>,
+	 * 		filtered by given {@link Lexicon} name, part-of-speech prefix and a language identifier.<br>
+	 * The lemma is obtained from the written form of the first {@link FormRepresentation} of the {@link Lemma}
+	 * instance.
+	 * 
 	 * @param lexiconName
-	 * 			Name of the lexicon
-	 * @param prefix
-	 * 			The partOfSpeech prefix
-	 * @param lang
-	 * 			The language identifier of the lexicon
-	 * @return
+	 * 			name of the lexicon which lemmas should be used
+	 * 
+	 * @param prefix the part-of-speech prefix used when filtering {@link LexicalEntry} instances
+	 * 
+	 * @param lang the language identifier used when filtering lexical entries
+	 * 
+	 * @return a set of strings containing lemma and part-of-speech of the specified lexicon.<br>
+	 * 
+	 * This method returns an empty set if the lexicon with the specified name does no exist or
+	 * the lexicon does not contain any lexical entries with specified part-of-speech prefix and language
+	 * identifier.
+	 * 
+	 * @see Lemma#getFormRepresentations()
+	 * @see FormRepresentation#getWrittenForm()
+	 * @see EPartOfSpeech
+	 * @see ELanguageIdentifier
 	 */
 	public Set<String> getLemmaPosPerLexiconAndPosPrefixAndLanguage(String lexiconName, String prefix, ELanguageIdentifier lang){
 			Criteria criteria = session.createCriteria(Lexicon.class,"l");
@@ -238,10 +253,14 @@ public class UbyStatistics extends Uby{
 	}
 
 	/**
-	 * Count the number of sense relations within this lexicon
+	 * Counts the number of {@link SenseRelation} instances within the {@link Lexicon}
+	 * specified by the given name.
+	 * 
 	 * @param lexiconName
-	 * 			Name of the lexicon
-	 * @return the number
+	 * 			name of the lexicon which senses should be counted
+	 * 
+	 * @return the number of sense relations in the lexicon or zero if the
+	 * lexicon with the specified name does not exist
 	 */
 	public long countSenseRelationsPerLexicon(String lexiconName) {
 		Criteria criteria = session.createCriteria(SenseRelation.class);
@@ -253,54 +272,83 @@ public class UbyStatistics extends Uby{
 	}
 
 	/**
-	 * Count the senses in Uby
-	 * @return the number of senses
+	 * Counts the number of {@link Sense} instances within the UBY-LMF {@link LexicalResource}
+	 * contained in the database accessed by this {@link UbyStatistics} instance.
+	 * 
+	 * @return the number of senses in the lexical resource or zero if the
+	 * lexical resource does not contain any senses
 	 */
 	public long countSenses(){
 		return countClassEntities(Sense.class);
 	}
 
 	/**
-	 * Count the lexical entries in Uby
-	 * @return the number of lexical entries
+	 * Counts the number of {@link LexicalEntry} instances within the UBY-LMF {@link LexicalResource}
+	 * contained in the database accessed by this {@link UbyStatistics} instance.
+	 * 
+	 * @return the number of lexical entries in the lexical resource or zero if the
+	 * lexical resource does not contain any lexical entries
 	 */
 	public long countLexicalEntries(){
 		return countClassEntities(LexicalEntry.class);
 	}
 
 	/**
-	 * Count the number of sense axes in uby
-	 * @return a list of alignments in uby
+	 * Counts the number of {@link SenseAxis} instances within the UBY-LMF {@link LexicalResource}
+	 * contained in the database accessed by this {@link UbyStatistics} instance.
+	 * 
+	 * @return the number of sense axes in the lexical resource or zero if the
+	 * lexical resource does not contain any sense axes
 	 */
 	public long countSenseAxes() {
 		return countClassEntities(SenseAxis.class);
 	}
+	
 	/**
-	 * Count the class instances for the given class
-	 * @param ubyClass
-	 * @return the number of class instances in uby
+	 * Counts the number of instances of a specified UBY-LMF class.
+	 * The instances are counted within the UBY-LMF {@link LexicalResource}
+	 * contained in the database accessed by this {@link UbyStatistics} instance.
+	 * 
+	 * @param ubyClass specifies the UBY-LMF class which instances should be counted
+	 * 
+	 * @return the number of specified UBY-LMF class instances contained in the
+	 * lexical resource or zero if the lexical resource does not contain any instances
+	 * of the specified class 
 	 */
-	public long countClassEntities(Class ubyClass){
+	public long countClassEntities(@SuppressWarnings("rawtypes") Class ubyClass){
 		return (Long) session.createCriteria(ubyClass).setProjection(Projections.rowCount()).uniqueResult();
 	}
 
 
 
 	/**
-	 * Count the sense axes of a particular sense axis type
-	 * 		between two lexicons identified by their name.
-	 * 		! Note that lexicons are identified by senseId-prefixes
-	 * 		! and that sources of the alignments are not distinguished.
-	 * 		! and that only alignments between senses are considered;
+	 * Counts the number of {@link SenseAxis} instances between two {@link Lexicon} instances
+	 * identified by their name. The counted sense axes are filtered by the
+	 * specified type.<p>
+	 * <b>Important properties of this method:</b>
+	 * <ul>
+	 * 		<li>Only alignments between {@link Sense} instances are considered.</li>
+	 * 		<li>The sources of the alignments are not distinguished.</li>
+	 * 		<li>The lexicons are identified by identifier prefixes of the aligned senses.</li>
+	 * </ul>
+	 * 		
 	 * @param type
-	 * 			The type of the sense axis
+	 * 			Type of sense axes to be considered when counting
+	 * 
 	 * @param lex1Name
-	 * 			Name of lexicon 1
+	 * 			The name of the first of two lexicons between which sense axes should be counted
+	 * 
 	 * @param lex2Name
-	 * 			Name of lexicon 2
-	 * @return the number of sense axes between the lexicons
+	 * 			The name of the second of two lexicons between which sense axes should be counted
+	 * 
+	 * @return the number of sense axes between the lexicons filtered by the specified sense axes type.
+	 * This method returns zero if a lexicon with the specified name does not exist or one of the
+	 * consumed arguments is null.
+	 * 
+	 * @see ESenseAxisType
 	 */
 	public long countSenseAxesPerLexiconPair(ESenseAxisType type, String lex1Name, String lex2Name){
+		
 		// get prefix for res1Name
 		Criteria c1 = session.createCriteria(Sense.class,"s");
 		c1 = c1.createCriteria("lexicalEntry");
@@ -341,19 +389,31 @@ public class UbyStatistics extends Uby{
 	}
 
 	/**
-	 * Count the sense axes of a particular sense axis type
-	 * 		between two lexicons identified by their name.
-	 * 		! Note that lexicons are identified by senseId-prefixes
-	 * 		! and that sources of the alignments are not distinguished.
-	 * 		! and that only alignments between senses are considered;
+	 * Returns a {@link List} containing all {@link SenseAxis} instances between two {@link Lexicon} instances
+	 * identified by their name. The counted sense axes are filtered by the
+	 * specified type.<p>
+	 * <b>Important properties of this method:</b>
+	 * <ul>
+	 * 		<li>Only alignments between {@link Sense} instances are considered.</li>
+	 * 		<li>The sources of the alignments are not distinguished.</li>
+	 * 		<li>The lexicons are identified by identifier prefixes of the aligned senses.</li>
+	 * </ul>
+	 * 		
 	 * @param type
-	 * 			The type of the sense axis
+	 * 			Type of sense axes to be returned
+	 * 
 	 * @param lex1Name
-	 * 			Name of lexicon 1
+	 * 			The name of the first of two lexicons between which sense axes should be found
 	 * @param lex2Name
-	 * 			Name of lexicon 2
-	 * @return the number of sense axes between the lexicons
+	 * 			The name of the second of two lexicons between which sense axes should be found
+	 * 
+	 * @return the list of sense axes between the lexicons filtered by the specified sense axes type.
+	 * This method returns an empty list if a lexicon with the specified name does not exist or one of
+	 * the consumed arguments is null.
+	 * 
+	 * @see ESenseAxisType
 	 */
+	@SuppressWarnings("unchecked")
 	public List<SenseAxis> getSenseAxesPerLexiconPair(ESenseAxisType type, String lex1Name, String lex2Name){
 		// get prefix for res1Name
 		Criteria c1 = session.createCriteria(Sense.class,"s");
@@ -387,9 +447,9 @@ public class UbyStatistics extends Uby{
 			criteria = criteria.add(Restrictions.eq("senseAxisType", type));
 			criteria = criteria.add(Restrictions.like("senseOne.id", pref1, MatchMode.START));
 			criteria = criteria.add(Restrictions.like("senseTwo.id", pref2, MatchMode.START));
+
 			return criteria.list();
-		} else {
-			return null;
 		}
+		else return new ArrayList<SenseAxis>();
 	}
 }
