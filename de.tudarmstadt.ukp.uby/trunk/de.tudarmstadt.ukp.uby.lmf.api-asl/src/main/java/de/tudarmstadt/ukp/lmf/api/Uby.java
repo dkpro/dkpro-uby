@@ -51,11 +51,11 @@ import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticArgument;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 
 /**
- * Main entrance point to the Uby API, holds methods for searching of different elements
- *
+ * Uby class represents the main entrance point to the UBY API.
+ * It holds methods for searching of different UBY-LMF elements in a databse
+ * containing a {@link LexicalResource}.
  *
  */
-@SuppressWarnings("unchecked")
 public class Uby
 {
 
@@ -65,13 +65,22 @@ public class Uby
 	protected Session session;
 
 	/**
-	 * Constructor to obtain the Uby object
+	 * Constructor for a {@link Uby} instance used for
+	 * searching for different elements in a database containing
+	 * UBY-LMF {@link LexicalResource}.
+	 * 
+	 * The connection to the database is specified using a {@link DBConfig}
+	 * instance.
 	 *
-	 * @param dbConfig Database configuration of the Uby database
+	 * @param dbConfig configuration of the database containing
+	 * UBY-LMF lexical resource. 
 	 */
 	public Uby(DBConfig dbConfig)
 	{
-		this.dbConfig = dbConfig;
+		// TODO
+//		if(dbConfig == null)
+//			throw new UbyInvalidArgumentException("database configuration is null");
+//		this.dbConfig = dbConfig;
 		cfg = HibernateConnect.getConfiguration(dbConfig);
 		sessionFactory = cfg.buildSessionFactory();
 		openSession();
@@ -79,7 +88,9 @@ public class Uby
 
 	/**
 	 * Using this empty constructor, you have to set Value for parameter dbConfig afterwards.
+	 * @deprecated marked for deletion, use {@link #Uby(DBConfig)} instead.
 	 */
+	@Deprecated
 	public Uby(){
 		//do nothing
 	}
@@ -89,7 +100,9 @@ public class Uby
 	 *
 	 * @param dbConfig Database configuration of the Uby database
 	 * @throws FileNotFoundException
+	 * @deprecated marked for deletion
 	 */
+	@Deprecated
 	public void setDbConfig(DBConfig dbconfig) throws FileNotFoundException{
 		this.dbConfig=dbconfig;
 		cfg = HibernateConnect.getConfiguration(dbConfig);
@@ -98,8 +111,9 @@ public class Uby
 	}
 
 	/**
-	 * Getting the configuration for the Uby database
-	 *
+	 * Returns the {@link DBConfig} instance used by this
+	 * {@link Uby} instance to access the UBY-LMF database. 
+	 * 
 	 * @return  Database configuration of the Uby database
 	 */
 	public DBConfig getDbConfig(){
