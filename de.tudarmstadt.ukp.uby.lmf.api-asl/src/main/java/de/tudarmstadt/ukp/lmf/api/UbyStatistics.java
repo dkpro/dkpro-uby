@@ -56,9 +56,11 @@ public class UbyStatistics extends Uby{
 	 * @param dbConfig
 	 *            Configuration holder of the UBY database used for generating the statistics
 	 *            
+	 * @throws UbyInvalidArgumentException if the provided dbConfig is null 
+	 *            
 	 * @see DBConfig
 	 */
-	public UbyStatistics(DBConfig dbConfig) {
+	public UbyStatistics(DBConfig dbConfig) throws UbyInvalidArgumentException {
 		super(dbConfig);
 	}
 
