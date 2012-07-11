@@ -29,11 +29,22 @@ public class UbyInvalidArgumentException extends Exception {
 
 	private static final long serialVersionUID = 8241986247301055844L;
 
+	/**
+	 * Constructs a new {@link UbyInvalidArgumentException} with the specified cause.
+	 * This constructor can be used as a wrapper.
+	 * 
+	 * @param cause a throwable which can be wrapped into this exception
+	 */
 	public UbyInvalidArgumentException(Throwable cause) {
         super(cause);
     }
 	
-	public UbyInvalidArgumentException(){
-		super();
+	/**
+	 * Constructs a new {@link UbyInvalidArgumentException} with the specified detail message.
+	 * 
+	 * @param message the message to be attached to the exception
+	 */
+	public UbyInvalidArgumentException(String message){
+		super(message);
 	}
 }

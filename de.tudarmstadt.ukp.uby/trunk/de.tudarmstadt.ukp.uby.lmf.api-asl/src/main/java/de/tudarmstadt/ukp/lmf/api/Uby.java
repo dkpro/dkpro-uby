@@ -66,7 +66,7 @@ public class Uby
 
 	/**
 	 * Constructor for a {@link Uby} instance used for
-	 * searching for different elements in a database containing
+	 * searching of different elements in a database containing
 	 * UBY-LMF {@link LexicalResource}.
 	 * 
 	 * The connection to the database is specified using a {@link DBConfig}
@@ -74,13 +74,13 @@ public class Uby
 	 *
 	 * @param dbConfig configuration of the database containing
 	 * UBY-LMF lexical resource. 
+	 * @throws UbyInvalidArgumentException if the specified dbConfig is null
 	 */
-	public Uby(DBConfig dbConfig)
+	public Uby(DBConfig dbConfig) throws UbyInvalidArgumentException
 	{
-		// TODO
-//		if(dbConfig == null)
-//			throw new UbyInvalidArgumentException("database configuration is null");
-//		this.dbConfig = dbConfig;
+		if(dbConfig == null)
+			throw new UbyInvalidArgumentException("database configuration is null");
+		this.dbConfig = dbConfig;
 		cfg = HibernateConnect.getConfiguration(dbConfig);
 		sessionFactory = cfg.buildSessionFactory();
 		openSession();
@@ -120,12 +120,21 @@ public class Uby
 		return dbConfig;
 	}
 
+	/**
+	 * 
+	 * @deprecated this method is marked for deletion
+	 */
+	@Deprecated
 	public SessionFactory getSessionFactory(){
 		return sessionFactory;
 	}
+	
 	/**
 	 * Opens hibernate database session
+	 * 
+	 * @deprecated marked for deletion
 	 */
+	@Deprecated
 	public void openSession()
 	{
 		session = sessionFactory.openSession();
@@ -133,16 +142,19 @@ public class Uby
 
 	/**
 	 * Closes hibernate database session
+	 * 
+	 * @deprecated marked for deletion
 	 */
+	@Deprecated
 	public void closeSession()
 	{
 		session.close();
 	}
 
 	/**
-	 * Returns current hibernate database session
+	 * Returns the hibernate {@link Session} of this {@link Uby} instance.
 	 *
-	 * @return  Current database session
+	 * @return the session created by this Uby instance
 	 */
 	public Session getSession()
 	{
@@ -150,10 +162,15 @@ public class Uby
 	}
 
 	/**
-	 * Fetches a LexicalResource from the database by its name. This method is private as it is only used internally
+	 * Fetches a {@link LexicalResource} from the UBY-Database by its name.
 	 *
-	 * @param Name of the LexicalResource to be fetched
-	 * @return The LexicalResource
+	 * @param name the name of the lexical resource to be fetched
+	 * 
+	 * @return the lexical resource with the specified name or null if the
+	 * database accessed by this {@link Uby} instance does not contain a
+	 * lexical resource with the specified name 
+	 * 
+	 * @see LexicalResource#getName()
 	 */
 	private LexicalResource getLexicalResource(String name)
 	{
@@ -163,9 +180,14 @@ public class Uby
 	}
 
 	/**
-	 * Fetches the one Uby LexicalResource named "Uby" from the database. This should work if the database has been created correctly and is the recommended way to obtain the LexicalResource
+	 * Fetches the one UBY-LMF {@link LexicalResource} instance named "Uby" from the database accessed by this {@link Uby}
+	 * instance.
+	 * 
+	 * This should work if the database has been created correctly and is the recommended way to obtain the UBY-LMF
+	 * lexical resource.
 	 *
-	 * @return The LexicalResource Uby
+	 * @return a lexical resource named "Uby", contained in the accessed database, or null if the database does not contain
+	 * the lexical resource with the name "Uby" 
 	 */
 	public LexicalResource getLexicalResource()
 	{
@@ -174,54 +196,81 @@ public class Uby
 
 
 	/**
-	 * Fetches all lexicon names from the database
+	 * Fetches a {@link List} of names of all {@link Lexicon} instances contained in the database
+	 * accessed by this {@link Uby} instance.
 	 *
-	 * @return a list of names of all Lexicons in Uby
+	 * @return a list of names of all lexicons contained in the accessed UBY-LMF database or an empty list
+	 * if the database does not contain any lexicons
+	 * 
+	 * @see Lexicon#getName()
 	 */
 	public List<String> getLexiconNames(){
 		Criteria criteria = session.createCriteria(Lexicon.class);
 		criteria = criteria.setProjection(Property.forName("name"));
-		return criteria.list();
+		@SuppressWarnings("unchecked")
+		List<String> result = criteria.list();
+		
+		if(result == null)
+			result = new ArrayList<String>(0);
+		
+		return result;
 	}
 
 	/**
-	 * Fetches a Lexicon from the database by name. Possible values as of the first release are:
-	 *
-	 * FrameNet
-	 * OmegaWikide
-	 * OmegaWikien
-	 * Wikipedia
-	 * WikipediaDE
-	 * WiktionaryEN
-	 * WiktionaryDE
-	 * VerbNet
-	 * WordNet
-	 *
-	 * @param Name of the Lexicon to be obtained
-	 * @return The Lexicon
-	 * @throws UbyInvalidArgumentException if no lexicon with the given identifier is found
+	 * Fetches a {@link Lexicon} with the specified name from the database accessed by this {@link Uby} instance.
+	 * 
+	 * @param name the name of the Lexicon to be fetched.<p>
+	 * 
+	 * Possible values of this argument are:<br>
+	 * 
+	 * <list>
+	 * <li>"FrameNet"</li>
+	 * <li>"OmegaWikide"</li>
+	 * <li>"OmegaWikien"</li>
+	 * <li>"Wikipedia"</li>
+	 * <li>"WikipediaDE"</li>
+	 * <li>"WiktionaryEN"</li>
+	 * <li>"WiktionaryDE"</li>
+	 * <li>"VerbNet"</li>
+	 * <li>"WordNet"</li>
+	 * </list>
+	 * 
+	 * @return the lexicon with the specified name
+	 * 
+	 * @throws UbyInvalidArgumentException if no lexicon with the given name is found
+	 * 
+	 * @see Lexicon#getName()
 	 */
 	public Lexicon getLexiconByName(String name) throws UbyInvalidArgumentException
 	{
-
 		Criteria criteria = session.createCriteria(Lexicon.class);
 		criteria = criteria.add(Restrictions.sqlRestriction("lexiconName = '"+name+"'"));
 		Lexicon result = (Lexicon) criteria.uniqueResult();
 		if (result==null) {
-			throw new UbyInvalidArgumentException(new Exception("Lexicon does not exist"));
+			throw new UbyInvalidArgumentException("Database does not contain a lexicon with such name");
 		}
 		return result;
 
 	}
 
 	/**
-	 * Searches for lexical entries for given word. Optionally the words can be
-	 * filtered by part-of-speech and lexicon
+	 * Fetches a {@link List} of {@link LexicalEntry} instances which written representation is the specified word.
+	 * 
+	 * Optionally lexical entries can be filtered by part-of-speech and a {@link Lexicon}.
 	 *
-	 * @param word  Word to search
-	 * @param pos  If not null, filters lexical entries by part-of-speech given by the Enum element
-	 * @param lexicon If not null, filters lexical entries by lexicon. Note that the Lexicon object has to be obtained beforehand
-	 * @return A list of LexicalEntry objects which mathc the criteria
+	 * @param word the written representation of the lexical entries to be fetched
+	 * 
+	 * @param pos the part-of-speech of the lexical entries to be fetched. Set to null in order to skip
+	 * part-of-speech filtering and fetch all lexical entries matching other constraints, regardless of their part-of-speech.
+	 * 
+	 * @param lexicon If not null, filters lexical entries by the specified lexicon. Note that the Lexicon instance has to be
+	 * obtained beforehand.
+	 * 
+	 * @return A list of lexical entries matching the specified criteria. If no lexical entry matches the specified
+	 * criteria, this method returns an empty list.
+	 * 
+	 * @see EPartOfSpeech
+	 * @see LexicalEntry#getLemma()
 	 */
 	public List<LexicalEntry> getLexicalEntries(String word, EPartOfSpeech pos, Lexicon lexicon)
 	{
@@ -238,19 +287,34 @@ public class Uby
 		criteria = criteria.createCriteria("lemma")
 				.createCriteria("formRepresentations")
 				.add(Restrictions.eq("writtenForm", word));
-		return criteria.list();
+		
+		@SuppressWarnings("unchecked")
+		List<LexicalEntry> result = criteria.list();
+		
+		if(result == null)
+			result = new ArrayList<LexicalEntry>(0);
+		
+		return result;
 	}
 
 	/**
-	 * Returns an iterator of all lexical entries, which can be optionally
-	 * filtered by part-of-speech and lexicon
-	 *	TODO: why not filter by lexiconName?
+	 * Returns an {@link Iterator} over {@link LexicalEntry} instances which written representation is the specified word.
+	 * 
+	 * Optionally lexical entries can be filtered by part-of-speech and a {@link Lexicon}.
 	 *
-	 * @param pos
-	 *            If not null, filters lexical entries by part-of-speech
-	 * @param lexicon
-	 *            If not null, filters lexical entries by lexicon
-	 * @return
+	 * @param word the written representation of the lexical entries to be iterated over
+	 * 
+	 * @param pos the part-of-speech of the lexical entries to be iterated over. Set to null in order to skip
+	 * part-of-speech filtering and create an iterator over all lexical entries matching other constraints, regardless of
+	 * their part-of-speech.
+	 * 
+	 * @param lexicon If not null, filters lexical entries by the specified lexicon. Note that the Lexicon instance has to be
+	 * obtained beforehand.
+	 * 
+	 * @return An Iterator over lexical entries matching the specified criteria
+	 * 
+	 * @see EPartOfSpeech
+	 * @see LexicalEntry#getLemma()
 	 */
 	public Iterator<LexicalEntry> getLexicalEntryIterator(EPartOfSpeech pos,
 			Lexicon lexicon)
@@ -271,26 +335,41 @@ public class Uby
 
 
 	/**
-	 * Fetches all Lexicons from the database
+	 * Returns a {@link List} of all {@link Lexicon} instances contained in the database accessed by this
+	 * {@link Uby} instance. 
 	 *
-	 * @return
+	 * @return a list of all lexicons contained in the database or an empty list if the
+	 * database contains no lexicons
 	 */
 	public List<Lexicon> getLexicons()
 	{
 		Criteria criteria = session.createCriteria(Lexicon.class);
-		return criteria.list();
+		@SuppressWarnings("unchecked")
+		List<Lexicon> result = criteria.list();
+		if(result == null)
+			result = new ArrayList<Lexicon>(0);
+		return result;
 	}
 
 	/**
-	 * This method just fetches lexiconId and lexiconName for each Lexicon in order<br>
-	 * to speed up the loading process.
-	 * @return
+	 * This method fetches a {@link List} of light {@link Lexicon} instances containing only
+	 * the name and the id.<p>
+	 * 
+	 * The method is meant for fast fetching of lexicons. In order to get complete
+	 * Lexicon instances use {@link #getLexicons()} instead.
+	 * 
+	 * @return a list of all lexicons contained in the database. The returned lexicons are light
+	 * and consist only of an id and a name. If the accessed database does not contain any lexicons,
+	 * this method returns an empty list.
+	 * 
+	 * @see Lexicon#getName()
+	 * @see Lexicon#getId()
 	 */
 	public List<Lexicon> getLightLexicons(){
 		List<Lexicon>lexicons=new ArrayList<Lexicon>();
 		String sql="Select lexiconId,lexiconName from Lexicon";
 		SQLQuery query = session.createSQLQuery(sql);
-		Iterator iter = query.list().iterator();
+		Iterator<?> iter = query.list().iterator();
 		while (iter.hasNext()) {
 			Object[] row = (Object[]) iter.next();
 			Lexicon lexicon=new Lexicon();
@@ -302,9 +381,18 @@ public class Uby
 	}
 
 	/**
-	 * Fetches all Lexicons from the database by language
+	 * This method fetches all {@link Lexicon} instances from the accessed database by the
+	 * specified language identifier.
+	 * 
+	 * @param lang the language identifier of the lexicons to be fetched
 	 *
-	 * @return
+	 * @return A {@link List} of all lexicons with the specified language identifier.<br>
+	 * This method returns an empty list if the specified identifier is null or the
+	 * database accessed by this {@link Uby} instance does not contain any lexicon with the given identifier.
+	 * 
+	 * @see ELanguageIdentifier
+	 * @see Lexicon#getLanguageIdentifier()
+	 * 
 	 */
 	public List<Lexicon> getLexiconsByLanguage(ELanguageIdentifier lang)
 	{
@@ -312,15 +400,23 @@ public class Uby
 		Criteria criteria = session.createCriteria(Lexicon.class);
 		criteria = criteria.add(
 				Restrictions.eq("languageIdentifier", lang));
-		return criteria.list();
+		@SuppressWarnings("unchecked")
+		List<Lexicon> result =  criteria.list();
+		if(result == null)
+			result = new ArrayList<Lexicon>(0);
+		return result;
 	}
 
 	/**
-	 * Returns iterator over all Senses, optionally filtered by lexicon
+	 * Returns {@link Iterator} over all {@link Sense} instances contained in the database accessed
+	 * by this {@link Uby} instance.<br>
+	 * Optionally, the returned senses can be filtered by {@link Lexicon}.
 	 *
 	 * @param lexicon
-	 *            If not null, Senses are filtered by lexicon
-	 * @return
+	 *            If not null, senses are filtered by the given lexicon
+	 *            
+	 * @return an iterator over all senses in the accessed database filtered by the given
+	 * lexicon if not null
 	 */
 	public Iterator<Sense> getSenseIterator(Lexicon lexicon)
 	{
@@ -335,11 +431,15 @@ public class Uby
 	}
 
 	/**
-	 * Returns iterator over all Synsets, optionally filtered by lexicon
+	 * Returns {@link Iterator} over all {@link Synset} instances contained in the database accessed
+	 * by this {@link Uby} instance.<br>
+	 * Optionally, the returned synsets can be filtered by {@link Lexicon}.
 	 *
 	 * @param lexicon
-	 *            If not null, Synsets are filtered by lexicon
-	 * @return
+	 *            If not null, synsets are filtered by the given lexicon
+	 *            
+	 * @return an iterator over all synsets in the accessed database filtered by the given
+	 * lexicon if not null
 	 */
 	public Iterator<Synset> getSynsetIterator(Lexicon lexicon)
 	{
@@ -354,13 +454,23 @@ public class Uby
 	}
 
 	/**
-	 * @param externalSys: the string represents the name of External system,
-	 *  such as: VerbNet, WordNet
-	 * @param externalRef: the reference String from ExtSys,
+	 * Returns the {@link Sense} instance contained in the database accessed by this
+	 * {@link Uby} instance. The returned senses are filtered by the given
+	 * name of the external system and external reference.
+	 * 
+	 * @param externalSys the {@link String} representing the name of external system,
+	 * such as "VerbNet" or "WordNet".
+	 * 
+	 * @param externalRef the reference string from external system,
 	 * such as:
-	 * 			 with verbnet: "retire_withdraw-82-3"
-	 *           with wordnet: "bow_out%2:41:01::"
-	 * @return
+	 * <list>
+	 * 			 <li>with verbnet: "retire_withdraw-82-3"</li>
+	 *           <li>with wordnet: "bow_out%2:41:01::"</li>
+	 * </list>
+	 * 
+	 * @return a {@link List} of all senses filtered by the given arguments or an empty list if
+	 * if one of the given arguments is null or the accessed database does not contain any
+	 * senses matching both constraints
 	 */
 	public List<Sense> getSensesByOriginalReference(String externalSys, String externalRef)
 	{
@@ -370,64 +480,75 @@ public class Uby
 				Restrictions.sqlRestriction("externalSystem like '%"
 						+ externalSys + "%' and externalReference =\""+ externalRef + "\""));
 
-		return criteria.list();
+		@SuppressWarnings("unchecked")
+		List<Sense> result = criteria.list();
+		
+		if(result == null)
+			result = new ArrayList<Sense>(0);
+		return result;
 	}
 
 	/**
-	 *
-	 *
-	 * @param Lemma
-	 * @return List of LexicalEntries with that lemma
-	 * No longer supported, use getLexcialEntries() instead
-	 */
-	@Deprecated
-	public List<LexicalEntry> getLexicalEntryByLemma(Lemma lemma){
-		Criteria criteria = session.createCriteria(LexicalEntry.class);
-		//lemma.
-
-		if (lemma != null) {
-			criteria = criteria.add(Restrictions.sqlRestriction("lexicalEntryId = '"
-					+ lemma + "'"));
-		}
-
-		CriteriaIterator<LexicalEntry> lexEntryIterator = new CriteriaIterator<LexicalEntry>(
-				criteria, 10);
-
-		return null;
-	}
-
-	/**
-	 * @return All SenseAxes in table SenseAxis
+	 * Returns a {@link List} of all {@link SenseAxis} instances contained in the database
+	 * accessed by this {@link Uby} instnace.
+	 * 
+	 * @return a list of all sense axes in the accessed database or an empty list
+	 * if the accessed database does not contain any sense axes
 	 */
 	public List<SenseAxis> getSenseAxis(){
 		Criteria criteria = session.createCriteria(SenseAxis.class);
-		return criteria.list();
+		@SuppressWarnings("unchecked")
+		List<SenseAxis> result = criteria.list();
+		if(result == null)
+			result = new ArrayList<SenseAxis>(0);
+		return result;
 	}
 
 	/**
-	 * This method find all senseAxis having senseAxisId like '%senseAxisId%'
-	 * @param senseAxisId: the template of senseAxisId that you need to find.
-	 * @return the list of senseAxis object to the condition
+	 * This method finds all {@link SenseAxis} instances which id contains the specified {@link String} in
+	 * the database accessed by this {@link Uby} instance.
+	 * 
+	 * @param senseAxisId string contained in the identifiers of the sense axes to be returned 
+	 * 
+	 * @return the {@link List} of all sense axes which id contains the specified string.<br>
+	 * This method returns an empty list is no sense axis contains the specified string in its id
+	 * or the specified string is null.
+	 * 
+	 * @see #getSenseAxis()
+	 * @see #getSenseAxisBySense(Sense)
+	 * @see #getSenseAxisBySenseID(String)
+	 * 
 	 */
 	public List<SenseAxis> getSenseAxisbyId(String senseAxisId){
 		Criteria criteria= session.createCriteria(SenseAxis.class);
 		criteria=criteria.add(Restrictions.sqlRestriction("senseAxisId like \"%"+ senseAxisId+"%\""));
-		return criteria.list();
+		
+		@SuppressWarnings("unchecked")
+		List<SenseAxis> result =  criteria.list();
+		if(result == null)
+			result = new ArrayList<SenseAxis>(0);
+		return result;
 	}
 
 	/**
-	 * Retrieve sense axis by sense
-	 * @param sense
-	 * @return all pair (sense alignment) that contains this sense
+	 * This method retrieves all {@link SenseAxis} which bind the specified {@link Sense}.
+	 * 
+	 * @param sense all returned sense axes should bind this sense 
+	 * 
+	 * @return all sense axes (sense alignments) that contain the consumed sense.<br>
+	 * This method returns an empty list if the accessed UBY-LMF database does not contain
+	 * any alignments of the specified sense, or the specified sense is null.
 	 */
 	public List<SenseAxis> getSenseAxisBySense(Sense sense){
 		if (sense!=null && sense.getId()!=null && !sense.getId().equals("")){
 			Criteria criteria=session.createCriteria(SenseAxis.class);
 			criteria=criteria.add(Restrictions.sqlRestriction("senseOneId=\""+sense.getId()+"\" or senseTwoId=\""+sense.getId()+"\""));
-			return criteria.list();
+			@SuppressWarnings("unchecked")
+			List<SenseAxis> result =  criteria.list();
+			return result;
 		}
 		else {
-			return null;
+			return new ArrayList<SenseAxis>(0);
 		}
 	}
 
@@ -437,7 +558,9 @@ public class Uby
 	 *            : The Input Sense
 	 * @return: List ID of all senses appear with input sense in senseAxis table
 	 * @throws SQLException
+	 * @deprecated use {@link #getAlignedSenseIDs(Sense)} instead
 	 */
+	@Deprecated
 	public List<String> getLightSenseAxisBySense(Sense sense)
 		throws SQLException
 	{
@@ -453,6 +576,60 @@ public class Uby
 				// use Hibernate query
 				SQLQuery query = session.createSQLQuery(sql);
 
+				@SuppressWarnings("rawtypes")
+				Iterator iter = query.list().iterator();
+				while (iter.hasNext()) {
+					Object[] row = (Object[]) iter.next();
+					String sense1 = (String) row[0];
+					String sense2 = (String) row[1];
+					if (sense1.matches(id)) {
+						list.add(sense2);
+					}
+					else {
+						list.add(sense1);
+					}
+				}
+			}
+			catch (Exception ex) {
+				throw new SQLException(
+						"Please set configuration or session before using any method");
+			}
+		}
+
+		return list;
+	}
+	
+	/**
+	 * This method fetches a {@link List} of all identifiers of {@link Sense} instances
+	 * which are aligned by a {@link SenseAxis} with the specified sense.<p>
+	 * 
+	 * The method is meant for fast fetching of alignments. For retrieving of
+	 * complete alignments use {@link #getSenseAxisBySense(Sense)} instead.
+	 * 
+	 * @param sense all returned identifiers must belong to senses which are aligned to it
+	 * 
+	 * @return a list of identifiers of all senses which are aligned with the specified sense
+	 * by a sense axis.<br>
+	 * If the specified sense is not contained in any alignement or the specified sense is null, this method
+	 * returns an empty list.
+	 * 
+	 */
+	public List<String> getAlignedSenseIDs(Sense sense)
+		throws SQLException
+	{
+		List<String> list = new ArrayList<String>();
+
+		String id = sense.getId();
+		if (id != null && !id.equals("")) {
+			// Select senseOneId, senseTwoId from SenseAxis where
+			// senseOneId='WN_Sense_100' or senseTwoId='WN_Sense_100'
+			String sql = "Select senseOneId, senseTwoId from SenseAxis where senseOneId='"
+					+ id + "' or senseTwoId='" + id + "'";
+			try {
+				// use Hibernate query
+				SQLQuery query = session.createSQLQuery(sql);
+
+				@SuppressWarnings("rawtypes")
 				Iterator iter = query.list().iterator();
 				while (iter.hasNext()) {
 					Object[] row = (Object[]) iter.next();
