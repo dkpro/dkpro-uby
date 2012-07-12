@@ -600,23 +600,25 @@ public class Uby
 	}
 	
 	/**
-	 * This method fetches a {@link List} of all identifiers of {@link Sense} instances
-	 * which are aligned by a {@link SenseAxis} with the specified sense.<p>
+	 * This method fetches a {@link List} of all identifiers of {@link Sense}
+	 * instances which are aligned by a {@link SenseAxis} with the specified
+	 * sense.
+	 * <p>
 	 * 
 	 * The method is meant for fast fetching of alignments. For retrieving of
 	 * complete alignments use {@link #getSenseAxisBySense(Sense)} instead.
 	 * 
-	 * @param sense all returned identifiers must belong to senses which are aligned to it
+	 * @param sense
+	 *            all returned identifiers must belong to senses which are
+	 *            aligned to it
 	 * 
-	 * @return a list of identifiers of all senses which are aligned with the specified sense
-	 * by a sense axis.<br>
-	 * If the specified sense is not contained in any alignement or the specified sense is null, this method
-	 * returns an empty list.
+	 * @return a list of identifiers of all senses which are aligned with the
+	 *         specified sense by a sense axis.<br>
+	 *         If the specified sense is not contained in any alignment or the
+	 *         specified sense is null, this method returns an empty list.
 	 * 
 	 */
-	public List<String> getAlignedSenseIDs(Sense sense)
-		throws SQLException
-	{
+	public List<String> getAlignedSenseIDs(Sense sense) {
 		List<String> list = new ArrayList<String>();
 
 		String id = sense.getId();
@@ -625,27 +627,20 @@ public class Uby
 			// senseOneId='WN_Sense_100' or senseTwoId='WN_Sense_100'
 			String sql = "Select senseOneId, senseTwoId from SenseAxis where senseOneId='"
 					+ id + "' or senseTwoId='" + id + "'";
-			try {
-				// use Hibernate query
-				SQLQuery query = session.createSQLQuery(sql);
+			// use Hibernate query
+			SQLQuery query = session.createSQLQuery(sql);
 
-				@SuppressWarnings("rawtypes")
-				Iterator iter = query.list().iterator();
-				while (iter.hasNext()) {
-					Object[] row = (Object[]) iter.next();
-					String sense1 = (String) row[0];
-					String sense2 = (String) row[1];
-					if (sense1.matches(id)) {
-						list.add(sense2);
-					}
-					else {
-						list.add(sense1);
-					}
+			@SuppressWarnings("rawtypes")
+			Iterator iter = query.list().iterator();
+			while (iter.hasNext()) {
+				Object[] row = (Object[]) iter.next();
+				String sense1 = (String) row[0];
+				String sense2 = (String) row[1];
+				if (sense1.matches(id)) {
+					list.add(sense2);
+				} else {
+					list.add(sense1);
 				}
-			}
-			catch (Exception ex) {
-				throw new SQLException(
-						"Please set configuration or session before using any method");
 			}
 		}
 
@@ -653,53 +648,69 @@ public class Uby
 	}
 
 	/**
-	 *
+	 * This method fetches a {@link List} of all identifiers of {@link Sense}
+	 * instances which are aligned by a {@link SenseAxis} with the sense
+	 * specified by its identifier.
+	 * <p>
+	 * 
+	 * The method is meant for fast fetching of alignments. For retrieving of
+	 * complete alignments use {@link #getSenseAxisBySense(Sense)} instead.
+	 * 
 	 * @param id
-	 *            : Id of the input Sense
-	 * @return same to the method getSenseAxisBySense(Sense)
-	 * @throws SQLException
+	 *            all returned identifiers must belong to senses which are
+	 *            aligned to the sense represented by the id
+	 * 
+	 * @return a list of identifiers of all senses which are aligned with the
+	 *         specified sense by a sense axis.<br>
+	 *         If the sense specified by its identifier is not contained in any
+	 *         alignment or the specified id is null, this method returns an
+	 *         empty list.
+	 * 
 	 */
-	public List<String> getSenseAxisBySenseID(String id)
-		throws SQLException
-	{
+	public List<String> getSenseAxisBySenseID(String id) {
 		List<String> list = new ArrayList<String>();
 		if (id != null && !id.equals("")) {
 			// Select senseOneId, senseTwoId from SenseAxis where
 			// senseOneId='WN_Sense_100' or senseTwoId='WN_Sense_100'
 			String sql = "Select senseOneId, senseTwoId from SenseAxis where senseOneId='"
 					+ id + "' or senseTwoId='" + id + "'";
-			try {
-				List query = session.createSQLQuery(sql).list();
-				Iterator iter = query.iterator();
-				while (iter.hasNext()) {
-					Object[] row = (Object[]) iter.next();
-					String sense1 = (String) row[0];
-					String sense2 = (String) row[1];
-					if (sense1.matches(id)) {
-						list.add(sense2);
-					}
-					else {
-						list.add(sense1);
-					}
+			@SuppressWarnings("rawtypes")
+			List query = session.createSQLQuery(sql).list();
+			@SuppressWarnings("rawtypes")
+			Iterator iter = query.iterator();
+			while (iter.hasNext()) {
+				Object[] row = (Object[]) iter.next();
+				String sense1 = (String) row[0];
+				String sense2 = (String) row[1];
+				if (sense1.matches(id)) {
+					list.add(sense2);
+				} else {
+					list.add(sense1);
 				}
-			}
-			catch (Exception ex) {
-				throw new SQLException();
 			}
 		}
 		return list;
 	}
 
 	/**
-	 *
+	 * Consumes two {@link Sense} instances and returns true if and only if the
+	 * consumed instances are aligned by a {@link SenseAxis} instance.
+	 * <p>
+	 * 
 	 * @param sense1
+	 *            the first of two senses to be checked for alignment with
+	 *            sense2
 	 * @param sense2
-	 * @return true: if sense1 and sense 2 have alignment, vice verse false will
-	 *         be output.
+	 *            the second of two sense to be checked for alignment with
+	 *            sense1
+	 * 
+	 * @return true if and only if sense1 has an alignment to sense2 by a sense
+	 *         axis instance so that sense1 is the first sense of a sense axis
+	 *         and sense2 the second.<br>
+	 *         This method returns false if one of the consumed senses is null.
 	 */
 
-	public boolean areSensesAxes(Sense sense1, Sense sense2)
-	{
+	public boolean areSensesAxes(Sense sense1, Sense sense2) {
 		boolean ret = false;
 		if (sense1 != null && sense2 != null && sense1.getId() != null
 				&& sense1.getId().length() > 0 && sense2.getId() != null
@@ -710,21 +721,14 @@ public class Uby
 					+ sense2.getId() + "' and senseTwoId='" + sense1.getId()
 					+ "')";
 
-			try {
-				List query = session.createSQLQuery(sql).list();
-				if (query.size() > 0) {
-					ret = true;
-				}
-			}
-			catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			List<?> query = session.createSQLQuery(sql).list();
+			if (query.size() > 0) {
+				ret = true;
 			}
 
 		}
 
 		return ret;
-
 	}
 
 	/**
