@@ -205,7 +205,10 @@ public class SemanticArgument implements IHasID, IHasDefinitions, IHasSemanticLa
 	 * @return true if this semantic argument is incorporated by a verb, false otherwise
 	 */
 	public boolean isIncorporated() {
-		return (isIncorporated.equals(EYesNo.yes)? true : false);
+		if(isIncorporated != null)
+			return (isIncorporated.equals(EYesNo.yes)? true : false);
+		else
+			return false;
 	}
 
 	/**
