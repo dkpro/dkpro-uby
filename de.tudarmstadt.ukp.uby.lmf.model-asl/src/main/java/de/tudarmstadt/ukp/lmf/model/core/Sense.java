@@ -205,7 +205,10 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 	 * 
 	 */
 	public boolean isTransparentMeaning() {
-		return (transparentMeaning.equals(EYesNo.yes)? true : false);
+		if(transparentMeaning != null)
+			return (transparentMeaning.equals(EYesNo.yes)? true : false);
+		else
+			return false;
 	}
 
 	/**

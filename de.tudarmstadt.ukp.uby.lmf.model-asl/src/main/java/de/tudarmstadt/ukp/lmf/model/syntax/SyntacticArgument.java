@@ -132,7 +132,10 @@ public class SyntacticArgument extends HasFrequencies implements IHasID, Compara
 	 * @return true if the optional attribute is yes, false otherwise
 	 */
 	public boolean isOptional() {
-		return (optional.equals(EYesNo.yes)? true : false);
+		if(optional != null)
+			return (optional.equals(EYesNo.yes)? true : false);
+		else
+			return false;
 	}
 
 

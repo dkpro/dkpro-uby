@@ -184,7 +184,10 @@ public class SemanticPredicate extends HasFrequencies implements IHasID, IHasDef
 	 * @return true if the lexicalized attribute is yes, false otherwise
 	 */
 	public boolean isLexicalized() {
-		return (lexicalized.equals(EYesNo.yes)? true : false);
+		if(lexicalized != null)
+			return (lexicalized.equals(EYesNo.yes)? true : false);
+		else
+			return false;
 	}
 
 	/**
@@ -225,7 +228,10 @@ public class SemanticPredicate extends HasFrequencies implements IHasID, IHasDef
 	 * @return true if the perspectivalized attribute of the semantic predicate is set, false otherwise
 	 */
 	public boolean isPerspectivalized() {
-		return (perspectivalized.equals(EYesNo.yes)? true : false);
+		if(perspectivalized != null)
+			return (perspectivalized.equals(EYesNo.yes)? true : false);
+		else
+			return false;
 	}
 
 	@Override
