@@ -698,16 +698,19 @@ public class Uby
 	 * <p>
 	 * 
 	 * @param sense1
-	 *            the first of two senses to be checked for alignment with
+	 *            the sense to be checked for alignment with
 	 *            sense2
 	 * @param sense2
-	 *            the second of two sense to be checked for alignment with
+	 *            the sense to be checked for alignment with
 	 *            sense1
 	 * 
 	 * @return true if and only if sense1 has an alignment to sense2 by a sense
 	 *         axis instance so that sense1 is the first sense of a sense axis
 	 *         and sense2 the second.<br>
 	 *         This method returns false if one of the consumed senses is null.
+	 *         
+	 * @see SenseAxis#getSenseOne()
+	 * @see SenseAxis#getSenseTwo()
 	 */
 
 	public boolean areSensesAxes(Sense sense1, Sense sense2) {
@@ -732,15 +735,25 @@ public class Uby
 	}
 
 	/**
-	 *
+	 * Consumes a {@link List} of {@link Sense} instances and returns a List of
+	 * all {@link SenseAxis} instances aligning senses from the consumed list.
+	 * In particular, every returned sense axis aligns two senses from the
+	 * consumed list.
+	 * 
 	 * @param listSense
-	 *            :list of all senses need to detect sense alignment. <br>
-	 *            Just senseId is enough for each sense (no need to full fill
-	 *            with all information)
-	 * @return List of sense alignment available from the input list.
+	 *            A list of senses for which the sense alignments should be
+	 *            returned.
+	 *            <br>
+	 *            Note that sense instances contained in the list must not be
+	 *            fully initialized. It sufficient to provide a list of senses
+	 *            where each sense only has its unique identifier set.
+	 * 
+	 * @return a list of sense alignments available from the input list.
+	 *         <p>
+	 *         If no sense alignments are available, this method returns an
+	 *         empty list.
 	 */
-	public List<SenseAxis> getSensesAxis(List<Sense> listSense)
-	{
+	public List<SenseAxis> getSensesAxis(List<Sense> listSense) {
 		String list = "";
 		List<SenseAxis> senseAxes = new ArrayList<SenseAxis>();
 
@@ -752,40 +765,42 @@ public class Uby
 		}
 		String sql = "Select senseOneId,senseTwoId from SenseAxis where senseOneId in ("
 				+ list + ") and senseTwoId in (" + list + ")";
-		try {
 
-			Query query = session.createSQLQuery(sql);
-			Iterator iter = query.list().iterator();
-			while (iter.hasNext()) {
-				Object[] rows = (Object[]) iter.next();
+		Query query = session.createSQLQuery(sql);
+		Iterator<?> iter = query.list().iterator();
+		while (iter.hasNext()) {
+			Object[] rows = (Object[]) iter.next();
 
-				SenseAxis sa = new SenseAxis();
-				Sense sense1 = getSenseFromList(listSense, (String) rows[0]);
-				Sense sense2 = getSenseFromList(listSense, (String) rows[1]);
-				sa.setSenseOne(sense1);
-				sa.setSenseTwo(sense2);
+			SenseAxis sa = new SenseAxis();
+			Sense sense1 = getSenseFromList(listSense, (String) rows[0]);
+			Sense sense2 = getSenseFromList(listSense, (String) rows[1]);
+			sa.setSenseOne(sense1);
+			sa.setSenseTwo(sense2);
 
-				senseAxes.add(sa);
-			}
-
-		}
-		catch (Exception ex) {
-			System.out.println(sql);
-			ex.printStackTrace();
+			senseAxes.add(sa);
 		}
 		return senseAxes;
 	}
 
 	/**
-	 * Similar to function getSensesAxis.
-	 *
+	 * Consumes a {@link List} of unique identifiers of {@link Sense} instances
+	 * and returns a List of all {@link SenseAxis} instances aligning senses
+	 * which identifiers are in the consumed list. In particular, every returned
+	 * sense axis aligns two senses which unique identifiers are in the consumed
+	 * list.
+	 * 
 	 * @param listSenseId
-	 *            : List senses'id need to detect alignment among them.
-	 * @return list of SenseAxis, i.e: available alignment(s) among the input
-	 *         list senses.
+	 *            A list of sense identifiers for which the sense alignments
+	 *            should be returned.
+	 * 
+	 * @return a list of sense alignments available from the input list.
+	 *         <p>
+	 *         If no sense alignments are available, this method returns an
+	 *         empty list.
+	 * 
+	 * @see #getSensesAxis(List)
 	 */
-	public List<SenseAxis> getSensesAxisbyListSenseId(List<String> listSenseId)
-	{
+	public List<SenseAxis> getSensesAxisbyListSenseId(List<String> listSenseId) {
 		String list = "";
 		List<SenseAxis> senseAxes = new ArrayList<SenseAxis>();
 
@@ -797,38 +812,40 @@ public class Uby
 		}
 		String sql = "Select senseOneId,senseTwoId from SenseAxis where senseOneId in ("
 				+ list + ") and senseTwoId in (" + list + ")";
-		try {
-			Query query = session.createSQLQuery(sql);
-			Iterator iter = query.list().iterator();
-			while (iter.hasNext()) {
-				Object[] rows = (Object[]) iter.next();
-					SenseAxis sa = new SenseAxis();
-					Sense sense1 = new Sense();
-					Sense sense2 = new Sense();
-					sense1.setId((String) rows[0]);
-					sense2.setId((String) rows[1]);
-					sa.setSenseOne(sense1);
-					sa.setSenseTwo(sense2);
-					senseAxes.add(sa);
-			}
-		}
-		catch (Exception ex) {
-			ex.printStackTrace();
+
+		Query query = session.createSQLQuery(sql);
+		Iterator<?> iter = query.list().iterator();
+		while (iter.hasNext()) {
+			Object[] rows = (Object[]) iter.next();
+			SenseAxis sa = new SenseAxis();
+			Sense sense1 = new Sense();
+			Sense sense2 = new Sense();
+			sense1.setId((String) rows[0]);
+			sense2.setId((String) rows[1]);
+			sa.setSenseOne(sense1);
+			sa.setSenseTwo(sense2);
+			senseAxes.add(sa);
 		}
 		return senseAxes;
 	}
 
 	/**
-	 *
+	 * Consumes a {@link List} of {@link Sense} instances and a {@link String}
+	 * representing the unique identifier of a sense. It returns the sense from
+	 * the consumed list which unique identifier is equal to the consumed
+	 * identifier.
+	 * 
 	 * @param senses
-	 *            : List of Senses
+	 *            a list of sense to be searched in
+	 * 
 	 * @param senseId
-	 *            : Id of returned sense
-	 * @return null if not found.<br>
-	 *         else the sense with given ID.
+	 *            the unique identifier of the searched sense
+	 * 
+	 * @return the sense in the consumed list which unique identifier matches
+	 *         the consumed unique identifier or null if the list does not
+	 *         contain such sense
 	 */
-	private Sense getSenseFromList(List<Sense> senses, String senseId)
-	{
+	private Sense getSenseFromList(List<Sense> senses, String senseId) {
 		Sense sense = null;
 		for (Sense s : senses) {
 			if (s.getId().equals(senseId)) {
@@ -840,51 +857,68 @@ public class Uby
 	}
 
 	/**
-	 * @param senseId: the pattern of senseId
-	 * @return the list of senses that have id match to the given pattern.<br>
-	 * This method is no longer supported, Please use getListSensesByIdPattern(...).
+	 * Returns a {@link List} of all {@link Sense} instances which unique
+	 * identifier contains the consumed {@link String}.
+	 * 
+	 * @param idPattern
+	 *            the pattern which identifiers of the returned senses must
+	 *            contain
+	 * 
+	 * @return the list of all senses which unique identifier contains the
+	 *         idPattern
+	 *         <p>
+	 *         If none of the senses contained in the UBY-Database accessed by
+	 *         this {@link Uby} instance contains the consumed pattern this
+	 *         method returns an empty list.
 	 */
-	@Deprecated
-	public List<Sense> getListSensesbyId(String senseId){
-		Criteria criteria= session.createCriteria(Sense.class);
-		criteria=criteria.add(Restrictions.sqlRestriction("senseId like \"%"+ senseId+"%\""));
-		return criteria.list();
+	public List<Sense> getListSensesbyIdPattern(String idPattern) {
+		Criteria criteria = session.createCriteria(Sense.class);
+		criteria = criteria.add(Restrictions.sqlRestriction("senseId like \"%"
+				+ idPattern + "%\""));
+		@SuppressWarnings("unchecked")
+		List<Sense> result = criteria.list();
+		return result;
 	}
 
 	/**
-	 * @param senseId: the pattern of senseId
-	 * @return the list of senses that have id match to the given pattern.
-	 */
-	public List<Sense> getListSensesbyIdPattern(String senseId){
-		Criteria criteria= session.createCriteria(Sense.class);
-		criteria=criteria.add(Restrictions.sqlRestriction("senseId like \"%"+ senseId+"%\""));
-		return criteria.list();
-	}
-
-	/**
-	 * This methods allows to retrieve senses by their exact id, if known
+	 * This methods allows retrieving a {@link Sense} instance by its exact
+	 * identifier.
+	 * 
 	 * @param senseId
-	 * @return The sense with the specified ID
-	 * @throws UbyInvalidArgumentException if a sense with this ID does not exist
+	 *            the unique identifier of the sense which should be returned
+	 * 
+	 * @return the sense with the consumed senseId
+	 * 
+	 * @throws UbyInvalidArgumentException
+	 *             if a sense with this identifier does not exist
 	 */
-	public Sense getSenseByExactId(String senseId) throws UbyInvalidArgumentException{
-		Criteria criteria= session.createCriteria(Sense.class).add(Restrictions.sqlRestriction("senseId = \""+ senseId+"\""));
-		Sense ret=null;
-		if (criteria.list()!=null && criteria.list().size()>0){
-			ret=(Sense)criteria.list().get(0);
+	public Sense getSenseByExactId(String senseId)
+			throws UbyInvalidArgumentException {
+		Criteria criteria = session.createCriteria(Sense.class).add(
+				Restrictions.sqlRestriction("senseId = \"" + senseId + "\""));
+		Sense ret = null;
+		if (criteria.list() != null && criteria.list().size() > 0) {
+			ret = (Sense) criteria.list().get(0);
 		}
-		if (ret==null) {
-			throw new UbyInvalidArgumentException(new Exception("Sense with this ID does not exist"));
+		if (ret == null) {
+			throw new UbyInvalidArgumentException(
+					"Sense with this ID does not exist");
 		}
 		return ret;
 	}
 
 
 	/**
-	 * This methods allows to retrieve synsets by their exact id, if known
+	 * This methods allows retrieving a {@link Synset} instance by its exact
+	 * identifier.
+	 * 
 	 * @param synsetId
-	 * @return The synset with the specified ID
-	 * @throws UbyInvalidArgumentException if a synset with this ID does not exist
+	 *            the unique identifier of the synset which should be returned
+	 * 
+	 * @return the synset with the consumed senseId
+	 * 
+	 * @throws UbyInvalidArgumentException
+	 *             if a synset with this identifier does not exist
 	 */
 	public Synset getSynsetByExactId(String synsetId) throws UbyInvalidArgumentException{
 		Criteria criteria= session.createCriteria(Synset.class).add(Restrictions.sqlRestriction("synsetId = \""+ synsetId+"\""));
@@ -899,14 +933,11 @@ public class Uby
 	}
 
 	/**
-	 *
-	 * @param extRef: ExternalReference of Sense, i.e: the original ID of sense in Wordnet
-	 * @param POS: POS tag of sense. Valid values are: noun, verb, adverb, adjective.
-	 * @return: List of senses (1-element-list) match input arguments.
-	 * @throws ClassNotFoundException
-	 * @throws SQLException
+	 * @deprecated use {@link #wordNetSense(String, String)} instead
 	 */
-	public List<Sense> getWNSensebyExtRef(String extRef, String POS) throws ClassNotFoundException, SQLException{
+	@SuppressWarnings("unchecked")
+	@Deprecated
+	public List<Sense> getWNSensebyExtRef(String offset, String POS) throws ClassNotFoundException, SQLException{
 
 		String refId="[POS: noun] ";
 		if (POS.equals("adjective")){
@@ -917,33 +948,85 @@ public class Uby
 			refId=refId.replaceAll("noun", "verb");
 		}
 
-		refId=refId+extRef;
+		refId=refId+offset;
 
 		/*
 		 * This direct query avoids the joining huge table done by using normal hibernate, while we just need the ID
 		 */
 		String sqlQueryString="SELECT synsetId FROM MonolingualExternalRef WHERE externalReference = '"+refId.trim() +"'";
 		SQLQuery query = session.createSQLQuery(sqlQueryString);
+		@SuppressWarnings("rawtypes")
 		Iterator iter = query.list().iterator();
 		String ss_id ="";
 		while (iter.hasNext()) {
-			Object[] row = (Object[]) iter.next();
-			ss_id = (String) row[0];
+			ss_id = (String) iter.next();
 		}
 
 		Criteria criteria=session.createCriteria(Sense.class);
 		criteria=criteria.add(Restrictions.sqlRestriction("synsetId='"+ss_id.trim()+"'"));
 		return criteria.list();
+	}
+	
+	/**
+	 * Consumes a synset offset (in WordNet terminology) and a part-of-speech. Returns
+	 * a {@link Sense} instance which is derived from the WordNets synset, identified
+	 * by the consumed arguments.
+	 * 
+	 * @param offset string representation of the WordNets synset offset<p>
+	 * @param POS a string describing part of speech of the sense to be returned.<br>
+	 * Valid values are:<br>
+	 * <list>
+	 * <li>"noun"</li>
+	 * <li>"verb"</li>
+	 * <li>"adverb"</li>
+	 * <li>"adjective"</li>
+	 * 
+	 * @return sense derived from the WordNets synset, described by the consumed arguments
+	 * <p>
+	 * This method returns null if the database accessed by this {@link Uby} instance does not contain
+	 * the specified sense.
+	 */
+	public Sense wordNetSense(String offset, String POS) {
 
+		String refId="[POS: noun] ";
+		if (POS.equals("adjective")){
+			refId=refId.replaceAll("noun", "adjective");
+		}else if (POS.equals("adverb")){
+			refId=refId.replaceAll("noun", "adverb");
+		}else if (POS.equals("verb")){
+			refId=refId.replaceAll("noun", "verb");
+		}
+
+		refId=refId+offset;
+
+		/*
+		 * This direct query avoids the joining huge table done by using normal hibernate, while we just need the ID
+		 */
+		String sqlQueryString="SELECT synsetId FROM MonolingualExternalRef WHERE externalReference = '"+refId.trim() +"'";
+		SQLQuery query = session.createSQLQuery(sqlQueryString);
+		String ss_id = (String) query.uniqueResult();
+		if(ss_id == null)
+			return null;
+
+		Criteria criteria=session.createCriteria(Sense.class);
+		criteria=criteria.add(Restrictions.sqlRestriction("synsetId='"+ss_id.trim()+"'"));
+		return (Sense) criteria.uniqueResult();
 	}
 
 	/**
-	 * @param WNSynsetId:for example 1740-n
-	 * @return the list of senses belong to that synset
-	 * @throws ClassNotFoundException
-	 * @throws SQLException
+	 * Consumes a synset identifier (in WordNet terminology) and and returns
+	 * a {@link List} of {@link Sense} instances which are derived from the WordNets synset,
+	 * specified by the consumed identifier.
+	 * 
+	 * @param WNSynsetId string representation of the WordNets synset identifier
+	 * i.e. "1740-n"
+	 * 
+	 * @return a list of senses derived from the WordNets synset, specified by the consumed identifier
+	 * <p>
+	 * This method returns an empty list if the database accessed by this {@link Uby} instance does not contain
+	 * senses derived from the specified WordNet synset.
 	 */
-	public List<Sense>getSensesByWNSynsetId(String WNSynsetId) throws ClassNotFoundException, SQLException{
+	public List<Sense>getSensesByWNSynsetId(String WNSynsetId) {
 		String[]temp=WNSynsetId.split("-");
 		String refId="[POS: noun] ";
 
@@ -958,7 +1041,9 @@ public class Uby
 		refId=refId+temp[0];
 		Criteria criteria=session.createCriteria(Sense.class);
 		criteria=criteria.createCriteria("synset").createCriteria("monolingualExternalRefs").add(Restrictions.sqlRestriction("externalReference='"+refId.trim()+"'"));
-		return criteria.list();
+		@SuppressWarnings("unchecked")
+		List<Sense> result = criteria.list();
+		return result;
 	}
 
 	/**
