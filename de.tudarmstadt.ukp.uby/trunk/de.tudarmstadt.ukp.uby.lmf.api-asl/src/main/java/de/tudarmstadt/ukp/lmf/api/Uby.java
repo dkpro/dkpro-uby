@@ -40,7 +40,6 @@ import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
-import de.tudarmstadt.ukp.lmf.model.morphology.Lemma;
 import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticArgument;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
@@ -933,7 +932,7 @@ public class Uby
 	}
 
 	/**
-	 * @deprecated use {@link #wordNetSense(String, String)} instead
+	 * @deprecated use {@link #wordNetSenses(String, String)} instead
 	 */
 	@SuppressWarnings("unchecked")
 	@Deprecated
@@ -969,11 +968,11 @@ public class Uby
 	
 	/**
 	 * Consumes a synset offset (in WordNet terminology) and a part-of-speech. Returns
-	 * a {@link Sense} instance which is derived from the WordNets synset, identified
+	 * a {@link List} of all {@link Sense} instances which are derived from the WordNets synset, identified
 	 * by the consumed arguments.
 	 * 
 	 * @param offset string representation of the WordNets synset offset<p>
-	 * @param POS a string describing part of speech of the sense to be returned.<br>
+	 * @param POS a string describing part of speech of the senses to be returned.<br>
 	 * Valid values are:<br>
 	 * <list>
 	 * <li>"noun"</li>
@@ -981,12 +980,12 @@ public class Uby
 	 * <li>"adverb"</li>
 	 * <li>"adjective"</li>
 	 * 
-	 * @return sense derived from the WordNets synset, described by the consumed arguments
+	 * @return senses derived from the WordNets synset, described by the consumed arguments
 	 * <p>
-	 * This method returns null if the database accessed by this {@link Uby} instance does not contain
+	 * This method returns an empty list if the database accessed by this {@link Uby} instance does not contain
 	 * the specified sense.
 	 */
-	public Sense wordNetSense(String offset, String POS) {
+	public List<Sense> wordNetSenses(String offset, String POS) {
 
 		String refId="[POS: noun] ";
 		if (POS.equals("adjective")){
@@ -1006,15 +1005,17 @@ public class Uby
 		SQLQuery query = session.createSQLQuery(sqlQueryString);
 		String ss_id = (String) query.uniqueResult();
 		if(ss_id == null)
-			return null;
+			return new ArrayList<Sense>(0);
 
 		Criteria criteria=session.createCriteria(Sense.class);
 		criteria=criteria.add(Restrictions.sqlRestriction("synsetId='"+ss_id.trim()+"'"));
-		return (Sense) criteria.uniqueResult();
+		@SuppressWarnings("unchecked")
+		List<Sense> result = (List<Sense>) criteria.list();
+		return result;
 	}
 
 	/**
-	 * Consumes a synset identifier (in WordNet terminology) and and returns
+	 * Consumes a synset identifier (in WordNet terminology) and returns
 	 * a {@link List} of {@link Sense} instances which are derived from the WordNets synset,
 	 * specified by the consumed identifier.
 	 * 
@@ -1026,8 +1027,8 @@ public class Uby
 	 * This method returns an empty list if the database accessed by this {@link Uby} instance does not contain
 	 * senses derived from the specified WordNet synset.
 	 */
-	public List<Sense>getSensesByWNSynsetId(String WNSynsetId) {
-		String[]temp=WNSynsetId.split("-");
+	public List<Sense>getSensesByWNSynsetId(String wnSynsetId) {
+		String[]temp=wnSynsetId.split("-");
 		String refId="[POS: noun] ";
 
 		if (temp[1].equals("a")){
@@ -1053,7 +1054,9 @@ public class Uby
 	public List<Sense>getSensesByOWSynTransId(String SynTransId){
 		Criteria criteria=session.createCriteria(Sense.class);
 		criteria=criteria.add(Restrictions.eq("index",Integer.parseInt(SynTransId.trim())));
-		return criteria.list();
+		@SuppressWarnings("unchecked")
+		List<Sense> result = criteria.list();
+		return result;
 	}
 
 	/**
@@ -1066,7 +1069,9 @@ public class Uby
 	 * @return list of senses belong to the given synset
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
+	 * @Deprecated use {@link #wordNetSenses(String, String)} instead
 	 */
+	@Deprecated
 	public List<Sense>getSensesByWNSynsetId(String POS, String SynsetOffset) throws ClassNotFoundException, SQLException{
 
 		String refId="[POS: noun] ";
@@ -1083,33 +1088,53 @@ public class Uby
 
 		Criteria criteria=session.createCriteria(Sense.class);
 		criteria=criteria.createCriteria("monolingualExternalRefs").add(Restrictions.sqlRestriction("externalReference='"+refId.trim()+"'"));
-
-		return criteria.list();
+		@SuppressWarnings("unchecked")
+		List<Sense> result = criteria.list();
+		return result;
 	}
 
 	/**
-	 * Return all semantic labels for a particular sense
+	 * Consumes a unique identifier of a {@link Sense} instance and returns
+	 * a {@link List} of all {@link SemanticLabel} instances associated to the
+	 * specified sense.
 	 *
-	 * @param senseId
-	 * @return List of semantic labels associated with the given sense
+	 * @param senseId a unique identifier of the sense for which
+	 * semantic labels should be returned
+	 * 
+	 * @return a list of all semantic labels of the specified sense or an empty list
+	 * if a sense with such identifier does not exist or the sense does not
+	 * have any associated semantic labels
 	 */
 	public List<SemanticLabel> getSemanticLabelbySenseId(String senseId){
 		Criteria criteria= session.createCriteria(SemanticLabel.class);
 		criteria=criteria.add(Restrictions.sqlRestriction("senseId=\""+ senseId+"\""));
-		return criteria.list();
+		@SuppressWarnings("unchecked")
+		List<SemanticLabel> result = criteria.list();
+		return result;
 	}
 
 	/**
-	 * Return all semantic labels for a particular sense and type
+	 * Consumes a unique identifier of a {@link Sense} instance and returns
+	 * a {@link List} of all {@link SemanticLabel} instances associated to the
+	 * specified sense. The returned semantic labels are filtered by the specified
+	 * type.
+	 * 
 	 *
-	 * @param senseId
-	 * @param type
-	 * @return list of semantic labels
+	 * @param senseId a unique identifier of the sense for which
+	 * semantic labels should be returned
+	 * 
+	 * @param type returned semantic labels must have this type
+	 * 
+	 * @return a list of all semantic labels of the specified sense filtered by the
+	 * type or an empty list if the database accessed by this {@link Uby} instance
+	 * does not contain any semantic labels matching the criteria
 	 */
 	public List<SemanticLabel> getSemanticLabelbySenseIdbyType(String senseId, String type){
 		Criteria criteria= session.createCriteria(SemanticLabel.class);
 		criteria=criteria.add(Restrictions.sqlRestriction("senseId=\""+ senseId +"\" and type =\""+type+"\""));
-		return criteria.list();
+		@SuppressWarnings("unchecked")
+		List<SemanticLabel> result = criteria.list();
+		return result;
 	}
 
 	/**
@@ -1125,30 +1150,49 @@ public class Uby
 	}
 
 	/**
-	 * Returns all semantic predicates, optionally filtered by lexicon
+	 * Returns a {@link List} of all {@link SemanticPredicate} instances in the
+	 * database accessed by this {@link Uby} instance, optionally filtered by
+	 * {@link Lexicon}.
+	 * 
 	 * @param lexicon
-	 * @return list of semantic predicates
+	 *            if not null, all returned semantic predicates will belong to
+	 *            the specified lexicon
+	 * @return list of semantic predicates which matches the criteria or an
+	 *         empty list if none of the semantic predicates matches the
+	 *         criteria
 	 */
-	public List<SemanticPredicate> getSemanticPredicates(Lexicon lexicon){
+	public List<SemanticPredicate> getSemanticPredicates(Lexicon lexicon) {
 		Criteria criteria = session.createCriteria(SemanticPredicate.class);
 		if (lexicon != null) {
 			String lexId = lexicon.getId();
-			criteria = criteria.add(
-					Restrictions.sqlRestriction("lexiconId=\""+lexId+"\""));
+			criteria = criteria.add(Restrictions.sqlRestriction("lexiconId=\""
+					+ lexId + "\""));
 		}
-		return criteria.list();
+		@SuppressWarnings("unchecked")
+		List<SemanticPredicate> result = criteria.list();
+		return result;
 	}
 
 	/**
-	 * Return iterator over semantic predicates, optionally filtered by lexicon
+	 * Return an {@link Iterator} over {@link SemanticPredicate} instances,
+	 * optionally filtered by a {@link Lexicon}.
+	 * 
 	 * @param lexicon
-	 * @return iterator over semantic predicates
+	 *            if not null, the iterator will only be for semantic predicates
+	 *            of the specified lexicon
+	 * 
+	 * @return iterator over the semantic predicates in the specified lexicon.<br>
+	 *         If the specified lexicon is null, this method returns an iterator
+	 *         over all semantic predicates in the {@link LexicalResource},
+	 *         accessed by this {@link Uby} instance.
 	 */
-	public Iterator<SemanticPredicate> getSemanticPredicateIterator(Lexicon lexicon){
+	public Iterator<SemanticPredicate> getSemanticPredicateIterator(
+			Lexicon lexicon) {
 		Criteria criteria = session.createCriteria(SemanticPredicate.class);
 		if (lexicon != null) {
 			String lexId = lexicon.getId();
-			criteria = criteria.add(Restrictions.sqlRestriction("lexiconId=\""+lexId+"\""));
+			criteria = criteria.add(Restrictions.sqlRestriction("lexiconId=\""
+					+ lexId + "\""));
 		}
 		CriteriaIterator<SemanticPredicate> predicateIterator = new CriteriaIterator<SemanticPredicate>(
 				criteria, 10);
@@ -1156,9 +1200,14 @@ public class Uby
 	}
 
 	/**
-	 * Return the semantic argument with the given Id
-	 * @param argumentId
-	 * @return semantic argument
+	 * Returns the {@link SemanticArgument} instance with the specified unique identifier.
+	 * 
+	 * @param argumentId the unique identifier of the semantic argument to be returned
+	 * 
+	 * @return semantic argument with the specified unique identifier, contained in the database
+	 * accessed by this {@link Uby} instance.<br>
+	 * If a semantic argument with the specified identifier does not exist, this method
+	 * return null.
 	 */
 	public SemanticArgument getSemanticArgumentByExactId(String argumentId){
 		Criteria criteria = session.createCriteria(SemanticArgument.class);
@@ -1167,14 +1216,18 @@ public class Uby
 	}
 
 	/**
-	 * Return all SynSemArgMaps
-	 * @return A list of all SynSemArgMaps
+	 * Returns all {@link SynSemArgMap} instances contained in the database
+	 * accessed by this {@link Uby} instance.
+	 * 
+	 * @return a list of all mappings between syntactic and semantic arguments.<br>
+	 * If the database does not contain any mappings, this method returns an empty list.
 	 */
     public List<SynSemArgMap> getSynSemArgMaps()
     {
 
         Criteria criteriaSynSem = session.createCriteria(SynSemArgMap.class);
-        List<SynSemArgMap> result = criteriaSynSem.list();
+        @SuppressWarnings("unchecked")
+		List<SynSemArgMap> result = criteriaSynSem.list();
 
         return result;
     }
@@ -1224,7 +1277,7 @@ public class Uby
 				additional.add(arg.getVerbForm().toString());
 			}
 			if (additional.size() > 0) {
-				String additionalAsString = join(additional,",");
+				String additionalAsString = concat(additional,",");
 
 				sbArg.append("(" +additionalAsString +")");
 			}
@@ -1234,7 +1287,7 @@ public class Uby
 			}
 			arguments.add(sbArg.toString());
 		}
-		String argumentString = this.join(arguments," ");
+		String argumentString = this.concat(arguments," ");
 		sbFrame.append(argumentString);
 		if (frame.getLexemeProperty() != null){
 			sbFrame.append(" - " +frame.getLexemeProperty().getSyntacticProperty().toString());
@@ -1243,9 +1296,11 @@ public class Uby
 	}
 
 	/**
-	 * Returns the String describing a specific SyntacticArgument
-	 * @param arg The SyntacticArgument
-	 * @return String describing the SyntacticArgument
+	 * Returns the {@link String} describing a specific {@link SyntacticArgument} instance.
+	 * 
+	 * @param arg the syntactic argument for which the string representation should be returned
+	 * 
+	 * @return string representation of the consumed syntactic argument
 	 */
 	public String getArgumentString(SyntacticArgument arg){
 			StringBuilder sbArg = new StringBuilder();
@@ -1284,7 +1339,7 @@ public class Uby
 				additional.add(arg.getVerbForm().toString());
 			}
 			if (additional.size() > 0) {
-				String additionalAsString = join(additional,",");
+				String additionalAsString = concat(additional,",");
 
 				sbArg.append("(" +additionalAsString +")");
 			}
@@ -1293,13 +1348,36 @@ public class Uby
 	}
 
 	/**
-	 * Utility method for transforming a List of Strings into a String with delimiters
-	 * @param list The list of Strings
-	 * @param delimiter The delimiter to be used
-	 * @return String containing the concatenated list
+	 * Utility method for transforming a {@link List} of {@link String} instances into a
+	 * String with delimiters.
+	 * 
+	 * @param list the list of strings
+	 * @param delimiter the delimiter to be used
+	 * @return string containing the concatenated list
+	 * @deprecated marked for deletion
 	 */
-
+	@Deprecated
 	public String join(List<String> list, String delimiter){
+		if (list == null || list.isEmpty()) {
+			return "";
+		}
+		Iterator<String> iter = list.iterator();
+		StringBuilder builder = new StringBuilder(iter.next());
+		while( iter.hasNext() ) {
+		  builder.append(delimiter).append(iter.next());
+		}
+		return builder.toString();
+	}
+	
+	/**
+	 * Utility method for transforming a {@link List} of {@link String} instances into a
+	 * String with delimiters.
+	 * 
+	 * @param list the list of strings
+	 * @param delimiter the delimiter to be used
+	 * @return string containing the concatenated list
+	 */
+	private String concat(List<String> list, String delimiter){
 		if (list == null || list.isEmpty()) {
 			return "";
 		}
