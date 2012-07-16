@@ -30,11 +30,23 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import de.tudarmstadt.ukp.lmf.hibernate.HibernateConnect;
+import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 
+/**
+ * This class represents an extension of the {@link Uby} class and offers additional
+ * methods for quick searching of different UBY-LMF elements in a database
+ * containing a {@link LexicalResource}.<p>
+ * For performance reasons, the methods offered by this class do not return
+ * fully initialized Uby-LMF class instances.
+ * 
+ * @author Silvana Hartmann
+ * @author Zijad Maksuti
+ *
+ */
 public class UbyQuickAPI
 {
 	/**

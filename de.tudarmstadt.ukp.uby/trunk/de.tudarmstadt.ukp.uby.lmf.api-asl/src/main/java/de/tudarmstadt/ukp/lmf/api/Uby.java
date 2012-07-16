@@ -32,6 +32,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
+import de.tudarmstadt.ukp.lmf.exceptions.UbyInvalidArgumentException;
 import de.tudarmstadt.ukp.lmf.hibernate.HibernateConnect;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
@@ -51,9 +52,18 @@ import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 
 /**
  * Uby class represents the main entrance point to the UBY API.
- * It holds methods for searching of different UBY-LMF elements in a databse
- * containing a {@link LexicalResource}.
- *
+ * It holds methods for searching of different UBY-LMF elements in a database
+ * containing a {@link LexicalResource}.<p>
+ * 
+ * Methods of this class return fully initialized UBY-LMF class instances.
+ * For performance reasons, you also may want to use {@link UbyQuickAPI}.
+ * 
+ * @author Judith Eckle-Kohler
+ * @author Michael Matuschek
+ * @author Tri-Duc Nghiem
+ * @author Silvana Hartmann
+ * @author Zijad Maksuti
+ * 
  */
 public class Uby
 {
