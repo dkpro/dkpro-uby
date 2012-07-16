@@ -16,10 +16,10 @@
  * limitations under the License.
  ******************************************************************************/
 
-package de.tudarmstadt.ukp.lmf.api;
+package de.tudarmstadt.ukp.lmf.exceptions;
 
 /**
- * This Exception should be trown whenever an UBY-API method
+ * This Exception should be thrown whenever an UBY-API method
  * consumes an invalid argument.
  * 
  * @author Michael Matuschek
@@ -27,7 +27,7 @@ package de.tudarmstadt.ukp.lmf.api;
  */
 public class UbyInvalidArgumentException extends Exception {
 
-	private static final long serialVersionUID = 8241986247301055844L;
+	private static final long serialVersionUID = -7331798183882114866L;
 
 	/**
 	 * Constructs a new {@link UbyInvalidArgumentException} with the specified cause.
