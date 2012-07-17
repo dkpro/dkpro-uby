@@ -42,6 +42,7 @@ import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
 import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis;
+import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticArgument;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
 import de.tudarmstadt.ukp.lmf.model.semantics.SynSemArgMap;
@@ -68,9 +69,9 @@ import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 public class Uby
 {
 
-	private DBConfig dbConfig;
-	private Configuration cfg;
-	private SessionFactory sessionFactory;
+	protected DBConfig dbConfig;
+	protected Configuration cfg;
+	protected SessionFactory sessionFactory;
 	protected Session session;
 
 	/**
@@ -377,7 +378,9 @@ public class Uby
 	 *
 	 * @see Lexicon#getName()
 	 * @see Lexicon#getId()
+	 * @deprecate use {@link UbyQuickAPI#lightLexicons()} instead
 	 */
+	@Deprecated
 	public List<Lexicon> getLightLexicons(){
 		List<Lexicon>lexicons=new ArrayList<Lexicon>();
 		String sql="Select lexiconId,lexiconName from Lexicon";
@@ -575,7 +578,7 @@ public class Uby
 	 *            : The Input Sense
 	 * @return: List ID of all senses appear with input sense in senseAxis table
 	 * @throws SQLException
-	 * @deprecated use {@link #getAlignedSenseIDs(Sense)} instead
+	 * @deprecated use {@link UbyQuickAPI#alignedSenseIDs(Sense)} instead
 	 */
 	@Deprecated
 	public List<String> getLightSenseAxisBySense(Sense sense)
@@ -618,54 +621,6 @@ public class Uby
 
 	/**
 	 * This method fetches a {@link List} of all identifiers of {@link Sense}
-	 * instances which are aligned by a {@link SenseAxis} with the specified
-	 * sense.
-	 * <p>
-	 *
-	 * The method is meant for fast fetching of alignments. For retrieving of
-	 * complete alignments use {@link #getSenseAxisBySense(Sense)} instead.
-	 *
-	 * @param sense
-	 *            all returned identifiers must belong to senses which are
-	 *            aligned to it
-	 *
-	 * @return a list of identifiers of all senses which are aligned with the
-	 *         specified sense by a sense axis.<br>
-	 *         If the specified sense is not contained in any alignment or the
-	 *         specified sense is null, this method returns an empty list.
-	 *
-	 */
-	public List<String> getAlignedSenseIDs(Sense sense) {
-		List<String> list = new ArrayList<String>();
-
-		String id = sense.getId();
-		if (id != null && !id.equals("")) {
-			// Select senseOneId, senseTwoId from SenseAxis where
-			// senseOneId='WN_Sense_100' or senseTwoId='WN_Sense_100'
-			String sql = "Select senseOneId, senseTwoId from SenseAxis where senseOneId='"
-					+ id + "' or senseTwoId='" + id + "'";
-			// use Hibernate query
-			SQLQuery query = session.createSQLQuery(sql);
-
-			@SuppressWarnings("rawtypes")
-			Iterator iter = query.list().iterator();
-			while (iter.hasNext()) {
-				Object[] row = (Object[]) iter.next();
-				String sense1 = (String) row[0];
-				String sense2 = (String) row[1];
-				if (sense1.matches(id)) {
-					list.add(sense2);
-				} else {
-					list.add(sense1);
-				}
-			}
-		}
-
-		return list;
-	}
-
-	/**
-	 * This method fetches a {@link List} of all identifiers of {@link Sense}
 	 * instances which are aligned by a {@link SenseAxis} with the sense
 	 * specified by its identifier.
 	 * <p>
@@ -682,8 +637,11 @@ public class Uby
 	 *         If the sense specified by its identifier is not contained in any
 	 *         alignment or the specified id is null, this method returns an
 	 *         empty list.
+	 *         
+	 * @deprecated use {@link UbyQuickAPI#alignedSenseIDs(String)}
 	 *
 	 */
+	@Deprecated
 	public List<String> getSenseAxisBySenseID(String id) {
 		List<String> list = new ArrayList<String>();
 		if (id != null && !id.equals("")) {
@@ -769,7 +727,10 @@ public class Uby
 	 *         <p>
 	 *         If no sense alignments are available, this method returns an
 	 *         empty list.
+	 *         
+	 * @deprecated use {@link UbyQuickAPI#lightSenseAxes(List)} instead
 	 */
+	@Deprecated
 	public List<SenseAxis> getSensesAxis(List<Sense> listSense) {
 		String list = "";
 		List<SenseAxis> senseAxes = new ArrayList<SenseAxis>();
@@ -816,7 +777,10 @@ public class Uby
 	 *         empty list.
 	 *
 	 * @see #getSensesAxis(List)
+	 * 
+	 * @deprecated {@link UbyQuickAPI#lightSenseAxesBySenseIDs(List)}
 	 */
+	@Deprecated
 	public List<SenseAxis> getSensesAxisbyListSenseId(List<String> listSenseId) {
 		String list = "";
 		List<SenseAxis> senseAxes = new ArrayList<SenseAxis>();
@@ -862,7 +826,7 @@ public class Uby
 	 *         the consumed unique identifier or null if the list does not
 	 *         contain such sense
 	 */
-	private Sense getSenseFromList(List<Sense> senses, String senseId) {
+	protected Sense getSenseFromList(List<Sense> senses, String senseId) {
 		Sense sense = null;
 		for (Sense s : senses) {
 			if (s.getId().equals(senseId)) {
@@ -1067,18 +1031,30 @@ public class Uby
 	}
 
 	/**
-	 * @param OmegaWiki SynTransId
-	 * @return list of senses in OmegaWiki by the SynTransId
-	 *
-	 * A SynTrans in OW corresponds to a Sense in WN. As OW's senses are not ordered by frequency, the otherwise
-	 * unused index field is used to store the original SynTransId, hence making the additional join with MonolingualExternalRef
-	 * unnecessary.
-	 *
-	 *
+	 * Consumes an identifier of a SynTrans (in OmegaWiki terminology) and
+	 * returns a {@link List} of all {@link Sense} instances derived from the
+	 * specified SynTrans.
+	 * <br>
+	 * A SynTrans in OmegaWiki corresponds to a sense in WordNet. As OmegaWikis
+	 * senses are not ordered by frequency, the otherwise unused index field is
+	 * used to store the original SynTransId, hence making the additional join
+	 * with {@link MonolingualExternalRef} unnecessary.
+	 * 
+	 * @param synTransId
+	 *            a {@link String} representation of a unique identifier of
+	 *            OmegaWikis SynTrans
+	 * 
+	 * @return list of all senses derived from specified OmegaWikis SynTrans.
+	 *         <br>
+	 *         This method returns an empty list if a SynTrans with specified
+	 *         identifier does not exist or the database accessed by this
+	 *         {@link Uby} instance does not contain a OmegaWiki {@link Lexicon}.
+	 * 
 	 */
-	public List<Sense>getSensesByOWSynTransId(String SynTransId){
-		Criteria criteria=session.createCriteria(Sense.class);
-		criteria=criteria.add(Restrictions.eq("index",Integer.parseInt(SynTransId.trim())));
+	public List<Sense> getSensesByOWSynTransId(String synTransId) {
+		Criteria criteria = session.createCriteria(Sense.class);
+		criteria = criteria.add(Restrictions.eq("index",
+				Integer.parseInt(synTransId.trim())));
 		@SuppressWarnings("unchecked")
 		List<Sense> result = criteria.list();
 		return result;
@@ -1258,10 +1234,14 @@ public class Uby
     }
 
 	/**
-	 * Returns the String describing a specific SubcatFrame
-	 * @param frame The SubCatFraem
-	 * @param yourLemma The lemma
-	 * @return String describing the SubcatFrame
+	 * Returns the String describing a specific {@link SubcategorizationFrame} instance which occurs with the
+	 * specified lemma. It omits the field of subcategorization frame which are set to null when creating
+	 * the pretty print.
+	 * 
+	 * @param frame the subcategorization frame to be printed 
+	 * @param yourLemma the {@link String} representation of the lemma which occurs with the consumed {@link SubcategorizationFrame}.
+	 * 
+	 * @return string representing the consumed subcategorization frame with the specified lemma
 	 */
     public String getSubcatFrameString(SubcategorizationFrame frame, String yourLemma){
 		StringBuilder sbFrame = new StringBuilder();
@@ -1412,6 +1392,13 @@ public class Uby
 		  builder.append(delimiter).append(iter.next());
 		}
 		return builder.toString();
+	}
+	
+	protected void finalize()
+		throws Throwable
+	{
+		dbConfig = null;
+		session.close();
 	}
 
 }

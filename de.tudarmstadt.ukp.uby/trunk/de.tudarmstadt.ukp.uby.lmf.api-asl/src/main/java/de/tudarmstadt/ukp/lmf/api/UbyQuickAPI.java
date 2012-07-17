@@ -27,9 +27,8 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 
-import de.tudarmstadt.ukp.lmf.hibernate.HibernateConnect;
+import de.tudarmstadt.ukp.lmf.exceptions.UbyInvalidArgumentException;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
@@ -43,45 +42,45 @@ import de.tudarmstadt.ukp.lmf.transform.DBConfig;
  * For performance reasons, the methods offered by this class do not return
  * fully initialized Uby-LMF class instances.
  * 
+ * @since 0.1.0
+ * 
  * @author Silvana Hartmann
  * @author Zijad Maksuti
+ * 
  *
  */
-public class UbyQuickAPI
+public class UbyQuickAPI extends Uby
 {
-	/**
-	 * This UBY API provides some methods that directly connects to database.
-	 * All Information extract from database is raw (i.e not full Object's
-	 * information like the UBY API provided).
-	 */
-	private DBConfig dbconfig;
-	private Session session;
-	private Configuration cfg;
-	private SessionFactory sessionFactory;
-
-//	private MySQLConnect mysql;
-
-	private boolean useHibernate;
-	private boolean useTemporaryTables;
-
 	/**
 	 * Using this constructor, you have to call setDbConfig before using any
 	 * method.
+	 * 
+	 * @deprecated use {@link #UbyQuickAPI(DBConfig)} instead
 	 */
+	@Deprecated
 	public UbyQuickAPI()
 	{
 		// TO-DO nothing
 	}
 
 	/**
+	 * Constructor for a {@link UbyQuickAPI} instance used for
+	 * searching of different elements in a database containing
+	 * UBY-LMF {@link LexicalResource}.
 	 *
-	 * @param config
-	 *            : Configuration to connect to database
-	 * @throws FileNotFoundException
+	 * The connection to the database is specified using a {@link DBConfig}
+	 * instance.
+	 *
+	 * @param dbConfig configuration of the database containing
+	 * UBY-LMF lexical resource.
+	 * @throws UbyInvalidArgumentException if the specified dbConfig is null
+	 * 
+	 * @since 0.1.0
+	 * 
 	 */
-	public UbyQuickAPI(DBConfig config) throws FileNotFoundException
+	public UbyQuickAPI(DBConfig config) throws UbyInvalidArgumentException
 	{
-		setDbConfig(config);
+		super(config);
 	}
 
 	/**
@@ -91,7 +90,9 @@ public class UbyQuickAPI
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
 	 * @throws FileNotFoundException
+	 * @{@link Deprecated} use {@link #UbyQuickAPI(DBConfig)} instead
 	 */
+	@Deprecated
 	public UbyQuickAPI(DBConfig config, boolean useHibernate,boolean useTempTables) throws ClassNotFoundException, SQLException, FileNotFoundException{
 		setDBConfig(config,useHibernate,useTempTables);
 	}
@@ -101,8 +102,9 @@ public class UbyQuickAPI
 	 * @param session
 	 *            Session of hibernate connection. In case you don't run query
 	 *            directly
-	 *
+	 * @deprecated use {@link #UbyQuickAPI(DBConfig)} instead
 	 */
+	@Deprecated
 	public UbyQuickAPI(Session session)
 	{
 		this.session = session;
@@ -111,25 +113,13 @@ public class UbyQuickAPI
 	/**
 	 *
 	 * @param sf
+	 * @deprecated use {@link #UbyQuickAPI(DBConfig)} instead
+	 * 
 	 */
+	@Deprecated
 	public UbyQuickAPI(SessionFactory sf){
 		sessionFactory=sf;
 		session=sessionFactory.openSession();
-	}
-
-	/**
-	 *
-	 * @param config
-	 *            : Configuration to connect to database
-	 * @throws FileNotFoundException
-	 */
-	public void setDbConfig(DBConfig config) throws FileNotFoundException
-	{
-		this.dbconfig = config;
-		cfg = HibernateConnect.getConfiguration(dbconfig);
-		sessionFactory = cfg.buildSessionFactory();
-		openSession();
-		useHibernate=false;
 	}
 
 	/**
@@ -139,11 +129,11 @@ public class UbyQuickAPI
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
 	 * @throws FileNotFoundException
-	 *
+	 * @deprecated use {@link #UbyQuickAPI(DBConfig)} instead
 	 */
+	@Deprecated
 	public void setDBConfig(DBConfig config,boolean useHibernate,boolean useTemporaryTables) throws ClassNotFoundException, SQLException, FileNotFoundException{
-		this.dbconfig = config;
-		this.useHibernate=useHibernate;
+		this.dbConfig = config;
 		if(useHibernate){
 			setDbConfig(config);
 		}/*else{
@@ -153,101 +143,59 @@ public class UbyQuickAPI
 	}
 
 	/**
+	 * This method fetches a {@link List} of light {@link Lexicon} instances containing only
+	 * the name and the id.<p>
 	 *
-	 * @return the database configuration object. See class DBConfig.
+	 * The method is meant for fast fetching of lexicons. In order to get complete
+	 * Lexicon instances use {@link #getLexicons()} instead.
+	 *
+	 * @return a list of all lexicons contained in the database. The returned lexicons are light
+	 * and consist only of an id and a name. If the accessed database does not contain any lexicons,
+	 * this method returns an empty list.
+	 * 
+	 * @since 0.2.0
+	 *
+	 * @see Lexicon#getName()
+	 * @see Lexicon#getId()
+	 * 
 	 */
-	public DBConfig getDBConfig()
-	{
-		return this.dbconfig;
-	}
-
-	/**
-	 * Opens hibernate database session
-	 */
-	public void openSession()
-	{
-		session = sessionFactory.openSession();
-	}
-
-	/**
-	 * Closes hibernate database session
-	 */
-	public void closeSession()
-	{
-		session.close();
-	}
-
-	public List<Lexicon> getLexicons() throws SQLException{
+	public List<Lexicon> lightLexicons(){
 		List<Lexicon>lexicons=new ArrayList<Lexicon>();
 		String sql="Select lexiconId,lexiconName from Lexicon";
-	/*	if(mysql!=null){
-			ResultSet rs=mysql.execute(sql);
-			if (rs!=null){
-				while (rs.next()){
-					Lexicon lexicon=new Lexicon();
-					lexicon.setId(rs.getString("lexiconId"));
-					lexicon.setName(rs.getString("lexiconName"));
-					lexicons.add(lexicon);
-				}
-			}
-		}else*/ if(session!=null){
-			SQLQuery query = session.createSQLQuery(sql);
-			Iterator iter = query.list().iterator();
-			while (iter.hasNext()) {
-				Object[] row = (Object[]) iter.next();
-				Lexicon lexicon=new Lexicon();
-				lexicon.setId((String)row[0]);
-				lexicon.setName((String)row[1]);
-				lexicons.add(lexicon);
-			}
+		SQLQuery query = session.createSQLQuery(sql);
+		Iterator<?> iter = query.list().iterator();
+		while (iter.hasNext()) {
+			Object[] row = (Object[]) iter.next();
+			Lexicon lexicon=new Lexicon();
+			lexicon.setId((String)row[0]);
+			lexicon.setName((String)row[1]);
+			lexicons.add(lexicon);
 		}
 		return lexicons;
 	}
 
 	/**
-	 * TODO: this function just provides a part of objects' information
-	 * @param lemma
-	 * @param Postag
-	 * @param LexiconName
-	 * @return
-	 * @throws SQLException
-	 */
-/*	public List<LexicalEntry> getLexicalEntries(String lemma, String Postag,String LexiconName) throws SQLException{
-		List<LexicalEntry>lexicons=new ArrayList<LexicalEntry>();
-		String sql="Select lexicalEntryId,partOfSpeech,separableParticle,lemmaId,lexiconId,inflection,singularetantum,pluraletantum,listOfComponentsId from ";
-		ResultSet rs=mysql.execute(sql);
-		if (rs!=null){
-			while (rs.next()){
-				Lexicon lx=new Lexicon();
-				lx.setId(rs.getString("lexiconId"));
-				lx.setName(rs.getString("lexiconName"));
-
-				Lemma lm=new Lemma();
-				//lemma.setFormRepresentations(formRepresentations);
-
-				LexicalEntry le=new LexicalEntry();
-				le.setId(rs.getString("lexicalEntryId"));
-
-				le.setLexicon(lx);
-				le.setLemma(lm);
-
-			}
-		}
-		return lexicons;
-	}*/
-	/*d
-	 * This part for getting SenseAlignment in SenseAxis table
-	 */
-	/**
+	 * This method fetches a {@link List} of all identifiers of {@link Sense}
+	 * instances which are aligned by a {@link SenseAxis} with the specified
+	 * sense.
+	 * <p>
+	 *
+	 * The method is meant for fast fetching of alignments. For retrieving of
+	 * complete alignments use {@link #getSenseAxisBySense(Sense)} instead.
 	 *
 	 * @param sense
-	 *            : The Input Sense
-	 * @return: List ID of all senses appear with input sense in senseAxis table
-	 * @throws SQLException
+	 *            all returned identifiers must belong to senses which are
+	 *            aligned to it
+	 *
+	 * @return a list of identifiers of all senses which are aligned with the
+	 *         specified sense by a sense axis.<br>
+	 *         If the specified sense is not contained in any alignment or the
+	 *         specified sense is null, this method returns an empty list.
+	 *         
+	 * @since 0.2.0
+	 *         
 	 */
-	public List<String> getSenseAxisBySense(Sense sense)
-		throws SQLException
-	{
+	public List<String> alignedSenseIDs(Sense sense) {
 		List<String> list = new ArrayList<String>();
 
 		String id = sense.getId();
@@ -256,26 +204,20 @@ public class UbyQuickAPI
 			// senseOneId='WN_Sense_100' or senseTwoId='WN_Sense_100'
 			String sql = "Select senseOneId, senseTwoId from SenseAxis where senseOneId='"
 					+ id + "' or senseTwoId='" + id + "'";
-			try {
-				// use Hibernate query
-				SQLQuery query = session.createSQLQuery(sql);
+			// use Hibernate query
+			SQLQuery query = session.createSQLQuery(sql);
 
-				Iterator iter = query.list().iterator();
-				while (iter.hasNext()) {
-					Object[] row = (Object[]) iter.next();
-					String sense1 = (String) row[0];
-					String sense2 = (String) row[1];
-					if (sense1.matches(id)) {
-						list.add(sense2);
-					}
-					else {
-						list.add(sense1);
-					}
+			@SuppressWarnings("rawtypes")
+			Iterator iter = query.list().iterator();
+			while (iter.hasNext()) {
+				Object[] row = (Object[]) iter.next();
+				String sense1 = (String) row[0];
+				String sense2 = (String) row[1];
+				if (sense1.matches(id)) {
+					list.add(sense2);
+				} else {
+					list.add(sense1);
 				}
-			}
-			catch (Exception ex) {
-				throw new SQLException(
-						"Please set configuration or session before using any method");
 			}
 		}
 
@@ -283,91 +225,79 @@ public class UbyQuickAPI
 	}
 
 	/**
+	 * This method fetches a {@link List} of all identifiers of {@link Sense}
+	 * instances which are aligned by a {@link SenseAxis} with the sense
+	 * specified by its identifier.
+	 * <p>
+	 *
+	 * The method is meant for fast fetching of alignments. For retrieving of
+	 * complete alignments use {@link #getSenseAxisBySense(Sense)} instead.
 	 *
 	 * @param id
-	 *            : Id of the input Sense
-	 * @return same to the method getSenseAxisBySense(Sense)
-	 * @throws SQLException
+	 *            all returned identifiers must belong to senses which are
+	 *            aligned to the sense represented by the id
+	 *
+	 * @return a list of identifiers of all senses which are aligned with the
+	 *         specified sense by a sense axis.<br>
+	 *         If the sense specified by its identifier is not contained in any
+	 *         alignment or the specified id is null, this method returns an
+	 *         empty list.
+	 *         
+	 * @since 0.2.0
+	 *
 	 */
-	public List<String> getSenseAxisBySenseID(String id)
-		throws SQLException
-	{
+	public List<String> alignedSenseIDs(String id) {
 		List<String> list = new ArrayList<String>();
 		if (id != null && !id.equals("")) {
 			// Select senseOneId, senseTwoId from SenseAxis where
 			// senseOneId='WN_Sense_100' or senseTwoId='WN_Sense_100'
 			String sql = "Select senseOneId, senseTwoId from SenseAxis where senseOneId='"
 					+ id + "' or senseTwoId='" + id + "'";
-			try {
-				List query = session.createSQLQuery(sql).list();
-				Iterator iter = query.iterator();
-				while (iter.hasNext()) {
-					Object[] row = (Object[]) iter.next();
-					String sense1 = (String) row[0];
-					String sense2 = (String) row[1];
-					if (sense1.matches(id)) {
-						list.add(sense2);
-					}
-					else {
-						list.add(sense1);
-					}
+			@SuppressWarnings("rawtypes")
+			List query = session.createSQLQuery(sql).list();
+			@SuppressWarnings("rawtypes")
+			Iterator iter = query.iterator();
+			while (iter.hasNext()) {
+				Object[] row = (Object[]) iter.next();
+				String sense1 = (String) row[0];
+				String sense2 = (String) row[1];
+				if (sense1.matches(id)) {
+					list.add(sense2);
+				} else {
+					list.add(sense1);
 				}
-			}
-			catch (Exception ex) {
-				throw new SQLException(
-						"Please set configuration or session before using any method");
 			}
 		}
 		return list;
 	}
 
 	/**
-	 *
-	 * @param sense1
-	 * @param sense2
-	 * @return true: if sense1 and sense 2 have alignment, vice verse false will
-	 *         be output.
-	 */
-
-	public boolean areSensesAxes(Sense sense1, Sense sense2)
-	{
-		boolean ret = false;
-		if (sense1 != null && sense2 != null && sense1.getId() != null
-				&& sense1.getId().length() > 0 && sense2.getId() != null
-				&& sense2.getId().length() > 0) {
-			String sql = "Select senseOneId, senseTwoId from SenseAxis where "
-					+ "(senseOneId='" + sense1.getId() + "' and senseTwoId='"
-					+ sense2.getId() + "')" + "or(senseOneId='"
-					+ sense2.getId() + "' and senseTwoId='" + sense1.getId()
-					+ "')";
-
-			try {
-				List query = session.createSQLQuery(sql).list();
-				if (query.size() > 0) {
-					ret = true;
-				}
-			}
-			catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		}
-
-		return ret;
-
-	}
-
-	/**
+	 * Consumes a {@link List} of {@link Sense} instances and returns a List of
+	 * all {@link SenseAxis} instances aligning senses from the consumed list.
+	 * In particular, every returned sense axis aligns two senses from the
+	 * consumed list.<br>
+	 * The returned sense axes are not fully initialized and contain only references
+	 * to senses which they bind.
 	 *
 	 * @param listSense
-	 *            :list of all senses need to detect sense alignment. <br>
-	 *            Just senseId is enough for each sense (no need to full fill
-	 *            with all information)
-	 * @return List of sense alignment available from the input list.
+	 *            A list of senses for which the sense alignments should be
+	 *            returned.
+	 *            <br>
+	 *            Note that sense instances contained in the list must not be
+	 *            fully initialized. It sufficient to provide a list of senses
+	 *            where each sense only has its unique identifier set.
+	 *
+	 * @return a list of sense alignments available from the input list.
+	 *         <p>
+	 *         If no sense alignments are available, this method returns an
+	 *         empty list.
+	 *         
+	 * @since 0.2.0
+	 * 
+	 * @see #lightSenseAxesBySenseIDs(List)
+	 * 
 	 */
-	public List<SenseAxis> getSensesAxis(List<Sense> listSense)
-	{
+	public List<SenseAxis> lightSenseAxes(List<Sense> listSense) {
 		String list = "";
 		List<SenseAxis> senseAxes = new ArrayList<SenseAxis>();
 
@@ -379,40 +309,48 @@ public class UbyQuickAPI
 		}
 		String sql = "Select senseOneId,senseTwoId from SenseAxis where senseOneId in ("
 				+ list + ") and senseTwoId in (" + list + ")";
-		try {
 
-			Query query = session.createSQLQuery(sql);
-			Iterator iter = query.list().iterator();
-			while (iter.hasNext()) {
-				Object[] rows = (Object[]) iter.next();
+		Query query = session.createSQLQuery(sql);
+		Iterator<?> iter = query.list().iterator();
+		while (iter.hasNext()) {
+			Object[] rows = (Object[]) iter.next();
 
-				SenseAxis sa = new SenseAxis();
-				Sense sense1 = getSenseFromList(listSense, (String) rows[0]);
-				Sense sense2 = getSenseFromList(listSense, (String) rows[1]);
-				sa.setSenseOne(sense1);
-				sa.setSenseTwo(sense2);
+			SenseAxis sa = new SenseAxis();
+			Sense sense1 = getSenseFromList(listSense, (String) rows[0]);
+			Sense sense2 = getSenseFromList(listSense, (String) rows[1]);
+			sa.setSenseOne(sense1);
+			sa.setSenseTwo(sense2);
 
-				senseAxes.add(sa);
-			}
-
-		}
-		catch (Exception ex) {
-			System.out.println(sql);
-			ex.printStackTrace();
+			senseAxes.add(sa);
 		}
 		return senseAxes;
 	}
 
 	/**
-	 * Similar to function getSensesAxis.
+	 * Consumes a {@link List} of unique identifiers of {@link Sense} instances
+	 * and returns a List of all {@link SenseAxis} instances aligning senses
+	 * which identifiers are in the consumed list. In particular, every returned
+	 * sense axis aligns two senses which unique identifiers are in the consumed
+	 * list.
+	 * <br>
+	 * The returned sense axes are not fully initialized and contain only references
+	 * to senses which they bind.
 	 *
 	 * @param listSenseId
-	 *            : List senses'id need to detect alignment among them.
-	 * @return list of SenseAxis, i.e: available alignment(s) among the input
-	 *         list senses.
+	 *            A list of sense identifiers for which the sense alignments
+	 *            should be returned.
+	 *
+	 * @return a list of sense alignments available from the input list.
+	 *         <p>
+	 *         If no sense alignments are available, this method returns an
+	 *         empty list.
+	 * 
+	 * @since 0.2.0
+	 *
+	 * @see #getSensesAxis(List)
+	 * @see #lightSenseAxes(List)
 	 */
-	public List<SenseAxis> getSensesAxisbyListSenseId(List<String> listSenseId)
-	{
+	public List<SenseAxis> lightSenseAxesBySenseIDs(List<String> listSenseId) {
 		String list = "";
 		List<SenseAxis> senseAxes = new ArrayList<SenseAxis>();
 
@@ -424,55 +362,20 @@ public class UbyQuickAPI
 		}
 		String sql = "Select senseOneId,senseTwoId from SenseAxis where senseOneId in ("
 				+ list + ") and senseTwoId in (" + list + ")";
-		try {
-			Query query = session.createSQLQuery(sql);
-			Iterator iter = query.list().iterator();
-			while (iter.hasNext()) {
-				Object[] rows = (Object[]) iter.next();
-					SenseAxis sa = new SenseAxis();
-					Sense sense1 = new Sense();
-					Sense sense2 = new Sense();
-					sense1.setId((String) rows[0]);
-					sense2.setId((String) rows[1]);
-					sa.setSenseOne(sense1);
-					sa.setSenseTwo(sense2);
-					senseAxes.add(sa);
-			}
-		}
-		catch (Exception ex) {
-			ex.printStackTrace();
+
+		Query query = session.createSQLQuery(sql);
+		Iterator<?> iter = query.list().iterator();
+		while (iter.hasNext()) {
+			Object[] rows = (Object[]) iter.next();
+			SenseAxis sa = new SenseAxis();
+			Sense sense1 = new Sense();
+			Sense sense2 = new Sense();
+			sense1.setId((String) rows[0]);
+			sense2.setId((String) rows[1]);
+			sa.setSenseOne(sense1);
+			sa.setSenseTwo(sense2);
+			senseAxes.add(sa);
 		}
 		return senseAxes;
-	}
-
-	/**
-	 *
-	 * @param senses
-	 *            : List of Senses
-	 * @param senseId
-	 *            : Id of returned sense
-	 * @return null if not found.<br>
-	 *         else the sense with given ID.
-	 */
-	private Sense getSenseFromList(List<Sense> senses, String senseId)
-	{
-		Sense sense = null;
-		for (Sense s : senses) {
-			if (s.getId().equals(senseId)) {
-				sense = s;
-				break;
-			}
-		}
-		return sense;
-	}
-
-
-
-	@Override
-	protected void finalize()
-		throws Throwable
-	{
-		dbconfig = null;
-		closeSession();
 	}
 }
