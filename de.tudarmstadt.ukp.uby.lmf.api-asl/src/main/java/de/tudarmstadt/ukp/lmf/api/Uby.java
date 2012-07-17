@@ -54,16 +54,16 @@ import de.tudarmstadt.ukp.lmf.transform.DBConfig;
  * Uby class represents the main entrance point to the UBY API.
  * It holds methods for searching of different UBY-LMF elements in a database
  * containing a {@link LexicalResource}.<p>
- * 
+ *
  * Methods of this class return fully initialized UBY-LMF class instances.
  * For performance reasons, you also may want to use {@link UbyQuickAPI}.
- * 
+ *
  * @author Judith Eckle-Kohler
  * @author Michael Matuschek
  * @author Tri-Duc Nghiem
  * @author Silvana Hartmann
  * @author Zijad Maksuti
- * 
+ *
  */
 public class Uby
 {
@@ -77,18 +77,19 @@ public class Uby
 	 * Constructor for a {@link Uby} instance used for
 	 * searching of different elements in a database containing
 	 * UBY-LMF {@link LexicalResource}.
-	 * 
+	 *
 	 * The connection to the database is specified using a {@link DBConfig}
 	 * instance.
 	 *
 	 * @param dbConfig configuration of the database containing
-	 * UBY-LMF lexical resource. 
+	 * UBY-LMF lexical resource.
 	 * @throws UbyInvalidArgumentException if the specified dbConfig is null
 	 */
 	public Uby(DBConfig dbConfig) throws UbyInvalidArgumentException
 	{
-		if(dbConfig == null)
+		if(dbConfig == null) {
 			throw new UbyInvalidArgumentException("database configuration is null");
+		}
 		this.dbConfig = dbConfig;
 		cfg = HibernateConnect.getConfiguration(dbConfig);
 		sessionFactory = cfg.buildSessionFactory();
@@ -121,8 +122,8 @@ public class Uby
 
 	/**
 	 * Returns the {@link DBConfig} instance used by this
-	 * {@link Uby} instance to access the UBY-LMF database. 
-	 * 
+	 * {@link Uby} instance to access the UBY-LMF database.
+	 *
 	 * @return  Database configuration of the Uby database
 	 */
 	public DBConfig getDbConfig(){
@@ -130,17 +131,17 @@ public class Uby
 	}
 
 	/**
-	 * 
+	 *
 	 * @deprecated this method is marked for deletion
 	 */
 	@Deprecated
 	public SessionFactory getSessionFactory(){
 		return sessionFactory;
 	}
-	
+
 	/**
 	 * Opens hibernate database session
-	 * 
+	 *
 	 * @deprecated marked for deletion
 	 */
 	@Deprecated
@@ -151,7 +152,7 @@ public class Uby
 
 	/**
 	 * Closes hibernate database session
-	 * 
+	 *
 	 * @deprecated marked for deletion
 	 */
 	@Deprecated
@@ -174,11 +175,11 @@ public class Uby
 	 * Fetches a {@link LexicalResource} from the UBY-Database by its name.
 	 *
 	 * @param name the name of the lexical resource to be fetched
-	 * 
+	 *
 	 * @return the lexical resource with the specified name or null if the
 	 * database accessed by this {@link Uby} instance does not contain a
-	 * lexical resource with the specified name 
-	 * 
+	 * lexical resource with the specified name
+	 *
 	 * @see LexicalResource#getName()
 	 */
 	private LexicalResource getLexicalResource(String name)
@@ -191,12 +192,12 @@ public class Uby
 	/**
 	 * Fetches the one UBY-LMF {@link LexicalResource} instance named "Uby" from the database accessed by this {@link Uby}
 	 * instance.
-	 * 
+	 *
 	 * This should work if the database has been created correctly and is the recommended way to obtain the UBY-LMF
 	 * lexical resource.
 	 *
 	 * @return a lexical resource named "Uby", contained in the accessed database, or null if the database does not contain
-	 * the lexical resource with the name "Uby" 
+	 * the lexical resource with the name "Uby"
 	 */
 	public LexicalResource getLexicalResource()
 	{
@@ -210,7 +211,7 @@ public class Uby
 	 *
 	 * @return a list of names of all lexicons contained in the accessed UBY-LMF database or an empty list
 	 * if the database does not contain any lexicons
-	 * 
+	 *
 	 * @see Lexicon#getName()
 	 */
 	public List<String> getLexiconNames(){
@@ -218,20 +219,21 @@ public class Uby
 		criteria = criteria.setProjection(Property.forName("name"));
 		@SuppressWarnings("unchecked")
 		List<String> result = criteria.list();
-		
-		if(result == null)
+
+		if(result == null) {
 			result = new ArrayList<String>(0);
-		
+		}
+
 		return result;
 	}
 
 	/**
 	 * Fetches a {@link Lexicon} with the specified name from the database accessed by this {@link Uby} instance.
-	 * 
+	 *
 	 * @param name the name of the Lexicon to be fetched.<p>
-	 * 
+	 *
 	 * Possible values of this argument are:<br>
-	 * 
+	 *
 	 * <list>
 	 * <li>"FrameNet"</li>
 	 * <li>"OmegaWikide"</li>
@@ -243,11 +245,11 @@ public class Uby
 	 * <li>"VerbNet"</li>
 	 * <li>"WordNet"</li>
 	 * </list>
-	 * 
+	 *
 	 * @return the lexicon with the specified name
-	 * 
+	 *
 	 * @throws UbyInvalidArgumentException if no lexicon with the given name is found
-	 * 
+	 *
 	 * @see Lexicon#getName()
 	 */
 	public Lexicon getLexiconByName(String name) throws UbyInvalidArgumentException
@@ -264,20 +266,20 @@ public class Uby
 
 	/**
 	 * Fetches a {@link List} of {@link LexicalEntry} instances which written representation is the specified word.
-	 * 
+	 *
 	 * Optionally lexical entries can be filtered by part-of-speech and a {@link Lexicon}.
 	 *
 	 * @param word the written representation of the lexical entries to be fetched
-	 * 
+	 *
 	 * @param pos the part-of-speech of the lexical entries to be fetched. Set to null in order to skip
 	 * part-of-speech filtering and fetch all lexical entries matching other constraints, regardless of their part-of-speech.
-	 * 
+	 *
 	 * @param lexicon If not null, filters lexical entries by the specified lexicon. Note that the Lexicon instance has to be
 	 * obtained beforehand.
-	 * 
+	 *
 	 * @return A list of lexical entries matching the specified criteria. If no lexical entry matches the specified
 	 * criteria, this method returns an empty list.
-	 * 
+	 *
 	 * @see EPartOfSpeech
 	 * @see LexicalEntry#getLemma()
 	 */
@@ -296,32 +298,33 @@ public class Uby
 		criteria = criteria.createCriteria("lemma")
 				.createCriteria("formRepresentations")
 				.add(Restrictions.eq("writtenForm", word));
-		
+
 		@SuppressWarnings("unchecked")
 		List<LexicalEntry> result = criteria.list();
-		
-		if(result == null)
+
+		if(result == null) {
 			result = new ArrayList<LexicalEntry>(0);
-		
+		}
+
 		return result;
 	}
 
 	/**
 	 * Returns an {@link Iterator} over {@link LexicalEntry} instances which written representation is the specified word.
-	 * 
+	 *
 	 * Optionally lexical entries can be filtered by part-of-speech and a {@link Lexicon}.
 	 *
 	 * @param word the written representation of the lexical entries to be iterated over
-	 * 
+	 *
 	 * @param pos the part-of-speech of the lexical entries to be iterated over. Set to null in order to skip
 	 * part-of-speech filtering and create an iterator over all lexical entries matching other constraints, regardless of
 	 * their part-of-speech.
-	 * 
+	 *
 	 * @param lexicon If not null, filters lexical entries by the specified lexicon. Note that the Lexicon instance has to be
 	 * obtained beforehand.
-	 * 
+	 *
 	 * @return An Iterator over lexical entries matching the specified criteria
-	 * 
+	 *
 	 * @see EPartOfSpeech
 	 * @see LexicalEntry#getLemma()
 	 */
@@ -345,7 +348,7 @@ public class Uby
 
 	/**
 	 * Returns a {@link List} of all {@link Lexicon} instances contained in the database accessed by this
-	 * {@link Uby} instance. 
+	 * {@link Uby} instance.
 	 *
 	 * @return a list of all lexicons contained in the database or an empty list if the
 	 * database contains no lexicons
@@ -355,22 +358,23 @@ public class Uby
 		Criteria criteria = session.createCriteria(Lexicon.class);
 		@SuppressWarnings("unchecked")
 		List<Lexicon> result = criteria.list();
-		if(result == null)
+		if(result == null) {
 			result = new ArrayList<Lexicon>(0);
+		}
 		return result;
 	}
 
 	/**
 	 * This method fetches a {@link List} of light {@link Lexicon} instances containing only
 	 * the name and the id.<p>
-	 * 
+	 *
 	 * The method is meant for fast fetching of lexicons. In order to get complete
 	 * Lexicon instances use {@link #getLexicons()} instead.
-	 * 
+	 *
 	 * @return a list of all lexicons contained in the database. The returned lexicons are light
 	 * and consist only of an id and a name. If the accessed database does not contain any lexicons,
 	 * this method returns an empty list.
-	 * 
+	 *
 	 * @see Lexicon#getName()
 	 * @see Lexicon#getId()
 	 */
@@ -392,16 +396,16 @@ public class Uby
 	/**
 	 * This method fetches all {@link Lexicon} instances from the accessed database by the
 	 * specified language identifier.
-	 * 
+	 *
 	 * @param lang the language identifier of the lexicons to be fetched
 	 *
 	 * @return A {@link List} of all lexicons with the specified language identifier.<br>
 	 * This method returns an empty list if the specified identifier is null or the
 	 * database accessed by this {@link Uby} instance does not contain any lexicon with the given identifier.
-	 * 
+	 *
 	 * @see ELanguageIdentifier
 	 * @see Lexicon#getLanguageIdentifier()
-	 * 
+	 *
 	 */
 	public List<Lexicon> getLexiconsByLanguage(ELanguageIdentifier lang)
 	{
@@ -411,8 +415,9 @@ public class Uby
 				Restrictions.eq("languageIdentifier", lang));
 		@SuppressWarnings("unchecked")
 		List<Lexicon> result =  criteria.list();
-		if(result == null)
+		if(result == null) {
 			result = new ArrayList<Lexicon>(0);
+		}
 		return result;
 	}
 
@@ -423,7 +428,7 @@ public class Uby
 	 *
 	 * @param lexicon
 	 *            If not null, senses are filtered by the given lexicon
-	 *            
+	 *
 	 * @return an iterator over all senses in the accessed database filtered by the given
 	 * lexicon if not null
 	 */
@@ -446,7 +451,7 @@ public class Uby
 	 *
 	 * @param lexicon
 	 *            If not null, synsets are filtered by the given lexicon
-	 *            
+	 *
 	 * @return an iterator over all synsets in the accessed database filtered by the given
 	 * lexicon if not null
 	 */
@@ -466,17 +471,17 @@ public class Uby
 	 * Returns the {@link Sense} instance contained in the database accessed by this
 	 * {@link Uby} instance. The returned senses are filtered by the given
 	 * name of the external system and external reference.
-	 * 
+	 *
 	 * @param externalSys the {@link String} representing the name of external system,
 	 * such as "VerbNet" or "WordNet".
-	 * 
+	 *
 	 * @param externalRef the reference string from external system,
 	 * such as:
 	 * <list>
 	 * 			 <li>with verbnet: "retire_withdraw-82-3"</li>
 	 *           <li>with wordnet: "bow_out%2:41:01::"</li>
 	 * </list>
-	 * 
+	 *
 	 * @return a {@link List} of all senses filtered by the given arguments or an empty list if
 	 * if one of the given arguments is null or the accessed database does not contain any
 	 * senses matching both constraints
@@ -491,16 +496,17 @@ public class Uby
 
 		@SuppressWarnings("unchecked")
 		List<Sense> result = criteria.list();
-		
-		if(result == null)
+
+		if(result == null) {
 			result = new ArrayList<Sense>(0);
+		}
 		return result;
 	}
 
 	/**
 	 * Returns a {@link List} of all {@link SenseAxis} instances contained in the database
 	 * accessed by this {@link Uby} instnace.
-	 * 
+	 *
 	 * @return a list of all sense axes in the accessed database or an empty list
 	 * if the accessed database does not contain any sense axes
 	 */
@@ -508,42 +514,44 @@ public class Uby
 		Criteria criteria = session.createCriteria(SenseAxis.class);
 		@SuppressWarnings("unchecked")
 		List<SenseAxis> result = criteria.list();
-		if(result == null)
+		if(result == null) {
 			result = new ArrayList<SenseAxis>(0);
+		}
 		return result;
 	}
 
 	/**
 	 * This method finds all {@link SenseAxis} instances which id contains the specified {@link String} in
 	 * the database accessed by this {@link Uby} instance.
-	 * 
-	 * @param senseAxisId string contained in the identifiers of the sense axes to be returned 
-	 * 
+	 *
+	 * @param senseAxisId string contained in the identifiers of the sense axes to be returned
+	 *
 	 * @return the {@link List} of all sense axes which id contains the specified string.<br>
 	 * This method returns an empty list is no sense axis contains the specified string in its id
 	 * or the specified string is null.
-	 * 
+	 *
 	 * @see #getSenseAxis()
 	 * @see #getSenseAxisBySense(Sense)
 	 * @see #getSenseAxisBySenseID(String)
-	 * 
+	 *
 	 */
 	public List<SenseAxis> getSenseAxisbyId(String senseAxisId){
 		Criteria criteria= session.createCriteria(SenseAxis.class);
 		criteria=criteria.add(Restrictions.sqlRestriction("senseAxisId like \"%"+ senseAxisId+"%\""));
-		
+
 		@SuppressWarnings("unchecked")
 		List<SenseAxis> result =  criteria.list();
-		if(result == null)
+		if(result == null) {
 			result = new ArrayList<SenseAxis>(0);
+		}
 		return result;
 	}
 
 	/**
 	 * This method retrieves all {@link SenseAxis} which bind the specified {@link Sense}.
-	 * 
-	 * @param sense all returned sense axes should bind this sense 
-	 * 
+	 *
+	 * @param sense all returned sense axes should bind this sense
+	 *
 	 * @return all sense axes (sense alignments) that contain the consumed sense.<br>
 	 * This method returns an empty list if the accessed UBY-LMF database does not contain
 	 * any alignments of the specified sense, or the specified sense is null.
@@ -607,25 +615,25 @@ public class Uby
 
 		return list;
 	}
-	
+
 	/**
 	 * This method fetches a {@link List} of all identifiers of {@link Sense}
 	 * instances which are aligned by a {@link SenseAxis} with the specified
 	 * sense.
 	 * <p>
-	 * 
+	 *
 	 * The method is meant for fast fetching of alignments. For retrieving of
 	 * complete alignments use {@link #getSenseAxisBySense(Sense)} instead.
-	 * 
+	 *
 	 * @param sense
 	 *            all returned identifiers must belong to senses which are
 	 *            aligned to it
-	 * 
+	 *
 	 * @return a list of identifiers of all senses which are aligned with the
 	 *         specified sense by a sense axis.<br>
 	 *         If the specified sense is not contained in any alignment or the
 	 *         specified sense is null, this method returns an empty list.
-	 * 
+	 *
 	 */
 	public List<String> getAlignedSenseIDs(Sense sense) {
 		List<String> list = new ArrayList<String>();
@@ -661,20 +669,20 @@ public class Uby
 	 * instances which are aligned by a {@link SenseAxis} with the sense
 	 * specified by its identifier.
 	 * <p>
-	 * 
+	 *
 	 * The method is meant for fast fetching of alignments. For retrieving of
 	 * complete alignments use {@link #getSenseAxisBySense(Sense)} instead.
-	 * 
+	 *
 	 * @param id
 	 *            all returned identifiers must belong to senses which are
 	 *            aligned to the sense represented by the id
-	 * 
+	 *
 	 * @return a list of identifiers of all senses which are aligned with the
 	 *         specified sense by a sense axis.<br>
 	 *         If the sense specified by its identifier is not contained in any
 	 *         alignment or the specified id is null, this method returns an
 	 *         empty list.
-	 * 
+	 *
 	 */
 	public List<String> getSenseAxisBySenseID(String id) {
 		List<String> list = new ArrayList<String>();
@@ -705,19 +713,19 @@ public class Uby
 	 * Consumes two {@link Sense} instances and returns true if and only if the
 	 * consumed instances are aligned by a {@link SenseAxis} instance.
 	 * <p>
-	 * 
+	 *
 	 * @param sense1
 	 *            the sense to be checked for alignment with
 	 *            sense2
 	 * @param sense2
 	 *            the sense to be checked for alignment with
 	 *            sense1
-	 * 
+	 *
 	 * @return true if and only if sense1 has an alignment to sense2 by a sense
 	 *         axis instance so that sense1 is the first sense of a sense axis
 	 *         and sense2 the second.<br>
 	 *         This method returns false if one of the consumed senses is null.
-	 *         
+	 *
 	 * @see SenseAxis#getSenseOne()
 	 * @see SenseAxis#getSenseTwo()
 	 */
@@ -748,7 +756,7 @@ public class Uby
 	 * all {@link SenseAxis} instances aligning senses from the consumed list.
 	 * In particular, every returned sense axis aligns two senses from the
 	 * consumed list.
-	 * 
+	 *
 	 * @param listSense
 	 *            A list of senses for which the sense alignments should be
 	 *            returned.
@@ -756,7 +764,7 @@ public class Uby
 	 *            Note that sense instances contained in the list must not be
 	 *            fully initialized. It sufficient to provide a list of senses
 	 *            where each sense only has its unique identifier set.
-	 * 
+	 *
 	 * @return a list of sense alignments available from the input list.
 	 *         <p>
 	 *         If no sense alignments are available, this method returns an
@@ -797,16 +805,16 @@ public class Uby
 	 * which identifiers are in the consumed list. In particular, every returned
 	 * sense axis aligns two senses which unique identifiers are in the consumed
 	 * list.
-	 * 
+	 *
 	 * @param listSenseId
 	 *            A list of sense identifiers for which the sense alignments
 	 *            should be returned.
-	 * 
+	 *
 	 * @return a list of sense alignments available from the input list.
 	 *         <p>
 	 *         If no sense alignments are available, this method returns an
 	 *         empty list.
-	 * 
+	 *
 	 * @see #getSensesAxis(List)
 	 */
 	public List<SenseAxis> getSensesAxisbyListSenseId(List<String> listSenseId) {
@@ -843,13 +851,13 @@ public class Uby
 	 * representing the unique identifier of a sense. It returns the sense from
 	 * the consumed list which unique identifier is equal to the consumed
 	 * identifier.
-	 * 
+	 *
 	 * @param senses
 	 *            a list of sense to be searched in
-	 * 
+	 *
 	 * @param senseId
 	 *            the unique identifier of the searched sense
-	 * 
+	 *
 	 * @return the sense in the consumed list which unique identifier matches
 	 *         the consumed unique identifier or null if the list does not
 	 *         contain such sense
@@ -868,11 +876,11 @@ public class Uby
 	/**
 	 * Returns a {@link List} of all {@link Sense} instances which unique
 	 * identifier contains the consumed {@link String}.
-	 * 
+	 *
 	 * @param idPattern
 	 *            the pattern which identifiers of the returned senses must
 	 *            contain
-	 * 
+	 *
 	 * @return the list of all senses which unique identifier contains the
 	 *         idPattern
 	 *         <p>
@@ -892,12 +900,12 @@ public class Uby
 	/**
 	 * This methods allows retrieving a {@link Sense} instance by its exact
 	 * identifier.
-	 * 
+	 *
 	 * @param senseId
 	 *            the unique identifier of the sense which should be returned
-	 * 
+	 *
 	 * @return the sense with the consumed senseId
-	 * 
+	 *
 	 * @throws UbyInvalidArgumentException
 	 *             if a sense with this identifier does not exist
 	 */
@@ -920,12 +928,12 @@ public class Uby
 	/**
 	 * This methods allows retrieving a {@link Synset} instance by its exact
 	 * identifier.
-	 * 
+	 *
 	 * @param synsetId
 	 *            the unique identifier of the synset which should be returned
-	 * 
+	 *
 	 * @return the synset with the consumed senseId
-	 * 
+	 *
 	 * @throws UbyInvalidArgumentException
 	 *             if a synset with this identifier does not exist
 	 */
@@ -975,12 +983,12 @@ public class Uby
 		criteria=criteria.add(Restrictions.sqlRestriction("synsetId='"+ss_id.trim()+"'"));
 		return criteria.list();
 	}
-	
+
 	/**
 	 * Consumes a synset offset (in WordNet terminology) and a part-of-speech. Returns
 	 * a {@link List} of all {@link Sense} instances which are derived from the WordNets synset, identified
 	 * by the consumed arguments.
-	 * 
+	 *
 	 * @param offset string representation of the WordNets synset offset<p>
 	 * @param POS a string describing part of speech of the senses to be returned.<br>
 	 * Valid values are:<br>
@@ -989,7 +997,7 @@ public class Uby
 	 * <li>"verb"</li>
 	 * <li>"adverb"</li>
 	 * <li>"adjective"</li>
-	 * 
+	 *
 	 * @return senses derived from the WordNets synset, described by the consumed arguments
 	 * <p>
 	 * This method returns an empty list if the database accessed by this {@link Uby} instance does not contain
@@ -1014,13 +1022,14 @@ public class Uby
 		String sqlQueryString="SELECT synsetId FROM MonolingualExternalRef WHERE externalReference = '"+refId.trim() +"'";
 		SQLQuery query = session.createSQLQuery(sqlQueryString);
 		String ss_id = (String) query.uniqueResult();
-		if(ss_id == null)
+		if(ss_id == null) {
 			return new ArrayList<Sense>(0);
+		}
 
 		Criteria criteria=session.createCriteria(Sense.class);
 		criteria=criteria.add(Restrictions.sqlRestriction("synsetId='"+ss_id.trim()+"'"));
 		@SuppressWarnings("unchecked")
-		List<Sense> result = (List<Sense>) criteria.list();
+		List<Sense> result = criteria.list();
 		return result;
 	}
 
@@ -1028,10 +1037,10 @@ public class Uby
 	 * Consumes a synset identifier (in WordNet terminology) and returns
 	 * a {@link List} of {@link Sense} instances which are derived from the WordNets synset,
 	 * specified by the consumed identifier.
-	 * 
+	 *
 	 * @param WNSynsetId string representation of the WordNets synset identifier
 	 * i.e. "1740-n"
-	 * 
+	 *
 	 * @return a list of senses derived from the WordNets synset, specified by the consumed identifier
 	 * <p>
 	 * This method returns an empty list if the database accessed by this {@link Uby} instance does not contain
@@ -1060,6 +1069,12 @@ public class Uby
 	/**
 	 * @param OmegaWiki SynTransId
 	 * @return list of senses in OmegaWiki by the SynTransId
+	 *
+	 * A SynTrans in OW corresponds to a Sense in WN. As OW's senses are not ordered by frequency, the otherwise
+	 * unused index field is used to store the original SynTransId, hence making the additional join with MonolingualExternalRef
+	 * unnecessary.
+	 *
+	 *
 	 */
 	public List<Sense>getSensesByOWSynTransId(String SynTransId){
 		Criteria criteria=session.createCriteria(Sense.class);
@@ -1110,7 +1125,7 @@ public class Uby
 	 *
 	 * @param senseId a unique identifier of the sense for which
 	 * semantic labels should be returned
-	 * 
+	 *
 	 * @return a list of all semantic labels of the specified sense or an empty list
 	 * if a sense with such identifier does not exist or the sense does not
 	 * have any associated semantic labels
@@ -1128,13 +1143,13 @@ public class Uby
 	 * a {@link List} of all {@link SemanticLabel} instances associated to the
 	 * specified sense. The returned semantic labels are filtered by the specified
 	 * type.
-	 * 
+	 *
 	 *
 	 * @param senseId a unique identifier of the sense for which
 	 * semantic labels should be returned
-	 * 
+	 *
 	 * @param type returned semantic labels must have this type
-	 * 
+	 *
 	 * @return a list of all semantic labels of the specified sense filtered by the
 	 * type or an empty list if the database accessed by this {@link Uby} instance
 	 * does not contain any semantic labels matching the criteria
@@ -1163,7 +1178,7 @@ public class Uby
 	 * Returns a {@link List} of all {@link SemanticPredicate} instances in the
 	 * database accessed by this {@link Uby} instance, optionally filtered by
 	 * {@link Lexicon}.
-	 * 
+	 *
 	 * @param lexicon
 	 *            if not null, all returned semantic predicates will belong to
 	 *            the specified lexicon
@@ -1186,11 +1201,11 @@ public class Uby
 	/**
 	 * Return an {@link Iterator} over {@link SemanticPredicate} instances,
 	 * optionally filtered by a {@link Lexicon}.
-	 * 
+	 *
 	 * @param lexicon
 	 *            if not null, the iterator will only be for semantic predicates
 	 *            of the specified lexicon
-	 * 
+	 *
 	 * @return iterator over the semantic predicates in the specified lexicon.<br>
 	 *         If the specified lexicon is null, this method returns an iterator
 	 *         over all semantic predicates in the {@link LexicalResource},
@@ -1211,9 +1226,9 @@ public class Uby
 
 	/**
 	 * Returns the {@link SemanticArgument} instance with the specified unique identifier.
-	 * 
+	 *
 	 * @param argumentId the unique identifier of the semantic argument to be returned
-	 * 
+	 *
 	 * @return semantic argument with the specified unique identifier, contained in the database
 	 * accessed by this {@link Uby} instance.<br>
 	 * If a semantic argument with the specified identifier does not exist, this method
@@ -1228,7 +1243,7 @@ public class Uby
 	/**
 	 * Returns all {@link SynSemArgMap} instances contained in the database
 	 * accessed by this {@link Uby} instance.
-	 * 
+	 *
 	 * @return a list of all mappings between syntactic and semantic arguments.<br>
 	 * If the database does not contain any mappings, this method returns an empty list.
 	 */
@@ -1261,7 +1276,7 @@ public class Uby
 				additional.add(arg.getComplementizer().toString());
 			}
 			additional.add("isOptional=" +arg.isOptional());
-			
+
 			if (arg.getDeterminer() != null){
 				additional.add(arg.getDeterminer().toString());
 			}
@@ -1307,9 +1322,9 @@ public class Uby
 
 	/**
 	 * Returns the {@link String} describing a specific {@link SyntacticArgument} instance.
-	 * 
+	 *
 	 * @param arg the syntactic argument for which the string representation should be returned
-	 * 
+	 *
 	 * @return string representation of the consumed syntactic argument
 	 */
 	public String getArgumentString(SyntacticArgument arg){
@@ -1320,10 +1335,10 @@ public class Uby
 			if (arg.getComplementizer() != null){
 				additional.add(arg.getComplementizer().toString());
 			}
-			
+
 			additional.add("isOptional=" +arg.isOptional());
-			
-			
+
+
 			if (arg.getDeterminer() != null){
 				additional.add(arg.getDeterminer().toString());
 			}
@@ -1360,7 +1375,7 @@ public class Uby
 	/**
 	 * Utility method for transforming a {@link List} of {@link String} instances into a
 	 * String with delimiters.
-	 * 
+	 *
 	 * @param list the list of strings
 	 * @param delimiter the delimiter to be used
 	 * @return string containing the concatenated list
@@ -1378,11 +1393,11 @@ public class Uby
 		}
 		return builder.toString();
 	}
-	
+
 	/**
 	 * Utility method for transforming a {@link List} of {@link String} instances into a
 	 * String with delimiters.
-	 * 
+	 *
 	 * @param list the list of strings
 	 * @param delimiter the delimiter to be used
 	 * @return string containing the concatenated list
