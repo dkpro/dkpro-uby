@@ -41,7 +41,7 @@ import de.tudarmstadt.ukp.omegawiki.exception.OmegaWikiException;
 
 /**
  * This class generates LexicalEntries
- * @author matuschek
+ * @author Michael Matuschek
  *
  */
 public class LexicalEntryGenerator {
@@ -169,6 +169,7 @@ public class LexicalEntryGenerator {
 				{
 					for(SynTrans stuk : dm.getSynTranses(OWLanguage.English_United_Kingdom))
 					{
+						@SuppressWarnings("rawtypes")
 						HashSet toAdd = new HashSet();
 						boolean found = false;
 						for (SynTrans orig : lexemes)
@@ -187,6 +188,7 @@ public class LexicalEntryGenerator {
 					}
 					for(SynTrans stus : dm.getSynTranses(OWLanguage.English_United_States))
 					{
+						@SuppressWarnings("rawtypes")
 						HashSet toAdd = new HashSet();
 						boolean found = false;
 						for (SynTrans orig : lexemes)

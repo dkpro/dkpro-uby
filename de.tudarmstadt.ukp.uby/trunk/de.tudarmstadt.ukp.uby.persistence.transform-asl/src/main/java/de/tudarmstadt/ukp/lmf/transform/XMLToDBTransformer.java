@@ -61,7 +61,9 @@ public class XMLToDBTransformer implements ElementHandler{
 	private long startTime;
 
 	/** Elements that should be periodically committed in order to not overflow the memeory */
-	private static Set<String> elementsToCommit = new HashSet<String>() {	    {
+	private static Set<String> elementsToCommit = new HashSet<String>() {	    
+		private static final long serialVersionUID = 2444908525388240219L;
+	{
 	        add("LexicalEntry");
 	        add("Lexicon");
 	        add("LexicalResource");

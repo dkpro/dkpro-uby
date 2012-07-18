@@ -41,6 +41,7 @@ public abstract class LMFTransformer {
 	protected HashMap<String, String> idMapping;
 
 	// Current LMF ID for each LMF Class
+	@SuppressWarnings("rawtypes")
 	protected HashMap<Class, Long> currentClassId;
 
 	// ID of the resource
@@ -54,6 +55,7 @@ public abstract class LMFTransformer {
 	 * Creates LMFTransformer, which writes to LMFXmlWriter
 	 * @param writer
 	 */
+	@SuppressWarnings("rawtypes")
 	public LMFTransformer(){
 		idMapping = new HashMap<String, String>();
 		currentClassId = new HashMap<Class, Long>();
@@ -69,7 +71,7 @@ public abstract class LMFTransformer {
 	 * @param resourceAlias
 	 * @return
 	 */
-	protected String getLmfId(Class clazz, String originalId){
+	protected String getLmfId(@SuppressWarnings("rawtypes") Class clazz, String originalId){
 		if(idMapping.containsKey(originalId)) {
 			return idMapping.get(originalId);
 		}

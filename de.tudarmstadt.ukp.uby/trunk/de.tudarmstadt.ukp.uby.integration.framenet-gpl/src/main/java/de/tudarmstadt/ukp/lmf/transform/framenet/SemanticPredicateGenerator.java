@@ -34,7 +34,6 @@ import de.tudarmstadt.ukp.lmf.model.core.Definition;
 import de.tudarmstadt.ukp.lmf.model.core.TextRepresentation;
 import de.tudarmstadt.ukp.lmf.model.enums.ECoreType;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
-import de.tudarmstadt.ukp.lmf.model.enums.EYesNo;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
 import de.tudarmstadt.ukp.lmf.model.semantics.ArgumentRelation;
 import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
@@ -123,10 +122,10 @@ public class SemanticPredicateGenerator {
 		
 		for(String semTypeID : frame.getSemTypeIDs()){
 			if(semTypeID.equals("16")) //lexicalized
-				semanticPredicate.setLexicalized(EYesNo.no);
+				semanticPredicate.setLexicalized(false);
 			else
 				if(semTypeID.equals("52"))// perspectivalized
-					semanticPredicate.setPerspectivalized(EYesNo.no);
+					semanticPredicate.setPerspectivalized(false);
 				else{
 					// semTypeIDs 68 and 182 need to be processed manually because of a bug in FN-API
 					SemanticType semanticType = null;
@@ -236,7 +235,7 @@ public class SemanticPredicateGenerator {
 			semanticArgument.setCoreType(coreType);
 			
 			// not incorporated
-			semanticArgument.setIsIncorporated(EYesNo.no);
+			semanticArgument.setIncorporated(false);
 
 			List<SemanticLabel> semanticLabels = new LinkedList<SemanticLabel>();
 
@@ -539,7 +538,7 @@ public class SemanticPredicateGenerator {
 		semArgID.append("FN_SemanticArgument_").append(semanticArgumentNumber++);
 		semanticArgument.setId(semArgID.toString());
 		semanticArgument.setSemanticRole(incorporatedFEName);
-		semanticArgument.setIsIncorporated(EYesNo.yes);
+		semanticArgument.setIncorporated(true);
 		incorporatedSemArgs.add(semanticArgument);
 		return semanticArgument;
 	}

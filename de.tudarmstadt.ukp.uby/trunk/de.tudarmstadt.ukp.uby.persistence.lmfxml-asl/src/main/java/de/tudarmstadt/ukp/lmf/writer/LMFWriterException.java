@@ -19,6 +19,9 @@
 package de.tudarmstadt.ukp.lmf.writer;
 
 public class LMFWriterException extends Exception {
+
+	private static final long serialVersionUID = 3656613135105045894L;
+
 	public LMFWriterException(Throwable cause) {
         super(cause);
     }

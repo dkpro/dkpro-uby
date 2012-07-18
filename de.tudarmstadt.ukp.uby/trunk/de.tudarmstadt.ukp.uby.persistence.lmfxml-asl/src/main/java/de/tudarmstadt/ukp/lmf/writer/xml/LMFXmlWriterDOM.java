@@ -23,8 +23,6 @@ import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -41,15 +39,9 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import de.tudarmstadt.ukp.lmf.model.core.GlobalInformation;
-import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
-import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
-import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
-import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
-import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 
 /**
  * This class creates a DOM from LMF and writes it to XML
@@ -88,6 +80,7 @@ public class LMFXmlWriterDOM {
 	 * @throws IllegalAccessException 
 	 * @throws IllegalArgumentException 
 	 */
+	@SuppressWarnings("rawtypes")
 	public void transformToXml(Object lmfObject, Element root) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {	
 		
 		Class something = lmfObject.getClass();
@@ -112,6 +105,7 @@ public class LMFXmlWriterDOM {
 			String getFuncName = "get"+fieldName.substring(0,1).toUpperCase() + fieldName.substring(1);
 			
 			try{
+				@SuppressWarnings("unchecked")
 				Method getMethod = something.getDeclaredMethod(getFuncName);				
 				Object retObj = getMethod.invoke(lmfObject); // Run the Get-Method
 				if(retObj == null){
@@ -220,61 +214,5 @@ public class LMFXmlWriterDOM {
 	 */
 	public Document getDocument(){
 		return doc;
-	}	
-	
-	
-	/**
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args){
-		try{
-			LexicalResource resource = new LexicalResource();
-			GlobalInformation glInformation = new GlobalInformation();
-			glInformation.setLabel("globalInformationLabel");
-			Lexicon lexicon = new Lexicon();
-			lexicon.setId("lexiconID");
-			lexicon.setLanguageIdentifier(ELanguageIdentifier.en);			
-			
-			Synset synset1 = new Synset();
-			synset1.setId("synset1ID");			
-			Synset synset2 = new Synset();
-			synset2.setId("synset2ID");
-			List<Synset> synsets1 = new ArrayList<Synset>();
-			synsets1.add(synset1);
-			synsets1.add(synset2);
-			
-			Synset synset3 = new Synset();
-			synset3.setId("synset3ID");			
-			Synset synset4 = new Synset();
-			synset4.setId("synset4ID");
-			List<Synset> synsets2 = new ArrayList<Synset>();
-			synsets2.add(synset3);
-			synsets2.add(synset4);
-			
-			SemanticPredicate semanticPredicate1 = new SemanticPredicate();
-			
-			SemanticPredicate semanticPredicate2 = new SemanticPredicate();
-			
-			List<SemanticPredicate> semanticPredicates = new ArrayList<SemanticPredicate>();
-			semanticPredicates.add(semanticPredicate1);
-			semanticPredicates.add(semanticPredicate2);
-			
-			lexicon.setSemanticPredicates(semanticPredicates);
-			
-			List<Lexicon> lexiconList = new ArrayList<Lexicon>();
-			lexiconList.add(lexicon);
-			
-			resource.setGlobalInformation(glInformation);
-			resource.setLexicons(lexiconList);
-			resource.setName("MEGA RESOURCE");
-			
-			LMFXmlWriterDOM xmlWriter = new LMFXmlWriterDOM("inputData/DTD_unifiedModel_6.dtd");			
-			xmlWriter.transformToXml(resource);
-			xmlWriter.saveXML("resourceLMF.xml");
-			
-		}catch(Exception ex){
-			ex.printStackTrace();
-		}
 	}
 }

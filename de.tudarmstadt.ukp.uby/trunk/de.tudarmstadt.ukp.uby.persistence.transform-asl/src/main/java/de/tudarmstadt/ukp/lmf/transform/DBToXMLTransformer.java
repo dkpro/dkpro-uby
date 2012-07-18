@@ -79,14 +79,16 @@ public class DBToXMLTransformer {
 			writer.writeStartElement(lexicon);
 
 			// Iterate over all possible sub-elements of this Lexicon and write them to the XML
+			@SuppressWarnings("rawtypes")
 			Class[] lexiconClassesToSave = {LexicalEntry.class, SubcategorizationFrame.class,
 				SubcategorizationFrameSet.class, SemanticPredicate.class,Synset.class,
 				SynSemCorrespondence.class,ConstraintSet.class
 			};
 
-			for(Class clazz : lexiconClassesToSave){
+			for(@SuppressWarnings("rawtypes") Class clazz : lexiconClassesToSave){
 				Criteria criteria = session.createCriteria(clazz)
 					.add(Restrictions.sqlRestriction("lexiconId = '"+lexicon.getId()+"'"));
+				@SuppressWarnings("rawtypes")
 				CriteriaIterator iter = new CriteriaIterator(criteria, bufferSize);
 				while(iter.hasNext()){
 					if(counter % 1000 == 0) {
@@ -104,6 +106,7 @@ public class DBToXMLTransformer {
 		// Iterate over SenseAxes and write them to XMLX
 		Criteria criteria = session.createCriteria(SenseAxis.class)
 				.add(Restrictions.sqlRestriction("lexicalResourceId = '"+lexicalResource.getName()+"'"));
+		@SuppressWarnings("rawtypes")
 		CriteriaIterator iter = new CriteriaIterator(criteria, bufferSize);
 		while(iter.hasNext()){
 			if(counter % 1000 == 0) {
