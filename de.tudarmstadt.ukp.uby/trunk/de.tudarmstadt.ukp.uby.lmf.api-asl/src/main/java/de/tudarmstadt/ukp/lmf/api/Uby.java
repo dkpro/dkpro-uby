@@ -914,7 +914,8 @@ public class Uby
 	}
 
 	/**
-	 * @deprecated use {@link #wordNetSenses(String, String)} instead
+	 * @deprecated use {@link #wordNetSenses(String, String)} or
+	 * {@link #wordNetSense(String, String)} instead
 	 */
 	@SuppressWarnings("unchecked")
 	@Deprecated
@@ -949,34 +950,123 @@ public class Uby
 	}
 
 	/**
+	 * @param POS: POS value=comment<br>
+	 * 					 a  = adj;<br>
+	 * 					 n  = noun;<br>
+	 * 					 r  = adv<br>
+	 * 					 v  = verb<br>
+	 * @param SynsetOffset: offset value of Synset;
+	 * @return list of senses belong to the given synset
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 * @Deprecated use {@link #wordNetSenses(String, String)} or
+	 * {@link #wordNetSense(String, String)} instead
+	 */
+	@Deprecated
+	public List<Sense>getSensesByWNSynsetId(String POS, String SynsetOffset) throws ClassNotFoundException, SQLException{
+	
+		String refId="[POS: noun] ";
+		if (POS.equals("a")){
+			refId=refId.replaceAll("noun", "adjective");
+		}else if (POS.equals("r")){
+			refId=refId.replaceAll("noun", "adverb");
+		}else if (POS.equals("v")){
+			refId=refId.replaceAll("noun", "verb");
+		}
+	
+		refId=refId+SynsetOffset;
+	
+	
+		Criteria criteria=session.createCriteria(Sense.class);
+		criteria=criteria.createCriteria("monolingualExternalRefs").add(Restrictions.sqlRestriction("externalReference='"+refId.trim()+"'"));
+		@SuppressWarnings("unchecked")
+		List<Sense> result = criteria.list();
+		return result;
+	}
+
+	/**
+	 * Consumes a synset identifier (in WordNet terminology) and returns
+	 * a {@link List} of {@link Sense} instances which are derived from the WordNets synset,
+	 * specified by the consumed identifier.
+	 *
+	 * @param WNSynsetId string representation of the WordNets synset identifier
+	 * i.e. "1740-n"
+	 *
+	 * @return a list of senses derived from the WordNets synset, specified by the consumed identifier
+	 * <p>
+	 * This method returns an empty list if the database accessed by this {@link Uby} instance does not contain
+	 * senses derived from the specified WordNet synset.
+	 * 
+	 * @deprecated use {@link #wordNetSense(String, String)} and {@link #wordNetSense(String, String)}
+	 * instead
+	 */
+	@Deprecated
+	public List<Sense>getSensesByWNSynsetId(String wnSynsetId) {
+		String[]temp=wnSynsetId.split("-");
+		String refId="[POS: noun] ";
+	
+		if (temp[1].equals("a")){
+			refId=refId.replaceAll("noun", "adjective");
+		}else if (temp[1].equals("r")){
+			refId=refId.replaceAll("noun", "adverb");
+		}else if (temp[1].equals("v")){
+			refId=refId.replaceAll("noun", "verb");
+		}
+	
+		refId=refId+temp[0];
+		Criteria criteria=session.createCriteria(Sense.class);
+		criteria=criteria.createCriteria("synset").createCriteria("monolingualExternalRefs").add(Restrictions.sqlRestriction("externalReference='"+refId.trim()+"'"));
+		@SuppressWarnings("unchecked")
+		List<Sense> result = criteria.list();
+		return result;
+	}
+
+	/**
 	 * Consumes a synset offset (in WordNet terminology) and a part-of-speech. Returns
 	 * a {@link List} of all {@link Sense} instances which are derived from the WordNets synset, identified
 	 * by the consumed arguments.
 	 *
-	 * @param offset string representation of the WordNets synset offset<p>
-	 * @param POS a string describing part of speech of the senses to be returned.<br>
-	 * Valid values are:<br>
+	 * @param partOfSpeech a string describing part of speech of the senses to be returned.<p>
+	 * Valid values are:
 	 * <list>
 	 * <li>"noun"</li>
 	 * <li>"verb"</li>
 	 * <li>"adverb"</li>
 	 * <li>"adjective"</li>
+	 * </list>
+	 * 
+	 * @param offset string representation of the WordNets synset offset i.e. "14469014"
 	 *
 	 * @return senses derived from the WordNets synset, described by the consumed arguments
 	 * <p>
 	 * This method returns an empty list if the database accessed by this {@link Uby} instance does not contain
 	 * the specified sense.
+	 * 
+	 * @throws UbyInvalidArgumentException if the specified part of speech is not valid or
+	 * one of consumed arguments is null
+	 * 
+	 * @since 0.2.0
 	 */
-	public List<Sense> wordNetSenses(String offset, String POS) {
+	public List<Sense> wordNetSenses(String partOfSpeech, String offset) throws UbyInvalidArgumentException {
+		
+		if(partOfSpeech == null)
+			throw new UbyInvalidArgumentException("partOfSpeech is null");
+		
+		if(offset == null)
+			throw new UbyInvalidArgumentException("offset is null");
 
 		String refId="[POS: noun] ";
-		if (POS.equals("adjective")){
+		if (partOfSpeech.equals("adjective")){
 			refId=refId.replaceAll("noun", "adjective");
-		}else if (POS.equals("adverb")){
+		}else if (partOfSpeech.equals("adverb")){
 			refId=refId.replaceAll("noun", "adverb");
-		}else if (POS.equals("verb")){
+		}else if (partOfSpeech.equals("verb")){
 			refId=refId.replaceAll("noun", "verb");
-		}
+		}else if (!partOfSpeech.equals("noun"))
+				throw new UbyInvalidArgumentException(
+						"\""+partOfSpeech+"\""+
+						" is not a valid part of speech. Only \"noun\", \"verb\", \"adverb\" or \"adjective\" are allowed"
+						);
 
 		refId=refId+offset;
 
@@ -996,37 +1086,72 @@ public class Uby
 		List<Sense> result = criteria.list();
 		return result;
 	}
-
+	
 	/**
-	 * Consumes a synset identifier (in WordNet terminology) and returns
-	 * a {@link List} of {@link Sense} instances which are derived from the WordNets synset,
-	 * specified by the consumed identifier.
+	 * Consumes a sense key (in WordNet terminology) and a part-of-speech. Returns
+	 * a {@link Sense} instance which is derived from the WordNets sense, identified by
+	 * the consumed arguments.
 	 *
-	 * @param WNSynsetId string representation of the WordNets synset identifier
-	 * i.e. "1740-n"
+	 * @param partOfSpeech a string describing part of speech of the sense to be returned.<p>
+	 * Valid values are:
+	 * <list>
+	 * <li>"noun"</li>
+	 * <li>"verb"</li>
+	 * <li>"adverb"</li>
+	 * <li>"adjective"</li>
+	 * </list>
+	 * 
+	 * @param senseKey string representation of the WordNets identifier of a sense
+	 * i.e. "enter%2:33:00::"
 	 *
-	 * @return a list of senses derived from the WordNets synset, specified by the consumed identifier
+	 * @return UBY-LMF sense derived from the WordNets word, described by the consumed arguments
 	 * <p>
-	 * This method returns an empty list if the database accessed by this {@link Uby} instance does not contain
-	 * senses derived from the specified WordNet synset.
+	 * This method returns null if the database accessed by this {@link Uby} instance does not contain
+	 * the specified sense.
+	 * 
+	 * @throws UbyInvalidArgumentException if the specified part of speech is not valid or
+	 * one of the consumed arguments is null
+	 * 
+	 * @since 0.2.0
 	 */
-	public List<Sense>getSensesByWNSynsetId(String wnSynsetId) {
-		String[]temp=wnSynsetId.split("-");
-		String refId="[POS: noun] ";
+	public Sense wordNetSense(String partOfSpeech, String senseKey) throws UbyInvalidArgumentException {
+		
+		if(partOfSpeech == null)
+			throw new UbyInvalidArgumentException("partOfSpeech is null");
+		
+		if(senseKey == null)
+			throw new UbyInvalidArgumentException("senseKey is null");
 
-		if (temp[1].equals("a")){
+		String refId="[POS: noun] ";
+		if (partOfSpeech.equals("adjective")){
 			refId=refId.replaceAll("noun", "adjective");
-		}else if (temp[1].equals("r")){
+		}else if (partOfSpeech.equals("adverb")){
 			refId=refId.replaceAll("noun", "adverb");
-		}else if (temp[1].equals("v")){
+		}else if (partOfSpeech.equals("verb")){
 			refId=refId.replaceAll("noun", "verb");
 		}
+		else if(!partOfSpeech.equals("noun"))
+				throw new UbyInvalidArgumentException(
+						"\""+partOfSpeech+"\""+
+						" is not a valid part of speech. Only \"noun\", \"verb\", \"adverb\" or \"adjective\" are allowed"
+						);
 
-		refId=refId+temp[0];
+		refId=refId+senseKey;
+
+		/*
+		 * This direct query avoids the joining huge table done by using normal hibernate, while we just need the ID
+		 */
+		String sqlQueryString="SELECT senseId FROM MonolingualExternalRef WHERE externalReference = '"+refId.trim() +"'";
+		SQLQuery query = session.createSQLQuery(sqlQueryString);
+		String ss_id = (String) query.uniqueResult();
+		if(ss_id == null) {
+			return null;
+		}
+
 		Criteria criteria=session.createCriteria(Sense.class);
-		criteria=criteria.createCriteria("synset").createCriteria("monolingualExternalRefs").add(Restrictions.sqlRestriction("externalReference='"+refId.trim()+"'"));
-		@SuppressWarnings("unchecked")
-		List<Sense> result = criteria.list();
+		criteria=criteria.add(Restrictions.sqlRestriction("senseId='"+ss_id.trim()+"'"));
+
+		Sense result = (Sense) criteria.uniqueResult();
 		return result;
 	}
 
@@ -1055,40 +1180,6 @@ public class Uby
 		Criteria criteria = session.createCriteria(Sense.class);
 		criteria = criteria.add(Restrictions.eq("index",
 				Integer.parseInt(synTransId.trim())));
-		@SuppressWarnings("unchecked")
-		List<Sense> result = criteria.list();
-		return result;
-	}
-
-	/**
-	 * @param POS: POS value=comment<br>
-	 * 					 a  = adj;<br>
-	 * 					 n  = noun;<br>
-	 * 					 r  = adv<br>
-	 * 					 v  = verb<br>
-	 * @param SynsetOffset: offset value of Synset;
-	 * @return list of senses belong to the given synset
-	 * @throws ClassNotFoundException
-	 * @throws SQLException
-	 * @Deprecated use {@link #wordNetSenses(String, String)} instead
-	 */
-	@Deprecated
-	public List<Sense>getSensesByWNSynsetId(String POS, String SynsetOffset) throws ClassNotFoundException, SQLException{
-
-		String refId="[POS: noun] ";
-		if (POS.equals("a")){
-			refId=refId.replaceAll("noun", "adjective");
-		}else if (POS.equals("r")){
-			refId=refId.replaceAll("noun", "adverb");
-		}else if (POS.equals("v")){
-			refId=refId.replaceAll("noun", "verb");
-		}
-
-		refId=refId+SynsetOffset;
-
-
-		Criteria criteria=session.createCriteria(Sense.class);
-		criteria=criteria.createCriteria("monolingualExternalRefs").add(Restrictions.sqlRestriction("externalReference='"+refId.trim()+"'"));
 		@SuppressWarnings("unchecked")
 		List<Sense> result = criteria.list();
 		return result;
