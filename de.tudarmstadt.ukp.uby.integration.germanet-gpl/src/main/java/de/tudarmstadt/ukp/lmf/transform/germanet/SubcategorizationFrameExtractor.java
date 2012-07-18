@@ -237,10 +237,7 @@ public class SubcategorizationFrameExtractor {
 						syntacticArgument.setSyntacticCategory(ESyntacticCategory.valueOf(splits[1]));
 					}
 					if(attName.equals("optional")) {
-						if(splits[1].equals("yes"))
-							syntacticArgument.setOptional(EYesNo.yes);
-						else
-							syntacticArgument.setOptional(EYesNo.no);
+						syntacticArgument.setOptional(splits[1].equals("yes"));
 					}
 					if(attName.equals("case")) {
 						syntacticArgument.setCase(ECase.valueOf(splits[1]));

@@ -18,14 +18,6 @@
 
 package de.tudarmstadt.ukp.lmf.transform;
 
-import java.util.HashMap;
-import java.util.TreeMap;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-
-import de.tudarmstadt.ukp.lmf.hibernate.HibernateConnect;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;

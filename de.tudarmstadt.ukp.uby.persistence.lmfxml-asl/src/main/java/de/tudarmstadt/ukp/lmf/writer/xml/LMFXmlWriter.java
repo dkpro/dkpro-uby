@@ -146,6 +146,7 @@ public class LMFXmlWriter extends LMFWriter{
 	 * @throws IllegalArgumentException 
 	 * @throws SAXException 
 	 */
+	@SuppressWarnings("rawtypes")
 	private void doTransform(Object lmfObject, boolean writeEndElement) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, SAXException {	
 		Class something = lmfObject.getClass();
 		String elementName = something.getSimpleName();
@@ -170,6 +171,7 @@ public class LMFXmlWriter extends LMFWriter{
 			String getFuncName = "get"+fieldName.substring(0,1).toUpperCase() + fieldName.substring(1);
 			
 			try{
+				@SuppressWarnings("unchecked")
 				Method getMethod = something.getDeclaredMethod(getFuncName);				
 				Object retObj = getMethod.invoke(lmfObject); // Run the Get-Method
 				// System.out.println("TYPE "+type.name() + " "+field.getName()+ " "+retObj);

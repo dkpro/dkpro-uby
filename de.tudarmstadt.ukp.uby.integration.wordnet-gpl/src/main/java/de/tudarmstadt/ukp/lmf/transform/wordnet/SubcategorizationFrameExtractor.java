@@ -33,7 +33,6 @@ import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticCategory;
 import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticProperty;
 import de.tudarmstadt.ukp.lmf.model.enums.ETense;
 import de.tudarmstadt.ukp.lmf.model.enums.EVerbForm;
-import de.tudarmstadt.ukp.lmf.model.enums.EYesNo;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticArgument;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
@@ -257,7 +256,7 @@ public class SubcategorizationFrameExtractor {
 					}
 					else
 						if(attName.equals("optional")) {
-							syntacticArgument.setOptional(EYesNo.valueOf(splits[1]));
+							syntacticArgument.setOptional(splits[1].equals("yes"));
 						}
 						else
 							if(attName.equals("case")) {

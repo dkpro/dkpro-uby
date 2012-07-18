@@ -189,7 +189,7 @@ public abstract class LMFDBTransformer extends LMFTransformer{
 	 * @param list
 	 * @param child
 	 */
-	private void saveListElement(Object parent, List list, Object child){
+	private void saveListElement(Object parent, @SuppressWarnings("rawtypes") List list, Object child){
 		commitCounter ++;
 		list.add(child);
 		saveCascade(child, parent);
@@ -230,7 +230,7 @@ public abstract class LMFDBTransformer extends LMFTransformer{
 	 * @param id
 	 * @return
 	 */
-	protected Object getLmfObjectById(Class clazz, String id){
+	protected Object getLmfObjectById(@SuppressWarnings("rawtypes") Class clazz, String id){
 		Object obj = session.get(clazz, id);
 		return obj;
 	}
@@ -243,7 +243,7 @@ public abstract class LMFDBTransformer extends LMFTransformer{
 	 * @param parent
 	 * @param list
 	 */
-	protected void saveList(Object parent, List list){
+	protected void saveList(Object parent, @SuppressWarnings("rawtypes") List list){
 		for(Object obj : list){
 			saveCascade(obj, parent);
 		}
@@ -259,10 +259,11 @@ public abstract class LMFDBTransformer extends LMFTransformer{
 	}
 
 	/**
-	 * Saves element and all its childrens to the Hibernate session
+	 * Saves element and all its children to the Hibernate session
 	 * @param obj
 	 * @param parent
 	 */
+	@SuppressWarnings("rawtypes")
 	protected void saveCascade(Object obj, Object parent){
 		Class objClass = obj.getClass();
 		obj.toString();	// It can happen that a Hibernate object is not initialized properly

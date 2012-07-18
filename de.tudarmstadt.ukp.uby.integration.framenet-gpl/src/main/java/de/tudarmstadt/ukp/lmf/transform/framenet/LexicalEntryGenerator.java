@@ -38,7 +38,6 @@ import de.tudarmstadt.ukp.lmf.model.core.TextRepresentation;
 import de.tudarmstadt.ukp.lmf.model.enums.EExampleType;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
-import de.tudarmstadt.ukp.lmf.model.enums.EYesNo;
 import de.tudarmstadt.ukp.lmf.model.meta.Frequency;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
 import de.tudarmstadt.ukp.lmf.model.morphology.Component;
@@ -215,7 +214,7 @@ public class LexicalEntryGenerator {
 				
 				for(String semTypeID : semTypeIDs){
 					if(semTypeID.equals("9")) //lexicalized
-						sense.setTransparentMeaning(EYesNo.yes);
+						sense.setTransparentMeaning(true);
 					else
 						if(semTypeID.equals("223")){ // perspectivalized
 							SemanticLabel semanticLabel =
