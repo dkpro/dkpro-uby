@@ -10,12 +10,6 @@
  */
 package de.tudarmstadt.ukp.lmf.transform.germanet;
 
-import germanet.ConRel;
-import germanet.GermaNet;
-import germanet.LexRel;
-import germanet.LexUnit;
-import germanet.Synset;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -30,11 +24,17 @@ import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
 import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
 import de.tudarmstadt.ukp.lmf.model.semantics.SenseExample;
 import de.tudarmstadt.ukp.lmf.model.semantics.SenseRelation;
+import de.tuebingen.uni.sfs.germanet.api.ConRel;
+import de.tuebingen.uni.sfs.germanet.api.GermaNet;
+import de.tuebingen.uni.sfs.germanet.api.LexRel;
+import de.tuebingen.uni.sfs.germanet.api.LexUnit;
+import de.tuebingen.uni.sfs.germanet.api.Synset;
 
 /**
  * This class offers methods for generating instances of {@link Sense} class from
- * <a href="URL#http://www.sfs.uni-tuebingen.de/lsd/">GermaNet 6.0</a>
- * @author Zijad Maksuti, Judith Eckle-Kohler
+ * <a href="URL#http://www.sfs.uni-tuebingen.de/lsd/index.shtml">GermaNet 7.0</a>
+ * @author Zijad Maksuti
+ * @author Judith Eckle-Kohler
  *
  */
 public class SenseGenerator {

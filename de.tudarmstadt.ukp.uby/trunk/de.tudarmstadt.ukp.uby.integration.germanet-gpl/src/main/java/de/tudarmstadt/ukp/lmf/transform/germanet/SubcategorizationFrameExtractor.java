@@ -33,9 +33,10 @@ import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticArgument;
 
 /**
  * This class extracts subcategorization frames of 
- * <a href="URL#http://www.sfs.uni-tuebingen.de/lsd/">GermaNet 6.0</a>
+ * <a href="URL#http://www.sfs.uni-tuebingen.de/lsd/index.shtml">GermaNet 7.0</a>
  * by parising subcategorization-mapping file. 
- * @author Zijad Maksuti, Judith Eckle-Kohler
+ * @author Zijad Maksuti
+ * @author Judith Eckle-Kohler
  * 
  */
 public class SubcategorizationFrameExtractor {

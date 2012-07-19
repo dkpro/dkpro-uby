@@ -37,8 +37,11 @@
 			<artifactId>de.tudarmstadt.ukp.uby.persistence.transform-asl</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>germanet</groupId>
-			<artifactId>germanet</artifactId>
+			<groupId>de.tuebingen.uni.sfs</groupId>
+			<artifactId>de.tuebingen.uni.sfs.germanet.api</artifactId>
+			<version>7.0.1</version>
+			<type>jar</type>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 </project>

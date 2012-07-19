@@ -10,10 +10,6 @@
  */
 package de.tudarmstadt.ukp.lmf.transform.germanet;
 
-import germanet.GermaNet;
-import germanet.LexUnit;
-import germanet.WordCategory;
-
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -30,13 +26,17 @@ import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
 import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
+import de.tuebingen.uni.sfs.germanet.api.GermaNet;
+import de.tuebingen.uni.sfs.germanet.api.LexUnit;
+import de.tuebingen.uni.sfs.germanet.api.WordCategory;
 
 /**
  * 
  * Instance of this class converts
- * <a href="URL#http://www.sfs.uni-tuebingen.de/lsd/">GermaNet 6.0</a>
+ * <a href="URL#http://www.sfs.uni-tuebingen.de/lsd/index.shtml">GermaNet 7.0</a>
  * to LMF-format
- * @author Zijad Maksuti, Judith Eckle-Kohler
+ * @author Zijad Maksuti
+ * @author Judith Eckle-Kohler
  *
  */
 public class GNConverter {
@@ -96,7 +96,7 @@ public class GNConverter {
 		
 		// *** Setting GlobalInformation *** //
 		GlobalInformation globalInformation = new GlobalInformation();
-		globalInformation.setLabel("LMF representation of GermaNet 6.0");
+		globalInformation.setLabel("LMF representation of GermaNet 7.0");
 		lexicalResource.setGlobalInformation(globalInformation);
 		
 		//*** Setting Lexicon (only one since GermaNet is monolingual)***//

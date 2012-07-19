@@ -10,24 +10,25 @@
  */
 package de.tudarmstadt.ukp.lmf.transform.germanet;
 
-import germanet.Example;
-import germanet.LexUnit;
-import germanet.WordCategory;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.core.TextRepresentation;
 import de.tudarmstadt.ukp.lmf.model.enums.EExampleType;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.semantics.SenseExample;
+import de.tuebingen.uni.sfs.germanet.api.Example;
+import de.tuebingen.uni.sfs.germanet.api.LexUnit;
+import de.tuebingen.uni.sfs.germanet.api.WordCategory;
 
 /**
- * This class offers methods for generating sense examples for senses, extracted from GermaNet's data
- * @author Zijad Maksuti, Judith Eckle-Kohler
+ * This class offers methods for generating {@link SenseExample} instances from GermaNet's data.
+ * @author Zijad Maksuti
+ * @author Judith Eckle-Kohler
  * @see Sense
- * @see SenseExample
  */
 public class SenseExampleGenerator {
 	private int exampleNumber=0; // This is the running number used for creating IDs of SenseExamples
