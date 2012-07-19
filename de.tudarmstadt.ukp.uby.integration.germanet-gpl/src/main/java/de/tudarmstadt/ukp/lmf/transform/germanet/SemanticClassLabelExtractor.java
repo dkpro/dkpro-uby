@@ -10,10 +10,6 @@
  */
 package de.tudarmstadt.ukp.lmf.transform.germanet;
 
-import germanet.GermaNet;
-import germanet.LexUnit;
-import germanet.Synset;
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
@@ -26,14 +22,17 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
+import de.tuebingen.uni.sfs.germanet.api.GermaNet;
+import de.tuebingen.uni.sfs.germanet.api.LexUnit;
+import de.tuebingen.uni.sfs.germanet.api.Synset;
+
 /**
  * This class offers methods for extraction of semantic class labels
- * of LexUnits and Synsets. <br>
- * Instance of this class parses the names of <a href="URL#http://www.sfs.uni-tuebingen.de/lsd/">GermaNet 6.0</a>
- * files (semantic labels) and determines the LexUnits <br> and Synsets contained in the file for which the semantic label applies.
- * @author Zijad Maksuti, Judith Eckle-Kohler
- * @see LexUnit
- * @see Synset
+ * of {@link LexUnit} and {@link Synset} instances. <br>
+ * Instance of this class parses the names of <a href="URL#http://www.sfs.uni-tuebingen.de/lsd/index.shtml">GermaNet 7.0</a>
+ * files (semantic labels) and determines the LexUnits and Synsets contained in the file for which the semantic label applies.
+ * @author Zijad Maksuti
+ * @author Judith Eckle-Kohler
  * 
  */
 public class SemanticClassLabelExtractor {
@@ -69,7 +68,7 @@ public class SemanticClassLabelExtractor {
 	
 	/**
 	 * This class consumes an instance of {@link Synset}, and returns it's semantic class label
-	 * @param synset a Synset for which semantic class lable should be extracted 
+	 * @param synset a Synset for which semantic class label should be extracted 
 	 * @return synset's semantic class label or null if the extractor contains no mapping for the synset's ID
 	 */
 	public String getSynsetSemanticClassLabel(Synset synset){

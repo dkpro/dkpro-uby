@@ -10,11 +10,6 @@
  */
 package de.tudarmstadt.ukp.lmf.transform.germanet;
 
-import germanet.ConRel;
-import germanet.GermaNet;
-import germanet.LexUnit;
-import germanet.Synset;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -28,10 +23,15 @@ import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.enums.ERelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
 import de.tudarmstadt.ukp.lmf.model.semantics.SynsetRelation;
+import de.tuebingen.uni.sfs.germanet.api.ConRel;
+import de.tuebingen.uni.sfs.germanet.api.GermaNet;
+import de.tuebingen.uni.sfs.germanet.api.LexUnit;
+import de.tuebingen.uni.sfs.germanet.api.Synset;
 
 /**
  * Instance of this class offers methods for creating {@link Synset} instances out of GermaNet's data
- * @author Zijad Maksuti, Judith Eckle-Kohler
+ * @author Zijad Maksuti
+ * @author Judith Eckle-Kohler
  * 
  */
 public class SynsetGenerator {

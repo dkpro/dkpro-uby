@@ -9,10 +9,6 @@
  * http://www.gnu.org/licenses/gpl-3.0.txt
  */
 package de.tudarmstadt.ukp.lmf.transform.germanet;
-import germanet.Frame;
-import germanet.LexRel;
-import germanet.LexUnit;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,6 +25,7 @@ import org.dom4j.DocumentException;
 import org.xml.sax.SAXException;
 
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
+import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
@@ -39,10 +36,14 @@ import de.tudarmstadt.ukp.lmf.model.morphology.RelatedForm;
 import de.tudarmstadt.ukp.lmf.model.semantics.PredicativeRepresentation;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
 import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticBehaviour;
+import de.tuebingen.uni.sfs.germanet.api.Frame;
+import de.tuebingen.uni.sfs.germanet.api.LexRel;
+import de.tuebingen.uni.sfs.germanet.api.LexUnit;
 
 /**
  * Instance of this class offers methods for creating {@link LexicalEntry} out of GermaNet's data
- * @author Zijad Maksuti, Judith Eckle-Kohler
+ * @author Zijad Maksuti
+ * @author Judith Eckle-Kohler
  *
  */
 public class LexicalEntryGenerator {
