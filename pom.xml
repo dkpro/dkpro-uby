@@ -82,11 +82,6 @@
 				<version>0.2.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
-				<groupId>germanet</groupId>
-				<artifactId>germanet</artifactId>
-				<version>6.0.1</version>
-			</dependency>
-			<dependency>
 				<groupId>de.tudarmstadt.ukp.omegawikiapi</groupId>
 				<artifactId>de.tudarmstadt.ukp.omegawikiapi-asl</artifactId>
 				<version>0.2.0</version>
@@ -177,6 +172,20 @@
 				<groupId>de.tudarmstadt.ukp.uby</groupId>
 				<artifactId>de.tudarmstadt.ukp.uby.integration.wiktionary-asl</artifactId>
 				<version>0.2.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.10</version>
+				<type>jar</type>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>de.tuebingen.uni.sfs</groupId>
+				<artifactId>de.tuebingen.uni.sfs.germanet.api</artifactId>
+				<version>7.0.1</version>
+				<type>jar</type>
+				<scope>compile</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
