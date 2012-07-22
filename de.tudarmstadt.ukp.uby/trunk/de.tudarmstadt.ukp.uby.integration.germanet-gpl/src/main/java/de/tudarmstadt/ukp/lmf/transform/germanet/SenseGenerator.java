@@ -112,7 +112,7 @@ public class SenseGenerator {
 			// *** Generating Monolingual ExternalRef**//
 			MonolingualExternalRef mer = new MonolingualExternalRef();
 			mer.setExternalReference(Integer.toString(lu.getId()));
-			mer.setExternalSystem("GermaNet 6.0 LexicalUnit-ID");
+			mer.setExternalSystem("GermaNet 7.0 LexicalUnit-ID");
 			LinkedList<MonolingualExternalRef> mers = new LinkedList<MonolingualExternalRef>();
 			mers.add(mer);
 			sense.setMonolingualExternalRefs(mers);

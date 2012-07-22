@@ -39,9 +39,14 @@
 		<dependency>
 			<groupId>de.tuebingen.uni.sfs</groupId>
 			<artifactId>de.tuebingen.uni.sfs.germanet.api</artifactId>
-			<version>7.0.1</version>
 			<type>jar</type>
 			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<type>jar</type>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>
