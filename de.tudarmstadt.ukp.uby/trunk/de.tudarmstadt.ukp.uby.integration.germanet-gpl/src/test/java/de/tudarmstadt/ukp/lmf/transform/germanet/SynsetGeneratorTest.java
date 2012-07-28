@@ -11,22 +11,21 @@
 package de.tudarmstadt.ukp.lmf.transform.germanet;
 
 import static de.tudarmstadt.ukp.lmf.transform.germanet.TestSuite.gnet;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
-import de.tuebingen.uni.sfs.germanet.api.LexUnit;
+import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 
 /**
- * Tests methods of {@link SenseGenerator} class.<br>
+ * Tests methods of {@link SynsetGenerator} class.<br>
  * 
  * Tests are made for <a href="URL#http://www.sfs.uni-tuebingen.de/lsd/index.shtml">GermaNet 7.0</a>
  * data and UBY-LMF DTD version 0.2.0.
@@ -36,12 +35,13 @@ import de.tuebingen.uni.sfs.germanet.api.LexUnit;
  * @since 0.2.0
  *
  */
-public class SenseGeneratorTest {
+public class SynsetGeneratorTest {
 	
-	private static SenseGenerator senseGenerator;
+	
+private static SynsetGenerator synsetGenerator;
 	
 	/**
-	 * Creates a {@link SenseGenerator} instance.
+	 * Creates a {@link SynsetGenerator} instance.
 	 * 
 	 * @since 0.2.0
 	 */
@@ -49,46 +49,44 @@ public class SenseGeneratorTest {
 	public static void setUpClass(){
 		if(gnet == null)
 			TestSuite.setUpClass();
-		senseGenerator= new SenseGenerator(gnet);
+		synsetGenerator= new SynsetGenerator(gnet);
 	}
 	
 	/**
-	 * Tests {@link SenseGenerator#generateSenses(java.util.Set)} method.
+	 * Tests {@link SynsetGenerator#initialize()} method.
 	 * @since 0.2.0
 	 */
 	@Test
-	public void testGenerateSenses(){
-		Set<LexUnit> luGroup = new HashSet<LexUnit>(4);
-		luGroup.add(gnet.getLexUnitByID(84356));
-		luGroup.add(gnet.getLexUnitByID(85423));
-		luGroup.add(gnet.getLexUnitByID(79989));
-		luGroup.add(gnet.getLexUnitByID(84884));
+	public void testInitialize(){
 		
-		List<Sense> senses = senseGenerator.generateSenses(luGroup);
-		
-		assertEquals(senses.size(), luGroup.size());
-		for(Sense sense : senses){
-			List<MonolingualExternalRef> monolingualExternalRefs = sense.getMonolingualExternalRefs();
+		// test the creation of synsets
+		synsetGenerator.initialize();
+		List<Synset> synsets = synsetGenerator.getSynsets();
+		assertFalse("No synsets created", synsets.isEmpty());
+		for(Synset synset : synsets){
+			assertNotNull("Synset should not be null", synset);
+			
+			// test the creation of MonolingualExternalRefs
+			List<MonolingualExternalRef> monolingualExternalRefs = synset.getMonolingualExternalRefs();
 			assertFalse(monolingualExternalRefs.isEmpty());
 			for(MonolingualExternalRef monolingualExternalRef : monolingualExternalRefs){
 				assertFalse(monolingualExternalRef == null);
 				
 				String externalSystem = monolingualExternalRef.getExternalSystem();
 				assertNotNull(externalSystem);
-				assertEquals(externalSystem, "GermaNet 7.0 LexicalUnit-ID");
+				assertEquals(externalSystem, "GermaNet 7.0 Synset-ID");
 
 				String externalReference = monolingualExternalRef.getExternalReference();
 				assertNotNull(externalReference);
-				assertFalse(externalReference.equals(""));
-				assertFalse(externalReference.equals(" "));
-			}
-		// TODO test the rest of the Sense structure	
+				assertFalse(externalReference.replaceAll(" ", "").isEmpty());
+				}
 		}
+		// TODO test the rest of Synset structure
 	}
 	
 	@AfterClass
 	public static void tearDown(){
-		senseGenerator = null;
+		synsetGenerator = null;
 	}
 	
 }
