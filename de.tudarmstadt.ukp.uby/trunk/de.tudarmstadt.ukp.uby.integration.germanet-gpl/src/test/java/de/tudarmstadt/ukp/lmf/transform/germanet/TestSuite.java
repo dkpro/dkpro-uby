@@ -25,7 +25,7 @@ import de.tuebingen.uni.sfs.germanet.api.GermaNet;
 
 /**
  * Runs all tests for germanet-gpl module:
- * {@link GNConverterTest} and {@link SenseGeneratorTest}.
+ * {@link GNConverterTest} and {@link SenseGeneratorTest}.<p>
  * 
  * @author Zijad Maksuti
  * 
