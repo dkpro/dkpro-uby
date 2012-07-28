@@ -33,7 +33,7 @@ import de.tuebingen.uni.sfs.germanet.api.GermaNet;
  *
  */
 @RunWith(Suite.class)
-@SuiteClasses({SenseGeneratorTest.class, GNConverterTest.class})
+@SuiteClasses({SenseGeneratorTest.class, SynsetGeneratorTest.class, GNConverterTest.class})
 public class TestSuite {
 	
 	/*

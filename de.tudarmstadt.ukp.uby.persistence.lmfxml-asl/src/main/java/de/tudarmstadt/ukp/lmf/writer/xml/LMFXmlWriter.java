@@ -27,10 +27,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
@@ -38,7 +40,6 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
-
 
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
@@ -56,17 +57,17 @@ public class LMFXmlWriter extends LMFWriter{
 	 */
 	private String dtdPath; // path of the dtd File	
 	private TransformerHandler th; // Transform Handler
+	
+	private static Logger logger = Logger.getLogger(LMFXmlWriter.class.getName());
 
 	/**
 	 * Constructs a LMFXmlWriter, XML will be saved to file in outputPath
+	 * @param outputPath
 	 * @param dtdPath Path of the dtd-File
 	 * @return LMFXmlWriter
-	 * @throws ParserConfigurationException 
-	 * @throws TransformerException 
-	 * @throws IOException 
-	 * @throws FileNotFoundException 
+	 * @throws FileNotFoundException if the writer can not to the specified outputPath
 	 */
-	public LMFXmlWriter(String outputPath, String dtdPath) throws IOException, TransformerException{
+	public LMFXmlWriter(String outputPath, String dtdPath) throws FileNotFoundException {
 		this(new FileOutputStream(outputPath), dtdPath);
 	}
 	
@@ -74,10 +75,8 @@ public class LMFXmlWriter extends LMFWriter{
 	 * Constructs a LMFXmlWriter, XML will be saved to OutputStream out
 	 * @param out
 	 * @param dtdPath
-	 * @throws IOException
-	 * @throws TransformerException
 	 */
-	public LMFXmlWriter(OutputStream out, String dtdPath) throws IOException, TransformerException{
+	public LMFXmlWriter(OutputStream out, String dtdPath) {
 		this.dtdPath = dtdPath;
 		th = getXMLTransformerHandler(out);
 	}
@@ -226,10 +225,16 @@ public class LMFXmlWriter extends LMFWriter{
 	 * @throws IOException
 	 * @throws TransformerException
 	 */
-	public TransformerHandler getXMLTransformerHandler(OutputStream out) throws IOException, TransformerException{
+	public TransformerHandler getXMLTransformerHandler(OutputStream out) {
 		StreamResult streamResult = new StreamResult(out);
 		SAXTransformerFactory tf = (SAXTransformerFactory)SAXTransformerFactory.newInstance();
-		TransformerHandler th = tf.newTransformerHandler();
+		TransformerHandler th = null;
+		try {
+			th = tf.newTransformerHandler();
+		} catch (TransformerConfigurationException e) {
+			logger.log(Level.SEVERE, "Error on initiating TransformerHandler");
+			e.printStackTrace();
+		}
 		Transformer serializer = th.getTransformer();
 		serializer.setOutputProperty(OutputKeys.METHOD, "xml");
 		serializer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
