@@ -277,6 +277,24 @@ public class Lexicon implements IHasID, IHasLanguageIdentifier {
 		this.lexicalResource = lexicalResource;
 	}
 	
+	/**
+	 * Adds a {@link LexicalEntry} instance to this {@link Lexicon} instance.
+	 * 
+	 * @param lexicalEntry the lexical entry to add
+	 * 
+	 * @return <code>true</code> if this lexicon did not already contain
+	 * an equal lexical entry, <code>false</code> otherwise
+	 * 
+	 * @since 0.2.0
+	 */
+	public boolean addLexicalEntry(LexicalEntry lexicalEntry){
+		if(!this.lexicalEntries.contains(lexicalEntry)){
+			this.lexicalEntries.add(lexicalEntry);
+			return true;
+		}
+		return false;
+	}
+	
 	
 	
 }

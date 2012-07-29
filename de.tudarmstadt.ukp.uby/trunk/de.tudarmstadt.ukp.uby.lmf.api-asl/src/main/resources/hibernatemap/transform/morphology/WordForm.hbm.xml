@@ -53,5 +53,11 @@
          	<param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.EVerbFormMood</param>         	
       	</type>
   	</property>
+  	
+  	<property name="degree" column="degree" node="@degree">    
+    	<type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">
+         	<param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.EDegree</param>         	
+      	</type>
+  	</property>
 </class>
 </hibernate-mapping>

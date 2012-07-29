@@ -20,8 +20,10 @@ package de.tudarmstadt.ukp.lmf.model.morphology;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.tudarmstadt.ukp.lmf.model.abstracts.HasFrequencies;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.enums.ECase;
+import de.tudarmstadt.ukp.lmf.model.enums.EDegree;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalGender;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalNumber;
 import de.tudarmstadt.ukp.lmf.model.enums.EPerson;
@@ -39,7 +41,7 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
  * @author Zijad Maksuti
  *
  */
-public class WordForm {
+public class WordForm extends HasFrequencies{
 	
 	// GrammaticalNumber of this WordForm
 	@VarType(type = EVarType.ATTRIBUTE)
@@ -64,6 +66,10 @@ public class WordForm {
 	// mood of the verb
 	@VarType(type = EVarType.ATTRIBUTE)
 	private EVerbFormMood verbFormMood;
+	
+	// degre of the word form
+	@VarType(type = EVarType.ATTRIBUTE)
+	private EDegree degree;
 	
 	// FormRepresentation of this WordForm
 	@VarType(type = EVarType.CHILDREN)
@@ -252,5 +258,31 @@ public class WordForm {
 	 */
 	public List<Frequency> getFrequencies() {
 		return frequencies;
+	}
+
+	/**
+	 * Returns a degree of this {@link WordForm} instance.<br>
+	 * This attribute only applies for adjectives and adverbs.
+	 * 
+	 * @return the degree of this word form or <code>null</code> if the degree is not set
+	 * 
+	 * @see EDegree
+	 * 
+	 * @since 0.2.0
+	 */
+	public EDegree getDegree() {
+		return degree;
+	}
+
+	/**
+	 * Sets the degree of this {@link WordForm} instance.<br>
+	 * Note that only adjectives and adverbs can have a degree.
+	 * 
+	 * @param degree the degree to set
+	 * 
+	 * @since 0.2.0
+	 */
+	public void setDegree(EDegree degree) {
+		this.degree = degree;
 	}
 }
