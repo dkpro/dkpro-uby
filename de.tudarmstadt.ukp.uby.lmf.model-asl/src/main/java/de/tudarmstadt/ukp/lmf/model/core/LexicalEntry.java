@@ -87,6 +87,27 @@ public class LexicalEntry extends HasFrequencies implements IHasID, Comparable<L
 	// Backlink to Lexicon added for convenience
 	@VarType(type = EVarType.NONE)
 	private Lexicon lexicon;
+	
+	/**
+	 * Constructs a {@link LexicalEntry} instance with the specified
+	 * identifier.
+	 *  
+	 * @param identifier the unique identifier of the lexical entry
+	 * 
+	 * @since 0.2.0
+	 */
+	public LexicalEntry(String identifier){
+		this.id = identifier;
+	}
+	
+	/**
+	 * Constructs an empty {@link LexicalEntry} instance.
+	 * 
+	 * @see #LexicalEntry(String)
+	 */
+	public LexicalEntry(){
+		// nothing to do here
+	}
 
 	
 	/** 

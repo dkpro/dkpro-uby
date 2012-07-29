@@ -23,7 +23,6 @@ import java.util.List;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis;
-import de.tudarmstadt.ukp.lmf.model.core.GlobalInformation;
 
 /**
  * LexicalResource is a class representing the entire resource. 
@@ -137,5 +136,24 @@ public class LexicalResource {
 	 */
 	public void setDtdVersion(String dtdVersion) {
 		this.dtdVersion = dtdVersion;
+	}
+	
+	/**
+	 * Adds a {@link Lexicon} instance to this {@link LexicalResource} instance.
+	 * 
+	 * @param lexicon the lexicon to add
+	 * 
+	 * @return <code>true</code> only when this lexical resource did not already
+	 * contain an equal lexicon.
+	 * 
+	 * @since 0.2.0
+	 * 
+	 */
+	public boolean addLexicon(Lexicon lexicon){
+		if(!this.lexicons.contains(lexicon)){
+			this.lexicons.add(lexicon);
+			return true;
+		}
+		return false;
 	}
 }
