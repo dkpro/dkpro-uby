@@ -102,6 +102,27 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 	// Backlink to LexicalEntry added for convenience
 	@VarType(type = EVarType.NONE)
 	private LexicalEntry lexicalEntry;
+	
+	/**
+	 * Constructs an empty {@link Sense} instance.
+	 * 
+	 * @since UBY 0.2.0
+	 */
+	public Sense(){
+		// nothing to do
+	}
+	
+	/**
+	 * Constructs a {@link Sense} instance with the specified
+	 * unique identifier.
+	 * 
+	 * @param id the unique identifier of the sense to be created
+	 * 
+	 * @since UBY 0.2.0
+	 */
+	public Sense(String id){
+		this.id = id;
+	}
 
 
 	/**
@@ -182,7 +203,6 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 	public void setTransparentMeaning(EYesNo transparentMeaning) {
 		this.transparentMeaning = transparentMeaning;
 	}
-	
 	
 	/**
 	 * Sets the transparent meaning flag to this {@link Sense} instance.<p>

@@ -71,6 +71,31 @@ public class SemanticArgument implements IHasID, IHasDefinitions, IHasSemanticLa
 	// incorporatedSemanticArgument yes/no?
 	@VarType(type = EVarType.ATTRIBUTE)
 	private EYesNo isIncorporated;
+	
+	/**
+	 * Constructs an empty {@link SemanticArgument} instance.
+	 * 
+	 * @since UBY 0.2.0
+	 * 
+	 * @see #SemanticArgument(String)
+	 */
+	public SemanticArgument(){
+		// nothing to do
+	}
+	
+	/**
+	 * Constructs a {@link SemanticArgument} instance with the consumed
+	 * identifier.
+	 * 
+	 * @param id the unique identifier of the constructed semantic argument
+	 * 
+	 * @since UBY 0.2.0
+	 * 
+	 * @see #SemanticArgument()
+	 */
+	public SemanticArgument(String id){
+		this.id = id;
+	}
 
 	/**
 	 * Returns a {@link List} of {@link Definition} instances representing narrative description

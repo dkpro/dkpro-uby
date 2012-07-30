@@ -41,6 +41,7 @@ import de.tudarmstadt.ukp.lmf.model.core.GlobalInformation;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
+import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.enums.ECase;
 import de.tudarmstadt.ukp.lmf.model.enums.EDegree;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalGender;
@@ -48,11 +49,17 @@ import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalNumber;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
 import de.tudarmstadt.ukp.lmf.model.enums.EPerson;
+import de.tudarmstadt.ukp.lmf.model.enums.ERelTypeMorphology;
 import de.tudarmstadt.ukp.lmf.model.enums.ETense;
 import de.tudarmstadt.ukp.lmf.model.enums.EVerbFormMood;
+import de.tudarmstadt.ukp.lmf.model.enums.EYesNo;
+import de.tudarmstadt.ukp.lmf.model.meta.Frequency;
 import de.tudarmstadt.ukp.lmf.model.morphology.FormRepresentation;
 import de.tudarmstadt.ukp.lmf.model.morphology.Lemma;
+import de.tudarmstadt.ukp.lmf.model.morphology.RelatedForm;
 import de.tudarmstadt.ukp.lmf.model.morphology.WordForm;
+import de.tudarmstadt.ukp.lmf.model.semantics.SemanticArgument;
+import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 import de.tudarmstadt.ukp.lmf.writer.LMFWriterException;
 
 /**
@@ -102,6 +109,21 @@ public class LMFXmlWriterTest {
 	private static final ETense wordForm_tense = ETense.present;
 	private static final EVerbFormMood wordForm_verbFormMoode = EVerbFormMood.imperative;
 	private static final EDegree wordForm_degree = EDegree.SUPERLATIVE;
+	
+	private static final String frequency_corpus = "frequency_corpus";
+	private static final int frequency_frequancy = 12345;
+	private static final String frequency_generator = "frequency_generator";
+	
+	private static final LexicalEntry targetLexicalEntry = new LexicalEntry("targetLexicalEntry_id");
+	private static final Sense targetSense = new Sense("targetSense_id");
+	
+	private static final ERelTypeMorphology relatedForm_relType = ERelTypeMorphology.derivationBase;
+	
+	private static final String sense_id = "sense_id";
+	private static final int sense_index = 54321;
+	private static final Synset sense_synset = new Synset("sense_synset");
+	private static final SemanticArgument sense_incorporatedSemArg = new SemanticArgument("sense_incorporatedSemArg_id");
+	private static final boolean sense_transparentMeaning = true;
 
 	/**
 	 * Creates a UBY-LMF structure by initializing every child and every field
@@ -182,6 +204,34 @@ public class LMFXmlWriterTest {
 		List<WordForm> wordForms = new ArrayList<WordForm>(1);
 		wordForms.add(wordForm);
 		lexicalEntry.setWordForms(wordForms);
+		
+		Frequency frequency = new Frequency();
+		frequency.setCorpus(frequency_corpus);
+		frequency.setFrequency(frequency_frequancy);
+		frequency.setGenerator(frequency_generator);
+		List<Frequency> frequencies = new ArrayList<Frequency>(1);
+		frequencies.add(frequency);
+		wordForm.setFrequencies(frequencies);
+		
+		RelatedForm relatedForm = new RelatedForm();
+		relatedForm.setTargetLexicalEntry(targetLexicalEntry);
+		relatedForm.setTargetSense(targetSense);
+		relatedForm.setRelType(relatedForm_relType);
+		relatedForm.setFormRepresentations(formRepresentations);
+		List<RelatedForm> relatedForms = new ArrayList<RelatedForm>(1);
+		relatedForms.add(relatedForm);
+		lexicalEntry.setRelatedForms(relatedForms);
+		
+		Sense sense = new Sense(sense_id);
+		sense.setIndex(sense_index);
+		sense.setSynset(sense_synset);
+		sense.setIncorporatedSemArg(sense_incorporatedSemArg);
+		sense.setTransparentMeaning(sense_transparentMeaning);
+		List<Sense> senses = new ArrayList<Sense>(1);
+		senses.add(sense);
+		lexicalEntry.setSenses(senses);
+		
+		
 		
 		lmfXmlWriter = new LMFXmlWriter(outputPath, dtd.getAbsolutePath());
 		
@@ -272,7 +322,49 @@ public class LMFXmlWriterTest {
 		NodeList nlWordForm = lexicalEntry.getElementsByTagName("WordForm");
 		assertEquals("LexicalEntry should only have one WordForm instance", 1, nlWordForm.getLength());
 		checkWordForm((Element) nlWordForm.item(0));
+		
+		NodeList nlRelatedForm = lexicalEntry.getElementsByTagName("RelatedForm");
+		assertEquals("LexicalEntry should only have one RelatedForm instance", 1, nlRelatedForm.getLength());
+		checkRelatedForm((Element) nlRelatedForm.item(0));
+		
+		NodeList nlSense = lexicalEntry.getElementsByTagName("Sense");
+		assertEquals("LexicalEntry should only have one RelatedForm instance", 1, nlSense.getLength());
+		checkSense((Element) nlSense.item(0));
+		
 		// TODO the rest
+	}
+
+	/**
+	 * Test the values of attributes and children of a {@link Sense} in the
+	 * consumed sense {@link Element}.
+	 * 
+	 * @param sense the node of the sense
+	 */
+	private void checkSense(Element sense) {
+		assertEquals(sense_id, sense.getAttribute("id"));
+		assertEquals(Integer.toString(sense_index), sense.getAttribute("index"));
+		assertEquals(sense_synset.getId(), sense.getAttribute("synset"));
+		assertEquals(sense_incorporatedSemArg.getId(), sense.getAttribute("incorporatedSemArg"));
+		// FIXME
+//		if(sense_transparentMeaning)
+//			assertEquals(EYesNo.yes.toString(), sense.getAttribute("transparentMeaning"));
+//		else
+//			assertEquals(EYesNo.no.toString(), sense.getAttribute("transparentMeaning"));
+		// TODO rest
+	}
+
+	/**
+	 * Test the values of attributes and children of a {@link RelatedForm} in the
+	 * consumed related form {@link Element}.
+	 * 
+	 * @param relatedForm the node of the related form
+	 */
+	private void checkRelatedForm(Element relatedForm) {
+		assertEquals(targetLexicalEntry.getId(), relatedForm.getAttribute("targetLexicalEntry"));
+		assertEquals(targetSense.getId(), relatedForm.getAttribute("targetSense"));
+		assertEquals(relatedForm_relType.toString(), relatedForm.getAttribute("relType"));
+		
+		checkHasSingleFormRepresentation(relatedForm, "RelatedForm");
 	}
 
 	/**
@@ -295,8 +387,22 @@ public class LMFXmlWriterTest {
 		assertEquals("WordForm should only have one FormRepresentation", 1, nFormRepresentation.getLength());
 		checkFormRepresentation((Element) nFormRepresentation.item(0));
 		
-		// TODO check frequencies
+		NodeList nFrequency = wordForm.getElementsByTagName("Frequency");
+		assertEquals("WordForm should only have one Frequency", 1, nFrequency.getLength());
+		checkFrequency((Element) nFrequency.item(0));
 		
+	}
+	
+	/**
+	 * Test the values of attributes and children of a {@link Frequency} in the
+	 * consumed frequency {@link Element}.
+	 * 
+	 * @param frequency the node of the frequency
+	 */
+	private void checkFrequency(Element frequency) {
+		assertEquals(frequency_corpus, frequency.getAttribute("corpus"));
+		assertEquals(Integer.toString(frequency_frequancy), frequency.getAttribute("frequency"));
+		assertEquals(frequency_generator, frequency.getAttribute("generator"));
 	}
 
 	/**
@@ -308,6 +414,23 @@ public class LMFXmlWriterTest {
 	private void checkLemma(Element lemma) {
 		NodeList nFormRepresentation = lemma.getElementsByTagName("FormRepresentation");
 		assertEquals("Lemma should only have one FormRepresentation", 1, nFormRepresentation.getLength());
+		checkFormRepresentation((Element) nFormRepresentation.item(0));
+	}
+	
+	/**
+	 * Test if the consumed {@link Element}, representing a UBY-LMF class,
+	 * has one Element which represents a {@link FormRepresentation} instance,
+	 * attached. Subsequently, the method checks the content of the form representation.
+	 * 
+	 * @param  lmfClassIntance the element representing an UBY-lMF class instnace which
+	 * should have exactly one FormRepresentation element attached
+	 * @param className string used for generating a message on failure, represents
+	 * the name of the UBY-LMF class instance which is being tested 
+	 */
+	private void checkHasSingleFormRepresentation(Element lmfClassInstance, String className){
+		
+		NodeList nFormRepresentation = lmfClassInstance.getElementsByTagName("FormRepresentation");
+		assertEquals(className + "should only have one FormRepresentation", 1, nFormRepresentation.getLength());
 		checkFormRepresentation((Element) nFormRepresentation.item(0));
 	}
 

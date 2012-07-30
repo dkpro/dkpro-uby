@@ -57,6 +57,32 @@ public class Synset extends HasMonolingualExternalRefs implements IHasID, IHasDe
 	// Senses of this synset - not in the model, added for convenience
 	@VarType(type = EVarType.NONE)
 	private List<Sense> senses;
+	
+	/**
+	 * Constructs an empty {@link Synset} instance.
+	 * 
+	 * @since UBY 0.2.0
+	 * 
+	 * @see #Synset(String)
+	 * 
+	 */
+	public Synset(){
+		// nothing to do
+	}
+	
+	/**
+	 * Constructs a {@link Synset} instance with the
+	 * consumed identifier.
+	 * 
+	 * @param id the identifier of the created synset
+	 * 
+	 * @since UBY 0.2.0
+	 * 
+	 * @see #Synset()
+	 */
+	public Synset(String id){
+		this.id = id;
+	}
 
 	public String getId() {
 		return id;
