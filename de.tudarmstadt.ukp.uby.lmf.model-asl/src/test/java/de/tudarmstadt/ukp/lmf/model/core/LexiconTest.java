@@ -28,6 +28,8 @@ import org.junit.Test;
  * Tests methods of {@link Lexicon} class
  * 
  * @author Zijad Maksuti
+ * 
+ * @since UBY 0.2.0
  *
  */
 public class LexiconTest {
