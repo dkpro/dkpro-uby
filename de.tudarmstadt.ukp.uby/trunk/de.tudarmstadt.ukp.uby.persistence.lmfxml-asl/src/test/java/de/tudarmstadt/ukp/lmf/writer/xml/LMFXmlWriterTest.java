@@ -175,7 +175,9 @@ public class LMFXmlWriterTest {
 		LexicalEntry lexicalEntry = new LexicalEntry(lexicalEntry_id);
 		lexicalEntry.setPartOfSpeech(lexicalEntry_partOfSpeech);
 		lexicalEntry.setSeparableParticle(lexicalEntry_separableParticle);
+		lexicalEntry.setLexicon(lexicon);
 		lexicon.addLexicalEntry(lexicalEntry);
+		lexicon.setLexicalResource(lexicalResource);
 		
 		Lemma lemma = new Lemma();
 		lexicalEntry.setLemma(lemma);
@@ -191,6 +193,7 @@ public class LMFXmlWriterTest {
 		List<FormRepresentation> formRepresentations = new ArrayList<FormRepresentation>();
 		formRepresentations.add(formRepresentation);
 		lemma.setFormRepresentations(formRepresentations);
+		lemma.setLexicalEntry(lexicalEntry);
 		
 		WordForm wordForm = new WordForm();
 		wordForm.setGrammaticalNumber(wordForm_grammaticalNumber);
@@ -296,6 +299,7 @@ public class LMFXmlWriterTest {
 		assertEquals(lexicon_languageIdentifier.toString(), lexicon.getAttribute("languageIdentifier"));
 		assertEquals(lexicon_name, lexicon.getAttribute("name"));
 		assertEquals(lexicon_id, lexicon.getAttribute("id"));
+		// TODO check the parent of the lexicon
 		
 		NodeList nlLexicalEntry = lexicon.getElementsByTagName("LexicalEntry");
 		assertEquals("LexicalResource should only have one LexicalEntry instance", 1, nlLexicalEntry.getLength());
@@ -314,6 +318,7 @@ public class LMFXmlWriterTest {
 		assertEquals(lexicalEntry_id, lexicalEntry.getAttribute("id"));
 		assertEquals(lexicalEntry_partOfSpeech.toString(), lexicalEntry.getAttribute("partOfSpeech"));
 		assertEquals(lexicalEntry_separableParticle, lexicalEntry.getAttribute("separableParticle"));
+		assertEquals(lexicon_id, lexicalEntry.getAttribute("lexicon"));
 		
 		NodeList nlLemma = lexicalEntry.getElementsByTagName("Lemma");
 		assertEquals("LexicalEntry should only have one Lemma instance", 1, nlLemma.getLength());
@@ -346,10 +351,10 @@ public class LMFXmlWriterTest {
 		assertEquals(sense_synset.getId(), sense.getAttribute("synset"));
 		assertEquals(sense_incorporatedSemArg.getId(), sense.getAttribute("incorporatedSemArg"));
 		// FIXME
-//		if(sense_transparentMeaning)
-//			assertEquals(EYesNo.yes.toString(), sense.getAttribute("transparentMeaning"));
-//		else
-//			assertEquals(EYesNo.no.toString(), sense.getAttribute("transparentMeaning"));
+		if(sense_transparentMeaning)
+			assertEquals(EYesNo.yes.toString(), sense.getAttribute("transparentMeaning"));
+		else
+			assertEquals(EYesNo.no.toString(), sense.getAttribute("transparentMeaning"));
 		// TODO rest
 	}
 
@@ -412,6 +417,8 @@ public class LMFXmlWriterTest {
 	 * @param lemma the node of the lemma
 	 */
 	private void checkLemma(Element lemma) {
+		assertEquals(lexicalEntry_id, lemma.getAttribute("lexicalEntry"));
+		
 		NodeList nFormRepresentation = lemma.getElementsByTagName("FormRepresentation");
 		assertEquals("Lemma should only have one FormRepresentation", 1, nFormRepresentation.getLength());
 		checkFormRepresentation((Element) nFormRepresentation.item(0));

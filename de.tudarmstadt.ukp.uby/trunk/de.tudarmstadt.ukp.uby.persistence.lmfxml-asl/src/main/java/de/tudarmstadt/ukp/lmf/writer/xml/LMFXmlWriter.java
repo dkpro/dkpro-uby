@@ -23,7 +23,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +41,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
+import de.tudarmstadt.ukp.lmf.model.miscellaneous.AccessType;
+import de.tudarmstadt.ukp.lmf.model.miscellaneous.EAccessType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 import de.tudarmstadt.ukp.lmf.writer.LMFWriter;
@@ -137,16 +138,21 @@ public class LMFXmlWriter extends LMFWriter{
 	
 	
 	/**
-	 * This method consumes a LMF Object and transforms it to XML
+	 * This method consumes a LMF Object and transforms it to XML. The method
+	 * iterates over all fields of a class and searches for the {@link AccessType} annotations.
+	 * Depending on the value of the annotation, the method reads the values of the objects
+	 * fields by invoking a getter or by directly accessing the field.
+	 * 
 	 * @param lmfObject An LMF Object for which an Element should be created
-	 * @param writeEndElement If TRUE the closing Tag for the XML-Element will be created	 * 
-	 * @throws InvocationTargetException 
-	 * @throws IllegalAccessException 
-	 * @throws IllegalArgumentException 
-	 * @throws SAXException 
+	 * @param writeEndElement If TRUE the closing Tag for the XML-Element will be created
+	 *  
+	 * @throws IllegalAccessException when a direct access to a field of the class is for some reason not possible 
+	 * @throws IllegalArgumentException when a direct access to a field of the class is for some reason not possible 
+	 * @throws SAXException if writing to XML-file is for some reason not possible
 	 */
-	@SuppressWarnings("rawtypes")
-	private void doTransform(Object lmfObject, boolean writeEndElement) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, SAXException {	
+	@SuppressWarnings("unchecked")
+	private void doTransform(Object lmfObject, boolean writeEndElement) throws IllegalArgumentException, IllegalAccessException, SAXException{	
+		@SuppressWarnings("rawtypes")
 		Class something = lmfObject.getClass();
 		String elementName = something.getSimpleName();
 				
@@ -166,44 +172,59 @@ public class LMFXmlWriter extends LMFWriter{
 			if(type.equals(EVarType.NONE))
 				continue;
 			
-			// Get-Method for the field
-			String getFuncName = "get"+fieldName.substring(0,1).toUpperCase() + fieldName.substring(1);
+			Object retObj = null;
 			
-			try{
-				@SuppressWarnings("unchecked")
-				Method getMethod = something.getDeclaredMethod(getFuncName);				
-				Object retObj = getMethod.invoke(lmfObject); // Run the Get-Method
-				// System.out.println("TYPE "+type.name() + " "+field.getName()+ " "+retObj);
+			/*
+			 * Determine how to access the variable
+			 */
+			AccessType accessType = field.getAnnotation(AccessType.class);
+			if(accessType == null || accessType.equals(EAccessType.GETTER)){
+				// access using a canonical getter
 				
-				if(retObj != null){
-					if(type.equals(EVarType.ATTRIBUTE)){ // Save Attribute to the new element
-						atts.addAttribute("", "", fieldName, "CDATA", retObj.toString());
-					}else if(type.equals(EVarType.IDREF)){ // Save IDREFs as attribute of the new element
-						atts.addAttribute("", "", fieldName, "CDATA", ((IHasID)retObj).getId());
-					}else if(type.equals(EVarType.CHILD)){ // Transform children of the new element to XML
-						children.add(retObj);
-					}else if(type.equals(EVarType.CHILDREN) && writeEndElement){					
-						for(Object obj : (Iterable)retObj){
-							children.add(obj);
-						}
-					}else if(type.equals(EVarType.ATTRIBUTE_OPTIONAL)){
-						atts.addAttribute("", "", fieldName, "CDATA", retObj.toString());
-					}else  if(type.equals(EVarType.IDREFS)){
-						String attrValue = "";					
-						for(Object obj : (Iterable)retObj){
-							attrValue += ((IHasID)obj).getId() + " ";
-						}
-						if(!attrValue.isEmpty())
-							atts.addAttribute("", "", fieldName, "CDATA", attrValue.substring(0, attrValue.length()-1));
-					}		
-				}else { // Element is null, save only if it is a non-optional Attribute or IDREF
-					if(type.equals(EVarType.ATTRIBUTE) || type.equals(EVarType.IDREF)){ // Save Attribute to the new element
-						//atts.addAttribute("", "", fieldName, "CDATA", "NULL");
+				// Get-Method for the field
+				String getFuncName = "get"+fieldName.substring(0,1).toUpperCase() + fieldName.substring(1);
+				Method getMethod = null;
+				try {
+					getMethod = something.getDeclaredMethod(getFuncName);
+					retObj = getMethod.invoke(lmfObject); // Run the Get-Method
+				} catch (Exception e) {
+					logger.log(Level.WARNING, "There was an error on accessing the method " + getFuncName + " . Falling back to field access");
+					field.setAccessible(true);
+					retObj = field.get(lmfObject);
+				}
+			}
+			else{
+				// Directly read the value of the field
+				field.setAccessible(true);
+				retObj = field.get(lmfObject);
+			}
+			
+			if(retObj != null){
+				if(type.equals(EVarType.ATTRIBUTE)){ // Save Attribute to the new element
+					atts.addAttribute("", "", fieldName, "CDATA", retObj.toString());
+				}else if(type.equals(EVarType.IDREF)){ // Save IDREFs as attribute of the new element
+					atts.addAttribute("", "", fieldName, "CDATA", ((IHasID)retObj).getId());
+				}else if(type.equals(EVarType.CHILD)){ // Transform children of the new element to XML
+					children.add(retObj);
+				}else if(type.equals(EVarType.CHILDREN) && writeEndElement){					
+					for(Object obj : (Iterable<Object>)retObj){
+						children.add(obj);
 					}
-				}				
-				
-			}catch(NoSuchMethodException ex){	
-			}			
+				}else if(type.equals(EVarType.ATTRIBUTE_OPTIONAL)){
+					atts.addAttribute("", "", fieldName, "CDATA", retObj.toString());
+				}else  if(type.equals(EVarType.IDREFS)){
+					String attrValue = "";					
+					for(Object obj : (Iterable<Object>)retObj){
+						attrValue += ((IHasID)obj).getId() + " ";
+					}
+					if(!attrValue.isEmpty())
+						atts.addAttribute("", "", fieldName, "CDATA", attrValue.substring(0, attrValue.length()-1));
+				}		
+			}else { // Element is null, save only if it is a non-optional Attribute or IDREF
+				if(type.equals(EVarType.ATTRIBUTE) || type.equals(EVarType.IDREF)){ // Save Attribute to the new element
+					//atts.addAttribute("", "", fieldName, "CDATA", "NULL");
+				}
+			}						
 		}
 		
 		
