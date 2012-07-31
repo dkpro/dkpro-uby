@@ -42,18 +42,52 @@ public class Lemma {
 	@VarType(type = EVarType.NONE)
 	private String lexicalEntryId;
 	
+	// backlink added for convenience
+	@VarType(type = EVarType.IDREF)
+	private LexicalEntry lexicalEntry;
+	
 
 	/**
 	 * Returns the unique identifier of the {@link LexicalEntry} instance associated with this
 	 * {@link Lemma}.
 	 * @return the unique identifier of the lexical entry associated with this lemma
+	 * 
+	 * @deprecated use {@link #getLexicalEntry()} instead
 	 */
+	@Deprecated
 	public String getLexicalEntryId() {
 		return lexicalEntryId;
+	}
+	
+	/**
+	 * Returns the {@link LexicalEntry} instance associated with this
+	 * {@link Lemma}.
+	 * 
+	 * @return the lexical entry containing this lemma or null if the
+	 * parent is not set
+	 * 
+	 * @since UBY 0.2.0
+	 */
+	public LexicalEntry getLexicalEntry(){
+		return this.lexicalEntry;
+	}
+	
+	/**
+	 * Sets the backlink to the {@link LexicalEntry} instance containing
+	 * this {@link Lemma} instance.
+	 * 
+	 * @param lexicalEntry the lexical entry containing this lemma to set
+	 * 
+	 * @since UBY 0.2.0
+	 */
+	public void setLexicalEntry(LexicalEntry lexicalEntry){
+		this.lexicalEntry = lexicalEntry;
 	}
 
 	/**
 	 * @param lexicalEntryId the lexicalEntryId to set
+	 * 
+	 * @deprecated use {@link #setLexicalEntry(LexicalEntry)} instead
 	 */
 	public void setLexicalEntryId(String lexicalEntryId) {
 		this.lexicalEntryId = lexicalEntryId;
