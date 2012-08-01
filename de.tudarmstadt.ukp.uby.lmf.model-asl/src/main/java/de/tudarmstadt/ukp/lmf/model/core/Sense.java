@@ -103,7 +103,7 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 	private List<SemanticLabel> semanticLabels = new ArrayList<SemanticLabel>();
 
 	// Backlink to LexicalEntry added for convenience
-	@VarType(type = EVarType.NONE)
+	@VarType(type = EVarType.IDREF)
 	private LexicalEntry lexicalEntry;
 	
 	/**

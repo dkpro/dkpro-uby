@@ -38,12 +38,10 @@ public class HasMonolingualExternalRefs implements IHasMonolingualExternalRefs {
 	@VarType(type = EVarType.CHILDREN)
 	protected List<MonolingualExternalRef> monolingualExternalRefs = new ArrayList<MonolingualExternalRef>();
 
-	@Override
 	public List<MonolingualExternalRef> getMonolingualExternalRefs() {
 		return this.monolingualExternalRefs;
 	}
 
-	@Override
 	public void setMonolingualExternalRefs(List<MonolingualExternalRef> monolingualExternalRefs) {
 		if(this.monolingualExternalRefs != null)
 			this.monolingualExternalRefs =  monolingualExternalRefs;

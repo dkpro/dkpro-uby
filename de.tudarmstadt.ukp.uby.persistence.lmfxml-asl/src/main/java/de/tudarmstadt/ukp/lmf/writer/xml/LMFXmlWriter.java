@@ -25,6 +25,7 @@ import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -152,12 +153,25 @@ public class LMFXmlWriter extends LMFWriter{
 	 */
 	@SuppressWarnings("unchecked")
 	private void doTransform(Object lmfObject, boolean writeEndElement) throws IllegalArgumentException, IllegalAccessException, SAXException{	
-		@SuppressWarnings("rawtypes")
-		Class something = lmfObject.getClass();
+		
+		Class<?> something = lmfObject.getClass();
 		String elementName = something.getSimpleName();
 				
 		AttributesImpl atts = new AttributesImpl();
 		List<Object> children = new ArrayList<Object>();
+		
+//		TODO
+//		// find all field, also the inherited ones 
+//		ArrayList<Field> fields = new ArrayList<Field>();
+//		fields.addAll(Arrays.asList(something.getFields())
+//		Class<?> superClass = something.getSuperclass();
+//		while(superClass != null){
+//			for(Field field : superClass.getFields())
+//			fields.addAll(Arrays.asList());
+//		}
+		
+		//
+		
 		// Iterating over all fields
 		for(Field field : something.getDeclaredFields()){
 			String fieldName = field.getName().replace("_", "");
