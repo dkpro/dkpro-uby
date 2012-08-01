@@ -23,6 +23,7 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 /**
  * This class represents a LMF meta class for storing of corpus frequencies of
  * particular classes.
+ * 
  * @author Silvana Hartmann
  *
  */
@@ -43,55 +44,64 @@ public class Frequency implements Comparable<Frequency> {
 	private String parentId;
 	
 	/**
+	 * Sets the name of the corpus which was used for extracting the values
+	 * of this {@link Frequency} instance.
 	 * 
-	 * @param corpus the corpus to set
+	 * @param corpus the name of the corpus to set
 	 */
 	public void setCorpus(String corpus) {
 		this.corpus = corpus;
 	}
 
 	/**
+	 * Returns the name of the corpus which was used for extracting the values
+	 * of this {@link Frequency} instance.
 	 * 
-	 * @return the corpus 
+	 * @return the name of the corpus or null if the name is not set
 	 */
 	public String getCorpus() {
 		return corpus;
 	}
 
 	/**
+	 * Sets the frequency count of this {@link Frequency} instance.
 	 * 
-	 * @param frequency the frequency to set
+	 * @param frequency the frequency count to set
 	 */
 	public void setFrequency(Integer frequency) {
 		this.frequency = frequency;
 	}
 
 	/**
+	 * Returns the frequency count of this {@link Frequency} instance.
 	 * 
-	 * @return the frequency
+	 * @return the frequency count or null if the count is not set
 	 */
 	public Integer getFrequency() {
 		return frequency;
 	}
 
 	/**
+	 * Sets the name of the generator which is used for
+	 * creating this {@link Frequency} instance.
 	 * 
-	 * @param generator the generator to set
+	 * @param generator the name of the generator to set
 	 */
 	public void setGenerator(String generator) {
 		this.generator = generator;
 	}
 
 	/**
-	 * 
-	 * @return the generator
+	 * Returns the name of the generator which is used for creating this
+	 * {@link Frequency} instance.
+	 * @return the name of the generator or null if the name is not set
 	 */
 	public String getGenerator() {
 		return generator;
 	}
 
 	/**
-	 * 
+	 * TODO
 	 * @param parentId the parentId to set
 	 */
 	public void setParentId(String parentId) {
@@ -99,7 +109,7 @@ public class Frequency implements Comparable<Frequency> {
 	}
 
 	/**
-	 * 
+	 * TODO
 	 * @return the parentId
 	 */
 	public String getParentId() {

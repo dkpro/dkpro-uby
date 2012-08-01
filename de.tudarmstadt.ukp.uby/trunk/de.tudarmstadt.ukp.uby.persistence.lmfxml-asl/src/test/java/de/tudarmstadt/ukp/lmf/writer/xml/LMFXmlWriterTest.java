@@ -28,6 +28,10 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -42,7 +46,9 @@ import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
+import de.tudarmstadt.ukp.lmf.model.core.TextRepresentation;
 import de.tudarmstadt.ukp.lmf.model.enums.ECase;
+import de.tudarmstadt.ukp.lmf.model.enums.EContextType;
 import de.tudarmstadt.ukp.lmf.model.enums.EDegree;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalGender;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalNumber;
@@ -58,6 +64,8 @@ import de.tudarmstadt.ukp.lmf.model.morphology.FormRepresentation;
 import de.tudarmstadt.ukp.lmf.model.morphology.Lemma;
 import de.tudarmstadt.ukp.lmf.model.morphology.RelatedForm;
 import de.tudarmstadt.ukp.lmf.model.morphology.WordForm;
+import de.tudarmstadt.ukp.lmf.model.mrd.Context;
+import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticArgument;
 import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 import de.tudarmstadt.ukp.lmf.writer.LMFWriterException;
@@ -124,6 +132,18 @@ public class LMFXmlWriterTest {
 	private static final Synset sense_synset = new Synset("sense_synset");
 	private static final SemanticArgument sense_incorporatedSemArg = new SemanticArgument("sense_incorporatedSemArg_id");
 	private static final boolean sense_transparentMeaning = true;
+	private static final String sense_sense_id = "sense_sense_id"; // the id of the nested sense
+	
+	private static final EContextType context_contextType = EContextType.corpusEvidence;
+	private static final String context_source = "context_source";
+	
+	private static final ELanguageIdentifier textRepresentation_languageIdentifier = ELanguageIdentifier.sr;
+	private static final String textRepresentation_orthographyName = "textRepresentation_orthographyName";
+	private static final String textRepresentation_geographicalVariant = "textRepresentation_geographicalVariant";
+	private static final String textRepresentation_writtenText = "textRepresentation_writtenText";
+	
+	private static final String monolingualExternalRef_externalSystem = "monolingualExternalRef_externalSystem";
+	private static final String monolingualExternalRef_externalReference = "monolingualExternalRef_externalReference"; 
 
 	/**
 	 * Creates a UBY-LMF structure by initializing every child and every field
@@ -230,9 +250,44 @@ public class LMFXmlWriterTest {
 		sense.setSynset(sense_synset);
 		sense.setIncorporatedSemArg(sense_incorporatedSemArg);
 		sense.setTransparentMeaning(sense_transparentMeaning);
+		sense.setLexicalEntry(lexicalEntry);
 		List<Sense> senses = new ArrayList<Sense>(1);
 		senses.add(sense);
 		lexicalEntry.setSenses(senses);
+		
+		Sense nestedSense = new Sense(sense_sense_id);
+		nestedSense.setIndex(sense_index);
+		nestedSense.setSynset(sense_synset);
+		nestedSense.setIncorporatedSemArg(sense_incorporatedSemArg);
+		nestedSense.setTransparentMeaning(sense_transparentMeaning);
+		nestedSense.setLexicalEntry(lexicalEntry);
+		List<Sense> nestedSenses = new ArrayList<Sense>(1);
+		nestedSenses.add(nestedSense);
+		sense.setSenses(nestedSenses);
+		
+		Context context = new Context();
+		context.setContextType(context_contextType);
+		context.setSource(context_source);
+		List<Context> contexts = new ArrayList<Context>(1);
+		contexts.add(context);
+		sense.setContexts(contexts);
+		nestedSense.setContexts(contexts);
+		
+		TextRepresentation textRepresentation = new TextRepresentation();
+		textRepresentation.setLanguageIdentifier(textRepresentation_languageIdentifier);
+		textRepresentation.setOrthographyName(textRepresentation_orthographyName);
+		textRepresentation.setGeographicalVariant(textRepresentation_geographicalVariant);
+		textRepresentation.setWrittenText(textRepresentation_writtenText);
+		List<TextRepresentation> textRepresentations = new ArrayList<TextRepresentation>(1);
+		textRepresentations.add(textRepresentation);
+		context.setTextRepresentations(textRepresentations);
+		
+		MonolingualExternalRef monolingualExternalRef = new MonolingualExternalRef();
+		monolingualExternalRef.setExternalReference(monolingualExternalRef_externalReference);
+		monolingualExternalRef.setExternalSystem(monolingualExternalRef_externalSystem);
+		List<MonolingualExternalRef> monolingualExternalRefs = new ArrayList<MonolingualExternalRef>();
+		monolingualExternalRefs.add(monolingualExternalRef);
+		context.setMonolingualExternalRefs(monolingualExternalRefs);
 		
 		
 		
@@ -281,11 +336,11 @@ public class LMFXmlWriterTest {
 		assertEquals(lexicalResource_name, lexicalResource.getAttribute("name"));
 		
 		NodeList nlGlobalInformation = lexicalResource.getElementsByTagName("GlobalInformation");
-		assertEquals("lexical resource should only have one GlobalInformation instance", 1, nlGlobalInformation.getLength());
+		assertEquals("lexical resource should have one GlobalInformation instance", 1, nlGlobalInformation.getLength());
 		checkGlobalInformation((Element)nlGlobalInformation.item(0));
 		
 		NodeList nlLexicon = lexicalResource.getElementsByTagName("Lexicon");
-		assertEquals("LexicalResource should only have one Lexicon instance", 1, nlLexicon.getLength());
+		assertEquals("LexicalResource should have one Lexicon instance", 1, nlLexicon.getLength());
 		checkLexicon((Element) nlLexicon.item(0));
 	}
 
@@ -302,7 +357,7 @@ public class LMFXmlWriterTest {
 		// TODO check the parent of the lexicon
 		
 		NodeList nlLexicalEntry = lexicon.getElementsByTagName("LexicalEntry");
-		assertEquals("LexicalResource should only have one LexicalEntry instance", 1, nlLexicalEntry.getLength());
+		assertEquals("LexicalResource should have one LexicalEntry instance", 1, nlLexicalEntry.getLength());
 		checkLexicalEntry((Element) nlLexicalEntry.item(0));
 		
 		// TODO the rest
@@ -321,20 +376,29 @@ public class LMFXmlWriterTest {
 		assertEquals(lexicon_id, lexicalEntry.getAttribute("lexicon"));
 		
 		NodeList nlLemma = lexicalEntry.getElementsByTagName("Lemma");
-		assertEquals("LexicalEntry should only have one Lemma instance", 1, nlLemma.getLength());
+		assertEquals("LexicalEntry should have one Lemma instance", 1, nlLemma.getLength());
 		checkLemma((Element) nlLemma.item(0));
 		
 		NodeList nlWordForm = lexicalEntry.getElementsByTagName("WordForm");
-		assertEquals("LexicalEntry should only have one WordForm instance", 1, nlWordForm.getLength());
+		assertEquals("LexicalEntry should have one WordForm instance", 1, nlWordForm.getLength());
 		checkWordForm((Element) nlWordForm.item(0));
 		
 		NodeList nlRelatedForm = lexicalEntry.getElementsByTagName("RelatedForm");
-		assertEquals("LexicalEntry should only have one RelatedForm instance", 1, nlRelatedForm.getLength());
+		assertEquals("LexicalEntry should have one RelatedForm instance", 1, nlRelatedForm.getLength());
 		checkRelatedForm((Element) nlRelatedForm.item(0));
 		
-		NodeList nlSense = lexicalEntry.getElementsByTagName("Sense");
-		assertEquals("LexicalEntry should only have one RelatedForm instance", 1, nlSense.getLength());
-		checkSense((Element) nlSense.item(0));
+		XPathFactory xpathFactory = XPathFactory.newInstance();
+		XPath xpath = xpathFactory.newXPath();
+		NodeList nlSense = null;
+		try {
+			nlSense = (NodeList) xpath.evaluate("Sense", lexicalEntry,
+			    XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			fail(e.toString());
+		}
+		
+		assertEquals("LexicalEntry should have one RelatedForm instance", 1, nlSense.getLength());
+		checkSense((Element) nlSense.item(0), true);
 		
 		// TODO the rest
 	}
@@ -344,18 +408,126 @@ public class LMFXmlWriterTest {
 	 * consumed sense {@link Element}.
 	 * 
 	 * @param sense the node of the sense
+	 * @param hasNestedSense set to true if the method should recursively check the
+	 * correctness of the nested sense, which can be retrived by invoking
+	 * {@link Sense#getSenses()}
 	 */
-	private void checkSense(Element sense) {
-		assertEquals(sense_id, sense.getAttribute("id"));
+	private void checkSense(Element sense, boolean hasNestedSense) {
+		
+		if(hasNestedSense)
+			assertEquals(sense_id, sense.getAttribute("id"));
+		else
+			assertEquals(sense_sense_id, sense.getAttribute("id"));
+		
 		assertEquals(Integer.toString(sense_index), sense.getAttribute("index"));
 		assertEquals(sense_synset.getId(), sense.getAttribute("synset"));
 		assertEquals(sense_incorporatedSemArg.getId(), sense.getAttribute("incorporatedSemArg"));
-		// FIXME
+		
 		if(sense_transparentMeaning)
 			assertEquals(EYesNo.yes.toString(), sense.getAttribute("transparentMeaning"));
 		else
 			assertEquals(EYesNo.no.toString(), sense.getAttribute("transparentMeaning"));
+		
+		assertEquals(lexicalEntry_id, sense.getAttribute("lexicalEntry"));
+		
+		if(hasNestedSense){
+			NodeList nlNestedSense = sense.getElementsByTagName("Sense");
+			assertEquals("Sense should have one nested Sense instance", 1, nlNestedSense.getLength());
+			checkSense((Element) nlNestedSense.item(0), false);
+		}
+		
+		XPathFactory xpathFactory = XPathFactory.newInstance();
+		XPath xpath = xpathFactory.newXPath();
+		NodeList nlContext = null;
+		try {
+			nlContext = (NodeList) xpath.evaluate("Context", sense,
+			    XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			fail(e.toString());
+		}
+		assertEquals("Sense should have one Context instance", 1, nlContext.getLength());
+		checkContext((Element) nlContext.item(0));
+		
 		// TODO rest
+	}
+
+	/**
+	 * Test the values of attributes and children of a {@link Context} in the
+	 * consumed context {@link Element}.
+	 * 
+	 * @param context the node of the context
+	 */
+	private void checkContext(Element context) {
+		assertEquals(context_contextType.toString(), context.getAttribute("contextType"));
+		assertEquals(context_source, context.getAttribute("source"));
+		
+		checkHasSingleTextRepresentation(context, "Context");
+		
+//		FIXME
+//		checkHasSingleMonolingualExternalRef(context, "Context");
+		// TODO the rest
+		
+	}
+	
+	/**
+	 * Test if the consumed {@link Element}, representing a UBY-LMF class,
+	 * has one Element which represents a {@link MonolingualExternalRef} instance,
+	 * attached. Subsequently, the method checks the content of the monolingual external
+	 * reference.
+	 * 
+	 * @param  lmfClassIntance the element representing an UBY-lMF class instance which
+	 * should have exactly one MonolingualExternalRef element attached
+	 * @param className string used for generating a message on failure, represents
+	 * the name of the UBY-LMF class instance which is being tested 
+	 */
+	private void checkHasSingleMonolingualExternalRef(Element lmfClassInstance, String className) {
+		
+		NodeList nlMonolingualExternalRef = lmfClassInstance.getElementsByTagName("MonolingualExternalRef");
+		assertEquals(className + " should have one MonolingualExternalRef", 1, nlMonolingualExternalRef.getLength());
+		checkMonolingualExternalRef((Element) nlMonolingualExternalRef.item(0));
+	}
+
+	/**
+	 * Test the values of attributes and children of a {@link MonolingualExternalRef} in the
+	 * consumed monolingual external reference {@link Element}.
+	 * 
+	 * @param monolingualExternalRef the node of the monolingual external reference
+	 */
+	private void checkMonolingualExternalRef(Element monolingualExternalRef) {
+		assertEquals(monolingualExternalRef_externalSystem, monolingualExternalRef.getAttribute("externalSystem"));
+		assertEquals(monolingualExternalRef_externalReference, monolingualExternalRef.getAttribute("externalReference"));
+	}
+
+	/**
+	 * Test if the consumed {@link Element}, representing a UBY-LMF class,
+	 * has one Element which represents a {@link TextRepresentation} instance,
+	 * attached. Subsequently, the method checks the content of the text representation.
+	 * 
+	 * @param  lmfClassIntance the element representing an UBY-lMF class instance which
+	 * should have exactly one TextRepresentation element attached
+	 * @param className string used for generating a message on failure, represents
+	 * the name of the UBY-LMF class instance which is being tested 
+	 */
+	private void checkHasSingleTextRepresentation(Element lmfClassInstance, String className){
+		
+		NodeList nlTextRepresentation = lmfClassInstance.getElementsByTagName("TextRepresentation");
+		assertEquals(className + "should have one TextRepresentation", 1, nlTextRepresentation.getLength());
+		checkTextRepresentation((Element) nlTextRepresentation.item(0));
+	}
+
+	/**
+	 * Test the values of attributes and children of a {@link TextRepresentation} in the
+	 * consumed text representation {@link Element}.
+	 * 
+	 * @param textRepresentation the node of the text representation
+	 */
+	private void checkTextRepresentation(Element textRepresentation) {
+		
+		assertEquals(textRepresentation_orthographyName, textRepresentation.getAttribute("orthographyName"));
+		assertEquals(textRepresentation_geographicalVariant, textRepresentation.getAttribute("geographicalVariant"));
+		assertEquals(textRepresentation_languageIdentifier.toString(), textRepresentation.getAttribute("languageIdentifier"));
+		assertEquals(textRepresentation_writtenText, textRepresentation.getAttribute("writtenText"));
+		
 	}
 
 	/**
@@ -389,11 +561,11 @@ public class LMFXmlWriterTest {
 		assertEquals(wordForm_degree.toString(), wordForm.getAttribute("degree"));
 		
 		NodeList nFormRepresentation = wordForm.getElementsByTagName("FormRepresentation");
-		assertEquals("WordForm should only have one FormRepresentation", 1, nFormRepresentation.getLength());
+		assertEquals("WordForm should have one FormRepresentation", 1, nFormRepresentation.getLength());
 		checkFormRepresentation((Element) nFormRepresentation.item(0));
 		
 		NodeList nFrequency = wordForm.getElementsByTagName("Frequency");
-		assertEquals("WordForm should only have one Frequency", 1, nFrequency.getLength());
+		assertEquals("WordForm should have one Frequency", 1, nFrequency.getLength());
 		checkFrequency((Element) nFrequency.item(0));
 		
 	}
@@ -420,7 +592,7 @@ public class LMFXmlWriterTest {
 		assertEquals(lexicalEntry_id, lemma.getAttribute("lexicalEntry"));
 		
 		NodeList nFormRepresentation = lemma.getElementsByTagName("FormRepresentation");
-		assertEquals("Lemma should only have one FormRepresentation", 1, nFormRepresentation.getLength());
+		assertEquals("Lemma should have one FormRepresentation", 1, nFormRepresentation.getLength());
 		checkFormRepresentation((Element) nFormRepresentation.item(0));
 	}
 	
@@ -437,7 +609,7 @@ public class LMFXmlWriterTest {
 	private void checkHasSingleFormRepresentation(Element lmfClassInstance, String className){
 		
 		NodeList nFormRepresentation = lmfClassInstance.getElementsByTagName("FormRepresentation");
-		assertEquals(className + "should only have one FormRepresentation", 1, nFormRepresentation.getLength());
+		assertEquals(className + "should have one FormRepresentation", 1, nFormRepresentation.getLength());
 		checkFormRepresentation((Element) nFormRepresentation.item(0));
 	}
 
