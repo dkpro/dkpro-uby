@@ -41,21 +41,27 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import de.tudarmstadt.ukp.lmf.model.core.Definition;
 import de.tudarmstadt.ukp.lmf.model.core.GlobalInformation;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
+import de.tudarmstadt.ukp.lmf.model.core.Statement;
 import de.tudarmstadt.ukp.lmf.model.core.TextRepresentation;
 import de.tudarmstadt.ukp.lmf.model.enums.ECase;
 import de.tudarmstadt.ukp.lmf.model.enums.EContextType;
+import de.tudarmstadt.ukp.lmf.model.enums.EDefinitionType;
 import de.tudarmstadt.ukp.lmf.model.enums.EDegree;
+import de.tudarmstadt.ukp.lmf.model.enums.EExampleType;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalGender;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalNumber;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
 import de.tudarmstadt.ukp.lmf.model.enums.EPerson;
 import de.tudarmstadt.ukp.lmf.model.enums.ERelTypeMorphology;
+import de.tudarmstadt.ukp.lmf.model.enums.ERelTypeSemantics;
+import de.tudarmstadt.ukp.lmf.model.enums.EStatementType;
 import de.tudarmstadt.ukp.lmf.model.enums.ETense;
 import de.tudarmstadt.ukp.lmf.model.enums.EVerbFormMood;
 import de.tudarmstadt.ukp.lmf.model.enums.EYesNo;
@@ -66,7 +72,11 @@ import de.tudarmstadt.ukp.lmf.model.morphology.RelatedForm;
 import de.tudarmstadt.ukp.lmf.model.morphology.WordForm;
 import de.tudarmstadt.ukp.lmf.model.mrd.Context;
 import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
+import de.tudarmstadt.ukp.lmf.model.semantics.PredicativeRepresentation;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticArgument;
+import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
+import de.tudarmstadt.ukp.lmf.model.semantics.SenseExample;
+import de.tudarmstadt.ukp.lmf.model.semantics.SenseRelation;
 import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 import de.tudarmstadt.ukp.lmf.writer.LMFWriterException;
 
@@ -143,7 +153,18 @@ public class LMFXmlWriterTest {
 	private static final String textRepresentation_writtenText = "textRepresentation_writtenText";
 	
 	private static final String monolingualExternalRef_externalSystem = "monolingualExternalRef_externalSystem";
-	private static final String monolingualExternalRef_externalReference = "monolingualExternalRef_externalReference"; 
+	private static final String monolingualExternalRef_externalReference = "monolingualExternalRef_externalReference";
+	
+	private static final String semanticPredicate_id = "semanticPredicate_id";
+	
+	private static final String senseExample_id = "senseExample_id";
+	private static final EExampleType senseExample_exampleType = EExampleType.senseInstance;
+	
+	private static final EDefinitionType definition_definitionType = EDefinitionType.intensionalDefinition;
+	private static final EStatementType statement_statementType = EStatementType.encyclopedicInformation;
+	
+	private static final String senseRelation_relationName = "senseRelation_relationName";
+	private static final ERelTypeSemantics senseRelation_relationType = ERelTypeSemantics.label;
 
 	/**
 	 * Creates a UBY-LMF structure by initializing every child and every field
@@ -289,6 +310,50 @@ public class LMFXmlWriterTest {
 		monolingualExternalRefs.add(monolingualExternalRef);
 		context.setMonolingualExternalRefs(monolingualExternalRefs);
 		
+		PredicativeRepresentation predicativeRepresentation = new PredicativeRepresentation();
+		SemanticPredicate semanticPredicate = new SemanticPredicate();
+		semanticPredicate.setId(semanticPredicate_id);
+		predicativeRepresentation.setPredicate(semanticPredicate);
+		List<PredicativeRepresentation> predicativeRepresentations = new ArrayList<PredicativeRepresentation>(1);
+		predicativeRepresentations.add(predicativeRepresentation);
+		sense.setPredicativeRepresentations(predicativeRepresentations);
+		nestedSense.setPredicativeRepresentations(predicativeRepresentations);
+		
+		SenseExample senseExample = new SenseExample();
+		senseExample.setId(senseExample_id);
+		senseExample.setExampleType(senseExample_exampleType);
+		senseExample.setTextRepresentations(textRepresentations);
+		List<SenseExample> senseExamples = new ArrayList<SenseExample>(1);
+		senseExamples.add(senseExample);
+		sense.setSenseExamples(senseExamples);
+		nestedSense.setSenseExamples(senseExamples);
+		
+		Definition definition = new Definition();
+		definition.setDefinitionType(definition_definitionType);
+		
+		Statement statement = new Statement();
+		statement.setStatementType(statement_statementType);
+		statement.setTextRepresentations(textRepresentations);
+		List<Statement> statements = new ArrayList<Statement>(1);
+		statements.add(statement);
+		definition.setStatements(statements);
+		definition.setTextRepresentations(textRepresentations);
+		List<Definition> definitions = new ArrayList<Definition>(1);
+		definitions.add(definition);
+		sense.setDefinitions(definitions);
+		nestedSense.setDefinitions(definitions);
+		
+		SenseRelation senseRelation = new SenseRelation();
+		senseRelation.setSource(sense);
+		senseRelation.setTarget(sense);
+		senseRelation.setRelName(senseRelation_relationName);
+		senseRelation.setRelType(senseRelation_relationType);
+		senseRelation.setFormRepresentation(formRepresentation);
+		senseRelation.setFrequencies(frequencies);
+		List<SenseRelation> senseRelations = new ArrayList<SenseRelation>(1);
+		senseRelations.add(senseRelation);
+		sense.setSenseRelations(senseRelations);
+		nestedSense.setSenseRelations(senseRelations);
 		
 		
 		lmfXmlWriter = new LMFXmlWriter(outputPath, dtd.getAbsolutePath());
@@ -448,7 +513,90 @@ public class LMFXmlWriterTest {
 		assertEquals("Sense should have one Context instance", 1, nlContext.getLength());
 		checkContext((Element) nlContext.item(0));
 		
-		// TODO rest
+		Element predicativeRepresentation = checkHasSingleChild(sense, PredicativeRepresentation.class);
+		assertEquals(semanticPredicate_id, predicativeRepresentation.getAttribute("predicate"));
+		
+		Element senseExample = checkHasSingleChild(sense, SenseExample.class);
+		assertEquals(senseExample_id, senseExample.getAttribute("id"));
+		assertEquals(senseExample_exampleType.toString(), senseExample.getAttribute("exampleType"));
+		checkHasSingleTextRepresentation(senseExample, SenseExample.class.toString());
+		
+		checkHasSingleDefinition(sense, Sense.class.toString());
+		
+		Element senseRelation = checkHasSingleChild(sense, SenseRelation.class);
+		assertEquals(sense_id, senseRelation.getAttribute("source"));
+		assertEquals(sense_id, senseRelation.getAttribute("target"));
+		assertEquals(senseRelation_relationName, senseRelation.getAttribute("relName"));
+		assertEquals(senseRelation_relationType.toString(), senseRelation.getAttribute("relType"));
+		checkHasSingleFormRepresentation(senseRelation, SenseRelation.class.toString());
+		checkHasSingleFrequency(senseRelation, SenseRelation.class.toString());
+		
+		// TODO the rest
+		
+	}
+	
+	/**
+	 * Test if the consumed {@link Element}, representing a UBY-LMF class,
+	 * has one Element which represents a {@link Frequency} instance,
+	 * attached. Subsequently, the method checks the content of the frequency instance.
+	 * 
+	 * @param  lmfClassInstance the element representing an UBY-lMF class instance which
+	 * should have exactly one Frequency element attached
+	 * @param className string used for generating a message on failure, represents
+	 * the name of the UBY-LMF class instance which is being tested 
+	 */
+	private void checkHasSingleFrequency(Element lmfClassInstance, String className) {
+		Element frequency = checkHasSingleChild(lmfClassInstance, Frequency.class);
+		checkFrequency(frequency);
+	}
+
+	/**
+	 * Test if the consumed {@link Element}, representing a UBY-LMF class,
+	 * has one Element which represents a {@link Definition} instance,
+	 * attached. Subsequently, the method checks the content of the definition instance.
+	 * 
+	 * @param  lmfClassInstance the element representing an UBY-lMF class instance which
+	 * should have exactly one Definition element attached
+	 * @param className string used for generating a message on failure, represents
+	 * the name of the UBY-LMF class instance which is being tested 
+	 */
+	private void checkHasSingleDefinition(Element lmfClassInstance, String className) {
+		Element definition = checkHasSingleChild(lmfClassInstance, Definition.class);
+		assertEquals(definition_definitionType.toString(), definition.getAttribute("definitionType"));
+		
+		Element statement = checkHasSingleChild(definition, Statement.class);
+		assertEquals(statement_statementType.toString(), statement.getAttribute("statementType"));
+		checkHasSingleTextRepresentation(statement, Statement.class.toString());
+		
+		checkHasSingleTextRepresentation(definition, Definition.class.toString());
+	}
+
+	/**
+	 * Consumes a parent {@link Element} and the {@link Class} of the child.
+	 * Checks if the parent element contains exactly one child element of the
+	 * of the consumed class.
+	 * 
+	 * @param parent the parent which should contain one child
+	 * @param child the class describing the child
+	 * @return child element or null if the parent does not contain the specified child
+	 * 
+	 */
+	private Element checkHasSingleChild(Element parent, Class<?> child){
+		String parentName = parent.getNodeName();
+		String childName = child.getSimpleName();
+		NodeList nodeList = null;
+		
+		XPathFactory xpathFactory = XPathFactory.newInstance();
+		XPath xpath = xpathFactory.newXPath();
+		try {
+			nodeList = (NodeList) xpath.evaluate(childName, parent,
+			    XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			fail(e.toString());
+		}
+		
+		assertEquals(parentName + " should have one " + childName, 1, nodeList.getLength());
+		return (Element) nodeList.item(0);
 	}
 
 	/**
@@ -463,10 +611,7 @@ public class LMFXmlWriterTest {
 		
 		checkHasSingleTextRepresentation(context, "Context");
 		
-//		FIXME
-//		checkHasSingleMonolingualExternalRef(context, "Context");
-		// TODO the rest
-		
+		checkHasSingleMonolingualExternalRef(context, "Context");
 	}
 	
 	/**
@@ -510,9 +655,9 @@ public class LMFXmlWriterTest {
 	 */
 	private void checkHasSingleTextRepresentation(Element lmfClassInstance, String className){
 		
-		NodeList nlTextRepresentation = lmfClassInstance.getElementsByTagName("TextRepresentation");
-		assertEquals(className + "should have one TextRepresentation", 1, nlTextRepresentation.getLength());
-		checkTextRepresentation((Element) nlTextRepresentation.item(0));
+		Element textRepresentation = checkHasSingleChild(lmfClassInstance, TextRepresentation.class);
+		checkTextRepresentation(textRepresentation);
+		
 	}
 
 	/**

@@ -160,20 +160,17 @@ public class LMFXmlWriter extends LMFWriter{
 		AttributesImpl atts = new AttributesImpl();
 		List<Object> children = new ArrayList<Object>();
 		
-//		TODO
-//		// find all field, also the inherited ones 
-//		ArrayList<Field> fields = new ArrayList<Field>();
-//		fields.addAll(Arrays.asList(something.getFields())
-//		Class<?> superClass = something.getSuperclass();
-//		while(superClass != null){
-//			for(Field field : superClass.getFields())
-//			fields.addAll(Arrays.asList());
-//		}
-		
-		//
+		// find all field, also the inherited ones 
+		ArrayList<Field> fields = new ArrayList<Field>();
+		fields.addAll(Arrays.asList(something.getDeclaredFields()));
+		Class<?> superClass = something.getSuperclass();
+		while(superClass != null){
+			fields.addAll(Arrays.asList(superClass.getDeclaredFields()));
+			superClass = superClass.getSuperclass();
+		}
 		
 		// Iterating over all fields
-		for(Field field : something.getDeclaredFields()){
+		for(Field field : fields){
 			String fieldName = field.getName().replace("_", "");
 			VarType varType = field.getAnnotation(VarType.class);
 			// No VarType-Annotation found for the field, then don't save to XML 

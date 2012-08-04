@@ -33,7 +33,7 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 public class SemanticRelation<Target> extends HasFrequencies implements ISemanticRelation<Target> {
 	
 	// Backlink to source added for convenience
-	@VarType(type = EVarType.NONE)
+	@VarType(type = EVarType.IDREF)
 	protected Target source;
 	
 	// Targets of this Relation

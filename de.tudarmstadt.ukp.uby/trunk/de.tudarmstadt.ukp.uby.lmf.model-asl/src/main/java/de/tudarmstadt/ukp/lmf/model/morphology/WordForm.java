@@ -74,11 +74,6 @@ public class WordForm extends HasFrequencies{
 	// FormRepresentation of this WordForm
 	@VarType(type = EVarType.CHILDREN)
 	private List<FormRepresentation> formRepresentations = new ArrayList<FormRepresentation>();
-	
-	// Frequency information for this WordForm
-	@VarType(type = EVarType.CHILDREN)
-	private List<Frequency> frequencies = new ArrayList<Frequency>();
-	
 
 	/**
 	 * Returns the grammatical number of this {@link WordForm} instance. 
@@ -245,7 +240,7 @@ public class WordForm extends HasFrequencies{
 	 * @param frequencies the list of frequencies to set
 	 */
 	public void setFrequencies(List<Frequency> frequencies) {
-		this.frequencies = frequencies;
+		super.setFrequencies(frequencies);
 	}
 
 	/**
@@ -257,7 +252,7 @@ public class WordForm extends HasFrequencies{
 	 * frequencies set
 	 */
 	public List<Frequency> getFrequencies() {
-		return frequencies;
+		return super.getFrequencies();
 	}
 
 	/**
