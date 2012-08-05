@@ -196,10 +196,10 @@ public class LMFXmlWriter extends LMFWriter{
 				String getFuncName = "get"+fieldName.substring(0,1).toUpperCase() + fieldName.substring(1);
 				Method getMethod = null;
 				try {
-					getMethod = something.getDeclaredMethod(getFuncName);
+					getMethod = something.getMethod(getFuncName);
 					retObj = getMethod.invoke(lmfObject); // Run the Get-Method
 				} catch (Exception e) {
-					logger.log(Level.WARNING, "There was an error on accessing the method " + getFuncName + " . Falling back to field access");
+					logger.log(Level.WARNING, "There was an error on accessing the method " + getFuncName + " in "+ elementName +" class. Falling back to field access");
 					field.setAccessible(true);
 					retObj = field.get(lmfObject);
 				}

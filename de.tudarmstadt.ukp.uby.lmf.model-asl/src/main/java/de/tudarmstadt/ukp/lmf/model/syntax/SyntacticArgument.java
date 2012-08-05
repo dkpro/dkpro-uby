@@ -30,6 +30,8 @@ import de.tudarmstadt.ukp.lmf.model.enums.ETense;
 import de.tudarmstadt.ukp.lmf.model.enums.EVerbForm;
 import de.tudarmstadt.ukp.lmf.model.enums.EYesNo;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
+import de.tudarmstadt.ukp.lmf.model.miscellaneous.AccessType;
+import de.tudarmstadt.ukp.lmf.model.miscellaneous.EAccessType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 import de.tudarmstadt.ukp.lmf.model.semantics.SynSemArgMap;
@@ -49,6 +51,7 @@ public class SyntacticArgument extends HasFrequencies implements IHasID, Compara
 
 	// Optional property of this SyntacticArgument
 	@VarType(type = EVarType.ATTRIBUTE)
+	@AccessType(type = EAccessType.FIELD)
 	private EYesNo optional;
 
 	// Grammatical Function property of this SyntacticArgument
