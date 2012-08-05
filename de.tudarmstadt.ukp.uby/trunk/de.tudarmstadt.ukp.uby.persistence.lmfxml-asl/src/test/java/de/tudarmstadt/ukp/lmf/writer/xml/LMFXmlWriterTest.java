@@ -49,11 +49,15 @@ import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.core.Statement;
 import de.tudarmstadt.ukp.lmf.model.core.TextRepresentation;
+import de.tudarmstadt.ukp.lmf.model.enums.EAuxiliary;
 import de.tudarmstadt.ukp.lmf.model.enums.ECase;
+import de.tudarmstadt.ukp.lmf.model.enums.EComplementizer;
 import de.tudarmstadt.ukp.lmf.model.enums.EContextType;
 import de.tudarmstadt.ukp.lmf.model.enums.EDefinitionType;
 import de.tudarmstadt.ukp.lmf.model.enums.EDegree;
+import de.tudarmstadt.ukp.lmf.model.enums.EDeterminer;
 import de.tudarmstadt.ukp.lmf.model.enums.EExampleType;
+import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalFunction;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalGender;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalNumber;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
@@ -62,12 +66,18 @@ import de.tudarmstadt.ukp.lmf.model.enums.EPerson;
 import de.tudarmstadt.ukp.lmf.model.enums.ERelTypeMorphology;
 import de.tudarmstadt.ukp.lmf.model.enums.ERelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.EStatementType;
+import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticCategory;
+import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticProperty;
 import de.tudarmstadt.ukp.lmf.model.enums.ETense;
+import de.tudarmstadt.ukp.lmf.model.enums.EVerbForm;
 import de.tudarmstadt.ukp.lmf.model.enums.EVerbFormMood;
 import de.tudarmstadt.ukp.lmf.model.enums.EYesNo;
 import de.tudarmstadt.ukp.lmf.model.meta.Frequency;
+import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
+import de.tudarmstadt.ukp.lmf.model.morphology.Component;
 import de.tudarmstadt.ukp.lmf.model.morphology.FormRepresentation;
 import de.tudarmstadt.ukp.lmf.model.morphology.Lemma;
+import de.tudarmstadt.ukp.lmf.model.morphology.ListOfComponents;
 import de.tudarmstadt.ukp.lmf.model.morphology.RelatedForm;
 import de.tudarmstadt.ukp.lmf.model.morphology.WordForm;
 import de.tudarmstadt.ukp.lmf.model.mrd.Context;
@@ -78,6 +88,11 @@ import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
 import de.tudarmstadt.ukp.lmf.model.semantics.SenseExample;
 import de.tudarmstadt.ukp.lmf.model.semantics.SenseRelation;
 import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
+import de.tudarmstadt.ukp.lmf.model.syntax.LexemeProperty;
+import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrame;
+import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrameSet;
+import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticArgument;
+import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticBehaviour;
 import de.tudarmstadt.ukp.lmf.writer.LMFWriterException;
 
 /**
@@ -165,6 +180,38 @@ public class LMFXmlWriterTest {
 	
 	private static final String senseRelation_relationName = "senseRelation_relationName";
 	private static final ERelTypeSemantics senseRelation_relationType = ERelTypeSemantics.label;
+	
+	private static final String semanticLabel_label = "semanticLabel_label";
+	private static final String semanticLabel_type = "semanticLabel_type";
+	private static final String semanticLabel_quantification = "semanticLabel_quantification";
+	
+	private static final String syntacticBehaviour_id = "syntactibBehaviour_id";
+	
+	private static final String subcategorizationFrame_id = "subcategorizationFrame_id";
+	private static final String subcategorizationFrame_subcatLabel = "subcategorizationFrame_subcatLabel";
+	
+	private static final String subcategorizationFrameSet_id = "subcategorizationFrameSet_id";
+	
+	private static final boolean component_isHead = true;
+	private static final int component_position = 1;
+	private static final boolean component_isBreakBefore = false;
+	
+	private static final EAuxiliary lexemeProperty_auxiliary = EAuxiliary.sein;
+	private static final ESyntacticProperty lexemePropert_syntacticProperty = ESyntacticProperty.objectRaising;
+	
+	private static final String syntacticArgument_id = "syntacticArgument_id";
+	private static final boolean syntacticArgument_optional = true;
+	private static final EGrammaticalFunction syntacticArgument_grammaticalFunction = EGrammaticalFunction.directObject;
+	private static final ESyntacticCategory syntacticArgument_syntacticCategory = ESyntacticCategory.adverbPhrase_prepositionalPhrase;
+	private static final ECase syntacticArgument_case = ECase.genitive;
+	private static final EDeterminer syntacticArgument_determiner = EDeterminer.possessive;
+	private static final String syntacticArgument_preposition = "syntacticArgument_preposition";
+	private static final String syntacticArgument_prepositionType = "syntacticArgument_prepositionType";
+	private static final EGrammaticalNumber syntacticArgument_number = EGrammaticalNumber.singular;
+	private static final String syntacticArgument_lexeme = "syntacticArgument_lexeme";
+	private static final EVerbForm syntacticArgument_verbForm = EVerbForm.ingForm;
+	private static final ETense syntacticArgument_tense = ETense.present;
+	private static final EComplementizer syntacticArgument_complementizer = EComplementizer.whType;
 
 	/**
 	 * Creates a UBY-LMF structure by initializing every child and every field
@@ -355,6 +402,83 @@ public class LMFXmlWriterTest {
 		sense.setSenseRelations(senseRelations);
 		nestedSense.setSenseRelations(senseRelations);
 		
+		sense.setMonolingualExternalRefs(monolingualExternalRefs);
+		nestedSense.setMonolingualExternalRefs(monolingualExternalRefs);
+		
+		sense.setFrequencies(frequencies);
+		nestedSense.setFrequencies(frequencies);
+		
+		SemanticLabel semanticLabel = new SemanticLabel();
+		semanticLabel.setLabel(semanticLabel_label);
+		semanticLabel.setQuantification(semanticLabel_quantification);
+		semanticLabel.setType(semanticLabel_type);
+		semanticLabel.setMonolingualExternalRefs(monolingualExternalRefs);
+		List<SemanticLabel> semanticLabels = new ArrayList<SemanticLabel>();
+		semanticLabels.add(semanticLabel);
+		sense.setSemanticLabels(semanticLabels);
+		nestedSense.setSemanticLabels(semanticLabels);
+		
+		SyntacticBehaviour syntacticBehaviour = new SyntacticBehaviour();
+		syntacticBehaviour.setId(syntacticBehaviour_id);
+		List<SyntacticBehaviour> syntacticBehaviours = new ArrayList<SyntacticBehaviour>(1);
+		syntacticBehaviours.add(syntacticBehaviour);
+		lexicalEntry.setSyntacticBehaviours(syntacticBehaviours);
+		syntacticBehaviour.setSense(sense);
+		
+		SubcategorizationFrame subcategorizationFrame = new SubcategorizationFrame();
+		subcategorizationFrame.setId(subcategorizationFrame_id);
+		syntacticBehaviour.setSubcategorizationFrame(subcategorizationFrame);
+		
+		SubcategorizationFrameSet subcategorizationFrameSet = new SubcategorizationFrameSet();
+		subcategorizationFrameSet.setId(subcategorizationFrameSet_id);
+		syntacticBehaviour.setSubcategorizationFrameSet(subcategorizationFrameSet);
+		
+		ListOfComponents listOfComponents = new ListOfComponents();
+		lexicalEntry.setListOfComponents(listOfComponents);
+		
+		Component component = new Component();
+		component.setTargetLexicalEntry(lexicalEntry);
+		component.setHead(component_isHead);
+		component.setPosition(component_position);
+		component.setBreakBefore(component_isBreakBefore);
+		List<Component> components = new ArrayList<Component>(1);
+		components.add(component);
+		listOfComponents.setComponents(components);
+		
+		lexicalEntry.setFrequencies(frequencies);
+		
+		subcategorizationFrame.setParentSubcatFrame(subcategorizationFrame);
+		subcategorizationFrame.setSubcatLabel(subcategorizationFrame_subcatLabel);
+		
+		LexemeProperty lexemeProperty = new LexemeProperty();
+		lexemeProperty.setAuxiliary(lexemeProperty_auxiliary);
+		lexemeProperty.setSyntacticProperty(lexemePropert_syntacticProperty);
+		subcategorizationFrame.setLexemeProperty(lexemeProperty);
+		
+		SyntacticArgument syntacticArgument = new SyntacticArgument();
+		syntacticArgument.setId(syntacticArgument_id);
+		syntacticArgument.setOptional(syntacticArgument_optional);
+		syntacticArgument.setGrammaticalFunction(syntacticArgument_grammaticalFunction);
+		syntacticArgument.setSyntacticCategory(syntacticArgument_syntacticCategory);
+		syntacticArgument.setCase(syntacticArgument_case);
+		syntacticArgument.setDeterminer(syntacticArgument_determiner);
+		syntacticArgument.setPreposition(syntacticArgument_preposition);
+		syntacticArgument.setPrepositionType(syntacticArgument_prepositionType);
+		syntacticArgument.setNumber(syntacticArgument_number);
+		syntacticArgument.setLexeme(syntacticArgument_lexeme);
+		syntacticArgument.setVerbForm(syntacticArgument_verbForm);
+		syntacticArgument.setTense(syntacticArgument_tense);
+		syntacticArgument.setComplementizer(syntacticArgument_complementizer);
+		syntacticArgument.setFrequencies(frequencies);
+		List<SyntacticArgument> syntacticArguments = new ArrayList<SyntacticArgument>(1);
+		syntacticArguments.add(syntacticArgument);
+		subcategorizationFrame.setSyntacticArguments(syntacticArguments);
+		subcategorizationFrame.setFrequencies(frequencies);
+		List<SubcategorizationFrame> subcategorizationFrames = new ArrayList<SubcategorizationFrame>(1);
+		subcategorizationFrames.add(subcategorizationFrame);
+		lexicon.setSubcategorizationFrames(subcategorizationFrames);
+		
+		
 		
 		lmfXmlWriter = new LMFXmlWriter(outputPath, dtd.getAbsolutePath());
 		
@@ -425,6 +549,36 @@ public class LMFXmlWriterTest {
 		assertEquals("LexicalResource should have one LexicalEntry instance", 1, nlLexicalEntry.getLength());
 		checkLexicalEntry((Element) nlLexicalEntry.item(0));
 		
+		Element subcategorizationFrame = checkHasSingleChild(lexicon, SubcategorizationFrame.class);
+		assertEquals(subcategorizationFrame_id, subcategorizationFrame.getAttribute("id"));
+		assertEquals(subcategorizationFrame_id, subcategorizationFrame.getAttribute("parentSubcatFrame"));
+		assertEquals(subcategorizationFrame_subcatLabel, subcategorizationFrame.getAttribute("subcatLabel"));
+		
+		Element lexemeProperty = checkHasSingleChild(subcategorizationFrame, LexemeProperty.class);
+		assertEquals(lexemeProperty_auxiliary.toString(), lexemeProperty.getAttribute("auxiliary"));
+		assertEquals(lexemePropert_syntacticProperty.toString(), lexemeProperty.getAttribute("syntacticProperty"));
+		
+		Element syntacticArgument = checkHasSingleChild(subcategorizationFrame, SyntacticArgument.class);
+		assertEquals(syntacticArgument_id, syntacticArgument.getAttribute("id"));
+		if(syntacticArgument_optional)
+			assertEquals(EYesNo.yes.toString(), syntacticArgument.getAttribute("optional"));
+		else
+			assertEquals(EYesNo.no.toString(), syntacticArgument.getAttribute("optional"));
+		assertEquals(syntacticArgument_grammaticalFunction.toString(), syntacticArgument.getAttribute("grammaticalFunction"));
+		assertEquals(syntacticArgument_syntacticCategory.toString(), syntacticArgument.getAttribute("syntacticCategory"));
+		assertEquals(syntacticArgument_case.toString(), syntacticArgument.getAttribute("case"));
+		assertEquals(syntacticArgument_determiner.toString(), syntacticArgument.getAttribute("determiner"));
+		assertEquals(syntacticArgument_preposition, syntacticArgument.getAttribute("preposition"));
+		assertEquals(syntacticArgument_prepositionType.toString(), syntacticArgument.getAttribute("prepositionType"));
+		assertEquals(syntacticArgument_number.toString(), syntacticArgument.getAttribute("number"));
+		assertEquals(syntacticArgument_lexeme, syntacticArgument.getAttribute("lexeme"));
+		assertEquals(syntacticArgument_verbForm.toString(), syntacticArgument.getAttribute("verbForm"));
+		assertEquals(syntacticArgument_tense.toString(), syntacticArgument.getAttribute("tense"));
+		assertEquals(syntacticArgument_complementizer.toString(), syntacticArgument.getAttribute("complementizer"));
+		checkHasSingleFrequency(syntacticArgument);
+			
+		checkHasSingleFrequency(subcategorizationFrame);
+		
 		// TODO the rest
 	}
 
@@ -465,7 +619,29 @@ public class LMFXmlWriterTest {
 		assertEquals("LexicalEntry should have one RelatedForm instance", 1, nlSense.getLength());
 		checkSense((Element) nlSense.item(0), true);
 		
-		// TODO the rest
+		Element syntacticBehaviour = checkHasSingleChild(lexicalEntry, SyntacticBehaviour.class);
+		assertEquals(syntacticBehaviour_id, syntacticBehaviour.getAttribute("id"));
+		assertEquals(sense_id, syntacticBehaviour.getAttribute("sense"));
+		assertEquals(subcategorizationFrame_id, syntacticBehaviour.getAttribute("subcategorizationFrame"));
+		assertEquals(subcategorizationFrameSet_id, syntacticBehaviour.getAttribute("subcategorizationFrameSet"));
+		
+		Element listOfComponents = checkHasSingleChild(lexicalEntry, ListOfComponents.class);
+		Element component = checkHasSingleChild(listOfComponents, Component.class);
+		assertEquals(lexicalEntry_id, component.getAttribute("targetLexicalEntry"));
+		
+		if(component_isHead)
+			assertEquals(EYesNo.yes.toString(), component.getAttribute("isHead"));
+		else
+			assertEquals(EYesNo.no.toString(), component.getAttribute("isHead"));
+		
+		assertEquals(Integer.toString(component_position), component.getAttribute("position"));
+		
+		if(component_isBreakBefore)
+			assertEquals(EYesNo.yes.toString(), component.getAttribute("isBreakBefore"));
+		else
+			assertEquals(EYesNo.no.toString(), component.getAttribute("isBreakBefore"));
+		
+		checkHasSingleFrequency(lexicalEntry);
 	}
 
 	/**
@@ -529,12 +705,32 @@ public class LMFXmlWriterTest {
 		assertEquals(senseRelation_relationName, senseRelation.getAttribute("relName"));
 		assertEquals(senseRelation_relationType.toString(), senseRelation.getAttribute("relType"));
 		checkHasSingleFormRepresentation(senseRelation, SenseRelation.class.toString());
-		checkHasSingleFrequency(senseRelation, SenseRelation.class.toString());
+		checkHasSingleFrequency(senseRelation);
 		
-		// TODO the rest
+		checkHasSingleMonolingualExternalRef(sense);
+		
+		checkHasSingleFrequency(sense);
+		
+		checkHasSingleSemanticLabel(sense);
 		
 	}
 	
+	/**
+	 * Test if the consumed {@link Element}, representing a UBY-LMF class,
+	 * has one Element which represents a {@link SemanticLabel} instance,
+	 * attached. Subsequently, the method checks the content of the semantic label instance.
+	 * 
+	 * @param  lmfClassInstance the element representing an UBY-lMF class instance which
+	 * should have exactly one semantic label element attached
+	 */
+	private void checkHasSingleSemanticLabel(Element lmfClassInstance) {
+		Element semanticLabel = checkHasSingleChild(lmfClassInstance, SemanticLabel.class);
+		assertEquals(semanticLabel_label, semanticLabel.getAttribute("label"));
+		assertEquals(semanticLabel_quantification, semanticLabel.getAttribute("quantification"));
+		assertEquals(semanticLabel_type, semanticLabel.getAttribute("type"));
+		checkHasSingleMonolingualExternalRef(semanticLabel);
+	}
+
 	/**
 	 * Test if the consumed {@link Element}, representing a UBY-LMF class,
 	 * has one Element which represents a {@link Frequency} instance,
@@ -542,10 +738,8 @@ public class LMFXmlWriterTest {
 	 * 
 	 * @param  lmfClassInstance the element representing an UBY-lMF class instance which
 	 * should have exactly one Frequency element attached
-	 * @param className string used for generating a message on failure, represents
-	 * the name of the UBY-LMF class instance which is being tested 
 	 */
-	private void checkHasSingleFrequency(Element lmfClassInstance, String className) {
+	private void checkHasSingleFrequency(Element lmfClassInstance) {
 		Element frequency = checkHasSingleChild(lmfClassInstance, Frequency.class);
 		checkFrequency(frequency);
 	}
@@ -611,7 +805,7 @@ public class LMFXmlWriterTest {
 		
 		checkHasSingleTextRepresentation(context, "Context");
 		
-		checkHasSingleMonolingualExternalRef(context, "Context");
+		checkHasSingleMonolingualExternalRef(context);
 	}
 	
 	/**
@@ -622,14 +816,11 @@ public class LMFXmlWriterTest {
 	 * 
 	 * @param  lmfClassIntance the element representing an UBY-lMF class instance which
 	 * should have exactly one MonolingualExternalRef element attached
-	 * @param className string used for generating a message on failure, represents
-	 * the name of the UBY-LMF class instance which is being tested 
 	 */
-	private void checkHasSingleMonolingualExternalRef(Element lmfClassInstance, String className) {
+	private void checkHasSingleMonolingualExternalRef(Element lmfClassInstance) {
 		
-		NodeList nlMonolingualExternalRef = lmfClassInstance.getElementsByTagName("MonolingualExternalRef");
-		assertEquals(className + " should have one MonolingualExternalRef", 1, nlMonolingualExternalRef.getLength());
-		checkMonolingualExternalRef((Element) nlMonolingualExternalRef.item(0));
+		Element monolingualExternalRef = checkHasSingleChild(lmfClassInstance, MonolingualExternalRef.class);
+		checkMonolingualExternalRef(monolingualExternalRef);
 	}
 
 	/**

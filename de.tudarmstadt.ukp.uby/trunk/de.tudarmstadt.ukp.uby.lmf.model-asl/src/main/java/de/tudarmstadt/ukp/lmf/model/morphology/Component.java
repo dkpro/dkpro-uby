@@ -19,6 +19,8 @@ package de.tudarmstadt.ukp.lmf.model.morphology;
 
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.enums.EYesNo;
+import de.tudarmstadt.ukp.lmf.model.miscellaneous.AccessType;
+import de.tudarmstadt.ukp.lmf.model.miscellaneous.EAccessType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
@@ -38,6 +40,7 @@ public class Component implements Comparable<Component> {
 
 	// component is head of multiword
 	@VarType(type = EVarType.ATTRIBUTE)
+	@AccessType(type = EAccessType.FIELD)
 	private EYesNo isHead;
 
 	// position of component in multiword
@@ -46,6 +49,7 @@ public class Component implements Comparable<Component> {
 
 	// component can be separated
 	@VarType(type = EVarType.ATTRIBUTE)
+	@AccessType(type = EAccessType.FIELD)
 	private EYesNo isBreakBefore;
 
 	/**
