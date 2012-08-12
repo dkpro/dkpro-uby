@@ -352,7 +352,7 @@ public class VerbNetExtractor {
 			// Create FormRepresentation
 			List<FormRepresentation> formReps = new ArrayList<FormRepresentation>();
 			FormRepresentation formRep = new FormRepresentation();			
-			formRep.setWrittenForm(verbLemma);	// Extract FormRepresentation																			
+			formRep.setWrittenForm(verbLemma.replaceAll("_", " "));	// Extract FormRepresentation																			
 			formReps.add(formRep);				// Save FormRepresentation		
 			lemma.setFormRepresentations(formReps);	// Save FormRepresentations		
 			lexicalEntry.setLemma(lemma);			// Save Lemma
