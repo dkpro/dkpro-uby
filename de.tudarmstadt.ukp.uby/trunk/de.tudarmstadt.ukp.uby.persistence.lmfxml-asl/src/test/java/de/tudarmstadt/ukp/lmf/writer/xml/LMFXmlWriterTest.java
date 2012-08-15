@@ -53,6 +53,7 @@ import de.tudarmstadt.ukp.lmf.model.enums.EAuxiliary;
 import de.tudarmstadt.ukp.lmf.model.enums.ECase;
 import de.tudarmstadt.ukp.lmf.model.enums.EComplementizer;
 import de.tudarmstadt.ukp.lmf.model.enums.EContextType;
+import de.tudarmstadt.ukp.lmf.model.enums.ECoreType;
 import de.tudarmstadt.ukp.lmf.model.enums.EDefinitionType;
 import de.tudarmstadt.ukp.lmf.model.enums.EDegree;
 import de.tudarmstadt.ukp.lmf.model.enums.EDeterminer;
@@ -81,16 +82,21 @@ import de.tudarmstadt.ukp.lmf.model.morphology.ListOfComponents;
 import de.tudarmstadt.ukp.lmf.model.morphology.RelatedForm;
 import de.tudarmstadt.ukp.lmf.model.morphology.WordForm;
 import de.tudarmstadt.ukp.lmf.model.mrd.Context;
+import de.tudarmstadt.ukp.lmf.model.semantics.ArgumentRelation;
 import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
+import de.tudarmstadt.ukp.lmf.model.semantics.PredicateRelation;
 import de.tudarmstadt.ukp.lmf.model.semantics.PredicativeRepresentation;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticArgument;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
 import de.tudarmstadt.ukp.lmf.model.semantics.SenseExample;
 import de.tudarmstadt.ukp.lmf.model.semantics.SenseRelation;
 import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
+import de.tudarmstadt.ukp.lmf.model.semantics.SynsetRelation;
 import de.tudarmstadt.ukp.lmf.model.syntax.LexemeProperty;
+import de.tudarmstadt.ukp.lmf.model.syntax.SubcatFrameSetElement;
 import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrame;
 import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrameSet;
+import de.tudarmstadt.ukp.lmf.model.syntax.SynArgMap;
 import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticArgument;
 import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticBehaviour;
 import de.tudarmstadt.ukp.lmf.writer.LMFWriterException;
@@ -191,6 +197,7 @@ public class LMFXmlWriterTest {
 	private static final String subcategorizationFrame_subcatLabel = "subcategorizationFrame_subcatLabel";
 	
 	private static final String subcategorizationFrameSet_id = "subcategorizationFrameSet_id";
+	private static final String subcategorizationFrameSet_name = "subcategorizationFrameSet_name";
 	
 	private static final boolean component_isHead = true;
 	private static final int component_position = 1;
@@ -212,6 +219,26 @@ public class LMFXmlWriterTest {
 	private static final EVerbForm syntacticArgument_verbForm = EVerbForm.ingForm;
 	private static final ETense syntacticArgument_tense = ETense.present;
 	private static final EComplementizer syntacticArgument_complementizer = EComplementizer.whType;
+	
+	private static final String semanticPredicate_label = "semanticPredicate_label";
+	private static final boolean semanticPredicate_lexicalized = true;
+	private static final boolean semanticPredicate_perspectivalized = false;
+	
+	private static final String semanticArgument_id = "semanticArgument_id";
+	private static final String semanticArgument_semanticRole = "semanticArgument_semanticRole";
+	private static final boolean semanticArgument_isIncorporated = false;
+	private static final ECoreType semanticArgument_coreType = ECoreType.peripheral;
+	
+	private static final String argumentRelation_relType = "argumentRelation_relType";
+	private static final String argumentRelation_relName = "argumentRelation_relName";
+	
+	private static final String predicateRelation_relType = "predicateRelation_relType";
+	private static final String predicateRelation_relName = "predicateRelation_relName";
+	
+	private static final String synset_id = "synset_id";
+	
+	private static final String synsetRelation_relName = "synsetRelation_relName"; 
+	private static final ERelTypeSemantics synsetRelation_relType = ERelTypeSemantics.predicative;
 
 	/**
 	 * Creates a UBY-LMF structure by initializing every child and every field
@@ -478,7 +505,80 @@ public class LMFXmlWriterTest {
 		subcategorizationFrames.add(subcategorizationFrame);
 		lexicon.setSubcategorizationFrames(subcategorizationFrames);
 		
+		subcategorizationFrameSet.setName(subcategorizationFrameSet_name);
+		subcategorizationFrameSet.setParentSubcatFrame(subcategorizationFrameSet);
+		SubcatFrameSetElement subcatFrameSetElement = new SubcatFrameSetElement();
+		subcatFrameSetElement.setElement(subcategorizationFrame);
+		List<SubcatFrameSetElement> subcatFrameSetElements= new ArrayList<SubcatFrameSetElement>();
+		subcatFrameSetElements.add(subcatFrameSetElement);
+		subcategorizationFrameSet.setSubcatFrameSetElements(subcatFrameSetElements);
+		SynArgMap synArgMap = new SynArgMap();
+		synArgMap.setArg1(syntacticArgument);
+		synArgMap.setArg2(syntacticArgument);
+		List<SynArgMap> synArgMaps = new ArrayList<SynArgMap>();
+		synArgMaps.add(synArgMap);
+		subcategorizationFrameSet.setSynArgMaps(synArgMaps);
+		List<SubcategorizationFrameSet> subcategorizationFrameSets = new ArrayList<SubcategorizationFrameSet>();
+		subcategorizationFrameSets.add(subcategorizationFrameSet);
+		lexicon.setSubcategorizationFrameSets(subcategorizationFrameSets);
 		
+		semanticPredicate.setLabel(semanticPredicate_label);
+		semanticPredicate.setLexicalized(semanticPredicate_lexicalized);
+		semanticPredicate.setPerspectivalized(semanticPredicate_perspectivalized);
+		semanticPredicate.setDefinitions(definitions);
+		
+		List<SemanticPredicate> semanticPredicates = new ArrayList<SemanticPredicate>();
+		semanticPredicates.add(semanticPredicate);
+		lexicon.setSemanticPredicates(semanticPredicates);
+		
+		SemanticArgument semanticArgument = new SemanticArgument();
+		semanticArgument.setId(semanticArgument_id);
+		semanticArgument.setSemanticRole(semanticArgument_semanticRole);
+		semanticArgument.setIncorporated(semanticArgument_isIncorporated);
+		semanticArgument.setCoreType(semanticArgument_coreType);
+		List<SemanticArgument> semanticArguments = new ArrayList<SemanticArgument>();
+		semanticArguments.add(semanticArgument);
+		semanticPredicate.setSemanticArguments(semanticArguments);
+		
+		ArgumentRelation argumentRelation = new ArgumentRelation();
+		argumentRelation.setTarget(semanticArgument);
+		argumentRelation.setRelType(argumentRelation_relType);
+		argumentRelation.setRelName(argumentRelation_relName);
+		List<ArgumentRelation> argumentRelations = new ArrayList<ArgumentRelation>();
+		argumentRelations.add(argumentRelation);
+		semanticArgument.setArgumentRelations(argumentRelations);
+		semanticArgument.setFrequencies(frequencies);
+		semanticArgument.setSemanticLabels(semanticLabels);
+		semanticArgument.setDefinitions(definitions);
+		
+		PredicateRelation predicateRelation = new PredicateRelation();
+		predicateRelation.setTarget(semanticPredicate);
+		predicateRelation.setRelevantSemanticPredicate(semanticPredicate);
+		predicateRelation.setRelType(predicateRelation_relType);
+		predicateRelation.setRelName(predicateRelation_relName);
+		List<PredicateRelation> predicateRelations = new ArrayList<PredicateRelation>();
+		predicateRelations.add(predicateRelation);
+		semanticPredicate.setPredicateRelations(predicateRelations);
+		semanticPredicate.setFrequencies(frequencies);
+		semanticPredicate.setSemanticLabels(semanticLabels);
+		
+		Synset synset = new Synset(synset_id);
+		synset.setDefinitions(definitions);
+		List<Synset> synsets = new ArrayList<Synset>();
+		synsets.add(synset);
+		lexicon.setSynsets(synsets);
+		
+		SynsetRelation synsetRelation = new SynsetRelation();
+		synsetRelation.setTarget(synset);
+		synsetRelation.setRelName(synsetRelation_relName);
+		synsetRelation.setRelType(synsetRelation_relType);
+		synsetRelation.setFrequencies(frequencies);
+		List<SynsetRelation> synsetRelations = new ArrayList<SynsetRelation>();
+		synsetRelations.add(synsetRelation);
+		synset.setSynsetRelations(synsetRelations);
+		synset.setMonolingualExternalRefs(monolingualExternalRefs);
+		
+		// TODO the rest
 		
 		lmfXmlWriter = new LMFXmlWriter(outputPath, dtd.getAbsolutePath());
 		
@@ -531,6 +631,7 @@ public class LMFXmlWriterTest {
 		NodeList nlLexicon = lexicalResource.getElementsByTagName("Lexicon");
 		assertEquals("LexicalResource should have one Lexicon instance", 1, nlLexicon.getLength());
 		checkLexicon((Element) nlLexicon.item(0));
+		
 	}
 
 	/**
@@ -578,6 +679,69 @@ public class LMFXmlWriterTest {
 		checkHasSingleFrequency(syntacticArgument);
 			
 		checkHasSingleFrequency(subcategorizationFrame);
+		
+		Element subcategorizationFrameSet = checkHasSingleChild(lexicon, SubcategorizationFrameSet.class);
+		assertEquals(subcategorizationFrameSet_id, subcategorizationFrameSet.getAttribute("id"));
+		assertEquals(subcategorizationFrameSet_name, subcategorizationFrameSet.getAttribute("name"));
+		assertEquals(subcategorizationFrameSet_id, subcategorizationFrameSet.getAttribute("parentSubcatFrame"));
+		
+		Element subcatFrameSetElement = checkHasSingleChild(subcategorizationFrameSet, SubcatFrameSetElement.class);
+		assertEquals(subcategorizationFrame_id, subcatFrameSetElement.getAttribute("element"));
+		
+		Element synArgMap = checkHasSingleChild(subcategorizationFrameSet, SynArgMap.class);
+		assertEquals(syntacticArgument_id, synArgMap.getAttribute("arg1"));
+		assertEquals(syntacticArgument_id, synArgMap.getAttribute("arg2"));
+		
+		Element semanticPredicate = checkHasSingleChild(lexicon, SemanticPredicate.class);
+		assertEquals(semanticPredicate_id, semanticPredicate.getAttribute("id"));
+		assertEquals(semanticPredicate_label, semanticPredicate.getAttribute("label"));
+		if(semanticPredicate_lexicalized)
+			assertEquals(EYesNo.yes.toString(), semanticPredicate.getAttribute("lexicalized"));
+		else
+			assertEquals(EYesNo.no.toString(), semanticPredicate.getAttribute("lexicalized"));
+		if(semanticPredicate_perspectivalized)
+			assertEquals(EYesNo.yes.toString(), semanticPredicate.getAttribute("perspectivalized"));
+		else
+			assertEquals(EYesNo.no.toString(), semanticPredicate.getAttribute("perspectivalized"));
+		checkHasSingleDefinition(semanticPredicate, SemanticPredicate.class.getCanonicalName());
+		
+		Element semanticArgument = checkHasSingleChild(semanticPredicate, SemanticArgument.class);
+		assertEquals(semanticArgument_id, semanticArgument.getAttribute("id"));
+		assertEquals(semanticArgument_semanticRole.toString(), semanticArgument.getAttribute("semanticRole"));
+		if(semanticArgument_isIncorporated)
+			assertEquals(EYesNo.yes.toString(), semanticArgument.getAttribute("isIncorporated"));
+		else
+			assertEquals(EYesNo.no.toString(), semanticArgument.getAttribute("isIncorporated"));
+		assertEquals(semanticArgument_coreType.toString(), semanticArgument.getAttribute("coreType"));
+		
+		Element argumentRelation = checkHasSingleChild(semanticArgument, ArgumentRelation.class);
+		assertEquals(semanticArgument_id, argumentRelation.getAttribute("target"));
+		assertEquals(argumentRelation_relType, argumentRelation.getAttribute("relType"));
+		assertEquals(argumentRelation_relName, argumentRelation.getAttribute("relName"));
+		
+		checkHasSingleFrequency(semanticArgument);
+		checkHasSingleSemanticLabel(semanticArgument);
+		checkHasSingleDefinition(semanticArgument, SemanticArgument.class.getCanonicalName());
+		
+		Element predicateRelation = checkHasSingleChild(semanticPredicate, PredicateRelation.class);
+		assertEquals(semanticPredicate_id, predicateRelation.getAttribute("target"));
+		assertEquals(semanticPredicate_id, predicateRelation.getAttribute("relevantSemanticPredicate"));
+		assertEquals(predicateRelation_relType, predicateRelation.getAttribute("relType"));
+		assertEquals(predicateRelation_relName, predicateRelation.getAttribute("relName"));
+		
+		checkHasSingleFrequency(semanticArgument);
+		checkHasSingleSemanticLabel(semanticArgument);
+		
+		Element synset = checkHasSingleChild(lexicon, Synset.class);
+		assertEquals(synset_id, synset.getAttribute("id"));
+		checkHasSingleDefinition(synset, Synset.class.getCanonicalName());
+		
+		Element synsetRelation = checkHasSingleChild(synset, SynsetRelation.class);
+		assertEquals(synset_id, synsetRelation.getAttribute("target"));
+		assertEquals(synsetRelation_relName, synsetRelation.getAttribute("relName"));
+		assertEquals(synsetRelation_relType.toString(), synsetRelation.getAttribute("relType"));
+		checkHasSingleFrequency(synsetRelation);
+		checkHasSingleMonolingualExternalRef(synset);
 		
 		// TODO the rest
 	}
