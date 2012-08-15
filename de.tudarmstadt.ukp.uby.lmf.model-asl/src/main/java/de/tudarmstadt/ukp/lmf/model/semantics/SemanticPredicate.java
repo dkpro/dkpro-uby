@@ -27,6 +27,8 @@ import de.tudarmstadt.ukp.lmf.model.interfaces.IHasDefinitions;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasSemanticLabels;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
+import de.tudarmstadt.ukp.lmf.model.miscellaneous.AccessType;
+import de.tudarmstadt.ukp.lmf.model.miscellaneous.EAccessType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
@@ -49,10 +51,12 @@ public class SemanticPredicate extends HasFrequencies implements IHasID, IHasDef
 
 	// Semantic predicate is lexicalized
 	@VarType(type = EVarType.ATTRIBUTE)
+	@AccessType(type = EAccessType.FIELD)
 	private EYesNo lexicalized;
 
 	// Semantic predicate is perspectivalized
 	@VarType(type = EVarType.ATTRIBUTE)
+	@AccessType(type = EAccessType.FIELD)
 	private EYesNo perspectivalized;
 
 	// Definitions of this SemanticPredicate
