@@ -27,5 +27,5 @@ import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
  *
  */
 public class ConstraintSet {
-	// TODO
+	// empty for now
 }

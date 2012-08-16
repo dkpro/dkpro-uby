@@ -66,6 +66,7 @@ import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
 import de.tudarmstadt.ukp.lmf.model.enums.EPerson;
 import de.tudarmstadt.ukp.lmf.model.enums.ERelTypeMorphology;
 import de.tudarmstadt.ukp.lmf.model.enums.ERelTypeSemantics;
+import de.tudarmstadt.ukp.lmf.model.enums.ESenseAxisType;
 import de.tudarmstadt.ukp.lmf.model.enums.EStatementType;
 import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticCategory;
 import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticProperty;
@@ -75,6 +76,7 @@ import de.tudarmstadt.ukp.lmf.model.enums.EVerbFormMood;
 import de.tudarmstadt.ukp.lmf.model.enums.EYesNo;
 import de.tudarmstadt.ukp.lmf.model.meta.Frequency;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
+import de.tudarmstadt.ukp.lmf.model.miscellaneous.ConstraintSet;
 import de.tudarmstadt.ukp.lmf.model.morphology.Component;
 import de.tudarmstadt.ukp.lmf.model.morphology.FormRepresentation;
 import de.tudarmstadt.ukp.lmf.model.morphology.Lemma;
@@ -82,6 +84,8 @@ import de.tudarmstadt.ukp.lmf.model.morphology.ListOfComponents;
 import de.tudarmstadt.ukp.lmf.model.morphology.RelatedForm;
 import de.tudarmstadt.ukp.lmf.model.morphology.WordForm;
 import de.tudarmstadt.ukp.lmf.model.mrd.Context;
+import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis;
+import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxisRelation;
 import de.tudarmstadt.ukp.lmf.model.semantics.ArgumentRelation;
 import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
 import de.tudarmstadt.ukp.lmf.model.semantics.PredicateRelation;
@@ -90,6 +94,8 @@ import de.tudarmstadt.ukp.lmf.model.semantics.SemanticArgument;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
 import de.tudarmstadt.ukp.lmf.model.semantics.SenseExample;
 import de.tudarmstadt.ukp.lmf.model.semantics.SenseRelation;
+import de.tudarmstadt.ukp.lmf.model.semantics.SynSemArgMap;
+import de.tudarmstadt.ukp.lmf.model.semantics.SynSemCorrespondence;
 import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 import de.tudarmstadt.ukp.lmf.model.semantics.SynsetRelation;
 import de.tudarmstadt.ukp.lmf.model.syntax.LexemeProperty;
@@ -239,6 +245,13 @@ public class LMFXmlWriterTest {
 	
 	private static final String synsetRelation_relName = "synsetRelation_relName"; 
 	private static final ERelTypeSemantics synsetRelation_relType = ERelTypeSemantics.predicative;
+	
+	private static final String synSemCorrespondences_id = "synSemCorrespondences_id";
+	
+	private static final String senseAxis_id = "senseAxis_id";
+	private static final ESenseAxisType senseAxis_senseAxisType = ESenseAxisType.monolingualSenseAlignment;
+	private static final String senseAxisRelation_type = "senseAxisRelation_type";
+	private static final String senseAxisRelation_name = "senseAxisRelation_name";
 
 	/**
 	 * Creates a UBY-LMF structure by initializing every child and every field
@@ -578,8 +591,43 @@ public class LMFXmlWriterTest {
 		synset.setSynsetRelations(synsetRelations);
 		synset.setMonolingualExternalRefs(monolingualExternalRefs);
 		
-		// TODO the rest
+		SynSemCorrespondence synSemCorrespondence = new SynSemCorrespondence();
+		synSemCorrespondence.setId(synSemCorrespondences_id);
+		SynSemArgMap synSemArgMap = new SynSemArgMap();
+		synSemArgMap.setSemanticArgument(semanticArgument);
+		synSemArgMap.setSyntacticArgument(syntacticArgument);
+		List<SynSemArgMap> synSemArgMaps = new ArrayList<SynSemArgMap>();
+		synSemArgMaps.add(synSemArgMap);
+		List<SynSemCorrespondence> synSemCorrespondences = new ArrayList<SynSemCorrespondence>();
+		synSemCorrespondences.add(synSemCorrespondence);
+		synSemCorrespondence.setSynSemArgMaps(synSemArgMaps);
+		lexicon.setSynSemCorrespondences(synSemCorrespondences);
 		
+		ConstraintSet constraintSet = new ConstraintSet();
+		List<ConstraintSet> constraintSets = new ArrayList<ConstraintSet>();
+		constraintSets.add(constraintSet);
+		lexicon.setConstraintSets(constraintSets);
+		
+		SenseAxis senseAxis = new SenseAxis();
+		senseAxis.setId(senseAxis_id);
+		senseAxis.setSenseOne(sense);
+		senseAxis.setSenseTwo(sense);
+		senseAxis.setSynsetOne(synset);
+		senseAxis.setSynsetTwo(synset);
+		senseAxis.setSenseAxisType(senseAxis_senseAxisType);
+		List<SenseAxis> senseAxes = new ArrayList<SenseAxis>();
+		senseAxes.add(senseAxis);
+		
+		SenseAxisRelation senseAxisRelation = new SenseAxisRelation();
+		senseAxisRelation.setRelName(senseAxisRelation_name);
+		senseAxisRelation.setRelType(senseAxisRelation_type);
+		senseAxisRelation.setTarget(senseAxis);
+		List<SenseAxisRelation> senseAxisRelations = new ArrayList<SenseAxisRelation>();
+		senseAxisRelations.add(senseAxisRelation);
+		senseAxis.setSenseAxisRelations(senseAxisRelations);
+		lexicalResource.setSenseAxes(senseAxes);
+		
+		// write to XML
 		lmfXmlWriter = new LMFXmlWriter(outputPath, dtd.getAbsolutePath());
 		
 		lmfXmlWriter.writeElement(lexicalResource);
@@ -632,6 +680,20 @@ public class LMFXmlWriterTest {
 		assertEquals("LexicalResource should have one Lexicon instance", 1, nlLexicon.getLength());
 		checkLexicon((Element) nlLexicon.item(0));
 		
+		Element senseAxis = checkHasSingleChild(lexicalResource, SenseAxis.class);
+		assertEquals(senseAxis_id, senseAxis.getAttribute("id"));
+		assertEquals(sense_id, senseAxis.getAttribute("senseOne"));
+		assertEquals(sense_id, senseAxis.getAttribute("senseTwo"));
+		assertEquals(synset_id, senseAxis.getAttribute("synsetOne"));
+		assertEquals(synset_id, senseAxis.getAttribute("synsetTwo"));
+		assertEquals(senseAxis_senseAxisType.toString(), senseAxis.getAttribute("senseAxisType"));
+		
+		Element senseAxisRelation = checkHasSingleChild(senseAxis, SenseAxisRelation.class);
+		assertEquals(senseAxis_id, senseAxisRelation.getAttribute("target"));
+		assertEquals(senseAxisRelation_type, senseAxisRelation.getAttribute("relType"));
+		assertEquals(senseAxisRelation_name, senseAxisRelation.getAttribute("relName"));
+		
+		
 	}
 
 	/**
@@ -644,7 +706,6 @@ public class LMFXmlWriterTest {
 		assertEquals(lexicon_languageIdentifier.toString(), lexicon.getAttribute("languageIdentifier"));
 		assertEquals(lexicon_name, lexicon.getAttribute("name"));
 		assertEquals(lexicon_id, lexicon.getAttribute("id"));
-		// TODO check the parent of the lexicon
 		
 		NodeList nlLexicalEntry = lexicon.getElementsByTagName("LexicalEntry");
 		assertEquals("LexicalResource should have one LexicalEntry instance", 1, nlLexicalEntry.getLength());
@@ -743,7 +804,14 @@ public class LMFXmlWriterTest {
 		checkHasSingleFrequency(synsetRelation);
 		checkHasSingleMonolingualExternalRef(synset);
 		
-		// TODO the rest
+		Element synSemCorrespondence = checkHasSingleChild(lexicon, SynSemCorrespondence.class);
+		assertEquals(synSemCorrespondences_id, synSemCorrespondence.getAttribute("id"));
+		
+		Element synSemArgMap = checkHasSingleChild(synSemCorrespondence, SynSemArgMap.class);
+		assertEquals(syntacticArgument_id, synSemArgMap.getAttribute("syntacticArgument"));
+		assertEquals(semanticArgument_id, synSemArgMap.getAttribute("semanticArgument"));
+		
+		checkHasSingleChild(lexicon, ConstraintSet.class);
 	}
 
 	/**
@@ -1140,11 +1208,11 @@ public class LMFXmlWriterTest {
 	}
 
 	/**
-	 * @throws java.lang.Exception
+	 * Sets the memory consuming private fields of this class to <code>null</code>.
 	 */
 	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-		// TODO
+	public static void tearDownAfterClass(){
+		lexicalResource = null;
 	}
 
 }
