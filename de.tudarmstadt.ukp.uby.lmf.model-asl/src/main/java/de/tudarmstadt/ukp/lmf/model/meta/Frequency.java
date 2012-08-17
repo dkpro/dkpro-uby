@@ -17,6 +17,7 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.meta;
 
+import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
@@ -42,6 +43,9 @@ public class Frequency implements Comparable<Frequency> {
 	private String generator;
 
 	private String parentId;
+
+	@VarType(type = EVarType.NONE)
+	private IHasID parent;
 	
 	/**
 	 * Sets the name of the corpus which was used for extracting the values
@@ -99,18 +103,46 @@ public class Frequency implements Comparable<Frequency> {
 	public String getGenerator() {
 		return generator;
 	}
+	
+	/**
+	 * Sets the parent UBY-LMF class instance containing this
+	 * {@link Frequency} instance.
+	 * 
+	 * @param parent the parent to set
+	 * 
+	 * @since UBY 0.2.0
+	 */
+	public void setParent(IHasID parent){
+		this.parent = parent;
+		this.parentId = parent.getId();
+	}
+	
+	/**
+	 * Returns the parent UBY-LMF class instance containing this
+	 * {@link Frequency} instance.
+	 * 
+	 * @return the parent of this frequency or <code>null</code> if the parent
+	 * is not set
+	 * 
+	 * @since UBY 0.2.0
+	 */
+	public IHasID getParent(){
+		return this.parent;
+	}
 
 	/**
-	 * TODO
 	 * @param parentId the parentId to set
+	 * 
+	 * @deprecated use {@link #setParent(IHasID)} instead
 	 */
 	public void setParentId(String parentId) {
 		this.parentId = parentId;
 	}
 
 	/**
-	 * TODO
 	 * @return the parentId
+	 * 
+	 * @deprecated use {@link #getParent()} instead
 	 */
 	public String getParentId() {
 		return parentId;
