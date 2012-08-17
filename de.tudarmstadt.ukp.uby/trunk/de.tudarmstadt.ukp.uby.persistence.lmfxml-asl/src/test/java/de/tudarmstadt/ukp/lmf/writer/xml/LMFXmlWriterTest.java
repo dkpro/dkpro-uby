@@ -453,10 +453,21 @@ public class LMFXmlWriterTest {
 		semanticLabel.setQuantification(semanticLabel_quantification);
 		semanticLabel.setType(semanticLabel_type);
 		semanticLabel.setMonolingualExternalRefs(monolingualExternalRefs);
+		semanticLabel.setParent(sense);
 		List<SemanticLabel> semanticLabels = new ArrayList<SemanticLabel>();
 		semanticLabels.add(semanticLabel);
 		sense.setSemanticLabels(semanticLabels);
-		nestedSense.setSemanticLabels(semanticLabels);
+		
+		// semantic label of the nested sense
+		SemanticLabel semanticLabel2 = new SemanticLabel();
+		semanticLabel2.setLabel(semanticLabel_label);
+		semanticLabel2.setQuantification(semanticLabel_quantification);
+		semanticLabel2.setType(semanticLabel_type);
+		semanticLabel2.setMonolingualExternalRefs(monolingualExternalRefs);
+		semanticLabel2.setParent(nestedSense);
+		List<SemanticLabel> semanticLabels2 = new ArrayList<SemanticLabel>();
+		semanticLabels2.add(semanticLabel2);
+		nestedSense.setSemanticLabels(semanticLabels2);
 		
 		SyntacticBehaviour syntacticBehaviour = new SyntacticBehaviour();
 		syntacticBehaviour.setId(syntacticBehaviour_id);
@@ -561,7 +572,15 @@ public class LMFXmlWriterTest {
 		argumentRelations.add(argumentRelation);
 		semanticArgument.setArgumentRelations(argumentRelations);
 		semanticArgument.setFrequencies(frequencies);
-		semanticArgument.setSemanticLabels(semanticLabels);
+		SemanticLabel semanticLabe_semanticArgument = new SemanticLabel();
+		semanticLabe_semanticArgument.setLabel(semanticLabel_label);
+		semanticLabe_semanticArgument.setQuantification(semanticLabel_quantification);
+		semanticLabe_semanticArgument.setType(semanticLabel_type);
+		semanticLabe_semanticArgument.setMonolingualExternalRefs(monolingualExternalRefs);
+		semanticLabe_semanticArgument.setParent(semanticArgument);
+		List<SemanticLabel> semanticLabe_semanticArguments = new ArrayList<SemanticLabel>();
+		semanticLabe_semanticArguments.add(semanticLabe_semanticArgument);
+		semanticArgument.setSemanticLabels(semanticLabe_semanticArguments);
 		semanticArgument.setDefinitions(definitions);
 		
 		PredicateRelation predicateRelation = new PredicateRelation();
@@ -960,6 +979,7 @@ public class LMFXmlWriterTest {
 		assertEquals(semanticLabel_label, semanticLabel.getAttribute("label"));
 		assertEquals(semanticLabel_quantification, semanticLabel.getAttribute("quantification"));
 		assertEquals(semanticLabel_type, semanticLabel.getAttribute("type"));
+		assertEquals(lmfClassInstance.getAttribute("id"), semanticLabel.getAttribute("parent"));
 		checkHasSingleMonolingualExternalRef(semanticLabel);
 	}
 

@@ -51,7 +51,7 @@ public class SemanticLabel extends HasMonolingualExternalRefs implements Compara
 	private String quantification;
 	
 	// backlink to the parent, not part of UBY-LMF
-	@VarType(type = EVarType.NONE)
+	@VarType(type = EVarType.IDREF)
 	private IHasID parent;
 	
 	/**
