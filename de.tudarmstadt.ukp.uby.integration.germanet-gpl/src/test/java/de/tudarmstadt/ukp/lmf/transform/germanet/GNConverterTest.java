@@ -128,4 +128,23 @@ public class GNConverterTest {
 		}
 	}
 	
+	/**
+	 * Tests the creation of all {@link SemanticLabel} instances.
+	 * 
+	 * @since 0.2.0
+	 */
+	@Test
+	public void testSemanticLabels(){
+		LexicalResource lr = gnConverter.getLexicalResource();
+		for(Lexicon lexicon : lr.getLexicons())
+			for(LexicalEntry le : lexicon.getLexicalEntries())
+				for(Sense sense : le.getSenses()){
+					List<SemanticLabel> semanticLabels = sense.getSemanticLabels();
+					assertTrue("Sense does not have any semantic labels attached.", semanticLabels.size()>0);
+					for(SemanticLabel semanticLabel : semanticLabels){
+						assertNotNull(semanticLabel.getLabel());
+					}
+				}
+	}
+	
 }
