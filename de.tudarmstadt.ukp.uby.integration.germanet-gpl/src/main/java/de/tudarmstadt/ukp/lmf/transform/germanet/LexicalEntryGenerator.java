@@ -244,6 +244,8 @@ public class LexicalEntryGenerator {
 	  * generated from consumed group of LexUnits
 	  * @param luGroup a group of LexUnits, for which the list of FormRepresentations should be generated 
 	  * @return A list of instances of FormRepresentations from the consumed luGroup
+	  * 
+	  * @since UBY 0.1.0
 	  */
 	 private List<FormRepresentation> getFormRepresentations(Set<LexUnit> luGroup){
 		 HashMap<String, String> mappings = new HashMap<String, String>(); // <orthographyName,orthographyForm>
@@ -259,7 +261,7 @@ public class LexicalEntryGenerator {
 				 orthForm = orthForm2;
 			 else
 				 if(orthForm2 != null && !orthForm.equals(orthForm2)){
-					 logger.log(Level.WARNING, "LexicalEntryGenerator: conflict, diffrent orthForm in same luGroup!");
+					 logger.log(Level.WARNING, "conflict, diffrent orthForm in same luGroup!");
 				 }
 			 
 			 // Extracting orthVar
@@ -268,7 +270,7 @@ public class LexicalEntryGenerator {
 				 orthVar = orthVar2;
 			 else
 				 if(orthVar2 != null && !orthVar.equals(orthVar2)){
-					 logger.log(Level.WARNING, "LexicalEntryGenerator: conflict, diffrent orthVar in same luGroup!");
+					 logger.log(Level.WARNING, "conflict, diffrent orthVar in same luGroup!");
 				 }
 			 
 			 // Extracting oldOrthForm
@@ -397,6 +399,7 @@ public class LexicalEntryGenerator {
 	 * all duplicates from the consumed list
 	 * @param relatedForms {@link List} of RelatedForm objects from which duplicates should be removed
 	 * @see {@link RelatedForm}
+	 * @since UBY 0.1.0
 	 */
 	private void removeDuplicateRelatedForms(List<RelatedForm> relatedForms){
 		HashSet<RelatedForm> temp = new HashSet<RelatedForm>();
@@ -405,7 +408,7 @@ public class LexicalEntryGenerator {
 		relatedForms.addAll(temp);
 		if(relatedForms.isEmpty()){
 			StringBuffer sb = new StringBuffer(128);
-			sb.append("LexicalEntryGenerator: filter removed all related forms!").append('\n');
+			sb.append("filter removed all related forms!").append('\n');
 			sb.append("Aborting all operations!");
 			logger.log(Level.SEVERE, sb.toString());
 			System.exit(1);

@@ -74,7 +74,7 @@ public class LMFXmlWriterDOM {
 	/**
 	 * This method consumes a LMF Object and appends it's
 	 * XML-Representation to the consumed Element
-	 * @param lmfObject An LMF Object for which an Element should be created and appended to rooot
+	 * @param lmfObject An LMF Object for which an Element should be created and appended to root
 	 * @param Root Element
 	 * @throws InvocationTargetException 
 	 * @throws IllegalAccessException 
