@@ -18,6 +18,13 @@
 
 package de.tudarmstadt.ukp.lmf.writer;
 
+/**
+ * This exception should be thrown by all {@link LMFWriter} instances and can be used
+ * as a wrapper.
+ * 
+ * @author Yevgen Chebotar
+ * @since UBY 0.1.0
+ */
 public class LMFWriterException extends Exception {
 
 	private static final long serialVersionUID = 3656613135105045894L;
