@@ -59,6 +59,7 @@ public class LMFXmlWriter extends LMFWriter{
 	 */
 	private String dtdPath; // path of the dtd File	
 	private TransformerHandler th; // Transform Handler
+	private String outputPath;
 	
 	private static Logger logger = Logger.getLogger(LMFXmlWriter.class.getName());
 
@@ -71,6 +72,7 @@ public class LMFXmlWriter extends LMFWriter{
 	 */
 	public LMFXmlWriter(String outputPath, String dtdPath) throws FileNotFoundException {
 		this(new FileOutputStream(outputPath), dtdPath);
+		this.outputPath = outputPath;
 	}
 	
 	/**
@@ -277,5 +279,17 @@ public class LMFXmlWriter extends LMFWriter{
         serializer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
 		th.setResult(streamResult);	
 		return th;
+	}
+	
+	/**
+	 * Returns the {@link String} representing the output path of the XML file
+	 * which will be created/overwritten by this {@link LMFXmlWriter} instance.
+	 * 
+	 * @return the output path configured for this {@link LMFXmlWriter}.
+	 * 
+	 * @since UBY 0.2.0
+	 */
+	public String getOutputPath(){
+		return this.outputPath;
 	}
 }

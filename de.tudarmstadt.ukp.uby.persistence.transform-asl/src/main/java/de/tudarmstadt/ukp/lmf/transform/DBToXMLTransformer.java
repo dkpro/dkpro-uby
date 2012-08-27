@@ -18,7 +18,10 @@
 
 package de.tudarmstadt.ukp.lmf.transform;
 
-import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -28,6 +31,7 @@ import org.hibernate.criterion.Restrictions;
 
 import de.tudarmstadt.ukp.lmf.api.CriteriaIterator;
 import de.tudarmstadt.ukp.lmf.hibernate.HibernateConnect;
+import de.tudarmstadt.ukp.lmf.model.core.GlobalInformation;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
@@ -40,23 +44,40 @@ import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrame;
 import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrameSet;
 import de.tudarmstadt.ukp.lmf.writer.LMFWriter;
 import de.tudarmstadt.ukp.lmf.writer.LMFWriterException;
+import de.tudarmstadt.ukp.lmf.writer.xml.LMFXmlWriter;
 
 /**
- * Converts Uby saved in the Database (Hibernate) to XML
- * @author chebotar
- *
+ * Converts UBY-database to  a XML file.
+ * 
+ * @author Yevgen Chebotar
+ * @author Zijad Maksuti
+ * 
+ * @since UBY 0.1.0
  */
 public class DBToXMLTransformer {
 
 	private final SessionFactory sessionFactory;
 	private final LMFWriter writer;
+	private static final Logger logger = Logger.getLogger(DBToXMLTransformer.class.getSimpleName());
+	
+	// true only if only selected lexicons should be converted to XML
+	private boolean lexiconsOnly = false;
+	// the list of lexicons which should be to XML; used only when selectiveConversion set to true
+	private List<String> selectedLexicons;
+	
+	// true only if only sense axes should be converted to XML
+	private boolean senseAxesOnly = false;
 
 	/**
-	 * @param dbConfig Configuration of the database with Uby
-	 * @param writer  Writer where the XML output should be written
-	 * @throws FileNotFoundException
+	 * Constructs a new {@link DBToXMLTransformer} instance which is used to convert UBY
+	 * from a database to an XML file.
+	 * 
+	 * @param dbConfig {@link DBConfig} instance used to access the database
+	 * @param writer  {@link LMFWriter} used to write to a XML file
+	 * 
+	 * @since UBY 0.1.0
 	 */
-	public DBToXMLTransformer(DBConfig dbConfig, LMFWriter writer) throws FileNotFoundException{
+	public DBToXMLTransformer(DBConfig dbConfig, LMFWriter writer) {
 		Configuration cfg = HibernateConnect.getConfiguration(dbConfig);
 
 		this.sessionFactory = cfg.buildSessionFactory();
@@ -64,18 +85,50 @@ public class DBToXMLTransformer {
 	}
 
 	/**
-	 * Transforms lexicalResource to XML
-	 * @throws LMFWriterException
+	 * Transforms a {@link LexicalResource} instance retrieved from a database
+	 * to a XML file.
+	 * 
+	 * @param lexicalResource the lexical resource retrived from the database 
+	 * 
+	 * @throws LMFWriterException if a severe error occurs when writing to a file
+	 * 
+	 * @since UBY 0.1.0
 	 */
 	public void transform(LexicalResource lexicalResource) throws LMFWriterException{
 		Session session = sessionFactory.openSession();
-		lexicalResource = (LexicalResource)session.get(LexicalResource.class, lexicalResource.getName());
+		String lexicalResourceName = lexicalResource.getName();
+		lexicalResource = (LexicalResource)session.get(LexicalResource.class, lexicalResourceName);
+		
+		
+		if(writer instanceof LMFXmlWriter)
+			logger.log(Level.INFO, "Started writing lexicalResource "+ lexicalResourceName
+					+ "to " + ((LMFXmlWriter) writer).getOutputPath());
+		else
+			logger.log(Level.INFO, "Started writing lexicalResource " +  lexicalResourceName);
+			
+		
 		writer.writeStartElement(lexicalResource);
+		
+		// write GlobalInformation
+		GlobalInformation globalInformation = lexicalResource.getGlobalInformation();
+		writer.writeElement(globalInformation);
+		int counter = 1;
+		
 
 		int bufferSize = 100;
-		int counter = 0;
 		// Iterate over all lexicons
 		for(Lexicon lexicon : lexicalResource.getLexicons()){
+			
+			String lexiconName = lexicon.getName();
+			
+			// write lexicons
+			if((lexiconsOnly && !selectedLexicons.contains(lexiconName)) || senseAxesOnly){
+				// on selective conversion, omit the lexicons not in the list
+				// when only sense axes should be converter, omit all
+				continue;
+			}
+			
+			logger.info("processing lexicon: " + lexiconName);
 			writer.writeStartElement(lexicon);
 
 			// Iterate over all possible sub-elements of this Lexicon and write them to the XML
@@ -91,8 +144,8 @@ public class DBToXMLTransformer {
 				@SuppressWarnings("rawtypes")
 				CriteriaIterator iter = new CriteriaIterator(criteria, bufferSize);
 				while(iter.hasNext()){
-					if(counter % 1000 == 0) {
-						System.out.println("PROGRESS: "+counter);
+					if(counter % 10000 == 0) {
+						logProcessedInstances(counter);
 					}
 					Object obj = iter.next();
 					writer.writeElement(obj);
@@ -102,23 +155,84 @@ public class DBToXMLTransformer {
 			}
 			writer.writeEndElement(lexicon);
 		}
-
-		// Iterate over SenseAxes and write them to XMLX
-		Criteria criteria = session.createCriteria(SenseAxis.class)
-				.add(Restrictions.sqlRestriction("lexicalResourceId = '"+lexicalResource.getName()+"'"));
-		@SuppressWarnings("rawtypes")
-		CriteriaIterator iter = new CriteriaIterator(criteria, bufferSize);
-		while(iter.hasNext()){
-			if(counter % 1000 == 0) {
-				System.out.println("PROGRESS: "+counter);
+		
+		if(!lexiconsOnly){
+			
+			// Iterate over SenseAxes and write them to XMLX when not only lexicons should be converted
+			Criteria criteria = session.createCriteria(SenseAxis.class)
+					.add(Restrictions.sqlRestriction("lexicalResourceId = '"+lexicalResource.getName()+"'"));
+			@SuppressWarnings("rawtypes")
+			CriteriaIterator iter = new CriteriaIterator(criteria, bufferSize);
+			logger.info("started processing sense axes");
+			while(iter.hasNext()){
+				if(counter % 10000 == 0) {
+					logProcessedInstances(counter);
+				}
+				Object obj = iter.next();
+				writer.writeElement(obj);
+				session.evict(obj);
+				counter++;
 			}
-			Object obj = iter.next();
-			writer.writeElement(obj);
-			session.evict(obj);
-			counter++;
 		}
 		writer.writeEndElement(lexicalResource);
 		writer.writeEndDocument();
+		
+		// clear the previous parameter values
+		this.lexiconsOnly = false;
+		this.senseAxesOnly = false;
+		this.selectedLexicons = new ArrayList<String>();
+	}
+	
+	/**
+	 * Transforms a {@link LexicalResource} instance retrieved from a database
+	 * to a XML file. The created XML only contains {@link Lexicon} instances which
+	 * names are specified in the consumed {@link List}. {@link SenseAxis} instances are omitted.
+	 * 
+	 * @param lexicalResource the lexical resource retrieved from the database
+	 * 
+	 * @param lexicons the list of names of lexicons which should be written to XML file
+	 * 
+	 * @throws LMFWriterException if a severe error occurs when writing to a file
+	 * 
+	 * @since UBY 0.2.0
+	 * 
+	 * @see #transform(LexicalResource)
+	 * @see #transformSenseAxes(LexicalResource)
+	 */
+	public void transformLexicons(LexicalResource lexialResource, List<String> lexicons) throws LMFWriterException{
+		this.lexiconsOnly = true;
+		this.selectedLexicons = lexicons;
+		transform(lexialResource);
+	}
+	
+	/**
+	 * Transforms a {@link LexicalResource} instance retrieved from a database
+	 * to a XML file. The created XML only contains {@link SenseAxis} contained in the
+	 * consumed lexical resource.
+	 * 
+	 * @param lexicalResource the lexical resource retrieved from the database
+	 * 
+	 * @throws LMFWriterException if a severe error occurs when writing to a file
+	 * 
+	 * @since UBY 0.2.0
+	 * 
+	 * @see #transform(LexicalResource)
+	 * @see #transformLexicons(LexicalResource, List)
+	 */
+	public void transformSenseAxes(LexicalResource lexialResource) throws LMFWriterException{
+		this.senseAxesOnly = true;
+		transform(lexialResource);
+	}
+	
+	/**
+	 * Logs the number of UBY-LMF class instances written to a file.
+	 * 
+	 * @param counter number of processed class instances so far.
+	 * 
+	 * @since UBY 0.2.0
+	 */
+	private void logProcessedInstances(int counter){
+		logger.info("progress: " + counter  + " class instances written to file");
 	}
 
 }
