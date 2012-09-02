@@ -94,10 +94,11 @@ public class SenseGenerator {
 			SemanticLabel semanticLabel = new SemanticLabel();
 			semanticLabels.add(semanticLabel);
 			semanticLabel.setLabel(semanticClassLabelExtractor.getLUSemanticClassLabel(lu));
+			semanticLabel.setType("semanticField");
 			if(lu.isArtificial()){ // another semantic label for artificial LexUnits
 				SemanticLabel semanticLabelArt = new SemanticLabel();
-				semanticLabelArt.setLabel("artificial");
-				semanticLabelArt.setType("usage");
+				semanticLabelArt.setLabel("artificialConcept");
+				semanticLabelArt.setType("resourceSpecific");
 				semanticLabels.add(semanticLabelArt);
 			}
 			sense.setSemanticLabels(semanticLabels);
