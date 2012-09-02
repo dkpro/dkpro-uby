@@ -18,8 +18,9 @@
 
 package de.tudarmstadt.ukp.lmf.transform;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -63,7 +64,7 @@ public class DBToXMLTransformer {
 	// true only if only selected lexicons should be converted to XML
 	private boolean lexiconsOnly = false;
 	// the list of lexicons which should be to XML; used only when selectiveConversion set to true
-	private List<String> selectedLexicons;
+	private Set<String> selectedLexicons;
 	
 	// true only if only sense axes should be converted to XML
 	private boolean senseAxesOnly = false;
@@ -144,7 +145,7 @@ public class DBToXMLTransformer {
 				@SuppressWarnings("rawtypes")
 				CriteriaIterator iter = new CriteriaIterator(criteria, bufferSize);
 				while(iter.hasNext()){
-					if(counter % 10000 == 0) {
+					if(counter % 1000 == 0) {
 						logProcessedInstances(counter);
 					}
 					Object obj = iter.next();
@@ -165,7 +166,7 @@ public class DBToXMLTransformer {
 			CriteriaIterator iter = new CriteriaIterator(criteria, bufferSize);
 			logger.info("started processing sense axes");
 			while(iter.hasNext()){
-				if(counter % 10000 == 0) {
+				if(counter % 1000 == 0) {
 					logProcessedInstances(counter);
 				}
 				Object obj = iter.next();
@@ -180,17 +181,17 @@ public class DBToXMLTransformer {
 		// clear the previous parameter values
 		this.lexiconsOnly = false;
 		this.senseAxesOnly = false;
-		this.selectedLexicons = new ArrayList<String>();
+		this.selectedLexicons = new HashSet<String>();
 	}
 	
 	/**
 	 * Transforms a {@link LexicalResource} instance retrieved from a database
 	 * to a XML file. The created XML only contains {@link Lexicon} instances which
-	 * names are specified in the consumed {@link List}. {@link SenseAxis} instances are omitted.
+	 * names are specified in the consumed {@link Set}. {@link SenseAxis} instances are omitted.
 	 * 
 	 * @param lexicalResource the lexical resource retrieved from the database
 	 * 
-	 * @param lexicons the list of names of lexicons which should be written to XML file
+	 * @param lexicons the set of names of lexicons which should be written to XML file
 	 * 
 	 * @throws LMFWriterException if a severe error occurs when writing to a file
 	 * 
@@ -199,7 +200,7 @@ public class DBToXMLTransformer {
 	 * @see #transform(LexicalResource)
 	 * @see #transformSenseAxes(LexicalResource)
 	 */
-	public void transformLexicons(LexicalResource lexialResource, List<String> lexicons) throws LMFWriterException{
+	public void transformLexicons(LexicalResource lexialResource, Set<String> lexicons) throws LMFWriterException{
 		this.lexiconsOnly = true;
 		this.selectedLexicons = lexicons;
 		transform(lexialResource);

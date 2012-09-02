@@ -116,9 +116,9 @@ public class HibernateConnect {
 
         //Using c3p0 instead now for better connection handling
         p.setProperty("hibernate.c3p0.min_size","1");
-        p.setProperty("hibernate.c3p0.max_size","100");
+        p.setProperty("hibernate.c3p0.max_size","1");
         p.setProperty("hibernate.c3p0.timeout","0");
-        p.setProperty("hibernate.c3p0.max_statements","500");
+        p.setProperty("hibernate.c3p0.max_statements","0");
         p.setProperty("hibernate.c3p0.idle_test_period","5");
 
         // Custom SQL dialect
