@@ -19,7 +19,7 @@
 			node="@target" foreign-key="none" not-found="ignore"/>
 			
 	<many-to-one name="formRepresentation" class="de.tudarmstadt.ukp.lmf.model.morphology.FormRepresentation" 
-		entity-name="FormRepresentation_SenseRelation" column="formRepresentation" 
+		entity-name="FormRepresentation_SenseRelation" column="formRepresentationId" 
 		node="FormRepresentation" unique="true" foreign-key="none"/>
 	
 	<list name="frequencies" node=".">
