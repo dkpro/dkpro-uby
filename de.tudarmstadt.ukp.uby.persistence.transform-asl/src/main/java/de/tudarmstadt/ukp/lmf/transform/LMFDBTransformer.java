@@ -22,6 +22,7 @@ import java.io.FileNotFoundException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -285,8 +286,18 @@ public abstract class LMFDBTransformer extends LMFTransformer{
 				System.out.println("CAN'T SAVE "+objClass.getSimpleName()+" PARENT: "+parentClass.getSimpleName() +": "+ex.getMessage());
 			}
 		}
+		
+		// Find all fields including inherited fields. 
+		ArrayList<Field> fields = new ArrayList<Field>();
+		fields.addAll(Arrays.asList(objClass.getDeclaredFields()));
+		Class<?> superClass = objClass.getSuperclass();
+		while (superClass != null){
+			fields.addAll(Arrays.asList(superClass.getDeclaredFields()));
+			superClass = superClass.getSuperclass();
+		}
+				
 		// Iterating over all fields
-		for(Field field : objClass.getDeclaredFields()){
+		for(Field field : fields){
 			String fieldName = field.getName().replace("_", "");
 			VarType varType = field.getAnnotation(VarType.class);
 			// No VarType-Annotation found for the field
@@ -302,7 +313,7 @@ public abstract class LMFDBTransformer extends LMFTransformer{
 			String getFuncName = "get"+fieldName.substring(0,1).toUpperCase() + fieldName.substring(1);
 
 			try{
-				Method getMethod = objClass.getDeclaredMethod(getFuncName);
+				Method getMethod = objClass.getMethod(getFuncName);
 				Object retObj = getMethod.invoke(obj); // Run the Get-Method
 
 				if(retObj != null){
