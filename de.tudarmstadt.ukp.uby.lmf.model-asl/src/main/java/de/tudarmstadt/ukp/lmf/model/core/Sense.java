@@ -33,6 +33,7 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.EAccessType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 import de.tudarmstadt.ukp.lmf.model.mrd.Context;
+import de.tudarmstadt.ukp.lmf.model.mrd.Equivalent;
 import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
 import de.tudarmstadt.ukp.lmf.model.semantics.PredicativeRepresentation;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticArgument;
@@ -93,6 +94,10 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 	// Sense Relations of this Sense
 	@VarType(type = EVarType.CHILDREN)
 	private List<SenseRelation> senseRelations = new ArrayList<SenseRelation>();
+
+	// Equivalents for this Sense
+	@VarType(type = EVarType.CHILDREN)
+	private List<Equivalent> equivalents = new ArrayList<Equivalent>();
 
 	// Frequency information for this Sense
 	@VarType(type = EVarType.CHILDREN)
@@ -347,6 +352,24 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 		this.senseRelations = senseRelations;
 	}
 
+	/**
+	 * Returns the {@link List} of all {@link Equivalent} instances of this 
+	 * {@link Sense}. That is, the translation of the this sense.
+	 * @return the list of all equivalents; might be empty, but never null.
+	 */
+	public List<Equivalent> getEquivalents() {
+		return equivalents;
+	}
+
+	/**
+	 * Sets the {@link List} of all {@link Equivalent} instances to this
+	 * {@link Sense}. 
+	 * @param equivalents the list of equivalents to set
+	 */
+	public void setEquivalents(List<Equivalent> equivalents) {
+		this.equivalents = equivalents;
+	}
+	
 	/**
 	 * Returns the {@link List} of all {@link MonolingualExternalRef} instances which
 	 * link this {@link Sense} to an external system.
