@@ -30,7 +30,12 @@
             <key column="senseId" on-delete="cascade"/>
             <index column="idx"/>
             <one-to-many class="de.tudarmstadt.ukp.lmf.model.semantics.SenseRelation" node="SenseRelation"/>
-    </list> 	
+    </list> 
+    <list name="equivalents" node=".">
+            <key column="senseId" on-delete="cascade" />
+            <index column="idx"/>
+            <one-to-many class="de.tudarmstadt.ukp.lmf.model.mrd.Equivalent" node="Equivalent"/>
+    </list>   	
      <list name="senseExamples" node=".">
             <key column="senseId" on-delete="cascade"/>
             <index column="idx"/>

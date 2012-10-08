@@ -18,24 +18,32 @@
 package de.tudarmstadt.ukp.lmf.model.enums;
 
 /**
- * Enumeration of possible relation types specified by an instance of
- * {@link SenseRelation} or {@link SynsetRelation} class.
+ * Frequently used relation names for {@link SenseRelation}s and 
+ * {@link SynsetRelation}s. Relation names are not limited to those specified
+ * by this enumeration; the enumeration focuses on the most common relations.
  * 
- * @author Zijad Maksuti
+ * @author Christian M. Meyer
  *
  */
-public enum ERelTypeSemantics {
+public enum ERelNameSemantics {
+
+	 antonym("antonym"),
+	 synonym("synonym"),
+	 hypernym("hypernym"),
+	 hyponym("hyponym"),
+	 meronym("meronym"),
+	 holonym("holonym");
 	
-	taxonomic,
-	partWhole,
-	association,
-	label,
-	labelOmegaWiki,
-	predicative,
-	predicativeOmegaWiki,
-	complementary,
-	
-	@Deprecated
-	translation;
-	
+	 
+	 private String name;
+	 
+	 private ERelNameSemantics(final String name) {
+		this.name = name;
+	}
+	 
+	 @Override
+	 public String toString() {
+		 return name;
+	 };
+	 
 }
