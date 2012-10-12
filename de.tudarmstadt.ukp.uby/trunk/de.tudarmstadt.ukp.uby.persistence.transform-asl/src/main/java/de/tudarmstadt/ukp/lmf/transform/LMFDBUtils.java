@@ -23,11 +23,16 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 
 import de.tudarmstadt.ukp.lmf.hibernate.HibernateConnect;
@@ -35,6 +40,7 @@ import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 
 public class LMFDBUtils {
+	
 	/**
 	 * Create all LMF Tables in the database based on the hibernate mapping
 	 * @param dbConfig
@@ -50,6 +56,39 @@ public class LMFDBUtils {
 		}
 	}
 
+	public static void dropTables(final DBConfig dbConfig) {
+		System.out.println("DROP TABLES");
+		Configuration cfg = HibernateConnect.getConfiguration(dbConfig);
+		SessionFactory sf = cfg.buildSessionFactory();
+		Session session = sf.openSession();
+		Transaction tx = session.beginTransaction();
+		try {
+			// Create a set of all tables.
+			Set<String> dropSQL = new TreeSet<String>();
+			Iterator<Table> iter = cfg.getTableMappings();
+			while (iter.hasNext())
+				dropSQL.add("DROP TABLE " + iter.next().getName());
+		
+			// Try to delete them repeatedly until no tables are left or 
+			// there have been too many repetitions.
+			int remainingLoops = dropSQL.size();
+			while (!dropSQL.isEmpty() && remainingLoops >= 0) {
+				Iterator<String> sqlIter = dropSQL.iterator(); 
+				while (sqlIter.hasNext()) {
+					try {
+						String sql = sqlIter.next();
+						session.createSQLQuery(sql).executeUpdate();
+						sqlIter.remove();
+						System.out.println(sql);
+					} catch (HibernateException e) {}
+				}
+				remainingLoops--;
+			}
+		} finally {
+			tx.commit();
+			session.close();
+		}
+	}
 
 	/**
 	 * Adds some constraints to the Uby database, that can not be automatically added by Hibernate
@@ -178,4 +217,5 @@ public class LMFDBUtils {
 		session.close();
 		System.out.println("deleted "+lexicon.getId());
 	}
+
 }
