@@ -18,12 +18,38 @@
 
 package de.tudarmstadt.ukp.lmf.transform;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
- * Differnt useful functions
+ * Different useful functions
  * @author chebotar
  *
  */
 public class StringUtils {
+	
+	private static final Pattern HTML_ENTITIES = Pattern.compile("^(.*?)&#(\\d+);"); 
+	
+	/** Replaces HTML entities such as &#803; with the corresponding 
+	 *  characters. */
+	public static String replaceHtmlEntities(final String text) {
+		String t = text;
+		StringBuilder result = new StringBuilder();
+		do {
+			Matcher matcher = HTML_ENTITIES.matcher(t);
+			if (matcher.find()) {
+				result.append(matcher.group(1));
+				result.append((char) Integer.parseInt(matcher.group(2)));
+				t = matcher.replaceFirst("");				
+			} else
+				break;
+		} while (true);
+		result.append(t);
+//		if (!text.equals(result.toString()))
+//			System.out.println(">" + text + "< to >" + result.toString() + "<");
+		return result.toString();
+	}
+	
 	/**
 	 * Removes all UTF8 characters that cause errors in MySQL database
 	 * @param text
