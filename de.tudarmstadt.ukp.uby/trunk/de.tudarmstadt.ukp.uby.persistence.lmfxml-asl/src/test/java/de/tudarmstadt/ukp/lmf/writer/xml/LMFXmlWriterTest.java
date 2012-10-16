@@ -174,7 +174,7 @@ public class LMFXmlWriterTest {
 	private static final EContextType context_contextType = EContextType.corpusEvidence;
 	private static final String context_source = "context_source";
 	
-	private static final ELanguageIdentifier textRepresentation_languageIdentifier = ELanguageIdentifier.sr;
+	private static final ELanguageIdentifier textRepresentation_languageIdentifier = ELanguageIdentifier.iso639_srp;
 	private static final String textRepresentation_orthographyName = "textRepresentation_orthographyName";
 	private static final String textRepresentation_geographicalVariant = "textRepresentation_geographicalVariant";
 	private static final String textRepresentation_writtenText = "textRepresentation_writtenText";

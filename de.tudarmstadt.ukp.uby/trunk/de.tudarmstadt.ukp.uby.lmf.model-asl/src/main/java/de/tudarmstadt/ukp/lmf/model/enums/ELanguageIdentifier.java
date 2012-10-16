@@ -24,6 +24,13 @@ package de.tudarmstadt.ukp.lmf.model.enums;
  */
 public enum ELanguageIdentifier {
 	
+	/** @deprecated Use iso639_deu instead. */
+	@Deprecated
+	de("German"),
+	/** @deprecated Use iso639_eng instead. */
+	@Deprecated
+	en("English"),
+	
 	iso639_aaa("Ghotuo"),
 	iso639_aab("Alumu-Tesu"),
 	iso639_aac("Ari"),
