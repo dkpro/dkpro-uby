@@ -6,11 +6,8 @@
 	<id name="id" column="lexiconId" node="@id" type="string"/>
 	<property name="name" column="lexiconName" node="@name" type="string"/>
 	
-	<property name="languageIdentifier" column="languageIdentifier" node="@languageIdentifier">    
-    	<type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">
-         	<param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier</param>         	
-      	</type>
-  	</property>
+    <property name="languageIdentifier" column="languageIdentifier" node="languageIdentifier" type="string"/>
+    
 	 <bag name="lexicalEntries" node="." lazy="extra">
          <key column="lexiconId" not-null="true" on-delete="cascade"/>
          <one-to-many class="de.tudarmstadt.ukp.lmf.model.core.LexicalEntry" node="LexicalEntry"/>

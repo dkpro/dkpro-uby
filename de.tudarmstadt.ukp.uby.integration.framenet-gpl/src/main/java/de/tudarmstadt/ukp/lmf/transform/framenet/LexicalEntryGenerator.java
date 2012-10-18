@@ -160,7 +160,7 @@ public class LexicalEntryGenerator {
 			// setting Definition
 			Definition definition = new Definition();
 			TextRepresentation textRepresentation = new TextRepresentation();
-			textRepresentation.setLanguageIdentifier(ELanguageIdentifier.en);
+			textRepresentation.setLanguageIdentifier(ELanguageIdentifier.ENGLISH);
 			textRepresentation.setWrittenText(FNUtils.filterTags(lu.getDefinition()));
 			List<TextRepresentation> textRepresentations = new ArrayList<TextRepresentation>();
 			textRepresentations.add(textRepresentation);
@@ -295,7 +295,7 @@ public class LexicalEntryGenerator {
 					sexID.append("FN_SenseExample_").append(senseExampleNumber++);
 					senseExample.setId(sexID.toString());
 					TextRepresentation sexTR = new TextRepresentation();
-					sexTR.setLanguageIdentifier(ELanguageIdentifier.en);
+					sexTR.setLanguageIdentifier(ELanguageIdentifier.ENGLISH);
 					sexTR.setWrittenText(FNUtils.filterTags(sentence.getText()));
 					List<TextRepresentation> sexTRs = new ArrayList<TextRepresentation>();
 					sexTRs.add(sexTR);
@@ -337,7 +337,7 @@ public class LexicalEntryGenerator {
 		// Creting a lemma
 		Lemma lemma = new Lemma();
 		FormRepresentation formRepresentation = new FormRepresentation();
-		formRepresentation.setLanguageIdentifier(ELanguageIdentifier.en);
+		formRepresentation.setLanguageIdentifier(ELanguageIdentifier.ENGLISH);
 		formRepresentation.setWrittenForm(lemmaString);
 		List<FormRepresentation> formRepresentations = new LinkedList<FormRepresentation>();
 		formRepresentations.add(formRepresentation);
@@ -450,7 +450,7 @@ public class LexicalEntryGenerator {
 						lexicalEntry.setId(createID());
 						List<FormRepresentation> formRepresentations = new ArrayList<FormRepresentation>();
 						FormRepresentation formRepresentation = new FormRepresentation();
-						formRepresentation.setLanguageIdentifier(ELanguageIdentifier.en);
+						formRepresentation.setLanguageIdentifier(ELanguageIdentifier.ENGLISH);
 						formRepresentation.setWrittenForm(lemma);
 						formRepresentations.add(formRepresentation);
 						Lemma lemmaObj = new Lemma();

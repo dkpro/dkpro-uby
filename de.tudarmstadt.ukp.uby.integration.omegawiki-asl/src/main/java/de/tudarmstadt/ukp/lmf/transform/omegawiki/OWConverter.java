@@ -36,7 +36,7 @@ import de.tudarmstadt.ukp.omegawiki.exception.OmegaWikiException;
  */
 public class OWConverter {
 	public int GlobalLanguage=OWLanguage.German;
-	public  ELanguageIdentifier GlobalLanguageLMF; //OW Language to be converted
+	public String GlobalLanguageLMF; //OW Language to be converted
 	public OmegaWiki  omegawiki; // Dictionary
 	private LexicalResource lexicalResource;  // Top-level class of LMF
 	private final String dtd_version;
@@ -47,12 +47,12 @@ public class OWConverter {
 		dtd_version = dtd;
 		if(language == OWLanguage.English)
 		{
-			GlobalLanguageLMF = ELanguageIdentifier.en;
+			GlobalLanguageLMF = ELanguageIdentifier.ENGLISH;
 			GlobalLanguage = OWLanguage.English;
 		}
 		else if(language == OWLanguage.German)
 		{
-			GlobalLanguageLMF = ELanguageIdentifier.de;
+			GlobalLanguageLMF = ELanguageIdentifier.GERMAN;
 			GlobalLanguage = OWLanguage.German;
 		}
 	}
@@ -74,7 +74,7 @@ public class OWConverter {
 		return this.GlobalLanguage;
 	}
 
-	public  ELanguageIdentifier getGloballanguagelmf()
+	public  String getGloballanguagelmf()
 	{
 		return GlobalLanguageLMF;
 	}

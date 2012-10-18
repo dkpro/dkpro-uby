@@ -17,7 +17,6 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.core;
 
-import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasLanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
@@ -34,7 +33,7 @@ public class TextRepresentation implements IHasLanguageIdentifier, Comparable<Te
 
 	// Language identifier of this TextRepresentation
 	@VarType(type = EVarType.ATTRIBUTE)
-	private ELanguageIdentifier languageIdentifier;
+	private String languageIdentifier;
 
 	// Orthography name of this TextRepresentation
 	@VarType(type = EVarType.ATTRIBUTE)
@@ -48,22 +47,12 @@ public class TextRepresentation implements IHasLanguageIdentifier, Comparable<Te
 	@VarType(type = EVarType.ATTRIBUTE)
 	private String writtenText;
 
-	/**
-	 * Returns the language identifier of this {@link TextRepresentation} instance.
-	 * @return the language identifier of this text representation or null, if the
-	 * language identifier is not set
-	 * @see ELanguageIdentifier
-	 */
-	public ELanguageIdentifier getLanguageIdentifier() {
+	
+	public String getLanguageIdentifier() {
 		return languageIdentifier;
 	}
 
-	/**
-	 * Sets the language identifier to this {@link TextRepresentation} instance.
-	 * @param languageIdentifier the language identifier to set
-	 * @see ELanguageIdentifier
-	 */
-	public void setLanguageIdentifier(ELanguageIdentifier languageIdentifier) {
+	public void setLanguageIdentifier(final String languageIdentifier) {
 		this.languageIdentifier = languageIdentifier;
 	}
 

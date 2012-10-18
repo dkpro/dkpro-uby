@@ -168,7 +168,7 @@ public class SynsetGenerator {
 				for(String definitionString : getDefinitions(wnSynset)){
 					Definition definition = new Definition();
 					TextRepresentation textRepresentation = new TextRepresentation();
-					textRepresentation.setLanguageIdentifier(ELanguageIdentifier.en);
+					textRepresentation.setLanguageIdentifier(ELanguageIdentifier.ENGLISH);
 					textRepresentation.setWrittenText(definitionString);
 					List<TextRepresentation> textRepresentations = new LinkedList<TextRepresentation>();
 					textRepresentations.add(textRepresentation);

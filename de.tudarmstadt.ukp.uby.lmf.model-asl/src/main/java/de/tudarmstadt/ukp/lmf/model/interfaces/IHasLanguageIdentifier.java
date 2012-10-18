@@ -23,22 +23,35 @@ import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
  * Interface for UBY-LMF classes that have a language identifier.
  * 
  * @author Zijad Maksuti
+ * @author Christian M. Meyer
  * @see ELanguageIdentifier
  *
  */
 public interface IHasLanguageIdentifier {
 	
 	/**
-	 * Get language identifier of this Object
-	 * @return this Objects LanguageIdentifier
+	 * Returns the language identifier of this instance. The languages are, 
+	 * in general, represented as ISO 639-3 codes. The most frequently used 
+	 * language codes, as well as our additions for representing 
+	 * macrolanguages, dialects, retired languages, and not-yet-standardized
+	 * languages are modeled as string constants in {@link ELanguageIdentifier}.
+	 * Data category reference: http://www.isocat.org/rest/dc/279
+	 * @return the language identifier of this instance or null, if no 
+	 *   certain language identifier has been set or the language is unknown.
 	 * @see ELanguageIdentifier
 	 */
-	public ELanguageIdentifier getLanguageIdentifier();
+	public String getLanguageIdentifier();
 	
 	/**
-	 * Set language identifier of this Object
-	 * @param languageIdentifier language identifier to be set
+	 * Set the given language identifier for this object. In most cases,
+	 * choosing one of the string constants in {@link ELanguageIdentifier}
+	 * should be sufficient. However, it is possible to use other language
+	 * identifiers that are not yet modeled as constants. Use valid 
+	 * ISO 639-3 codes in these cases or extend the set of constant types.
+	 * Data category reference: http://www.isocat.org/rest/dc/279  
+	 * @param languageIdentifier language identifier to be set.
 	 * @see ELanguageIdentifier
 	 */
-	public void setLanguageIdentifier(ELanguageIdentifier languageIdentifier);
+	public void setLanguageIdentifier(final String languageIdentifier);
+	
 }

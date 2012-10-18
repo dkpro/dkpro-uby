@@ -55,7 +55,7 @@ import de.tudarmstadt.ukp.omegawiki.exception.OmegaWikiException;
  *
  */
 class SenseGenerator {
-	private final  ELanguageIdentifier GlobalLanguageLMF;
+	private final  String GlobalLanguageLMF;
 
 	/*
 	 * Synset generator is needed for recovering

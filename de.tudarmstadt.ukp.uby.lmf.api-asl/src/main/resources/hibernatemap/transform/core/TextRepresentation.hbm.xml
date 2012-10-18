@@ -7,11 +7,9 @@
     <id column="textRepresentationId" type="long">
            <generator class="increment"/>
     </id>
-	<property name="languageIdentifier" column="languageIdentifier" node="@languageIdentifier">    
-    	<type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">
-         	<param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier</param>         	
-      	</type>
-  	</property>  	
+	
+    <property name="languageIdentifier" column="languageIdentifier" node="languageIdentifier" type="string"/>
+    
 	<property name="orthographyName" column="orthographyName" node="@orthographyName" type="string"/>	       	
 	<property name="geographicalVariant" column="geographicalVariant" node="@geographicalVariant" type="string"/>
 	<property name="writtenText" column="writtenText" node="@writtenText" type="text"/>
@@ -22,11 +20,9 @@
     <id column="textRepresentationId" type="long">
            <generator class="increment"/>
     </id>
-	<property name="languageIdentifier" column="languageIdentifier" node="@languageIdentifier">    
-    	<type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">
-         	<param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier</param>         	
-      	</type>
-  	</property>  	
+	
+    <property name="languageIdentifier" column="languageIdentifier" node="languageIdentifier" type="string"/>
+    
 	<property name="orthographyName" column="orthographyName" node="@orthographyName" type="string"/>	       	
 	<property name="geographicalVariant" column="geographicalVariant" node="@geographicalVariant" type="string"/>
 	<property name="writtenText" column="writtenText" node="@writtenText" type="text"/>
@@ -37,11 +33,9 @@
     <id column="textRepresentationId" type="long">
            <generator class="increment"/>
     </id>
-	<property name="languageIdentifier" column="languageIdentifier" node="@languageIdentifier">    
-    	<type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">
-         	<param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier</param>         	
-      	</type>
-  	</property>  	
+	
+    <property name="languageIdentifier" column="languageIdentifier" node="languageIdentifier" type="string"/>
+    
 	<property name="orthographyName" column="orthographyName" node="@orthographyName" type="string"/>	       	
 	<property name="geographicalVariant" column="geographicalVariant" node="@geographicalVariant" type="string"/>
 	<property name="writtenText" column="writtenText" node="@writtenText" type="text"/>
@@ -52,11 +46,9 @@
     <id column="textRepresentationId" type="long">
            <generator class="increment"/>
     </id>
-	<property name="languageIdentifier" column="languageIdentifier" node="@languageIdentifier">    
-    	<type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">
-         	<param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier</param>         	
-      	</type>
-  	</property>  	
+	
+    <property name="languageIdentifier" column="languageIdentifier" node="languageIdentifier" type="string"/>
+    
 	<property name="orthographyName" column="orthographyName" node="@orthographyName" type="string"/>	       	
 	<property name="geographicalVariant" column="geographicalVariant" node="@geographicalVariant" type="string"/>
 	<property name="writtenText" column="writtenText" node="@writtenText" type="text"/>

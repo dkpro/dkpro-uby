@@ -201,7 +201,7 @@ public class VerbNetExtractor {
 	 * 
 	 */
 	private  void convertVerbNetInput() {
-		lexicon.setLanguageIdentifier(ELanguageIdentifier.en);
+		lexicon.setLanguageIdentifier(ELanguageIdentifier.ENGLISH);
 		lexicon.setId("VN_Lexicon_0");
 		lexicon.setName(resourceID);
 		

@@ -101,7 +101,7 @@ public class GNConverter {
 		
 		//*** Setting Lexicon (only one since GermaNet is monolingual)***//
 		Lexicon lexicon = new Lexicon();
-		lexicon.setLanguageIdentifier(ELanguageIdentifier.de);
+		lexicon.setLanguageIdentifier(ELanguageIdentifier.GERMAN);
 		lexicon.setId("GN_Lexicon_0");
 		lexicon.setName("GermaNet");
 		LinkedList<Lexicon> lexicons = new LinkedList<Lexicon>();

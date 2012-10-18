@@ -106,8 +106,8 @@ public abstract class WikipediaLMFTransformer extends LMFDBTransformer {
 		}
 
 		Lexicon lexicon = new Lexicon();
-		ELanguageIdentifier lmfLang = WikipediaLMFMap.mapLanguage(wiki.getLanguage());
-		lexicon.setId(getLmfId(Lexicon.class, "lexiconWiki"+lmfLang));
+		String lmfLang = WikipediaLMFMap.mapLanguage(wiki.getLanguage());
+		lexicon.setId(getLmfId(Lexicon.class, "lexiconWiki" + lmfLang));
 		lexicon.setLanguageIdentifier(lmfLang);
 		lexicon.setName("Wikipedia");
 		return lexicon;
@@ -133,7 +133,7 @@ public abstract class WikipediaLMFTransformer extends LMFDBTransformer {
 				}
 
 				boolean alreadyExists = true;	// If true there was already an entry created for this page
-				ELanguageIdentifier wikiLmfLang = WikipediaLMFMap.mapLanguage(wiki.getLanguage());
+				String wikiLmfLang = WikipediaLMFMap.mapLanguage(wiki.getLanguage());
 				pageTitle = page.getTitle().getPlainTitle();
 				String name = page.getTitle().getEntity();
 				String id = "Art"+name;

@@ -219,7 +219,7 @@ public class IMSlexExtractor {
 	 * 
 	 */
 	private  void convertIMSlex() {
-		lexicon.setLanguageIdentifier(ELanguageIdentifier.de);
+		lexicon.setLanguageIdentifier(ELanguageIdentifier.GERMAN);
 		lexicon.setId("IMSlexSubcat_Lexicon_0");
 		lexicon.setName(resourceName);
 		

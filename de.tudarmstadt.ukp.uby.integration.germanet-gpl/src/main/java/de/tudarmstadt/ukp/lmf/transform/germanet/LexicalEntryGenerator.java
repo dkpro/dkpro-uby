@@ -305,7 +305,7 @@ public class LexicalEntryGenerator {
 		 List<FormRepresentation> formRepresentations = new LinkedList<FormRepresentation>();
 		 for(String orthName : mappings.keySet()){
 			 FormRepresentation formRepresentation = new FormRepresentation();
-			 formRepresentation.setLanguageIdentifier(ELanguageIdentifier.de);
+			 formRepresentation.setLanguageIdentifier(ELanguageIdentifier.GERMAN);
 			 formRepresentation.setWrittenForm(mappings.get(orthName));
 				String orthographyName = null;
 				if(orthName.equals("orthForm"))

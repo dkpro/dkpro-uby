@@ -20,7 +20,6 @@ package de.tudarmstadt.ukp.lmf.model.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasLanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.ConstraintSet;
@@ -44,7 +43,7 @@ public class Lexicon implements IHasID, IHasLanguageIdentifier {
 	
 	// LanguageIdentifier of the Lexicon
 	@VarType(type = EVarType.ATTRIBUTE)
-	private ELanguageIdentifier languageIdentifier;
+	private String languageIdentifier;
 	
 	// Id of this Lexicon
 	@VarType(type = EVarType.ATTRIBUTE)
@@ -191,22 +190,11 @@ public class Lexicon implements IHasID, IHasLanguageIdentifier {
 		this.constraintSets = constraintSets;
 	}
 
-	/**
-	 * Returns the language identifier of this {@link Lexicon} instance.
-	 * @return the language identifier of this lexicon or null, if the language identifier of the
-	 * lexicon is not set
-	 * @see ELanguageIdentifier 
-	 */
-	public ELanguageIdentifier getLanguageIdentifier() {
+	public String getLanguageIdentifier() {
 		return languageIdentifier;
 	}
 
-	/**
-	 * Sets the language identifier to this {@link Lexicon} instance.
-	 * @param languageIdentifier the language identifier to set
-	 * @see ELanguageIdentifier
-	 */
-	public void setLanguageIdentifier(ELanguageIdentifier languageIdentifier) {
+	public void setLanguageIdentifier(final String languageIdentifier) {
 		this.languageIdentifier = languageIdentifier;
 	}
 

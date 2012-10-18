@@ -148,7 +148,7 @@ public class UbyStatistics extends Uby{
 	 * 			The language identifier of the lexicon
 	 * @return the number of lemma+pos combinations
 	 */
-	public long countLemmaPosPerLexiconAndPosPrefixAndLanguage(String lexiconName, String prefix, ELanguageIdentifier lang){
+	public long countLemmaPosPerLexiconAndPosPrefixAndLanguage(String lexiconName, String prefix, String lang){
 			Set<String> l= getLemmaPosPerLexiconAndPosPrefixAndLanguage(lexiconName, prefix, lang);
 			int res = 0;
 			if (!l.isEmpty()){
@@ -222,7 +222,7 @@ public class UbyStatistics extends Uby{
 	 * @see EPartOfSpeech
 	 * @see ELanguageIdentifier
 	 */
-	public Set<String> getLemmaPosPerLexiconAndPosPrefixAndLanguage(String lexiconName, String prefix, ELanguageIdentifier lang){
+	public Set<String> getLemmaPosPerLexiconAndPosPrefixAndLanguage(String lexiconName, String prefix, String lang){
 			Criteria criteria = session.createCriteria(Lexicon.class,"l");
 
 			criteria = criteria.createCriteria("lexicalEntries", "e");

@@ -235,7 +235,7 @@ public class LexicalEntryGenerator {
 		Lemma lemma = new Lemma();
 		List<FormRepresentation> formRepresentations = new LinkedList<FormRepresentation>();
 		FormRepresentation formRepresentation = new FormRepresentation();
-		formRepresentation.setLanguageIdentifier(ELanguageIdentifier.en);
+		formRepresentation.setLanguageIdentifier(ELanguageIdentifier.ENGLISH);
 		formRepresentation.setWrittenForm(lemmaString);
 		formRepresentations.add(formRepresentation);
 		lemma.setFormRepresentations(formRepresentations);

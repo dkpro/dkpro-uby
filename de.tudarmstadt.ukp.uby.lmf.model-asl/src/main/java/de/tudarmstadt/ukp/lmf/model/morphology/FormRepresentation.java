@@ -17,7 +17,6 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.morphology;
 
-import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasLanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
@@ -34,7 +33,7 @@ public class FormRepresentation implements IHasLanguageIdentifier, Comparable<Fo
 	
 	// language identifier of this FormRepresentation
 	@VarType(type = EVarType.ATTRIBUTE)
-	private ELanguageIdentifier languageIdentifier;
+	private String languageIdentifier;
 	
 	// written form of this FormRepresentation
 	@VarType(type = EVarType.ATTRIBUTE)
@@ -60,22 +59,12 @@ public class FormRepresentation implements IHasLanguageIdentifier, Comparable<Fo
 	@VarType(type = EVarType.ATTRIBUTE)
 	private String orthographyName;
 
-	/**
-	 * Returns the unique language identifier of this {@link FormRepresentation} instance.
-	 * @return the unique language identifier of this form representation or null, if the
-	 * language identifier is not set
-	 * @see ELanguageIdentifier
-	 */
-	public ELanguageIdentifier getLanguageIdentifier() {
+
+	public String getLanguageIdentifier() {
 		return languageIdentifier;
 	}
 
-	/**
-	 * Sets the unique language identifier of this {@link FormRepresentation} instance.
-	 * @param languageIdentifier the unique language identifier to set
-	 * @see ELanguageIdentifier
-	 */
-	public void setLanguageIdentifier(ELanguageIdentifier languageIdentifier) {
+	public void setLanguageIdentifier(final String languageIdentifier) {
 		this.languageIdentifier = languageIdentifier;
 	}
 
