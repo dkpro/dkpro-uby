@@ -52,12 +52,12 @@ public class SynsetGenerator {
 		GlobalLanguage = globalLanguage;
 	}
 
-	public ELanguageIdentifier getGlobalLanguageLMF()
+	public String getGlobalLanguageLMF()
 	{
 		return GlobalLanguageLMF;
 	}
 
-	public void setGlobalLanguageLMF(ELanguageIdentifier globalLanguageLMF)
+	public void setGlobalLanguageLMF(String globalLanguageLMF)
 	{
 		GlobalLanguageLMF = globalLanguageLMF;
 	}
@@ -67,7 +67,7 @@ public class SynsetGenerator {
 		return omegawiki;
 	}
 
-	private ELanguageIdentifier GlobalLanguageLMF;
+	private String GlobalLanguageLMF;
 
 	private final OmegaWiki  omegawiki; // Omegawiki Dictionary
 
@@ -94,13 +94,13 @@ public class SynsetGenerator {
 		{
 
 			this.GlobalLanguage=OWLanguage.English;
-			this.GlobalLanguageLMF= ELanguageIdentifier.en;
+			this.GlobalLanguageLMF= ELanguageIdentifier.ENGLISH;
 		}
 		else if(language==OWLanguage.German)
 		{
 			System.out.println("German");
 			this.GlobalLanguage=OWLanguage.German;
-			this.GlobalLanguageLMF= ELanguageIdentifier.de;
+			this.GlobalLanguageLMF= ELanguageIdentifier.GERMAN;
 		}
 		this.omegawiki = omegawiki;
 	}

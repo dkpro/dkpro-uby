@@ -32,14 +32,13 @@ public class WikipediaLMFMap {
 	 * @param lang
 	 * @return
 	 */
-	public static ELanguageIdentifier mapLanguage(Language lang){
-		if(lang.equals(Language.english)) {
-			return ELanguageIdentifier.en;
-		}
-		else if(lang.equals(Language.german)) {
-			return ELanguageIdentifier.de;
-		}
-		else {
+	public static String mapLanguage(final Language lang){
+		if (lang.equals(Language.english)) {
+			return ELanguageIdentifier.ENGLISH;
+		} else
+		if (lang.equals(Language.german)) {
+			return ELanguageIdentifier.GERMAN;
+		} else {
 			return null;
 		}
 	}

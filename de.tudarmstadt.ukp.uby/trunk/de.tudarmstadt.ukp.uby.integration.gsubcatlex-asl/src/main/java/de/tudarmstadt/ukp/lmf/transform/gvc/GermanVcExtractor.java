@@ -161,7 +161,7 @@ public class GermanVcExtractor {
 	 * 
 	 */
 	private  void convertGermanVcInput() {
-		lexicon.setLanguageIdentifier(ELanguageIdentifier.de);
+		lexicon.setLanguageIdentifier(ELanguageIdentifier.GERMAN);
 		lexicon.setId("GVC_Lexicon_0");
 		lexicon.setName(resourceName);
 		

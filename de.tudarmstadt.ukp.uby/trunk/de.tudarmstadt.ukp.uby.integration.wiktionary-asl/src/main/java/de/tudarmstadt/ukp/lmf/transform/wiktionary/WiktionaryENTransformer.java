@@ -24,13 +24,12 @@ import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
-import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
+import de.tudarmstadt.ukp.wiktionary.api.IWikiString;
 import de.tudarmstadt.ukp.wiktionary.api.IWiktionaryEdition;
 import de.tudarmstadt.ukp.wiktionary.api.IWiktionaryEntry;
 import de.tudarmstadt.ukp.wiktionary.api.IWiktionarySense;
-import de.tudarmstadt.ukp.wiktionary.api.Language;
-import de.tudarmstadt.ukp.wiktionary.api.WikiString;
+import de.tudarmstadt.ukp.wiktionary.api.util.ILanguage;
 
 /**
  * Converts the English Wiktionary to LMF
@@ -41,7 +40,7 @@ import de.tudarmstadt.ukp.wiktionary.api.WikiString;
 public class WiktionaryENTransformer extends WiktionaryLMFTransformer {
 
 	public WiktionaryENTransformer(final DBConfig dbConfig,
-			final IWiktionaryEdition wkt, final Language wktLang,
+			final IWiktionaryEdition wkt, final ILanguage wktLang,
 			final String dtd) throws FileNotFoundException {
 		super(dbConfig, wkt, wktLang, dtd);
 	}
@@ -68,17 +67,30 @@ public class WiktionaryENTransformer extends WiktionaryLMFTransformer {
 			return null;
 		}
 		Lexicon lexicon = new Lexicon();
-		ELanguageIdentifier lmfLang = WiktionaryLMFMap.mapLanguage(wktLang);
-		lexicon.setId(getLmfId(Lexicon.class, "lexiconWkt"+lmfLang));
+		String lmfLang = WiktionaryLMFMap.mapLanguage(wktLang);
+		lexicon.setId(getLmfId(Lexicon.class, "lexiconWkt" + lmfLang));
 		lexicon.setLanguageIdentifier(lmfLang);
 		lexicon.setName("WiktionaryEN");
 		return lexicon;
 	}
+	
+	/*@Override
+	protected boolean considerSense(final IWiktionarySense wktSense) {
+		// TODO: JWKTL 0.15.4 still associates those three senses with a 
+		//   wrong language code. Should be fixed in the next release.
+		String entryId = wktSense.getEntry().getKey();
+		if ("290974:1".equals(entryId) 
+				|| "482476:1".equals(entryId)
+				|| "97982:2".equals(entryId))
+			return false;
+		else
+			return super.considerSense(wktSense);
+	}*/
 
 	@Override
 	protected void saveLabels(Sense sense, IWiktionarySense wktSense,
 			LexicalEntry entry, IWiktionaryEntry wktEntry) {
-		WikiString gloss = wktSense.getGloss();
+		IWikiString gloss = wktSense.getGloss();
 		saveLabels(gloss, sense, entry, wktEntry);						// Convert context labels and update LMF entry
 	}
 

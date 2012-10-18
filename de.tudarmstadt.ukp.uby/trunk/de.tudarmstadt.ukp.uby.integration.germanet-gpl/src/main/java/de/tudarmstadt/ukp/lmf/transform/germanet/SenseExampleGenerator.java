@@ -82,7 +82,7 @@ public class SenseExampleGenerator {
 			else
 				senseExample.setExampleType(EExampleType.senseInstance);
 			TextRepresentation tr = new TextRepresentation();
-			tr.setLanguageIdentifier(ELanguageIdentifier.de);
+			tr.setLanguageIdentifier(ELanguageIdentifier.GERMAN);
 			tr.setWrittenText(exampleText);
 			List<TextRepresentation> temp = new ArrayList<TextRepresentation>();
 			temp.add(tr);

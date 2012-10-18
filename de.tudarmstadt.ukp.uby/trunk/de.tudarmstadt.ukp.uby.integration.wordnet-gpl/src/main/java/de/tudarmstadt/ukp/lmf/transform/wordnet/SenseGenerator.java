@@ -161,7 +161,7 @@ class SenseGenerator {
 					senseExample.setId(id.toString());
 					senseExample.setExampleType(EExampleType.other);
 					TextRepresentation textRepresentation = new TextRepresentation();
-					textRepresentation.setLanguageIdentifier(ELanguageIdentifier.en);
+					textRepresentation.setLanguageIdentifier(ELanguageIdentifier.ENGLISH);
 					textRepresentation.setWrittenText(exampleSentence);
 					senseExample.setTextRepresentations(new ArrayList<TextRepresentation>(Arrays.asList(textRepresentation)));
 					senseExamples.add(senseExample);

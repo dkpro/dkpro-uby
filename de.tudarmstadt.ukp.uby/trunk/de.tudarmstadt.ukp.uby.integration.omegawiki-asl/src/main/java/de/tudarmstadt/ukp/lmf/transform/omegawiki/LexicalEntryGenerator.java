@@ -46,7 +46,7 @@ import de.tudarmstadt.ukp.omegawiki.exception.OmegaWikiException;
  */
 public class LexicalEntryGenerator {
 	private  int GlobalLanguage;
-	private  ELanguageIdentifier GlobalLanguageLMF;
+	private  String GlobalLanguageLMF;
 	private final OmegaWiki  omegawiki;
 	private final Lexicon  lexicon;
 

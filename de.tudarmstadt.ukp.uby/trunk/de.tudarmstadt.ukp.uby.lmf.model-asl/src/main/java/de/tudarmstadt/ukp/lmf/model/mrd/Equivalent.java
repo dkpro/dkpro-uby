@@ -18,6 +18,7 @@
 package de.tudarmstadt.ukp.lmf.model.mrd;
 
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
+import de.tudarmstadt.ukp.lmf.model.interfaces.IHasLanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
@@ -27,39 +28,18 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
  * The class is in a zero to many aggregation of the {@link Sense} class.
  * @author Christian M. Meyer
  */
-public class Equivalent {
+public class Equivalent implements IHasLanguageIdentifier {
 	
-	/*
-	geographicalVariant 1851 External link mark
-
-	    e.g., Moscow 
-
-	orthographyName 2176 External link mark
-
-	    e.g., since 1956 
-
-	transliteration 1848 External link mark
-
-	    e.g., rasténije 
-*/
-
 	// http://www.isocat.org/rest/dc/279
 	@VarType(type = EVarType.ATTRIBUTE)
-	private String languageIdentifer;
+	private String languageIdentifier;
 
 	// http://www.isocat.org/rest/dc/1836
 	@VarType(type = EVarType.ATTRIBUTE)
 	private String writtenForm;
 
-	// http://www.isocat.org/rest/dc/1851
-//	@VarType(type = EVarType.ATTRIBUTE_OPTIONAL)
-//	private String geographicalVariant;
-//
-//	// http://www.isocat.org/rest/dc/2176
-//	@VarType(type = EVarType.ATTRIBUTE_OPTIONAL)
-//	private String orthographyName;
-
 	// http://www.isocat.org/rest/dc/1848
+//	transliteration 1848, e.g., rasténije
 	@VarType(type = EVarType.ATTRIBUTE_OPTIONAL)
 	private String transliteration;
 	
@@ -67,31 +47,16 @@ public class Equivalent {
 	@VarType(type = EVarType.ATTRIBUTE_OPTIONAL)
 	private String usage;
 	
-	/**
-	 * Returns an identifier of the target language, a sense is translated to.
-	 * That is, the language of the {@link #getWrittenForm()}. An example is
-	 * "rus" indicating a translation equivalent in the Russian language.
-	 * Data category reference: http://www.isocat.org/rest/dc/279
-	 * @return A string representation of the language encoded as an ISO 
-	 *   639-2 language code. The string might be empty for unknown languages,
-	 *   but is never null.
-	 */
-	public String getLanguageIdentifer() {
-		return languageIdentifer;
-	}
+	// http://www.isocat.org/rest/dc/1851
+//	geographicalVariant 1851, e.g., Moscow
+//	@VarType(type = EVarType.ATTRIBUTE_OPTIONAL)
+//	private String geographicalVariant;
 
-	/**
-	 * Assigns the given language identifier for this equivalent.
-	 * @param languageIdentifer A string representation of the target language 
-	 *   encoded as an ISO 639-2 language code. The string might be empty for 
-	 *   unknown languages, but never null.
-	 * @throws NullPointerException if the languageIdentifier is null.
-	 */
-	public void setLanguageIdentifer(final String languageIdentifer) {
-		if (languageIdentifer == null)
-			throw new NullPointerException("languageIdentifier is not to be null; use an empty string for unknown language.");
-		this.languageIdentifer = languageIdentifer;
-	}
+	// http://www.isocat.org/rest/dc/2176
+//	orthographyName 2176, e.g., since 1956
+//	@VarType(type = EVarType.ATTRIBUTE_OPTIONAL)
+//	private String orthographyName;
+
 	
 	/**
 	 * Returns the written word form of the translation. For example,
@@ -103,10 +68,10 @@ public class Equivalent {
 	public String getWrittenForm() {
 		return writtenForm;
 	}
-	
+
 	/**
 	 * Assigns the given written form to this equivalent.
-	 * @param languageIdentifer A string representation of the written form;
+	 * @param languageIdentifier A string representation of the written form;
 	 *   never to be null or empty.
 	 * @throws NullPointerException if the writtenForm is null or empty.
 	 */
@@ -114,6 +79,39 @@ public class Equivalent {
 		if (writtenForm == null || writtenForm.isEmpty())
 			throw new NullPointerException("writtenForm is not to be null or empty!");
 		this.writtenForm = writtenForm;
+	}
+	
+	public String getLanguageIdentifier() {
+		return languageIdentifier;
+	}
+	
+	public void setLanguageIdentifier(final String languageIdentifier) {
+		if (languageIdentifier == null)
+			throw new NullPointerException("languageIdentifier is not to be null; use an empty string for unknown language.");
+		this.languageIdentifier = languageIdentifier;
+	}
+
+	/** Returns a transliteration of the translated word. The Russian 
+	 *  translation "растение" of "plant" can, for instance, be 
+	 *  transliterated as "rasténije".*/
+	public String getTransliteration() {
+		return transliteration;
+	}
+	
+	public void setTransliteration(final String transliteration) {
+		this.transliteration = transliteration;
+	}
+
+	/** Returns additional usage information of this translation including
+	 *  syntactic information (like grammatical gender, number, case, etc.),
+	 *  frequency (like "rare") or comments explaining the situation(s) in 
+	 *  which this translation is to be used. */
+	public String getUsage() {
+		return usage;
+	}
+	
+	public void setUsage(final String usage) {
+		this.usage = usage;
 	}
 	
 //	public String getGeographicalVariant() {
@@ -124,7 +122,7 @@ public class Equivalent {
 //		this.geographicalVariant = geographicalVariant;
 //	}
 	
-	/** Returns the name of the orthography system that the 
+	/* Returns the name of the orthography system that the 
 	 * {@link #getWrittenForm()} follows (e.g., German orthography 
 	 * reform 1996). The orthographyName should be empty if no specific
 	 * orthography is encoded. 
@@ -139,21 +137,5 @@ public class Equivalent {
 //	public void setOrthographyName(final String orthographyName) {
 //		this.orthographyName = orthographyName;
 //	}
-	
-	public String getTransliteration() {
-		return transliteration;
-	}
-	
-	public void setTransliteration(final String transliteration) {
-		this.transliteration = transliteration;
-	}
-
-	public String getUsage() {
-		return usage;
-	}
-	
-	public void setUsage(final String usage) {
-		this.usage = usage;
-	}
 	
 }

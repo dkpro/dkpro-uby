@@ -131,7 +131,7 @@ public class LMFXmlWriterTest {
 	
 	private static final String globalInformation_label = "globalInformation_label";
 	
-	private static final ELanguageIdentifier lexicon_languageIdentifier = ELanguageIdentifier.en;
+	private static final String lexicon_languageIdentifier = ELanguageIdentifier.ENGLISH;
 	private static final String lexicon_name = "lexicon_name";
 	private static final String lexicon_id = "lexicon_id";
 	
@@ -139,7 +139,7 @@ public class LMFXmlWriterTest {
 	private static final EPartOfSpeech lexicalEntry_partOfSpeech = EPartOfSpeech.adjective;
 	private static final String lexicalEntry_separableParticle = "lexicalEntry_separableParticle";
 	
-	private static final ELanguageIdentifier formRepresentation_languageIdentifier = ELanguageIdentifier.de;
+	private static final String formRepresentation_languageIdentifier = ELanguageIdentifier.GERMAN;
 	private static final String formRepresentation_writtenForm = "formRepresentation_writtenForm";
 	private static final String formRepresentation_phoneticForm = "formRepresentation_phoneticForm";
 	private static final String formRepresentation_sound = "formRepresentation_sound";
@@ -174,7 +174,7 @@ public class LMFXmlWriterTest {
 	private static final EContextType context_contextType = EContextType.corpusEvidence;
 	private static final String context_source = "context_source";
 	
-	private static final ELanguageIdentifier textRepresentation_languageIdentifier = ELanguageIdentifier.iso639_srp;
+	private static final String textRepresentation_languageIdentifier = ELanguageIdentifier.ISO639_SRP;
 	private static final String textRepresentation_orthographyName = "textRepresentation_orthographyName";
 	private static final String textRepresentation_geographicalVariant = "textRepresentation_geographicalVariant";
 	private static final String textRepresentation_writtenText = "textRepresentation_writtenText";

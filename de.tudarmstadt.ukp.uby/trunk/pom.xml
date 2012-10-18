@@ -94,7 +94,7 @@
 			<dependency>
 				<groupId>de.tudarmstadt.ukp.wiktionary</groupId>
 				<artifactId>de.tudarmstadt.ukp.wiktionary</artifactId>
-				<version>0.15.2</version>
+				<version>0.16.1</version>
 			</dependency>
 			<dependency>
 				<groupId>dom4j</groupId>

@@ -106,7 +106,7 @@ public class SemanticPredicateGenerator {
 		Definition definition = new Definition();
 		List<TextRepresentation> textRepresentations = new LinkedList<TextRepresentation>();
 		TextRepresentation textRepresentation = new TextRepresentation();
-		textRepresentation.setLanguageIdentifier(ELanguageIdentifier.en);
+		textRepresentation.setLanguageIdentifier(ELanguageIdentifier.ENGLISH);
 		textRepresentation.setWrittenText(FNUtils.filterTags(frame.getDefinition()));
 		textRepresentations.add(textRepresentation);
 		definition.setTextRepresentations(textRepresentations);
@@ -214,7 +214,7 @@ public class SemanticPredicateGenerator {
 			Definition definition = new Definition();
 			List<TextRepresentation> textRepresentations = new ArrayList<TextRepresentation>();
 			TextRepresentation textRepresentation = new TextRepresentation();
-			textRepresentation.setLanguageIdentifier(ELanguageIdentifier.en);
+			textRepresentation.setLanguageIdentifier(ELanguageIdentifier.ENGLISH);
 			textRepresentation.setWrittenText(FNUtils.filterTags(fe.getDefinition()));
 			textRepresentations.add(textRepresentation);
 			definition.setTextRepresentations(textRepresentations);

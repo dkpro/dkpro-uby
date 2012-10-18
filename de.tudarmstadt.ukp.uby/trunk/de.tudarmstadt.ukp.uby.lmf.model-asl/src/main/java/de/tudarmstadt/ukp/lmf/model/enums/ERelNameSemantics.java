@@ -25,25 +25,15 @@ package de.tudarmstadt.ukp.lmf.model.enums;
  * @author Christian M. Meyer
  *
  */
-public enum ERelNameSemantics {
-
-	 antonym("antonym"),
-	 synonym("synonym"),
-	 hypernym("hypernym"),
-	 hyponym("hyponym"),
-	 meronym("meronym"),
-	 holonym("holonym");
+public final class ERelNameSemantics {
 	
-	 
-	 private String name;
-	 
-	 private ERelNameSemantics(final String name) {
-		this.name = name;
-	}
-	 
-	 @Override
-	 public String toString() {
-		 return name;
-	 };
-	 
+	public static final String ANTONYM = "antonym";
+	public static final String SYNONYM = "synonym";
+	public static final String HYPERNYM = "hypernym";
+	public static final String HYPONYM = "hyponym";
+	public static final String MERONYM = "meronym";
+	public static final String HOLONYM = "holonym";
+		 
+	private ERelNameSemantics() {} // Avoid instanciation.
+
 }

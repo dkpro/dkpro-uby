@@ -105,7 +105,7 @@ public class SynsetGenerator {
 					Definition definition = new Definition();
 					List<TextRepresentation> textRepresentations = new LinkedList<TextRepresentation>();
 					TextRepresentation textRepresentation = new TextRepresentation();
-					textRepresentation.setLanguageIdentifier(ELanguageIdentifier.de);
+					textRepresentation.setLanguageIdentifier(ELanguageIdentifier.GERMAN);
 					textRepresentation.setWrittenText(writtenText);
 					textRepresentations.add(textRepresentation);
 					definition.setTextRepresentations(textRepresentations);
