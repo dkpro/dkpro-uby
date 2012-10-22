@@ -48,53 +48,60 @@ languageIdentifier 	http://www.isocat.org/datcat/DC-279
 <!ELEMENT LexicalEntry (Lemma, WordForm*, RelatedForm*, Sense*, SyntacticBehaviour*, ListOfComponents?, Frequency*)>
 <!ATTLIST LexicalEntry
     id ID #REQUIRED
-    partOfSpeech (adjective|adverb|pronominalAdverb|preposition|postposition|circumposition|
-    determiner|possessiveDeterminer|indefiniteDeterminer|demonstrativeDeterminer|interrogativeDeterminer|numeral|interjection|
-    conjunction|coordinatingConjunction|subordinatingConjunction|
-    noun|nounCommon|nounProper|pronoun|personalPronoun|
-    reflexivePersonalPronoun|possessivePronoun|demonstrativePronoun|indefinitePronoun|relativePronoun|interrogativePronoun|
-    particle|negativeParticle|infinitiveParticle|comparativeParticle|answerParticle|
-    verbAuxiliary|verbModal|verbMain|verb) #REQUIRED
+    partOfSpeech (adjective|adverb|adverbPronominal|
+    adpositionPreposition|adpositionPostposition|adpositionCircumposition|
+    determiner|determinerArticle|determinerPossessive|determinerIndefinite|determinerDemonstrative|determinerInterrogative|numeral|
+    interjection|interjectionSalutation|interjectionOnomatopoeia|
+    phraseme|phrasemeIdiom|phrasemeCollocation|phrasemeProverb|phrasemeMnemonic|
+    conjunction|conjunctionCoordinating|conjunctionSubordinating|
+    noun|nounCommon|nounProper|nounProperFirstName|nounProperLastName|nounProperToponym|
+    pronoun|pronounPersonal|pronounPossessive|pronounDemonstrative|pronounRelative|pronounIndefinite|
+    pronounPersonalReflexive|pronounPersonalIrreflexive|pronounInterrogative|
+    particle|particleNegative|particleInfinitive|particleComparative|particleAnswer|
+    particleModal|particleFocus|particleIntensifying|
+    verbAuxiliary|verbModal|verbMain|verb|
+    abbreviation|abbreviationAcronym|abbreviationInitialism|
+    affix|affixPrefix|affixSuffix|contraction) #REQUIRED
     separableParticle CDATA #IMPLIED>  
   
 <!-- 
 partOfSpeech	http://www.isocat.org/datcat/DC-396
 adjective	http://www.isocat.org/datcat/DC-1230
 adverb	http://www.isocat.org/datcat/DC-1232
-pronominalAdverb http://www.isocat.org/datcat/DC-2998
-preposition 	http://www.isocat.org/datcat/DC-1366
-postposition 	http://www.isocat.org/datcat/DC-1360
-circumposition 	http://www.isocat.org/datcat/DC-1906
+adverbPronominal http://www.isocat.org/datcat/DC-2998
+adpositionPreposition 	http://www.isocat.org/datcat/DC-1366
+adpositionPostposition 	http://www.isocat.org/datcat/DC-1360
+adpositionCircumposition 	http://www.isocat.org/datcat/DC-1906
 
 determiner 	http://www.isocat.org/datcat/DC-1272
-possessiveDeterminer 	http://www.isocat.org/datcat/DC-1357
-indefiniteDeterminer 	http://www.isocat.org/datcat/DC-1307
-demonstrativeDeterminer 	http://www.isocat.org/datcat/DC-1269
-interrogativeDeterminer 	http://www.isocat.org/datcat/DC-1320
+determinerPossessive 	http://www.isocat.org/datcat/DC-1357
+determinerIndefinite 	http://www.isocat.org/datcat/DC-1307
+determinerDemonstrative 	http://www.isocat.org/datcat/DC-1269
+determinerInterrogative 	http://www.isocat.org/datcat/DC-1320
 numeral 	http://www.isocat.org/datcat/DC-1334
 interjection 	http://www.isocat.org/datcat/DC-1318
 
 conjunction 	http://www.isocat.org/datcat/DC-3132
-coordinatingConjunction 	http://www.isocat.org/datcat/DC-1262
-subordinatingConjunction 	http://www.isocat.org/datcat/DC-1393
+conjunctionCoordinating 	http://www.isocat.org/datcat/DC-1262
+conjunctionSubordinating 	http://www.isocat.org/datcat/DC-1393
 
 noun 	http://www.isocat.org/datcat/DC-3347
 nounCommon 	http://www.isocat.org/datcat/DC-385
 nounProper 	http://www.isocat.org/datcat/DC-1371
 pronoun 	http://www.isocat.org/datcat/DC-1370
-personalPronoun 	http://www.isocat.org/datcat/DC-3013
-reflexivePersonalPronoun 	http://www.isocat.org/datcat/DC-3014
-possessivePronoun 	http://www.isocat.org/datcat/DC-1359
-demonstrativePronoun 	http://www.isocat.org/datcat/DC-1270
-indefinitePronoun 	http://www.isocat.org/datcat/DC-1309
-relativePronoun 	http://www.isocat.org/datcat/DC-1380
-interrogativePronoun 	http://www.isocat.org/datcat/DC-1321
+pronounPersonal 	http://www.isocat.org/datcat/DC-3013
+pronounPersonalReflexive 	http://www.isocat.org/datcat/DC-3014
+pronounPossessive 	http://www.isocat.org/datcat/DC-1359
+pronounDemonstrative 	http://www.isocat.org/datcat/DC-1270
+pronounIndefinite 	http://www.isocat.org/datcat/DC-1309
+pronounRelative 	http://www.isocat.org/datcat/DC-1380
+pronounInterrogative 	http://www.isocat.org/datcat/DC-1321
 
 particle 	http://www.isocat.org/datcat/DC-3372
-negativeParticle 	http://www.isocat.org/datcat/DC-1894
-infinitiveParticle 	http://www.isocat.org/datcat/DC-1896
-comparativeParticle 	http://www.isocat.org/datcat/DC-1922
-answerParticle 	http://www.isocat.org/datcat/DC-2891
+particleNegative 	http://www.isocat.org/datcat/DC-1894
+particleInfinitive 	http://www.isocat.org/datcat/DC-1896
+particleComparative 	http://www.isocat.org/datcat/DC-1922
+particleAnswer 	http://www.isocat.org/datcat/DC-2891
 
 verbAuxiliary 	http://www.isocat.org/datcat/DC-1244
 verbModal 	http://www.isocat.org/datcat/DC-1329
