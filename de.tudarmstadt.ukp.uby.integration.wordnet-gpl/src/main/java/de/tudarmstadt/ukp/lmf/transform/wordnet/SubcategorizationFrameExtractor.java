@@ -29,6 +29,7 @@ import de.tudarmstadt.ukp.lmf.model.enums.EComplementizer;
 import de.tudarmstadt.ukp.lmf.model.enums.EDeterminer;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalFunction;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalNumber;
+import de.tudarmstadt.ukp.lmf.model.enums.ELabelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticCategory;
 import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticProperty;
 import de.tudarmstadt.ukp.lmf.model.enums.ETense;
@@ -359,7 +360,7 @@ public class SubcategorizationFrameExtractor {
 						// Create a semantic label
 						SemanticLabel semanticLabel = new SemanticLabel();
 						semanticLabel.setLabel(splits[1]);
-						semanticLabel.setType("selectionalPreference");
+						semanticLabel.setType(ELabelTypeSemantics.SELECTIONALPREFERENCE);
 						List<SemanticLabel> semanticLabels = new LinkedList<SemanticLabel>();
 						semanticLabels.add(semanticLabel);
 						semanticArgument.setSemanticLabels(semanticLabels);
