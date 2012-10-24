@@ -69,10 +69,10 @@ public class FNUtils {
 			case Determiner : return EPartOfSpeech.determiner;
 			case Interjection : return EPartOfSpeech.interjection;
 			case Noun : return EPartOfSpeech.noun;
-			case Preposition : return EPartOfSpeech.preposition;
+			case Preposition : return EPartOfSpeech.adpositionPreposition;
 			case Pronoun : return EPartOfSpeech.pronoun;
 			case Verb : return EPartOfSpeech.verb;
-			case SCON : return EPartOfSpeech.subordinatingConjunction;
+			case SCON : return EPartOfSpeech.conjunctionCoordinating;
 			default : return null;
 		}
 	}
