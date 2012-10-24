@@ -39,6 +39,7 @@ import de.tudarmstadt.ukp.lmf.model.enums.EComplementizer;
 import de.tudarmstadt.ukp.lmf.model.enums.EDeterminer;
 import de.tudarmstadt.ukp.lmf.model.enums.EExampleType;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalFunction;
+import de.tudarmstadt.ukp.lmf.model.enums.ELabelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalNumber;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
@@ -483,7 +484,7 @@ public class VerbNetExtractor {
 							List<SemanticLabel> semanticLabels = new LinkedList<SemanticLabel>();
 							SemanticLabel semanticLabel = new SemanticLabel();
 							semanticLabel.setLabel(selRes);
-							semanticLabel.setType("selectionalPreference");
+							semanticLabel.setType(ELabelTypeSemantics.SELECTIONALPREFERENCE);
 							semanticLabels.add(semanticLabel);
 							semanticArgument.setSemanticLabels(semanticLabels);
 						} else {
@@ -533,7 +534,7 @@ public class VerbNetExtractor {
 								List<SemanticLabel> semanticLabels = new LinkedList<SemanticLabel>();
 								SemanticLabel semanticLabel = new SemanticLabel();
 								semanticLabel.setLabel(selRes);
-								semanticLabel.setType("selectionalPreference");
+								semanticLabel.setType(ELabelTypeSemantics.SELECTIONALPREFERENCE);
 								semanticLabels.add(semanticLabel);
 								semanticArgument.setSemanticLabels(semanticLabels);
 							} else {
