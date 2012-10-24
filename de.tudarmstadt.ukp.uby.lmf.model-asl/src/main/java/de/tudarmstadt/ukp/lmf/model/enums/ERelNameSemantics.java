@@ -20,9 +20,11 @@ package de.tudarmstadt.ukp.lmf.model.enums;
 /**
  * Frequently used relation names for {@link SenseRelation}s and 
  * {@link SynsetRelation}s. Relation names are not limited to those specified
- * by this enumeration; the enumeration focuses on the most common relations.
+ * by this enumeration; the enumeration focuses on the most common relations
+ * and on those relations used in WordNet and GermaNet.
  * 
  * @author Christian M. Meyer
+ * @author Eckle-Kohler
  *
  */
 public final class ERelNameSemantics {
@@ -33,7 +35,27 @@ public final class ERelNameSemantics {
 	public static final String HYPONYM = "hyponym";
 	public static final String MERONYM = "meronym";
 	public static final String HOLONYM = "holonym";
-		 
+	public static final String ENTAILS = "entails";
+	public static final String ENTAILEDBY = "entailedBy";
+	public static final String SEEALSO = "seeAlso";
+	public static final String RELATED = "related";
+	public static final String CAUSES = "causes";
+	public static final String CAUSEDBY = "causedBy";
+	public static final String MERONYMCOMPONENT = "meronymComponent";
+	public static final String HOLONYMCOMPONENT = "holonymComponent";
+	
+	public static final String HOLONYMSUBSTANCE = "holonymSubstance";
+	public static final String MERONYMSUBSTANCE = "meronymSubstance";
+	
+	public static final String MERONYMMEMBER = "meronymMember";
+	public static final String HOLONYMMEMBER = "holonymMember";
+	
+	public static final String HOLONYMPORTION = "holonymPortion";
+	public static final String MERONYMPORTION = "meronymPortion";
+	
+	public static final String MERONYMPART = "meronymPart";
+	public static final String HOLONYMPART = "holonymPart";
+	
 	private ERelNameSemantics() {} // Avoid instanciation.
 
 }
