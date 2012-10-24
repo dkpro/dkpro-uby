@@ -22,20 +22,22 @@ package de.tudarmstadt.ukp.lmf.model.enums;
  * {@link SenseRelation} or {@link SynsetRelation} class.
  * 
  * @author Zijad Maksuti
+ * @author Eckle-Kohler
  *
  */
 public enum ERelTypeSemantics {
 	
 	taxonomic,
 	partWhole,
-	association,
-	label,
-	labelOmegaWiki,
-	predicative,
-	predicativeOmegaWiki,
-	complementary,
+	association, // e.g. 
+	label,	// e.g., region, topc, but also capital, currency 
+	predicative, // e.g., is played by, flows through 
+	complementary, // e.g. antonym
 	
-	@Deprecated
-	translation;
+	@Deprecated translation,
+
+	@Deprecated labelOmegaWiki,
+	
+	@Deprecated predicativeOmegaWiki
 	
 }
