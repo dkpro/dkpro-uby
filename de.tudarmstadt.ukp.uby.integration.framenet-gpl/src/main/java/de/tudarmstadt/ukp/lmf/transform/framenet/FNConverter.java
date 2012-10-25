@@ -69,7 +69,7 @@ public class FNConverter {
 
 		//*** Setting Lexicon (only one since FrameNet is monolingual)***//
 		Lexicon lexicon = new Lexicon();
-		lexicon.setLanguageIdentifier(ELanguageIdentifier.ENGLISH);
+		lexicon.setLanguageIdentifier(ELanguageIdentifier.en);
 		lexicon.setId("FN_Lexicon_0");
 		lexicon.setName("FrameNet");
 		LinkedList<Lexicon> lexicons = new LinkedList<Lexicon>();
