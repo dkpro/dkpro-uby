@@ -20,6 +20,7 @@ package de.tudarmstadt.ukp.lmf.transform.wiktionary.labels;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.tudarmstadt.ukp.lmf.model.enums.ELabelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
 import de.tudarmstadt.ukp.lmf.model.morphology.FormRepresentation;
 import de.tudarmstadt.ukp.lmf.model.morphology.WordForm;
@@ -58,23 +59,17 @@ public class WiktionaryLabelLMFMap {
 		WiktionaryLabelType type = label.getLabelType();
 		
 		if(type.equals(WiktionaryLabelType.PERIOD)){
-			semanticLabel.setType("timePeriodOfUsage"); // style label
-			//subjectField.setRegisterType(ERegisterType.time);
+			semanticLabel.setType(ELabelTypeSemantics.TIMEPERIODOFUSAGE);
 		}else if(type.equals(WiktionaryLabelType.QUALIFIER)){
-			semanticLabel.setType("usage");
-			//subjectField.setRegisterType(ERegisterType.usage);
+			semanticLabel.setType(ELabelTypeSemantics.USAGE);
 		}else if(type.equals(WiktionaryLabelType.REGIONAL)){
-			semanticLabel.setType("regionOfUsage");
-			//subjectField.setRegisterType(ERegisterType.region);
+			semanticLabel.setType(ELabelTypeSemantics.REGIONOFUSAGE);
 		}else if(type.equals(WiktionaryLabelType.USAGE)){
-			semanticLabel.setType("register");
-			//subjectField.setRegisterType(ERegisterType.usage);
+			semanticLabel.setType(ELabelTypeSemantics.REGISTER);
 		}else if(type.equals(WiktionaryLabelType.TOPIC)){
-			semanticLabel.setType("domain");
-			//subjectField.setRegisterType(ERegisterType.usage);
+			semanticLabel.setType(ELabelTypeSemantics.DOMAIN);
 		}else if(type.equals(WiktionaryLabelType.GRAMMATICAL)){
-			semanticLabel.setType("syntax");
-			//subjectField.setRegisterType(ERegisterType.usage);
+			semanticLabel.setType(ELabelTypeSemantics.SYNTAX);
 		}
 		
 		return semanticLabel;

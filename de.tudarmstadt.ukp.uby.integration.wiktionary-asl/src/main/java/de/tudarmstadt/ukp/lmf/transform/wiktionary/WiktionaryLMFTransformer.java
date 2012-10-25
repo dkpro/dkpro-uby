@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import de.tudarmstadt.ukp.lmf.model.core.Definition;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
@@ -59,6 +60,7 @@ import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrameSet;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 import de.tudarmstadt.ukp.lmf.transform.LMFDBTransformer;
 import de.tudarmstadt.ukp.lmf.transform.StringUtils;
+import de.tudarmstadt.ukp.lmf.transform.wiktionary.TemplateParser.EtymologyTemplateHandler;
 import de.tudarmstadt.ukp.lmf.transform.wiktionary.labels.WiktionaryLabel;
 import de.tudarmstadt.ukp.lmf.transform.wiktionary.labels.WiktionaryLabelLMFMap;
 import de.tudarmstadt.ukp.lmf.transform.wiktionary.labels.WiktionaryLabelLoader;
@@ -278,7 +280,7 @@ public abstract class WiktionaryLMFTransformer extends LMFDBTransformer {
 			Statement statement = new Statement();
 			statement.setStatementType(EStatementType.etymology);
 			statement.setTextRepresentations(createTextRepresentationList(
-					etymology.getPlainText(), wktEntry.getPage().getEntryLanguage()));
+					convertEtymology(etymology), wktEntry.getPage().getEntryLanguage()));
 			statements.add(statement);
 			definition.setStatements(statements);
 		}
@@ -539,6 +541,38 @@ public abstract class WiktionaryLMFTransformer extends LMFDBTransformer {
 	private static String convert(final String text, int maxLength) {
 		return StringUtils.replaceNonUtf8(
 				StringUtils.replaceHtmlEntities(text), maxLength);
+	}
+
+	protected static final Pattern COMMENT_PATTERN = Pattern.compile("<!--.+?-->");
+	protected static final Pattern QUOTES_PATTERN = Pattern.compile("'''?");
+	protected static final Pattern WIKILINK_PATTERN = Pattern.compile("\\[\\[((?:[^|\\]]+?\\|)*)([^|\\]]+?)\\]\\]");
+	protected static final Pattern TEMPLATE_PATTERN = Pattern.compile("\\{\\{.+?\\}\\}");
+	protected static final Pattern REFERENCES_PATTERN = Pattern.compile("<ref[^>]*>.+?</ref>");
+	protected static final Pattern HTML_PATTERN = Pattern.compile("<[^>]+>");
+	protected static final Pattern WHITESPACE_PATTERN = Pattern.compile("\\s\\s+");
+	
+	@Deprecated
+	public static String makePlainText(final String wikiText) {
+		String result = wikiText;
+		result = result.replace("\t", " ");
+		result = COMMENT_PATTERN.matcher(result).replaceAll("");	
+		result = QUOTES_PATTERN.matcher(result).replaceAll("");
+		result = WIKILINK_PATTERN.matcher(result).replaceAll("$2");
+		result = REFERENCES_PATTERN.matcher(result).replaceAll("");
+		result = TEMPLATE_PATTERN.matcher(result).replaceAll("");
+		result = HTML_PATTERN.matcher(result).replaceAll("");
+		result = result.replace("’", "'");
+		result = result.replace("�", "'");
+		result = result.replace("°", "");
+		result = WHITESPACE_PATTERN.matcher(result).replaceAll(" ");
+		while (result.length() > 0 && "*: ".contains(result.substring(0, 1)))
+			result = result.substring(1);
+		return result.trim();
+	}
+	
+	protected String convertEtymology(final IWikiString etymology) {
+		String result = TemplateParser.parse(etymology.getText(), new EtymologyTemplateHandler());
+		return makePlainText(result);
 	}
 
 }
