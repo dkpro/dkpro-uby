@@ -2,13 +2,13 @@
  * Copyright 2012
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,7 +24,6 @@ import java.util.LinkedList;
 import de.tudarmstadt.ukp.lmf.model.core.GlobalInformation;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
-import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.omegawiki.api.OWLanguage;
 import de.tudarmstadt.ukp.omegawiki.api.OmegaWiki;
 import de.tudarmstadt.ukp.omegawiki.exception.OmegaWikiException;
@@ -45,16 +44,18 @@ public class OWConverter {
 		super();
 		this.lexicalResource = lexicalResource;
 		dtd_version = dtd;
-		if(language == OWLanguage.English)
-		{
-			GlobalLanguageLMF = ELanguageIdentifier.ENGLISH;
-			GlobalLanguage = OWLanguage.English;
-		}
-		else if(language == OWLanguage.German)
-		{
-			GlobalLanguageLMF = ELanguageIdentifier.GERMAN;
-			GlobalLanguage = OWLanguage.German;
-		}
+		this.GlobalLanguage=language;
+		this.GlobalLanguageLMF= OmegaWikiLMFMap.mapLanguage(language);
+//		if(language == OWLanguage.English)
+//		{
+//			GlobalLanguageLMF = ELanguageIdentifier.ENGLISH;
+//			GlobalLanguage = OWLanguage.English;
+//		}
+//		else if(language == OWLanguage.German)
+//		{
+//			GlobalLanguageLMF = ELanguageIdentifier.GERMAN;
+//			GlobalLanguage = OWLanguage.German;
+//		}
 	}
 
 
@@ -122,7 +123,7 @@ public class OWConverter {
 		// *** Creating SynsetRelations *** //
 		System.out.print("Generating SynsetRelations...");
 		SynsetRelationGenerator synsetRelationGenerator = new SynsetRelationGenerator(synsetGenerator,lexicalEntryGenerator);
-		// Update the relatios of previously extracted (and generated) Synsets
+		// Update the relations of previously extracted (and generated) Synsets
 		synsetRelationGenerator.updateSynsetRelations();
 		System.out.println("done");
 
@@ -130,6 +131,12 @@ public class OWConverter {
 		System.out.print("Generating SenseRelations");
 		SenseRelationGenerator senseRelationGenerator = new SenseRelationGenerator(lexicalEntryGenerator, synsetGenerator);
 		senseRelationGenerator.updateSenseRelations();
+		System.out.println("done");
+
+		// *** Creating Equivalents *** //
+		System.out.print("Generating Equivalents");
+		EquivalentGenerator eqGenerator = new EquivalentGenerator(lexicalEntryGenerator, synsetGenerator, GlobalLanguage);
+		eqGenerator.updateEquivalents();
 		System.out.println("done");
 	}
 }
