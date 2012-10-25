@@ -9,7 +9,7 @@
 	<artifactId>de.tudarmstadt.ukp.uby</artifactId>
 	<version>0.2.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Ubiqtionary</name>
+	<name>UBY</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.target>1.6</java.target>

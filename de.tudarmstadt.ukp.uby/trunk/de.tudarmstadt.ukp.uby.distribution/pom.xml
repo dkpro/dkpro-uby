@@ -7,7 +7,7 @@
   </parent>
   <artifactId>de.tudarmstadt.ukp.uby.distribution</artifactId>
   <packaging>pom</packaging>
-  <name>Uby - Distribution</name>
+  <name>UBY - Distribution</name>
   <profiles>
   	<profile>
   		<id>dist-build</id>

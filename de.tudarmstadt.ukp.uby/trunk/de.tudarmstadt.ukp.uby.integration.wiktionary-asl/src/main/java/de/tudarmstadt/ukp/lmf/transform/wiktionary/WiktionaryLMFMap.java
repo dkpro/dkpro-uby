@@ -148,78 +148,99 @@ public class WiktionaryLMFMap {
 			case DETERMINER:
 				return EPartOfSpeech.determiner;
 
-			case FIRST_NAME:
-			case LAST_NAME:
-			case TOPONYM:
 			case PROPER_NOUN:
 				return EPartOfSpeech.nounProper;
+			case FIRST_NAME:
+				return EPartOfSpeech.nounProperFirstName;
+			case LAST_NAME:
+				return EPartOfSpeech.nounProperLastName;
+			case TOPONYM:
+				return EPartOfSpeech.nounProperToponym;
+			case SINGULARE_TANTUM:
+			case PLURALE_TANTUM:
+				return EPartOfSpeech.noun;
 				
 			case CONJUNCTION:
 				return EPartOfSpeech.conjunction;
 			case SUBORDINATOR:
-				return EPartOfSpeech.subordinatingConjunction;
+				return EPartOfSpeech.conjunctionSubordinating;
 
 			case PREPOSITION:
-				return EPartOfSpeech.preposition;
+				return EPartOfSpeech.adpositionPreposition;
 			case POSTPOSITION:
-				return EPartOfSpeech.postposition;
+				return EPartOfSpeech.adpositionPostposition;
 			
 			case INTERJECTION:
 				return EPartOfSpeech.interjection;				
 			case SALUTATION:
+				return EPartOfSpeech.interjectionSalutation;
 			case ONOMATOPOEIA:
-				return null;
+				return EPartOfSpeech.interjectionOnomatopoeia;
 
 			case PHRASE:
 			case NOUN_PHRASE: // not used anymore!
+				return EPartOfSpeech.phraseme;
 			case IDIOM:
+				return EPartOfSpeech.phrasemeIdiom;
 			case COLLOCATION:
+				return EPartOfSpeech.phrasemeCollocation;
 			case PROVERB:
+				return EPartOfSpeech.phrasemeProverb;
 			case MNEMONIC:
-				return null;				
+				return EPartOfSpeech.phrasemeMnemonic;
 
 			case PRONOUN:
 				return EPartOfSpeech.pronoun;
 			case PERSONAL_PRONOUN:
-				return EPartOfSpeech.personalPronoun;
+				return EPartOfSpeech.pronounPersonal;
 			case REFLEXIVE_PRONOUN:
-				return EPartOfSpeech.reflexivePersonalPronoun;
+				return EPartOfSpeech.pronounPersonalReflexive;
 			case DEMONSTRATIVE_PRONOUN:
+				return EPartOfSpeech.pronounDemonstrative;
 			case INDEFINITE_PRONOUN:
+				return EPartOfSpeech.pronounIndefinite;
 			case POSSESSIVE_PRONOUN:
+				return EPartOfSpeech.pronounPossessive;
 			case RELATIVE_PRONOUN:
-				return EPartOfSpeech.pronoun;
+				return EPartOfSpeech.pronounRelative;
 			case INTERROGATIVE_ADVERB:
 			case INTERROGATIVE_PRONOUN:
-				return EPartOfSpeech.interrogativePronoun;
+				return EPartOfSpeech.pronounInterrogative;
 				
-			case NEGATIVE_PARTICLE:
-				return EPartOfSpeech.negativeParticle;
-			case COMPARATIVE_PARTICLE:
-				return EPartOfSpeech.comparativeParticle;
-			case ANSWERING_PARTICLE:
-				return EPartOfSpeech.answerParticle;
-			case MODAL_PARTICLE:
-			case FOCUS_PARTICLE:
-			case INTENSIFYING_PARTICLE:
 			case PARTICLE:
 				return EPartOfSpeech.particle;
+			case NEGATIVE_PARTICLE:
+				return EPartOfSpeech.particleNegative;
+			case COMPARATIVE_PARTICLE:
+				return EPartOfSpeech.particleComparative;
+			case ANSWERING_PARTICLE:
+				return EPartOfSpeech.particleAnswer;
+			case MODAL_PARTICLE:
+				return EPartOfSpeech.particleModal;
+			case FOCUS_PARTICLE:
+				return EPartOfSpeech.particleFocus;
+			case INTENSIFYING_PARTICLE:
+				return EPartOfSpeech.particleIntensifying;
 				
 			case ABBREVIATION:
+				return EPartOfSpeech.abbreviation;
 			case INITIALISM:
+				return EPartOfSpeech.abbreviationInitialism;
 			case ACRONYM:
-				return null;
+				return EPartOfSpeech.abbreviationAcronym;
 				
 			case AFFIX:
 			case LEXEME: // = bound lexeme
-			case PREFIX:
-			case SUFFIX:
 			case PLACE_NAME_ENDING:
-				return null;
+				return EPartOfSpeech.affix;
+			case PREFIX:
+				return EPartOfSpeech.affixPrefix;
+			case SUFFIX:
+				return EPartOfSpeech.affixSuffix;
 				
 			case CONTRACTION:
 			case EXPRESSION:
-				return null;
+				return EPartOfSpeech.contraction;
 				
 			case LETTER:
 			case SYMBOL:
@@ -231,8 +252,6 @@ public class WiktionaryLMFMap {
 			case KANJI:
 			case KATAKANA:
 
-			case SINGULARE_TANTUM:
-			case PLURALE_TANTUM:
 			case TRANSLITERATION:
 			case WORD_FORM:
 			case PARTICIPLE:
@@ -319,7 +338,7 @@ public class WiktionaryLMFMap {
 			case TROPONYM:
 				return "troponym";
 			case SEE_ALSO:
-				return "related";
+				return ERelNameSemantics.RELATED;
 
 			//TODO: other types?
 			default:

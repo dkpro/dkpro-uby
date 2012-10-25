@@ -23,7 +23,7 @@
 		<version>0.2.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>de.tudarmstadt.ukp.uby.lmf.model-asl</artifactId>
-	<name>API: Java Object Model</name>
+	<name>UBY Object Model</name>
 	<licenses>
 		<license>
 			<name>Apache License Version 2.0</name>
