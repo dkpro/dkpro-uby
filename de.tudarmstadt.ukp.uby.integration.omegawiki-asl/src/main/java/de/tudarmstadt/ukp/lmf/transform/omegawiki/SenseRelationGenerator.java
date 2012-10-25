@@ -2,13 +2,13 @@
  * Copyright 2012
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,6 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
+import de.tudarmstadt.ukp.lmf.model.enums.ERelNameSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.ERelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.semantics.SenseRelation;
 import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
@@ -157,63 +158,133 @@ public class SenseRelationGenerator {
 		// Adding mappings
 
 		// hypernym
-		relNameMappings.put("hypernym", "hypernym");
+		relNameMappings.put("hypernym", ERelNameSemantics.HYPERNYM);
 
 		relTypeMappings.put("hypernym", ERelTypeSemantics.taxonomic);
 
-		relNameMappings.put("broader term", "hypernym");
+		relNameMappings.put("has_hypernym", ERelNameSemantics.HYPERNYM);
+
+		relTypeMappings.put("has_hypernym", ERelTypeSemantics.taxonomic);
+
+
+		relNameMappings.put("hypernymInstance", ERelNameSemantics.HYPERNYM);
+
+		relTypeMappings.put("hypernymInstance", ERelTypeSemantics.taxonomic);
+
+		relNameMappings.put("broader term", ERelNameSemantics.HYPERNYM);
 
 		relTypeMappings.put("broader term", ERelTypeSemantics.taxonomic);
-		relNameMappings.put("parent", "hypernym");
+		relNameMappings.put("parent", ERelNameSemantics.HYPERNYM);
 
 		relTypeMappings.put("parent", ERelTypeSemantics.taxonomic);
 
 		// hyponym
-		relNameMappings.put("hyponym", "hyponym");
+		relNameMappings.put("hyponym", ERelNameSemantics.HYPONYM);
 
 		relTypeMappings.put("hyponym", ERelTypeSemantics.taxonomic);
 
-		relNameMappings.put("narrower term", "hyponym");
+		relNameMappings.put("has_hyponym", ERelNameSemantics.HYPONYM);
+
+		relTypeMappings.put("has_hyponym", ERelTypeSemantics.taxonomic);
+
+
+		relNameMappings.put("hyponymInstance", ERelNameSemantics.HYPONYM);
+
+		relTypeMappings.put("hyponymInstance", ERelTypeSemantics.taxonomic);
+
+		relNameMappings.put("narrower term", ERelNameSemantics.HYPONYM);
 
 		relTypeMappings.put("narrower term", ERelTypeSemantics.taxonomic);
 
-		relNameMappings.put("child", "hyponym");
+		relNameMappings.put("child", ERelNameSemantics.HYPONYM);
 
 		relTypeMappings.put("child", ERelTypeSemantics.taxonomic);
 
 		// holonymMember
-		relNameMappings.put("holonym", "holonym");
+		relNameMappings.put("holonym", ERelNameSemantics.HOLONYM);
 
 		relTypeMappings.put("holonym",ERelTypeSemantics.partWhole);
 
 		// meronymMember
-		relNameMappings.put("meronym", "meronym");
+		relNameMappings.put("meronym", ERelNameSemantics.MERONYM);
 
 		relTypeMappings.put("meronym", ERelTypeSemantics.partWhole);
 
 		// topic
-		relNameMappings.put("is part of theme","is part of theme");
+		relNameMappings.put("is part of theme",ERelNameSemantics.RELATED);
 
-		relTypeMappings.put("is part of theme", ERelTypeSemantics.complementary);
+		relTypeMappings.put("is part of theme", ERelTypeSemantics.association);
 		// topic
-		relNameMappings.put("subject","subject");
+		relNameMappings.put("subject",ERelNameSemantics.RELATED);
 
-		relTypeMappings.put("subject", ERelTypeSemantics.complementary);
+		relTypeMappings.put("subject", ERelTypeSemantics.association);
 		// seeAlso
-		relNameMappings.put("related term", "related term");
+		relNameMappings.put("related term", ERelNameSemantics.RELATED);
 
 		relTypeMappings.put("related term", ERelTypeSemantics.association);
+		relNameMappings.put("is_related_to", ERelNameSemantics.RELATED);
+
+		relTypeMappings.put("is_related_to", ERelTypeSemantics.association);
+
 		// seeAlso
-		relNameMappings.put("antonym", "antonym");
+		// seeAlso
+		relNameMappings.put("seeAlso", ERelNameSemantics.SEEALSO);
+
+		relTypeMappings.put("seeAlso", ERelTypeSemantics.association);
+
+		relNameMappings.put("holonymMember", ERelNameSemantics.HOLONYMMEMBER);
+		relTypeMappings.put("holonymMember", ERelTypeSemantics.partWhole);
+
+		relNameMappings.put("holonymPart", ERelNameSemantics.HOLONYMPART);
+		relTypeMappings.put("holonymPart", ERelTypeSemantics.partWhole);
+
+		relNameMappings.put("has_component_holonym", ERelNameSemantics.HOLONYMCOMPONENT);
+		relTypeMappings.put("has_component_holonym", ERelTypeSemantics.partWhole);
+
+		relNameMappings.put("has_substance_holonym", ERelNameSemantics.HOLONYMSUBSTANCE);
+		relTypeMappings.put("has_substance_holonym", ERelTypeSemantics.partWhole);
+
+		relNameMappings.put("has_member_holonym", ERelNameSemantics.MERONYMMEMBER);
+		relTypeMappings.put("has_member_holonym", ERelTypeSemantics.partWhole);
+
+		relNameMappings.put("meronymMember", ERelNameSemantics.MERONYMMEMBER);
+		relTypeMappings.put("meronymMember", ERelTypeSemantics.partWhole);
+
+		relNameMappings.put("meronymPart", ERelNameSemantics.MERONYMPART);
+		relTypeMappings.put("meronymPart", ERelTypeSemantics.partWhole);
+
+		relNameMappings.put("has_component_meronym", ERelNameSemantics.MERONYMCOMPONENT);
+		relTypeMappings.put("has_component_meronym", ERelTypeSemantics.partWhole);
+
+		relNameMappings.put("has_substance_meronym", ERelNameSemantics.MERONYMSUBSTANCE);
+		relTypeMappings.put("has_substance_meronym", ERelTypeSemantics.partWhole);
+
+		relNameMappings.put("has_member_meronym", ERelNameSemantics.MERONYMMEMBER);
+		relTypeMappings.put("has_member_meronym", ERelTypeSemantics.partWhole);
+
+		relNameMappings.put("entails", ERelNameSemantics.ENTAILS);
+		relTypeMappings.put("entails", ERelTypeSemantics.predicative);
+
+		relNameMappings.put("is_entailed_by", ERelNameSemantics.ENTAILEDBY);
+		relTypeMappings.put("is_entailed_by", ERelTypeSemantics.predicative);
+
+		relNameMappings.put("causes", ERelNameSemantics.CAUSES);
+		relTypeMappings.put("causes", ERelTypeSemantics.predicative);
+
+
+		relNameMappings.put("seeAlso", ERelNameSemantics.SEEALSO);
+
+		relTypeMappings.put("seeAlso", ERelTypeSemantics.association);
+
+
+		relNameMappings.put("antonym", ERelNameSemantics.ANTONYM);
 
 		relTypeMappings.put("antonym", ERelTypeSemantics.complementary);
 
 		// Setting mappings related to domainOf Relations
-//		domainOfRegisterMappings.put("is part of theme", "topic");
-//		domainOfRegisterMappings.put("subject", "topic");
-//
-//		domainOfRegisterTypeMappings.put("is part of theme", ERegisterType.usage);
-//		domainOfRegisterTypeMappings.put("subject", ERegisterType.usage);
+//		domainOfRegisterMappings.put("is part of theme", ELabelTypeSemantics.DOMAIN);
+//		domainOfRegisterMappings.put("subject", ELabelTypeSemantics.DOMAIN);
+//		domainOfRegisterMappings.put("topic", ELabelTypeSemantics.DOMAIN);
 
 	}
 }

@@ -2,13 +2,13 @@
  * Copyright 2012
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,10 +26,9 @@ import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.core.Definition;
 import de.tudarmstadt.ukp.lmf.model.core.TextRepresentation;
-import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
+import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 import de.tudarmstadt.ukp.omegawiki.api.DefinedMeaning;
-import de.tudarmstadt.ukp.omegawiki.api.OWLanguage;
 import de.tudarmstadt.ukp.omegawiki.api.OmegaWiki;
 import de.tudarmstadt.ukp.omegawiki.api.TranslatedContent;
 import de.tudarmstadt.ukp.omegawiki.exception.OmegaWikiException;
@@ -90,18 +89,18 @@ public class SynsetGenerator {
 	 * @return SynsetGenerator
 	 */
 	public SynsetGenerator(OmegaWiki omegawiki, int language){
-		if(language==OWLanguage.English)
+	//	if(language==OWLanguage.English)
 		{
 
-			this.GlobalLanguage=OWLanguage.English;
-			this.GlobalLanguageLMF= ELanguageIdentifier.ENGLISH;
+			this.GlobalLanguage=language;
+			this.GlobalLanguageLMF= OmegaWikiLMFMap.mapLanguage(language);
 		}
-		else if(language==OWLanguage.German)
-		{
-			System.out.println("German");
-			this.GlobalLanguage=OWLanguage.German;
-			this.GlobalLanguageLMF= ELanguageIdentifier.GERMAN;
-		}
+//		else if(language==OWLanguage.German)
+//		{
+//			System.out.println("German");
+//			this.GlobalLanguage=OWLanguage.German;
+//			this.GlobalLanguageLMF= ELanguageIdentifier.ISO639_DEU;
+//		}
 		this.omegawiki = omegawiki;
 	}
 
@@ -116,14 +115,22 @@ public class SynsetGenerator {
 		if(!initialized){
 			//Iterate over all DefinedMeanings in the specified language
 			Iterator<DefinedMeaning> dmIter = null;
+			double overall = 0;
+			double current = 0;
 			try {
 				dmIter = omegawiki.getAllDefinedMeanings(this.GlobalLanguage).iterator();
+				overall = omegawiki.getAllDefinedMeanings(this.GlobalLanguage).size();
 			} catch (OmegaWikiException e) {
 				e.printStackTrace();
 			}
-			while(dmIter.hasNext()){
+			int i =0;
+
+			while(dmIter.hasNext() ) {//&& i++<=100 ){
 				DefinedMeaning dm = dmIter.next();
-					de.tudarmstadt.ukp.lmf.model.semantics.Synset lmfSynset = new de.tudarmstadt.ukp.lmf.model.semantics.Synset();
+				if(current++ % 100 == 0) {
+					System.out.println((current) / overall+"");
+				}
+				Synset lmfSynset = new Synset();
 				lmfSynset.setId(getNewID());
 				LMFSynsetOWSynsetMappings.put(lmfSynset, dm);
 				OWSynsetLMFSynsetMappings.put(dm, lmfSynset);
@@ -131,7 +138,7 @@ public class SynsetGenerator {
 				// Generating Definition(s) of the Synset
 				Definition definition = new Definition();
 				TextRepresentation textRepresentation = new TextRepresentation();
-				textRepresentation.setLanguageIdentifier(GlobalLanguageLMF);
+				textRepresentation.setLanguageIdentifier(OmegaWikiLMFMap.mapLanguage(GlobalLanguage));
 				if(dm.getGlosses(GlobalLanguage).size()>0) {
 					textRepresentation.setWrittenText(((TranslatedContent)dm.getGlosses(GlobalLanguage).toArray()[0]).getGloss());
 				}
