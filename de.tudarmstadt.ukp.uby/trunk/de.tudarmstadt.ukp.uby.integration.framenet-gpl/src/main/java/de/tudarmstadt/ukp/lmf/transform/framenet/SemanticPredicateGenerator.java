@@ -33,6 +33,7 @@ import de.saar.coli.salsa.reiter.framenet.SemanticTypeNotFoundException;
 import de.tudarmstadt.ukp.lmf.model.core.Definition;
 import de.tudarmstadt.ukp.lmf.model.core.TextRepresentation;
 import de.tudarmstadt.ukp.lmf.model.enums.ECoreType;
+import de.tudarmstadt.ukp.lmf.model.enums.ELabelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
 import de.tudarmstadt.ukp.lmf.model.semantics.ArgumentRelation;
@@ -106,7 +107,7 @@ public class SemanticPredicateGenerator {
 		Definition definition = new Definition();
 		List<TextRepresentation> textRepresentations = new LinkedList<TextRepresentation>();
 		TextRepresentation textRepresentation = new TextRepresentation();
-		textRepresentation.setLanguageIdentifier(ELanguageIdentifier.ENGLISH);
+		textRepresentation.setLanguageIdentifier(ELanguageIdentifier.en);
 		textRepresentation.setWrittenText(FNUtils.filterTags(frame.getDefinition()));
 		textRepresentations.add(textRepresentation);
 		definition.setTextRepresentations(textRepresentations);
@@ -214,7 +215,7 @@ public class SemanticPredicateGenerator {
 			Definition definition = new Definition();
 			List<TextRepresentation> textRepresentations = new ArrayList<TextRepresentation>();
 			TextRepresentation textRepresentation = new TextRepresentation();
-			textRepresentation.setLanguageIdentifier(ELanguageIdentifier.ENGLISH);
+			textRepresentation.setLanguageIdentifier(ELanguageIdentifier.en);
 			textRepresentation.setWrittenText(FNUtils.filterTags(fe.getDefinition()));
 			textRepresentations.add(textRepresentation);
 			definition.setTextRepresentations(textRepresentations);
@@ -256,7 +257,7 @@ public class SemanticPredicateGenerator {
 					// Creating SemanticLabels for FN-"Ontological types"
 					SemanticLabel semanticLabel = new SemanticLabel();
 					semanticLabel.setLabel(semanticType.getName());
-					semanticLabel.setType("selectionalPreference");
+					semanticLabel.setType(ELabelTypeSemantics.SELECTIONALPREFERENCE);
 
 					// crating MonolingualExternalRef
 					List<MonolingualExternalRef> monolingualExternalRefs = new LinkedList<MonolingualExternalRef>();

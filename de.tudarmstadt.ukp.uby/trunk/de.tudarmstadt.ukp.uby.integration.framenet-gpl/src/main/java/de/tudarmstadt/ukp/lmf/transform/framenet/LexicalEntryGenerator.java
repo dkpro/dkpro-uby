@@ -36,6 +36,7 @@ import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.core.TextRepresentation;
 import de.tudarmstadt.ukp.lmf.model.enums.EExampleType;
+import de.tudarmstadt.ukp.lmf.model.enums.ELabelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
 import de.tudarmstadt.ukp.lmf.model.meta.Frequency;
@@ -160,7 +161,7 @@ public class LexicalEntryGenerator {
 			// setting Definition
 			Definition definition = new Definition();
 			TextRepresentation textRepresentation = new TextRepresentation();
-			textRepresentation.setLanguageIdentifier(ELanguageIdentifier.ENGLISH);
+			textRepresentation.setLanguageIdentifier(ELanguageIdentifier.en);
 			textRepresentation.setWrittenText(FNUtils.filterTags(lu.getDefinition()));
 			List<TextRepresentation> textRepresentations = new ArrayList<TextRepresentation>();
 			textRepresentations.add(textRepresentation);
@@ -213,6 +214,7 @@ public class LexicalEntryGenerator {
 				HashSet<String> semTypeIDs = alu.getSemTypes();
 				
 				for(String semTypeID : semTypeIDs){
+					System.out.println("SEMTYPEID: " + semTypeID);
 					if(semTypeID.equals("9")) //lexicalized
 						sense.setTransparentMeaning(true);
 					else
@@ -258,9 +260,10 @@ public class LexicalEntryGenerator {
 									// Creating SemanticLabels for FN-"Ontological types"
 									SemanticLabel semanticLabel = new SemanticLabel();
 									semanticLabel.setLabel(semanticType.getName());
-									semanticLabel.setType("FrameNet semantic sentiment");
+									semanticLabel.setType(ELabelTypeSemantics.SENTIMENT);
+									//TODO: there should be other SemanticLabels here
 									
-									// crating MonolingualExternalRef
+									// creating MonolingualExternalRef
 									List<MonolingualExternalRef> merefs = new LinkedList<MonolingualExternalRef>();
 									MonolingualExternalRef meref = new MonolingualExternalRef();
 									meref.setExternalReference(semTypeID);
@@ -295,7 +298,7 @@ public class LexicalEntryGenerator {
 					sexID.append("FN_SenseExample_").append(senseExampleNumber++);
 					senseExample.setId(sexID.toString());
 					TextRepresentation sexTR = new TextRepresentation();
-					sexTR.setLanguageIdentifier(ELanguageIdentifier.ENGLISH);
+					sexTR.setLanguageIdentifier(ELanguageIdentifier.en);
 					sexTR.setWrittenText(FNUtils.filterTags(sentence.getText()));
 					List<TextRepresentation> sexTRs = new ArrayList<TextRepresentation>();
 					sexTRs.add(sexTR);
@@ -337,7 +340,7 @@ public class LexicalEntryGenerator {
 		// Creting a lemma
 		Lemma lemma = new Lemma();
 		FormRepresentation formRepresentation = new FormRepresentation();
-		formRepresentation.setLanguageIdentifier(ELanguageIdentifier.ENGLISH);
+		formRepresentation.setLanguageIdentifier(ELanguageIdentifier.en);
 		formRepresentation.setWrittenForm(lemmaString);
 		List<FormRepresentation> formRepresentations = new LinkedList<FormRepresentation>();
 		formRepresentations.add(formRepresentation);
@@ -450,7 +453,7 @@ public class LexicalEntryGenerator {
 						lexicalEntry.setId(createID());
 						List<FormRepresentation> formRepresentations = new ArrayList<FormRepresentation>();
 						FormRepresentation formRepresentation = new FormRepresentation();
-						formRepresentation.setLanguageIdentifier(ELanguageIdentifier.ENGLISH);
+						formRepresentation.setLanguageIdentifier(ELanguageIdentifier.en);
 						formRepresentation.setWrittenForm(lemma);
 						formRepresentations.add(formRepresentation);
 						Lemma lemmaObj = new Lemma();
