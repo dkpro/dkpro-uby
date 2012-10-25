@@ -2,13 +2,13 @@
  * Copyright 2012
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,7 +31,7 @@ import de.tudarmstadt.ukp.lmf.model.enums.ECase;
 import de.tudarmstadt.ukp.lmf.model.enums.EExampleType;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalGender;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalNumber;
-import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
+import de.tudarmstadt.ukp.lmf.model.enums.ELabelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.EStatementType;
 import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticProperty;
 import de.tudarmstadt.ukp.lmf.model.enums.EYesNo;
@@ -41,6 +41,7 @@ import de.tudarmstadt.ukp.lmf.model.morphology.Lemma;
 import de.tudarmstadt.ukp.lmf.model.morphology.WordForm;
 import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
 import de.tudarmstadt.ukp.lmf.model.semantics.SenseExample;
+import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 import de.tudarmstadt.ukp.lmf.model.syntax.LexemeProperty;
 import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrame;
 import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticBehaviour;
@@ -56,6 +57,7 @@ import de.tudarmstadt.ukp.omegawiki.exception.OmegaWikiException;
  */
 class SenseGenerator {
 	private final  String GlobalLanguageLMF;
+	private final  int GlobalLanguage;
 
 	/*
 	 * Synset generator is needed for recovering
@@ -80,6 +82,7 @@ class SenseGenerator {
 	public SenseGenerator(SynsetGenerator synsetGenerator){
 		this.synsetGenerator = synsetGenerator;
 		this.GlobalLanguageLMF=synsetGenerator.getGlobalLanguageLMF();
+		this.GlobalLanguage = synsetGenerator.getGlobalLanguage();
 
 	}
 
@@ -130,7 +133,7 @@ class SenseGenerator {
 				{
 					Lemma lemma = lexicalEntry.getLemma();
 					WordForm wf;
-					if(lexicalEntry.getWordForms()!=null) {
+					if(lexicalEntry.getWordForms()!=null && lexicalEntry.getWordForms().size()>0 ) {
 						wf = lexicalEntry.getWordForms().get(0);
 					}
 					else {
@@ -157,7 +160,7 @@ class SenseGenerator {
 				{
 					Lemma lemma = lexicalEntry.getLemma();
 					WordForm wf;
-					if(lexicalEntry.getWordForms()!=null) {
+					if(lexicalEntry.getWordForms()!=null && lexicalEntry.getWordForms().size()>0) {
 						wf = lexicalEntry.getWordForms().get(0);
 					}
 					else {
@@ -187,7 +190,7 @@ class SenseGenerator {
 				{
 					Lemma lemma = lexicalEntry.getLemma();
 					WordForm wf;
-					if(lexicalEntry.getWordForms()!=null) {
+					if(lexicalEntry.getWordForms()!=null && lexicalEntry.getWordForms().size()>0) {
 						wf = lexicalEntry.getWordForms().get(0);
 					}
 					else {
@@ -214,14 +217,14 @@ class SenseGenerator {
 				{
 					if (value.equals("Singularetantum")) {
 						sl = new SemanticLabel();
-						sl.setType("semanticNounClass");
+						sl.setType(ELabelTypeSemantics.SEMANTICNOUNCLASS);
 						sl.setLabel(value);
 
 						//lexicalEntry.setSingularetantum(EYesNo.yes);
 					}
 					else if (value.equals("Pluraletantum")) {
 						sl = new SemanticLabel();
-						sl.setType("semanticNounClass");
+						sl.setType(ELabelTypeSemantics.SEMANTICNOUNCLASS);
 						sl.setLabel(value);
 
 						//lexicalEntry.setPluraletantum(EYesNo.yes);
@@ -285,15 +288,15 @@ class SenseGenerator {
 
 					sl = new SemanticLabel();
 					if(value.equals("vulgar")||value.equals("technical")||value.equals("poetic")||value.equals("pejorative")||value.equals("offensive")||value.equals("colloquial")||value.equals("medical")||value.equals("juvenile")||value.equals("informal")||value.equals("humorous")||value.equals("euphemistic")||value.equals("kindersprache")) {
-						sl.setType("usage");
+						sl.setType(ELabelTypeSemantics.USAGE);
 					}
 					else if(value.equals("archaic")||value.equals("alte deutsche Schreibweise")||value.equals("dated")||value.equals("neologism")||value.equals("obsolete")) {
-						sl.setType("time");
+						sl.setType(ELabelTypeSemantics.TIMEPERIODOFUSAGE);
 					}
 					else  {
-						sl.setType("region");
+						sl.setType(ELabelTypeSemantics.REGIONOFUSAGE);
 					}
-					sl.setType("time");
+					//sl.setType("time");
 					sl.setLabel(value);
 
 				}
@@ -353,7 +356,7 @@ class SenseGenerator {
 			DefinedMeaning lexemesSynset = lexeme.getDefinedMeaning(); // Lexeme's DM
 
 			//set Synset
-			de.tudarmstadt.ukp.lmf.model.semantics.Synset lmfSynset = synsetGenerator.getLMFSynset(lexemesSynset);
+			Synset lmfSynset = synsetGenerator.getLMFSynset(lexemesSynset);
 			if(lmfSynset == null){
 				System.err.println("Error, SenseGenerator: Could not find lmfSynset for Synset: "+ lexemesSynset);
 				System.exit(1);
@@ -373,11 +376,11 @@ class SenseGenerator {
 				sense.setSenseExamples(new LinkedList<SenseExample>());
 			}
 			SenseExample se = new SenseExample();
-			se.setId("OW" + this.GlobalLanguageLMF + "_SenseExample_" + (exampleIdx++));
+			se.setId("OW_" + this.GlobalLanguageLMF + "_SenseExample_" + (exampleIdx++));
 			se.setExampleType(EExampleType.senseInstance);
 			se.setTextRepresentations(new LinkedList<TextRepresentation>());
 			TextRepresentation tr = new TextRepresentation();
-			tr.setLanguageIdentifier(GlobalLanguageLMF);
+			tr.setLanguageIdentifier(OmegaWikiLMFMap.mapLanguage(GlobalLanguage));
 			tr.setWrittenText(example);
 			se.getTextRepresentations().add(tr);
 			sense.getSenseExamples().add(se);
@@ -386,7 +389,7 @@ class SenseGenerator {
 
 
 
-			if(etymology !=null && sense.getDefinitions()!=null)
+			if(etymology !=null && sense.getDefinitions()!=null && sense.getDefinitions().size()>0)
 			{
 			if(sense.getDefinitions().get(0).getStatements()==null) {
 				sense.getDefinitions().get(0).setStatements(new LinkedList<Statement>());
@@ -395,12 +398,12 @@ class SenseGenerator {
 			stat.setStatementType(EStatementType.etymology);
 			stat.setTextRepresentations(new LinkedList<TextRepresentation>());
 			TextRepresentation tr = new TextRepresentation();
-			tr.setLanguageIdentifier(GlobalLanguageLMF);
+			tr.setLanguageIdentifier(OmegaWikiLMFMap.mapLanguage(GlobalLanguage));
 			tr.setWrittenText(etymology);
 			stat.getTextRepresentations().add(tr);
 			sense.getDefinitions().get(0).getStatements().add(stat);
 			}
-			if(otherStatement !=null && sense.getDefinitions()!=null)
+			if(otherStatement !=null && sense.getDefinitions()!=null && sense.getDefinitions().size()>0)
 			{
 			if(sense.getDefinitions().get(0).getStatements()==null) {
 				sense.getDefinitions().get(0).setStatements(new LinkedList<Statement>());
@@ -413,7 +416,7 @@ class SenseGenerator {
 			}
 			stat.setTextRepresentations(new LinkedList<TextRepresentation>());
 			TextRepresentation tr = new TextRepresentation();
-			tr.setLanguageIdentifier(GlobalLanguageLMF);
+			tr.setLanguageIdentifier(OmegaWikiLMFMap.mapLanguage(GlobalLanguage));
 			tr.setWrittenText(otherStatement);
 			stat.getTextRepresentations().add(tr);
 			sense.getDefinitions().get(0).getStatements().add(stat);
