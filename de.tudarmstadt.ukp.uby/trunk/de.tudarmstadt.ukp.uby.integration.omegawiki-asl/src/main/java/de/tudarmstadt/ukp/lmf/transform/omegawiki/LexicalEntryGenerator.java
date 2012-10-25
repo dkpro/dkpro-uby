@@ -2,13 +2,13 @@
  * Copyright 2012
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,7 +28,6 @@ import java.util.Set;
 
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
-import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
 import de.tudarmstadt.ukp.lmf.model.morphology.FormRepresentation;
 import de.tudarmstadt.ukp.lmf.model.morphology.Lemma;
@@ -101,13 +100,13 @@ public class LexicalEntryGenerator {
 			posMappings.put("verb", EPartOfSpeech.verb);
 			posMappings.put("adjective", EPartOfSpeech.adjective);
 			posMappings.put("adverb", EPartOfSpeech.adverb);
-			posMappings.put("personal pronoun", EPartOfSpeech.personalPronoun);
-			posMappings.put("indefinite article", EPartOfSpeech.indefiniteDeterminer);
+			posMappings.put("personal pronoun", EPartOfSpeech.pronounPersonal);
+			posMappings.put("indefinite article", EPartOfSpeech.determinerIndefinite);
 			posMappings.put("demonstrative", EPartOfSpeech.pronoun);
 			posMappings.put("definite article", EPartOfSpeech.determiner);
 			posMappings.put("conjunction", EPartOfSpeech.conjunction);
 			posMappings.put("cardinal number", EPartOfSpeech.numeral);
-			posMappings.put("preposition", EPartOfSpeech.preposition);
+			posMappings.put("preposition", EPartOfSpeech.adpositionPreposition);
 			posMappings.put("independent verb", EPartOfSpeech.verb);
 			posMappings.put("determined cardinal", EPartOfSpeech.numeral);
 			posMappings.put("contraction", EPartOfSpeech.particle);
@@ -115,12 +114,12 @@ public class LexicalEntryGenerator {
 			posMappings.put("interjection", EPartOfSpeech.interjection);
 			posMappings.put("article", EPartOfSpeech.determiner);
 			posMappings.put("determiner", EPartOfSpeech.determiner);
-			posMappings.put("subjunktion", EPartOfSpeech.subordinatingConjunction);
+			posMappings.put("subjunktion", EPartOfSpeech.conjunctionSubordinating);
 			posMappings.put("name", EPartOfSpeech.nounProper);
 			posMappings.put("transitive verb", EPartOfSpeech.verb);
 			posMappings.put("numeral", EPartOfSpeech.numeral);
 			posMappings.put("intransitive verb", EPartOfSpeech.verb);
-			posMappings.put("interrogative pronoun", EPartOfSpeech.interrogativePronoun);
+			posMappings.put("interrogative pronoun", EPartOfSpeech.pronounInterrogative);
 			posMappings.put("indefinite pronoun", EPartOfSpeech.pronoun);
 			posMappings.put("impersonal verb", EPartOfSpeech.verb);
 			posMappings.put("relative pronou", EPartOfSpeech.pronoun);
@@ -148,6 +147,8 @@ public class LexicalEntryGenerator {
 	@SuppressWarnings("unchecked")
 	private void groupLexemes() throws UnsupportedEncodingException, OmegaWikiException {
 		byte percentage = 0;
+		double overall = 0;
+		double current = 0;
 		System.out.print(" grouping lexemes...");
 		lexemeGroupLexicalEntryMaping= new HashMap<Set<SynTrans>, LexicalEntry>();
 		Iterator<DefinedMeaning> dmIter = null; // DefinedMeaning iterator
@@ -156,11 +157,15 @@ public class LexicalEntryGenerator {
 			HashMap<String, HashSet<SynTrans>>lemmaLexemeGroup = new HashMap<String, HashSet<SynTrans>>();
 			try {
 				dmIter =  omegawiki.getAllDefinedMeanings(this.GlobalLanguage).iterator();
+				overall = omegawiki.getAllDefinedMeanings(this.GlobalLanguage).size();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			while(dmIter.hasNext()){
-
+			//	if(current++ % 100 == 0)
+				{
+					System.out.println((current) / overall+"");
+				}
 				DefinedMeaning dm = dmIter.next();
 				String pos="";
 				Set<SynTrans> lexemes = dm.getSynTranses(GlobalLanguage);// lexemes of the Synset = SynTranses in the desired language
@@ -244,12 +249,15 @@ public class LexicalEntryGenerator {
 	 */
 	private void createLexicalEntries() throws UnsupportedEncodingException, OmegaWikiException{
 		System.out.print("transforming lexeme groups... 0% ");
+		double overall = posLemmaLexemeGroup.keySet().size();
+		double current = 0;
 			for (String pos : posLemmaLexemeGroup.keySet())
 			{
+				overall = posLemmaLexemeGroup.get(pos).entrySet().size();
 				for(Map.Entry<String,HashSet<SynTrans>> lemmaSet :posLemmaLexemeGroup.get(pos).entrySet() )
 				{
 					Set<SynTrans> sts = lemmaSet.getValue();
-
+					System.out.print((current++) / overall+"\r");
 			LexicalEntry lexicalEntry = createLexicalEntry(sts,pos,lemmaSet.getKey(),lexicon);
 
 			lexicalEntries.add(lexicalEntry);
@@ -283,7 +291,7 @@ public class LexicalEntryGenerator {
 		Lemma lemma = new Lemma();
 		List<FormRepresentation> formRepresentations = new LinkedList<FormRepresentation>();
 		FormRepresentation formRepresentation = new FormRepresentation();
-		formRepresentation.setLanguageIdentifier(GlobalLanguageLMF);
+		formRepresentation.setLanguageIdentifier(OmegaWikiLMFMap.mapLanguage(GlobalLanguage));
 		formRepresentation.setWrittenForm(ow_lemma);
 		formRepresentations.add(formRepresentation);
 		for(SynTrans st : lexemeGroup)
