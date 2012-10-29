@@ -40,9 +40,28 @@
             <groupId>de.tudarmstadt.ukp.uby</groupId>
             <artifactId>de.tudarmstadt.ukp.uby.persistence.transform-asl</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.sleepycat</groupId>
+            <artifactId>je</artifactId>
+            <version>5.0.55</version>
+        </dependency>
 		<dependency>
 			<groupId>de.tudarmstadt.ukp.wiktionary</groupId>
 			<artifactId>de.tudarmstadt.ukp.wiktionary</artifactId>
 		</dependency>
 	</dependencies>
+
+    <repositories>
+        <repository>
+            <id>oracleReleases</id>
+            <name>Oracle Released Java Packages</name>
+            <url>http://download.oracle.com/maven</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+        </repository>
+    </repositories>
 </project>
