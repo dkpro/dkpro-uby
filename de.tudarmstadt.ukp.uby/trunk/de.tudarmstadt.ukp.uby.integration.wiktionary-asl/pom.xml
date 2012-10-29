@@ -36,13 +36,13 @@
 			<groupId>de.tudarmstadt.ukp.uby</groupId>
 			<artifactId>de.tudarmstadt.ukp.uby.lmf.model-asl</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>de.tudarmstadt.ukp.uby</groupId>
+            <artifactId>de.tudarmstadt.ukp.uby.persistence.transform-asl</artifactId>
+        </dependency>
 		<dependency>
 			<groupId>de.tudarmstadt.ukp.wiktionary</groupId>
 			<artifactId>de.tudarmstadt.ukp.wiktionary</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>de.tudarmstadt.ukp.uby</groupId>
-			<artifactId>de.tudarmstadt.ukp.uby.persistence.transform-asl</artifactId>
 		</dependency>
 	</dependencies>
 </project>
