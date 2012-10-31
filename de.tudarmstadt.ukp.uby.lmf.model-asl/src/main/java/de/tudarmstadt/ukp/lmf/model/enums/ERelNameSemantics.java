@@ -31,8 +31,14 @@ public final class ERelNameSemantics {
 	
 	public static final String ANTONYM = "antonym";
 	public static final String SYNONYM = "synonym";
+	public static final String SYNONYMNEAR = "synonymNear"; // used in WordNet
+	
 	public static final String HYPERNYM = "hypernym";
+	public static final String HYPERNYMINSTANCE = "hypernymInstance"; // used in WordNet
+	
 	public static final String HYPONYM = "hyponym";
+	public static final String HYPONYMINSTANCE = "hyponymInstance"; // used in WordNet
+	
 	public static final String MERONYM = "meronym";
 	public static final String HOLONYM = "holonym";
 	public static final String ENTAILS = "entails";
