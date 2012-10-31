@@ -19,6 +19,8 @@ import java.util.Map;
 import java.util.Set;
 
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
+import de.tudarmstadt.ukp.lmf.model.enums.ELabelTypeSemantics;
+import de.tudarmstadt.ukp.lmf.model.enums.ERelNameSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.ERelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
 import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
@@ -43,22 +45,6 @@ public class SenseGenerator {
 	private Map<LexUnit, Sense> luSenseMappings = new HashMap<LexUnit, Sense>();
 	private SenseExampleGenerator senseExampleGenerator;
 	
-	private static final String has_synonym = "has_synonym";
-	private static final String has_antonym = "has_antonym";
-	private static final String has_component_holonym ="has_component_holonym";
-	private static final String has_component_meronym = "has_component_meronym";
-	private static final String has_member_holonym = "has_member_holonym";
-	private static final String has_member_meronym = "has_member_meronym";
-	private static final String causes = "causes";
-	private static final String has_portion_holonym = "has_portion_holonym";
-	private static final String has_portion_meronym = "has_portion_meronym";
-	private static final String has_substance_holonym = "has_substance_holonym";
-	private static final String has_substance_meronym = "has_substance_meronym";
-	private static final String has_hypernym = "has_hypernym";
-	private static final String is_entailed_by = "is_entailed_by";
-	private static final String is_related_to = "is_related_to";
-	private static final String has_hyponym = "has_hyponym";
-	private static final String entails = "entails";
 	/**
 	 * Constructs a {@link SenseGenerator} for the consumed {@link GermaNet} instance
 	 * @param gnet GermaNet instance used for obtaining GermaNet's information
@@ -94,11 +80,11 @@ public class SenseGenerator {
 			SemanticLabel semanticLabel = new SemanticLabel();
 			semanticLabels.add(semanticLabel);
 			semanticLabel.setLabel(semanticClassLabelExtractor.getLUSemanticClassLabel(lu));
-			semanticLabel.setType("semanticField");
+			semanticLabel.setType(ELabelTypeSemantics.SEMANTICFIELD);
 			if(lu.isArtificial()){ // another semantic label for artificial LexUnits
 				SemanticLabel semanticLabelArt = new SemanticLabel();
 				semanticLabelArt.setLabel("artificialConcept");
-				semanticLabelArt.setType("resourceSpecific");
+				semanticLabelArt.setType(ELabelTypeSemantics.RESOURCESPECIFIC);
 				semanticLabels.add(semanticLabelArt);
 			}
 			sense.setSemanticLabels(semanticLabels);
@@ -218,8 +204,8 @@ public class SenseGenerator {
 	private String getRelName(LexRel lexRel){
 		String relName;
 		switch (lexRel){
-		case has_antonym : relName = has_antonym; break;
-		case has_synonym : relName = has_synonym; break;
+		case has_antonym : relName = ERelNameSemantics.ANTONYM; break;
+		case has_synonym : relName = ERelNameSemantics.SYNONYM; break;
 		default : relName = null; 
 		}
 		return relName;
@@ -266,20 +252,20 @@ public class SenseGenerator {
 	private String getRelName(ConRel conRel){
 		String relName;
 		switch (conRel){
-		case causes : relName = causes; break;
-		case entails : relName = entails; break;
-		case has_component_holonym : relName = has_component_holonym; break;
-		case has_component_meronym : relName = has_component_meronym; break;
-		case has_hypernym : relName = has_hypernym ; break;
-		case has_hyponym : relName = has_hyponym; break;
-		case has_member_holonym : relName = has_member_holonym; break;
-		case has_member_meronym : relName = has_member_meronym; break;
-		case has_portion_holonym : relName = has_portion_holonym; break;
-		case has_portion_meronym : relName = has_portion_meronym; break;
-		case has_substance_holonym : relName = has_substance_holonym; break;
-		case has_substance_meronym : relName = has_substance_meronym; break;
-		case is_entailed_by : relName = is_entailed_by; break;
-		case is_related_to : relName = is_related_to; break;
+		case causes : relName = ERelNameSemantics.CAUSES; break;
+		case entails : relName = ERelNameSemantics.ENTAILS; break;
+		case has_component_holonym : relName = ERelNameSemantics.HOLONYMCOMPONENT; break;
+		case has_component_meronym : relName = ERelNameSemantics.MERONYMCOMPONENT; break;
+		case has_hypernym : relName = ERelNameSemantics.HYPERNYM; break;
+		case has_hyponym : relName = ERelNameSemantics.HYPONYM; break;
+		case has_member_holonym : relName = ERelNameSemantics.HOLONYMMEMBER; break;
+		case has_member_meronym : relName = ERelNameSemantics.MERONYMMEMBER; break;
+		case has_portion_holonym : relName = ERelNameSemantics.HOLONYMPORTION; break;
+		case has_portion_meronym : relName = ERelNameSemantics.MERONYMPORTION; break;
+		case has_substance_holonym : relName = ERelNameSemantics.HOLONYMSUBSTANCE; break;
+		case has_substance_meronym : relName = ERelNameSemantics.MERONYMSUBSTANCE; break;
+		case is_entailed_by : relName = ERelNameSemantics.ENTAILEDBY; break;
+		case is_related_to : relName = ERelNameSemantics.RELATED; break;
 		default : relName = null; 
 		}
 		return relName;
