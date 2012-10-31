@@ -163,9 +163,9 @@ public class SemanticPredicateGenerator {
 							// Creating SemanticLabels for FN-"Ontological types"
 							SemanticLabel semanticLabel = new SemanticLabel();
 							semanticLabel.setLabel(semanticType.getName());
-							semanticLabel.setType("FrameNet 1.5 ontological type");
+							semanticLabel.setType(ELabelTypeSemantics.SEMANTICCATEGORY);
 							
-							// crating MonolingualExternalRef
+							// creating MonolingualExternalRef
 							List<MonolingualExternalRef> monolingualExternalRefs = new LinkedList<MonolingualExternalRef>();
 							MonolingualExternalRef monolingualExternalRef = new MonolingualExternalRef();
 							monolingualExternalRef.setExternalReference(semTypeID);
@@ -207,7 +207,7 @@ public class SemanticPredicateGenerator {
 			semArgID.append("FN_SemanticArgument_").append(semanticArgumentNumber++);
 			semanticArgument.setId(semArgID.toString());
 
-			// Settomg semanticRole
+			// Setting semanticRole
 			semanticArgument.setSemanticRole(fe.getName());
 
 			// Setting definition
@@ -259,7 +259,7 @@ public class SemanticPredicateGenerator {
 					semanticLabel.setLabel(semanticType.getName());
 					semanticLabel.setType(ELabelTypeSemantics.SELECTIONALPREFERENCE);
 
-					// crating MonolingualExternalRef
+					// creating MonolingualExternalRef
 					List<MonolingualExternalRef> monolingualExternalRefs = new LinkedList<MonolingualExternalRef>();
 					MonolingualExternalRef monolingualExternalRef = new MonolingualExternalRef();
 					monolingualExternalRef.setExternalReference(semanticType.getId());
