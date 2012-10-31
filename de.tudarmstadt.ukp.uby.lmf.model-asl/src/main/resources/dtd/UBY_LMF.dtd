@@ -418,7 +418,7 @@ yesNoType 	http://www.isocat.org/datcat/DC-2297
 <!ATTLIST SubcategorizationFrameSet
     id               ID #REQUIRED
     name             CDATA #IMPLIED
-    parentSubcatFrame	IDREF #IMPLIED>
+    parentSubcatFrameSet	IDREF #IMPLIED>
 <!--
 SubcategorizationFrameSet	http://www.isocat.org/datcat/DC-4620
 --> 
