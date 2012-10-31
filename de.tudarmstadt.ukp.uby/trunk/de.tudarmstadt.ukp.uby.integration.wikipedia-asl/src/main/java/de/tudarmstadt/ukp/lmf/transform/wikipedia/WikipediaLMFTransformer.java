@@ -31,8 +31,10 @@ import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.core.TextRepresentation;
 import de.tudarmstadt.ukp.lmf.model.enums.EDefinitionType;
+import de.tudarmstadt.ukp.lmf.model.enums.ELabelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
+import de.tudarmstadt.ukp.lmf.model.enums.ERelNameSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.ERelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.ConstraintSet;
@@ -203,7 +205,7 @@ public abstract class WikipediaLMFTransformer extends LMFDBTransformer {
 					targetForm.setLanguageIdentifier(wikiLmfLang);
 					targetForm.setWrittenForm(redirect);
 					senseRelation.setFormRepresentation(targetForm);
-					senseRelation.setRelName("redirect");
+					senseRelation.setRelName(ERelNameSemantics.RELATED);
 					senseRelation.setRelType(ERelTypeSemantics.association);
 					sense.getSenseRelations().add(senseRelation);
 				}
@@ -215,7 +217,7 @@ public abstract class WikipediaLMFTransformer extends LMFDBTransformer {
 					}
 
 					SemanticLabel semanticLabel = new SemanticLabel();
-					semanticLabel.setType("WikipediaCategory");
+					semanticLabel.setType(ELabelTypeSemantics.CATEGORY);
 					//subjectField.setRegisterType(ERegisterType.usage);
 					//subjectField.setSubjectField(category.getTitle().getPlainTitle());
 					semanticLabel.setLabel(category.getTitle().getPlainTitle());
