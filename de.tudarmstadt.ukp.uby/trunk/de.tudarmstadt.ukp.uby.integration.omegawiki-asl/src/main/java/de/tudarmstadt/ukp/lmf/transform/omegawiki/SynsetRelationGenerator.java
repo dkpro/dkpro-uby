@@ -33,6 +33,7 @@ import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
 import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 import de.tudarmstadt.ukp.lmf.model.semantics.SynsetRelation;
 import de.tudarmstadt.ukp.omegawiki.api.DefinedMeaning;
+import de.tudarmstadt.ukp.omegawiki.api.OWLanguage;
 import de.tudarmstadt.ukp.omegawiki.api.OmegaWiki;
 import de.tudarmstadt.ukp.omegawiki.api.SynTrans;
 import de.tudarmstadt.ukp.omegawiki.exception.OmegaWikiException;
@@ -84,8 +85,14 @@ public class SynsetRelationGenerator {
 	 */
 	public void updateSynsetRelations() throws OmegaWikiException, UnsupportedEncodingException{
 		// Iterate over all Synset-Bindings and update
+		double overall = synsetGenerator.getOWSynsetLMFSynsetMappings().size();
+		double current = 0;
 		for(Entry<DefinedMeaning, Synset> binding : synsetGenerator.getOWSynsetLMFSynsetMappings().entrySet()) {
 			updateSynsetRelations(binding);
+			if(current++ % 100 == 0)
+			{
+				System.out.println((current) / overall+"");
+			}
 		}
 	}
 
@@ -136,7 +143,7 @@ public class SynsetRelationGenerator {
 		if(type >0)
 		{
 			rel = ow.getDefinedMeaningById(type);
-		Set<SynTrans> sta = rel.getSynTranses(GlobalLanguage);
+		Set<SynTrans> sta = rel.getSynTranses(OWLanguage.English);
 		for (SynTrans st : sta)
 			{relationName = st.getSyntrans().getSpelling();
 			break;
@@ -245,7 +252,7 @@ public class SynsetRelationGenerator {
 			return ret;
 		}
 		else {
-			return ERelTypeSemantics.predicativeOmegaWiki;
+			return ERelTypeSemantics.predicative;
 		}
 
 	}
