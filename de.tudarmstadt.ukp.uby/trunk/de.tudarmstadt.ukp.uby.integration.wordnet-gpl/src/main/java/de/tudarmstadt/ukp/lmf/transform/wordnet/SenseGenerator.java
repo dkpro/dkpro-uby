@@ -24,6 +24,7 @@ import net.sf.extjwnl.data.Word;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.core.TextRepresentation;
 import de.tudarmstadt.ukp.lmf.model.enums.EExampleType;
+import de.tudarmstadt.ukp.lmf.model.enums.ELabelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
 import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
@@ -129,7 +130,7 @@ class SenseGenerator {
 			SemanticLabel semanticLabel = new SemanticLabel();
 			semanticLabels.add(semanticLabel);
 			semanticLabel.setLabel(lexemeSynset.getLexFileName());
-			semanticLabel.setType("lexicographerFileName");
+			semanticLabel.setType(ELabelTypeSemantics.SEMANTICFIELD);
 			
 			sense.setSemanticLabels(semanticLabels);
 			

@@ -24,6 +24,8 @@ import net.sf.extjwnl.data.PointerTarget;
 import net.sf.extjwnl.data.Word;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
+import de.tudarmstadt.ukp.lmf.model.enums.ELabelTypeSemantics;
+import de.tudarmstadt.ukp.lmf.model.enums.ERelNameSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.ERelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
 import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
@@ -31,7 +33,8 @@ import de.tudarmstadt.ukp.lmf.model.semantics.SynsetRelation;
 
 /**
  * This class is used for extraction of synset-relations, defined in Uby-LMF, out of WordNet's data.
- * @author Zijad Maksuti, Judith Eckle-Kohler
+ * @author Zijad Maksuti
+ * @author Judith Eckle-Kohler
  * @see Synset
  * @see SynsetRelation
  *
@@ -59,29 +62,19 @@ public class SynsetRelationGenerator {
 	
 	private Map<String, String> domainOfRegisterMappings = new HashMap<String,String>(); // <domainOfRelationKey, register>
 	
-	// String representations of relation names
-	private static final String hypernym = "hypernym";
-	private static final String hypernymInstance = "hypernymInstance";
-	private static final String hyponym = "hyponym";
-	private static final String hyponymInstance = "hyponymInstance";
-	private static final String holonymMember = "holonymMember";
-	private static final String holonymSubstance = "holonymSubstance";
-	private static final String holonymPart = "holonymPart";
-	private static final String meronymMember = "meronymMember";
-	private static final String meronymPart = "meronymPart";
-	private static final String meronymSubstance = "meronymSubstance";
-	private static final String attribute = "attribute";
+	// String representations of relation names that are not part of ERelNameSemantics
+	
+	// relations names that are also mapped to SemanticLabels of Synsets
 	private static final String topic = "topic";
-	private static final String isTopicOf = "isTopicOf";
 	private static final String region = "region";
-	private static final String isRegionOf = "isRegionOf";
 	private static final String usage = "usage";
+	
+	private static final String isTopicOf = "isTopicOf";
+	private static final String isRegionOf = "isRegionOf";
 	private static final String isUsageOf = "isUsageOf";
-	private static final String entails = "entails";
-	private static final String causation = "causation";
-	private static final String seeAlso = "seeAlso";
+	
+	private static final String attribute = "attribute";	
 	private static final String verbGroup = "verbGroup";
-	private static final String nearSynonym = "nearSynonym";
 	
 	/**
 	 * Constructs an instance of {@link SynsetRelationGenerator} based on the consumed parameters.
@@ -260,70 +253,70 @@ public class SynsetRelationGenerator {
 			
 		// hypernym
 		pointerTypeRelNameMappings.put("@", new String[]
-		  {hypernym, hypernym, null, null});
+		  {ERelNameSemantics.HYPERNYM, ERelNameSemantics.HYPERNYM, null, null});
 		
 		pointerTypeRelTypeMappings.put("@", new ERelTypeSemantics[]
 		  {ERelTypeSemantics.taxonomic, ERelTypeSemantics.taxonomic, null, null});
 		
 		// hypernymInstance
 		pointerTypeRelNameMappings.put("@i", new String[]
-          {hypernymInstance, null, null, null});
+          {ERelNameSemantics.HYPERNYMINSTANCE, null, null, null});
 		
 		pointerTypeRelTypeMappings.put("@i", new ERelTypeSemantics[]
           {ERelTypeSemantics.taxonomic, null, null, null});
 		
 		// hyponym
 		pointerTypeRelNameMappings.put("~", new String[]
-		  {hyponym, hyponym, null, null});
+		  {ERelNameSemantics.HYPONYM, ERelNameSemantics.HYPONYM, null, null});
 		
 		pointerTypeRelTypeMappings.put("~", new ERelTypeSemantics[]
           {ERelTypeSemantics.taxonomic, ERelTypeSemantics.taxonomic, null, null});
 		
 		// hyponymInstance
 		pointerTypeRelNameMappings.put("~i", new String[]
-		  {hyponymInstance, null, null, null});
+		  {ERelNameSemantics.HYPONYMINSTANCE, null, null, null});
 		
 		pointerTypeRelTypeMappings.put("~i", new ERelTypeSemantics[]
           {ERelTypeSemantics.taxonomic, null, null, null});
 		
 		// holonymMember
 		pointerTypeRelNameMappings.put("#m", new String[]
-		  {holonymMember, null, null, null});
+		  {ERelNameSemantics.HOLONYMMEMBER, null, null, null});
 		
 		pointerTypeRelTypeMappings.put("#m", new ERelTypeSemantics[]
 		  {ERelTypeSemantics.partWhole, null, null, null});
 		
 		// holonymSubstance
 		pointerTypeRelNameMappings.put("#s", new String[]
-		  {holonymSubstance, null, null, null});
+		  {ERelNameSemantics.HOLONYMSUBSTANCE, null, null, null});
 		
 		pointerTypeRelTypeMappings.put("#s", new ERelTypeSemantics[]
 		  {ERelTypeSemantics.partWhole, null, null, null});
 		
 		// holonymPart
 		pointerTypeRelNameMappings.put("#p", new String[]
-		  {holonymPart, null, null, null});
+		  {ERelNameSemantics.HOLONYMPART, null, null, null});
 		
 		pointerTypeRelTypeMappings.put("#p", new ERelTypeSemantics[]
 		  {ERelTypeSemantics.partWhole, null, null, null});
 		
 		// meronymMember
 		pointerTypeRelNameMappings.put("%m", new String[]
-		  {meronymMember, null, null, null});
+		  {ERelNameSemantics.MERONYMMEMBER, null, null, null});
 		
 		pointerTypeRelTypeMappings.put("%m", new ERelTypeSemantics[]
 		  {ERelTypeSemantics.partWhole, null, null, null});
 		
 		// meronymSubstance
 		pointerTypeRelNameMappings.put("%s", new String[]
-		  {meronymSubstance, null, null, null});
+		  {ERelNameSemantics.MERONYMSUBSTANCE, null, null, null});
 		
 		pointerTypeRelTypeMappings.put("%s", new ERelTypeSemantics[]
 		  {ERelTypeSemantics.partWhole, null, null, null});
 		
 		// meronymPart
 		pointerTypeRelNameMappings.put("%p", new String[]
-		  {meronymPart, null, null, null});
+		  {ERelNameSemantics.MERONYMPART, null, null, null});
 		
 		pointerTypeRelTypeMappings.put("%p", new ERelTypeSemantics[]
 		  {ERelTypeSemantics.partWhole, null, null, null});
@@ -379,21 +372,21 @@ public class SynsetRelationGenerator {
 		
 		// entails
 		pointerTypeRelNameMappings.put("*", new String[]
-		  {null, entails, null, null});
+		  {null, ERelNameSemantics.ENTAILS, null, null});
 		
 		pointerTypeRelTypeMappings.put("*", new ERelTypeSemantics[]
           {null, ERelTypeSemantics.taxonomic, null, null});
 		
 		// causation
 		pointerTypeRelNameMappings.put(">", new String[]
-		  {null, causation, null, null});
+		  {null, ERelNameSemantics.CAUSEDBY, null, null});
 		
 		pointerTypeRelTypeMappings.put(">", new ERelTypeSemantics[]
           {null, ERelTypeSemantics.taxonomic, null, null});
 		
 		// seeAlso
 		pointerTypeRelNameMappings.put("^", new String[]
-		  {null, seeAlso, seeAlso, null});
+		  {null, ERelNameSemantics.SEEALSO, ERelNameSemantics.SEEALSO, null});
 		
 		pointerTypeRelTypeMappings.put("^", new ERelTypeSemantics[]
           {null, ERelTypeSemantics.association, ERelTypeSemantics.association, null});
@@ -407,7 +400,7 @@ public class SynsetRelationGenerator {
 		
 		// nearSynonym
 		pointerTypeRelNameMappings.put("&", new String[]
-		  {null, null, nearSynonym, null});
+		  {null, null, ERelNameSemantics.SYNONYMNEAR, null});
 
 		pointerTypeRelTypeMappings.put("&", new ERelTypeSemantics[]
           {null, null, ERelTypeSemantics.association, null});
@@ -421,8 +414,8 @@ public class SynsetRelationGenerator {
 
 		
 		// Setting mappings related to domainOf Relations
-		domainOfRegisterMappings.put(";c", "topic");
-		domainOfRegisterMappings.put(";r", "region");
-		domainOfRegisterMappings.put(";u", "usage");
+		domainOfRegisterMappings.put(";c", ELabelTypeSemantics.DOMAIN);
+		domainOfRegisterMappings.put(";r", ELabelTypeSemantics.REGIONOFUSAGE);
+		domainOfRegisterMappings.put(";u", ELabelTypeSemantics.USAGE);
 	}
 }

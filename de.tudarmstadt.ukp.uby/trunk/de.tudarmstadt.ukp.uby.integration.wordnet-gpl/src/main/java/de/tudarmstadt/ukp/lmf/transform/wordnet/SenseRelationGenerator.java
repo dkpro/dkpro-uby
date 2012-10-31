@@ -19,6 +19,7 @@ import net.sf.extjwnl.data.POS;
 import net.sf.extjwnl.data.Pointer;
 import net.sf.extjwnl.data.Word;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
+import de.tudarmstadt.ukp.lmf.model.enums.ERelNameSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.ERelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.semantics.SenseRelation;
 
@@ -45,11 +46,7 @@ public class SenseRelationGenerator {
 	private Map<String, ERelTypeSemantics[]> pointerTypeRelTypeMappings;
 	
 	private LexicalEntryGenerator lexicalEntryGenerator;
-	
-	// String representations of relation names
-	private static final String antonym = "antonym";
-	private static final String seeAlso = "seeAlso";
-	
+		
 	/**
 	 * Constructs a new {@link SenseRelationGenerator}.<br>
 	 * The constructor initializes the mappings used by the generator.
@@ -72,14 +69,14 @@ public class SenseRelationGenerator {
 			
 		// antonym
 		pointerTypeRelNameMappings.put("!", new String[]
-		  {antonym, antonym, antonym, antonym});
+		  {ERelNameSemantics.ANTONYM, ERelNameSemantics.ANTONYM, ERelNameSemantics.ANTONYM, ERelNameSemantics.ANTONYM});
 		
 		pointerTypeRelTypeMappings.put("!", new ERelTypeSemantics[]
 		  {ERelTypeSemantics.complementary, ERelTypeSemantics.complementary, ERelTypeSemantics.complementary, ERelTypeSemantics.complementary});
 		
 		// seeAlso
 		pointerTypeRelNameMappings.put("^", new String[]
-          {null, seeAlso, seeAlso, null});
+          {null, ERelNameSemantics.SEEALSO, ERelNameSemantics.SEEALSO, null});
 		
 		pointerTypeRelTypeMappings.put("^", new ERelTypeSemantics[]
 		  {null, ERelTypeSemantics.association, ERelTypeSemantics.association, null});
