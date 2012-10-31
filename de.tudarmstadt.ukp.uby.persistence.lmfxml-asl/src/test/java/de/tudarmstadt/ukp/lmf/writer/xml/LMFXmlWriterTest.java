@@ -763,7 +763,7 @@ public class LMFXmlWriterTest {
 		Element subcategorizationFrameSet = checkHasSingleChild(lexicon, SubcategorizationFrameSet.class);
 		assertEquals(subcategorizationFrameSet_id, subcategorizationFrameSet.getAttribute("id"));
 		assertEquals(subcategorizationFrameSet_name, subcategorizationFrameSet.getAttribute("name"));
-		assertEquals(subcategorizationFrameSet_id, subcategorizationFrameSet.getAttribute("parentSubcatFrame"));
+		assertEquals(subcategorizationFrameSet_id, subcategorizationFrameSet.getAttribute("parentSubcatFrameSet"));
 		
 		Element subcatFrameSetElement = checkHasSingleChild(subcategorizationFrameSet, SubcatFrameSetElement.class);
 		assertEquals(subcategorizationFrame_id, subcatFrameSetElement.getAttribute("element"));
