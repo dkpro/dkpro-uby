@@ -530,7 +530,7 @@ public class LMFXmlWriterTest {
 		lexicon.setSubcategorizationFrames(subcategorizationFrames);
 		
 		subcategorizationFrameSet.setName(subcategorizationFrameSet_name);
-		subcategorizationFrameSet.setParentSubcatFrame(subcategorizationFrameSet);
+		subcategorizationFrameSet.setParentSubcatFrameSet(subcategorizationFrameSet);
 		SubcatFrameSetElement subcatFrameSetElement = new SubcatFrameSetElement();
 		subcatFrameSetElement.setElement(subcategorizationFrame);
 		List<SubcatFrameSetElement> subcatFrameSetElements= new ArrayList<SubcatFrameSetElement>();
