@@ -12,8 +12,10 @@ package de.tudarmstadt.ukp.lmf.transform.framenet;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -104,18 +106,21 @@ public class LexicalEntryGenerator {
 	public LexicalEntryGenerator(FrameNet fn, SemanticPredicateGenerator semanticPredicateGenerator){
 		this.fn = fn;
 		this.semanticPredicateGenerator = semanticPredicateGenerator;
-		ac = new AnnotationCorpus15(fn, logger);
+//		ac = new AnnotationCorpus15(fn, logger);
 		fnhome = System.getenv("UBY_HOME")+"/FrameNet/fndata-1.5"; 
+		System.err.println("LUS group to");
 		groupLUs();
-		
+		System.err.println("LUS grouped");
 		// Initialize help-mappings
 		for(PartOfSpeech pos : PartOfSpeech.values()){
 			dummyLEs.put(pos, new HashMap<String, LexicalEntry>());
 			components.put(pos, new HashMap<String, List<Component>>());
 		}
-		
+		System.err.println("help mappings initialized");
 		createLexicalEntries();
+		System.err.println("LEs created");
 		updateComponents();
+		System.err.println("Compontents updated");
 	}
 	
 	/**
@@ -196,6 +201,9 @@ public class LexicalEntryGenerator {
 			sense.setPredicativeRepresentations(predicativeRepresentations);
 			
 			// SETTING incorporatedSemArg
+			// Parse the corpus in order to get more information about the lu 
+			ac = new AnnotationCorpus15(fn, logger);//works
+			ac.parse(new File(fnhome+File.separator+"lu"), "lu"+lu.getId()+".xml");
 			AnnotatedLexicalUnit alu = ac.getAnnotation(lu);
 			if(alu != null){
 				// incorporatedSemArg can only be set for annotated lus
@@ -210,73 +218,57 @@ public class LexicalEntryGenerator {
 					semanticPredicate.setSemanticArguments(semanticArguments);
 					sense.setIncorporatedSemArg(semanticArgument);
 				}
-				// MAPPING LU'S SEMTYPE TO SENSE
-				HashSet<String> semTypeIDs = alu.getSemTypes();
-				
-				for(String semTypeID : semTypeIDs){
-					System.out.println("SEMTYPEID: " + semTypeID);
-					if(semTypeID.equals("9")) //lexicalized
+				// MAPPING LU'S SEMTYPE TO SENSE NEW
+				HashSet<String> semTypes = alu.getSemTypes();
+				for (String s: semTypes){
+					SemanticType t = null;
+					try {
+						t = fn.getSemanticType(s);
+					} catch (SemanticTypeNotFoundException e) {
+						logger.log(Level.WARNING, "Did not find semantic type in FN: " + s);
+					}
+					if (s.matches("^[0-9]+")){// ID
+						System.err.println("ID: " + s);
+					} else { // filter different types
+						if (s.equalsIgnoreCase("Transparent Noun")|| s.equalsIgnoreCase("9")){ // no semantic label
 						sense.setTransparentMeaning(true);
-					else
-						if(semTypeID.equals("223")){ // perspectivalized
-							SemanticLabel semanticLabel =
-									new SemanticLabel(
-											"Support or Bound_dependent_LU", "fn_bound",null, sense, null
-											);
-							sense.addSemanticLabel(semanticLabel);
+						} else {// semantic label format
+							SemanticLabel semanticLabel = new SemanticLabel();
+							if (s.equalsIgnoreCase("Negative_judgment")||s.equalsIgnoreCase("Positive_judgment")){
+								//type 
+								semanticLabel.setType(ELabelTypeSemantics.SENTIMENT);
+								semanticLabel.setLabel(t.getName());
+							} else if (s.equalsIgnoreCase("Bound_LU") || s.equalsIgnoreCase("Bound_dependent_LU") || s.equalsIgnoreCase("Support")||s.equals("223")){
+								semanticLabel.setType(ELabelTypeSemantics.COLLOCATE);
+								semanticLabel.setLabel(t.getName());
+							} else if (s.equalsIgnoreCase("Biframal_LU")){
+								//Does not occur
+								semanticLabel.setType(ELabelTypeSemantics.RESOURCESPECIFIC);
+								semanticLabel.setLabel(t.getName());
+							} else if (s.equalsIgnoreCase("Tendency_Grading_LU")){
+								semanticLabel.setType(ELabelTypeSemantics.RESOURCESPECIFIC);
+								semanticLabel.setLabel(t.getName());
+							} else {
+								// this should be ontological types
+								String type = ELabelTypeSemantics.SEMANTICCATEGORY;
+								semanticLabel.setLabel(t.getName()); 
+								semanticLabel.setType(type);
+							}
+							// for all semantic labels
+							// creating MonolingualExternalRef for SemanticLabel
+							List<MonolingualExternalRef> merefs = new LinkedList<MonolingualExternalRef>();
+							MonolingualExternalRef meref = new MonolingualExternalRef();
+							meref.setExternalReference(s);
+							meref.setExternalSystem("FrameNet 1.5 semantic type ID");
+							merefs.add(meref);
+							semanticLabel.setMonolingualExternalRefs(monolingualExternalRefs);
+							List<SemanticLabel> semanticLabels = sense.getSemanticLabels();
+							if(semanticLabels == null)
+								semanticLabels = new ArrayList<SemanticLabel>();
+							semanticLabels.add(semanticLabel);
+							sense.setSemanticLabels(semanticLabels);
 						}
-						else{
-							// the underlying checks for semTypeIDs 68 and 182 are because of a bug in FN-API
-							SemanticType semanticType = null;
-							if(semTypeID.equals("68"))
-								try {
-									semanticType = fn.getSemanticType("Physical_object");
-								} catch (SemanticTypeNotFoundException e) {
-									e.printStackTrace();
-								}
-							else if(semTypeID.equals("182"))
-								try {
-									semanticType = fn.getSemanticType("Locative_relation");
-								} catch (SemanticTypeNotFoundException e) {
-									e.printStackTrace();
-								}
-							else
-								try {
-									semanticType = fn.getSemanticType(semTypeID);
-								} catch (SemanticTypeNotFoundException e) {
-									e.printStackTrace();
-								}
-								// Checking if the root of this semanticType != "Lexical_type"
-								SemanticType rootSemanticType = null;
-								for(SemanticType temp : semanticType.getSuperTypes())
-									rootSemanticType = temp;
-								
-								// if the root is still == null, semanticType has no parents
-								if(rootSemanticType == null)
-									rootSemanticType = semanticType;
-
-								// if the root of semanticType != "Lexical_type", then we have an ontological type
-								if(!rootSemanticType.equals("Lexical_type")){
-									// Creating SemanticLabels for FN-"Ontological types"
-									SemanticLabel semanticLabel = new SemanticLabel();
-									semanticLabel.setLabel(semanticType.getName());
-									semanticLabel.setType(ELabelTypeSemantics.SENTIMENT);
-									//TODO: there should be other SemanticLabels here
-									
-									// creating MonolingualExternalRef
-									List<MonolingualExternalRef> merefs = new LinkedList<MonolingualExternalRef>();
-									MonolingualExternalRef meref = new MonolingualExternalRef();
-									meref.setExternalReference(semTypeID);
-									meref.setExternalSystem("FrameNet 1.5 semantic type ID");
-									merefs.add(meref);
-									semanticLabel.setMonolingualExternalRefs(monolingualExternalRefs);
-									List<SemanticLabel> semanticLabels = sense.getSemanticLabels();
-									if(semanticLabels == null)
-										semanticLabels = new ArrayList<SemanticLabel>();
-									semanticLabels.add(semanticLabel);
-									sense.setSemanticLabels(semanticLabels);
-								}
-						}
+					}
 				}
 				
 				List<Lexeme> lexemes = lu.getLexemes();
@@ -457,8 +449,8 @@ public class LexicalEntryGenerator {
 						formRepresentation.setWrittenForm(lemma);
 						formRepresentations.add(formRepresentation);
 						Lemma lemmaObj = new Lemma();
-//						lemmaObj.setLexicalEntryId(lexicalEntry.getId());
-						lemmaObj.setLexicalEntry(lexicalEntry);
+						lemmaObj.setLexicalEntryId(lexicalEntry.getId());
+//						lemmaObj.setLexicalEntry(lexicalEntry);
 						lemmaObj.setFormRepresentations(formRepresentations);
 						component.setTargetLexicalEntry(lexicalEntry);
 						lexicalEntry.setLemma(lemmaObj);
@@ -479,13 +471,12 @@ public class LexicalEntryGenerator {
 		
 		for(PartOfSpeech pos : poses)
 			mappings.put(pos, new HashMap<String, HashSet<LexicalUnit>>());
-		
+
 		for(LexicalUnit lu : fn.getLexicalUnits()){
 			HashMap<String, HashSet<LexicalUnit>> lemmaLUMappings = mappings.get(lu.getPartOfSpeech());
 			String lemma = lu.getLexemeString(); // lu's lemma
 			
-			// Parse the corpus in order to get more information about the lu 
-			ac.parse(new File(fnhome+File.separator+"lu"), "lu"+lu.getId()+".xml");
+
 			
 			// Appending partOfSpeech of components for multiword expressions
 			List<Lexeme> lexemes = lu.getLexemes();
