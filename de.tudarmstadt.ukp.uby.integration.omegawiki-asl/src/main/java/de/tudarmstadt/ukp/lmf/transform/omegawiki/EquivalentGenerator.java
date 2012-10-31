@@ -76,11 +76,12 @@ public class EquivalentGenerator {
 		try {
 			for(SynTrans st : dm.getSynTranses())
 			{
-				if (st.getSyntrans().getLanguageId() != GlobalLanguage )
+				if (st.getSyntrans().getLanguageId() != GlobalLanguage && st.getSyntrans().getSpelling()!=null && st.getSyntrans().getSpelling().length()>0)
 				{
 					Equivalent eq = new  Equivalent();
 					eq.setLanguageIdentifier(OmegaWikiLMFMap.mapLanguage(st.getSyntrans().getLanguageId()));
 					eq.setWrittenForm(st.getSyntrans().getSpelling());
+					equivalents.add(eq);
 				}
 			}
 		}

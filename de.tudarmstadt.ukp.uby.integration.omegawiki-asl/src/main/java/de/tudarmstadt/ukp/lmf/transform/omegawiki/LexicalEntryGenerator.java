@@ -162,7 +162,7 @@ public class LexicalEntryGenerator {
 				e.printStackTrace();
 			}
 			while(dmIter.hasNext()){
-			//	if(current++ % 100 == 0)
+				if(current++ % 100 == 0)
 				{
 					System.out.println((current) / overall+"");
 				}
@@ -250,9 +250,10 @@ public class LexicalEntryGenerator {
 	private void createLexicalEntries() throws UnsupportedEncodingException, OmegaWikiException{
 		System.out.print("transforming lexeme groups... 0% ");
 		double overall = posLemmaLexemeGroup.keySet().size();
-		double current = 0;
+
 			for (String pos : posLemmaLexemeGroup.keySet())
 			{
+				double current = 0;
 				overall = posLemmaLexemeGroup.get(pos).entrySet().size();
 				for(Map.Entry<String,HashSet<SynTrans>> lemmaSet :posLemmaLexemeGroup.get(pos).entrySet() )
 				{
