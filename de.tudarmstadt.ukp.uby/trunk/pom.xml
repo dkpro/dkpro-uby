@@ -139,7 +139,7 @@
 			<dependency>
 				<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
 				<artifactId>de.tudarmstadt.ukp.dkpro.core.toolbox-asl</artifactId>
-				<version>1.3.0</version>
+				<version>1.4.0</version>
 				<type>jar</type>
 				<scope>compile</scope>
 			</dependency>
@@ -151,12 +151,12 @@
 			<dependency>
 				<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
 				<artifactId>de.tudarmstadt.ukp.dkpro.core.api.io-asl</artifactId>
-				<version>1.3.0</version>
+				<version>1.4.0</version>
 			</dependency>
 			<dependency>
 				<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
 				<artifactId>de.tudarmstadt.ukp.dkpro.core.stanfordnlp-gpl</artifactId>
-				<version>1.3.0</version>
+				<version>1.4.0</version>
 			</dependency>
 			<dependency>
 				<groupId>de.tudarmstadt.ukp.uby</groupId>
