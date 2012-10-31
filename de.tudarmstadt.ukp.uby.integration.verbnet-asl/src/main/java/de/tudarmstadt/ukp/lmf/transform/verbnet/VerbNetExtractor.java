@@ -269,9 +269,9 @@ public class VerbNetExtractor {
 						subcatFrameSetNumber++;	
 						
 						classSubcatFrameSetMap.put(superClass,superFrameSet);
-						subcategorizationFrameSet.setParentSubcatFrame(superFrameSet);
+						subcategorizationFrameSet.setParentSubcatFrameSet(superFrameSet);
 					} else {
-						subcategorizationFrameSet.setParentSubcatFrame(classSubcatFrameSetMap.get(superClass));
+						subcategorizationFrameSet.setParentSubcatFrameSet(classSubcatFrameSetMap.get(superClass));
 					}
 				} 					
 				classSubcatFrameSetMap.put(classInfo[0],subcategorizationFrameSet);

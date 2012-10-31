@@ -7,8 +7,8 @@
 
     <id name="id" column="subcatFrameSetId" node="@id" type="string"/>
     
-    <many-to-one name="parentSubcatFrame" class="de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrame" column="parentSubcatFrame"
-    		 node="@parentSubcatFrame" foreign-key="none" not-found="ignore"/>
+    <many-to-one name="parentSubcatFrameSet" class="de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrameSet" column="parentSubcatFrameSet"
+    		 node="@parentSubcatFrameSet" foreign-key="none" not-found="ignore"/>
 
     <list name="subcatFrameSetElements" node="." >
             <key column="subcatFrameSetId" />

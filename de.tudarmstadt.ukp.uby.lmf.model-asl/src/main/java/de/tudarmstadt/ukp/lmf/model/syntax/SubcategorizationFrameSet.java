@@ -52,7 +52,7 @@ public class SubcategorizationFrameSet implements IHasID, Comparable<Subcategori
 	private List<SynArgMap> synArgMaps = new ArrayList<SynArgMap>();
 		
 	@VarType(type = EVarType.IDREF)
-	private SubcategorizationFrameSet parentSubcatFrame;
+	private SubcategorizationFrameSet parentSubcatFrameSet;
 
 	/**
 	 * Returns a set of syntactic constructions, represented by a {@link List} of {@link SubcatFrameSetElement} instances,
@@ -131,8 +131,8 @@ public class SubcategorizationFrameSet implements IHasID, Comparable<Subcategori
 	 * subcategorization frame set does not have a parent
 	 * 
 	 */
-	public SubcategorizationFrameSet getParentSubcatFrame() {
-		return parentSubcatFrame;
+	public SubcategorizationFrameSet getParentSubcatFrameSet() {
+		return parentSubcatFrameSet;
 	}
 
 	/**
@@ -142,8 +142,8 @@ public class SubcategorizationFrameSet implements IHasID, Comparable<Subcategori
 	 * @param the more generic "parent" subcategorization frame set to set
 	 * 
 	 */
-	public void setParentSubcatFrame(SubcategorizationFrameSet parentSubcatFrame) {
-		this.parentSubcatFrame = parentSubcatFrame;
+	public void setParentSubcatFrameSet(SubcategorizationFrameSet parentSubcatFrameSet) {
+		this.parentSubcatFrameSet = parentSubcatFrameSet;
 	}
 
 	
@@ -154,7 +154,7 @@ public class SubcategorizationFrameSet implements IHasID, Comparable<Subcategori
 		Collections.sort(subcatFrameSetElements);
 		sb.append(" subcatFrameSetElements: ").append(this.subcatFrameSetElements);
 		Collections.sort(this.synArgMaps);
-		sb.append("parentSubcatFrame: ").append(this.parentSubcatFrame);
+		sb.append("parentSubcatFrameSet: ").append(this.parentSubcatFrameSet);
 		return sb.toString();
 	}
 
