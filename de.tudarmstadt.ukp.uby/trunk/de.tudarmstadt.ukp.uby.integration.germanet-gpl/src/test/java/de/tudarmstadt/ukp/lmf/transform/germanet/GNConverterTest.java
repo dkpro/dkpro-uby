@@ -11,12 +11,19 @@
 package de.tudarmstadt.ukp.lmf.transform.germanet;
 
 import static de.tudarmstadt.ukp.lmf.transform.germanet.TestSuite.gnet;
+import static de.tudarmstadt.ukp.lmf.transform.germanet.TestSuite.wordNetLexicon;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
+
+import javax.xml.stream.XMLStreamException;
+
+import net.sf.extjwnl.JWNLException;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -28,6 +35,7 @@ import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
 import de.tudarmstadt.ukp.lmf.model.mrd.Context;
+import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis;
 import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
 import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 
@@ -48,16 +56,20 @@ public class GNConverterTest {
 	/*
 	 * The GNConverter
 	 */
-	static GNConverter gnConverter;
+	private static GNConverter gnConverter;
 	
 	/**
 	 * Invokes {@link GNConverter#toLMF()} method.
+	 * @throws IOException 
+	 * @throws XMLStreamException 
+	 * @throws JWNLException 
+	 * @throws FileNotFoundException 
 	 * 
 	 * @since 0.2.0
 	 */
 	@BeforeClass
-	public static void setUpClass() {
-		if(gnet == null)
+	public static void setUpClass() throws FileNotFoundException, XMLStreamException, IOException, JWNLException {
+		if(gnet == null || wordNetLexicon == null)
 			TestSuite.setUpClass();
 		
 		String dtd_version = "1_0";
@@ -145,6 +157,22 @@ public class GNConverterTest {
 						assertNotNull(semanticLabel.getLabel());
 					}
 				}
+	}
+	
+	/**
+	 * Tests {@link GNConverter#toLMF(Lexicon)} method.
+	 * 
+	 * @since UBY 0.2.0
+	 */
+	@Test
+	public void testToLMFLexicon(){
+		gnConverter.toLMF(wordNetLexicon);
+		LexicalResource lexicalResource = gnConverter.getLexicalResource();
+		List<SenseAxis> senseAxes = lexicalResource.getSenseAxes();
+		
+		assertFalse(senseAxes.isEmpty());
+		for(SenseAxis senseAxis : senseAxes)
+			InterlingualIndexConverterTest.testNodesPresent(senseAxis);
 	}
 	
 }

@@ -59,7 +59,7 @@ public class GNConverter {
 	private String dtd_version;
 	
 	private Logger logger = Logger.getLogger(GNConverter.class.getName());
-
+	
 	/**
 	 * Constructs a {@link GNConverter} based on the consumed parameters
 	 * @param germaNet initialized {@link GermaNet} object
@@ -153,6 +153,18 @@ public class GNConverter {
 		
 		// *** Appending SynSemCorrespondences *** //
 		lexicon.setSynSemCorrespondences(subcategorizationFrameExtractor.getSynSemCorrespondences());
+		
+	}
+	
+	/**
+	 * 
+	 * @param wordNetLexicalResource
+	 */
+	public void toLMF(Lexicon wordNetLexicon){
+		toLMF();
+		InterlingualIndexConverter iliConverter = new InterlingualIndexConverter(this, gnet, wordNetLexicon);
+		iliConverter.convert();
+		lexicalResource.setSenseAxes(iliConverter.getSenseAxes());
 	}
 
 	/**
@@ -213,6 +225,15 @@ public class GNConverter {
 	 */
 	public LexicalResource getLexicalResource() {
 		return lexicalResource;
+	}
+
+	/**
+	 * Returns the {@link SynsetGenerator} instance associated with this {@link GNConverter}.
+	 * 
+	 * @return the synset generator associated with this converter 
+	 */
+	public SynsetGenerator getSynsetGenerator() {
+		return synsetGenerator;
 	}
 }
 

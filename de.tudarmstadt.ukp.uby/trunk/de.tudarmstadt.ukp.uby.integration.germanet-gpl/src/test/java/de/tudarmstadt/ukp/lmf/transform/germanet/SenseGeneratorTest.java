@@ -13,9 +13,15 @@ package de.tudarmstadt.ukp.lmf.transform.germanet;
 import static de.tudarmstadt.ukp.lmf.transform.germanet.TestSuite.gnet;
 import static org.junit.Assert.*;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.xml.stream.XMLStreamException;
+
+import net.sf.extjwnl.JWNLException;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -42,11 +48,15 @@ public class SenseGeneratorTest {
 	
 	/**
 	 * Creates a {@link SenseGenerator} instance.
+	 * @throws JWNLException 
+	 * @throws IOException 
+	 * @throws XMLStreamException 
+	 * @throws FileNotFoundException 
 	 * 
 	 * @since 0.2.0
 	 */
 	@BeforeClass
-	public static void setUpClass(){
+	public static void setUpClass() throws FileNotFoundException, XMLStreamException, IOException, JWNLException{
 		if(gnet == null)
 			TestSuite.setUpClass();
 		senseGenerator= new SenseGenerator(gnet);

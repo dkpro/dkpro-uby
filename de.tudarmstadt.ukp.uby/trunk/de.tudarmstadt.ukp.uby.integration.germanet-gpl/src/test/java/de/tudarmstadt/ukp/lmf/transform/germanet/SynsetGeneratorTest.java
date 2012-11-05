@@ -15,7 +15,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
+
+import javax.xml.stream.XMLStreamException;
+
+import net.sf.extjwnl.JWNLException;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -42,11 +48,15 @@ private static SynsetGenerator synsetGenerator;
 	
 	/**
 	 * Creates a {@link SynsetGenerator} instance.
+	 * @throws JWNLException 
+	 * @throws IOException 
+	 * @throws XMLStreamException 
+	 * @throws FileNotFoundException 
 	 * 
 	 * @since 0.2.0
 	 */
 	@BeforeClass
-	public static void setUpClass(){
+	public static void setUpClass() throws FileNotFoundException, XMLStreamException, IOException, JWNLException{
 		if(gnet == null)
 			TestSuite.setUpClass();
 		synsetGenerator= new SynsetGenerator(gnet);
