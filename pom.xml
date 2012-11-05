@@ -274,5 +274,9 @@
 			</build>
 		</profile>
 	</profiles>
+	<issueManagement>
+		<system>GoogleCode</system>
+		<url>http://code.google.com/p/uby/issues/list</url>
+	</issueManagement>
 	<inceptionYear>2012</inceptionYear>
 </project>
