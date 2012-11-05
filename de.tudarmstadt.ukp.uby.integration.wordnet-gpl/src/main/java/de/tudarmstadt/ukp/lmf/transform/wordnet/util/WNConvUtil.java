@@ -17,9 +17,13 @@ import static org.uimafit.util.JCasUtil.select;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import net.sf.extjwnl.data.POS;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.jcas.JCas;
@@ -28,17 +32,29 @@ import org.uimafit.factory.JCasFactory;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Lemma;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordLemmatizer;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
+import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
 
 /**
- * This class offers methods for lemmatizing lexemes in a sentence
+ * This class offers methods offers some helper methods used when converting
+ * WordNet UBY-LMF. 
  * @author Zijad Maksuti
- *
+ * 
  */
 public class WNConvUtil {
 
 	private static JCas jcas;
 	private static AnalysisEngine ae;
-
+	
+	//  mappings between part of speech, encoded in WordNet, part of speech specified by Uby-LMF
+	private static final Map<String, EPartOfSpeech> _posMappings = new HashMap<String, EPartOfSpeech>();
+	
+	static{
+		// Put the POS mappings posKey <-> EPartOfSpeech
+		_posMappings.put("n", EPartOfSpeech.noun);
+		_posMappings.put("v", EPartOfSpeech.verb);
+		_posMappings.put("a", EPartOfSpeech.adjective);
+		_posMappings.put("r", EPartOfSpeech.adverb);
+	}
 	/**
 	 * Consumes a sentence and returns the list of all lemmas in the Sentence
 	 * @param sentence a sentence for which a list of lemmas should be returned
@@ -100,6 +116,18 @@ public class WNConvUtil {
 		temp = temp.toLowerCase();
 		return Arrays.asList(temp.split(" "));
 		
+	}
+	
+	/**
+	 * This method consumes a {@link POS}
+	 * and returns corresponding {@link EPartOfSpeech}
+	 * @param pos part of speech encoded in extJWNL-API
+	 * @return associated part of speech defined in UBY-LMF
+	 * @since 0.2.0
+	 */
+	public static EPartOfSpeech getPOS(POS pos) {
+		EPartOfSpeech result = _posMappings.get(pos.getKey());
+		return result;
 	}
 	
 }

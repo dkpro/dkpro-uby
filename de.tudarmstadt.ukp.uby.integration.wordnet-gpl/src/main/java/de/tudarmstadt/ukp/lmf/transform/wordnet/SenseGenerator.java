@@ -21,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.sf.extjwnl.data.Word;
+import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.core.TextRepresentation;
 import de.tudarmstadt.ukp.lmf.model.enums.EExampleType;
@@ -39,7 +40,7 @@ import de.tudarmstadt.ukp.lmf.transform.wordnet.util.IndexSenseReader;
  * @author Judith Eckle-Kohler
  *
  */
-class SenseGenerator {
+public class SenseGenerator {
 	
 	private IndexSenseReader isr;
 
@@ -79,6 +80,7 @@ class SenseGenerator {
 	 * @param lexemeGroup a group of lexemes with equal lemma and part of speech
 	 * @return list of Sense-instances, based on the consumed group of lexemes
 	 * @see Word
+	 * @deprecated use {@link #generateSenses(Set, LexicalEntry)} instead
 	 */
 	public List<Sense> generateSenses(Set<Word> lexemeGroup){
 		List<Sense> result = new ArrayList<Sense>();
@@ -111,7 +113,126 @@ class SenseGenerator {
 				logger.log(Level.WARNING, sb.toString());
 			}
 			
-			net.sf.extjwnl.data.Synset lexemeSynset = lexeme.getSynset(); // exeme's Synset
+			net.sf.extjwnl.data.Synset lexemeSynset = lexeme.getSynset(); // lexemes Synset
+			
+			//set Synset
+			Synset lmfSynset = synsetGenerator.getLMFSynset(lexemeSynset);
+			if(lmfSynset == null){
+				StringBuffer sb = new StringBuffer(512);
+				sb.append("Synset generator did not provide Uby-LMF Synset for WordNet's Synset ");
+				sb.append(lexemeSynset).append('\n');
+				sb.append("Closing VM");
+				logger.log(Level.SEVERE, sb.toString());
+				System.exit(1);
+			}
+			
+			sense.setSynset(lmfSynset);
+			// set semanticLabel
+			List<SemanticLabel> semanticLabels = new LinkedList<SemanticLabel>();
+			SemanticLabel semanticLabel = new SemanticLabel();
+			semanticLabels.add(semanticLabel);
+			semanticLabel.setLabel(lexemeSynset.getLexFileName());
+			semanticLabel.setType("lexicographerFileName");
+			
+			sense.setSemanticLabels(semanticLabels);
+			
+			// Creating MonolingualExternalRef for a Sense
+			MonolingualExternalRef monolingualExternalRef = new MonolingualExternalRef();
+			
+			// create an external reference
+			StringBuffer sb = new StringBuffer(32);
+			sb.append(lexeme.getSynset().getPOS());
+			sb.append(" ");
+			sb.append(lexeme.getSenseKey());
+
+			monolingualExternalRef.setExternalSystem("WordNet 3.0 part of speech and sense key");
+			monolingualExternalRef.setExternalReference(sb.toString());
+			List<MonolingualExternalRef> monolingualExternalRefs = new LinkedList<MonolingualExternalRef>();
+			monolingualExternalRefs.add(monolingualExternalRef);
+			sense.setMonolingualExternalRefs(monolingualExternalRefs);
+			
+			//*** create sense examples of the sense *** //
+			List<SenseExample> senseExamples = new ArrayList<SenseExample>();
+			List<String> exampleStrings = synsetGenerator.getExamples(lexeme);
+			if(exampleStrings != null)
+				for(String exampleSentence : exampleStrings){
+					SenseExample senseExample = new SenseExample();
+					
+					// Create an id for the senseExample
+					StringBuffer id = new StringBuffer(32);
+					id.append("WN_SenseExample_").append(senseExampleNumber++);
+					senseExample.setId(id.toString());
+					senseExample.setExampleType(EExampleType.other);
+					TextRepresentation textRepresentation = new TextRepresentation();
+					textRepresentation.setLanguageIdentifier(ELanguageIdentifier.ENGLISH);
+					textRepresentation.setWrittenText(exampleSentence);
+					senseExample.setTextRepresentations(new ArrayList<TextRepresentation>(Arrays.asList(textRepresentation)));
+					senseExamples.add(senseExample);
+				}
+			// setting senseExamples
+			sense.setSenseExamples(senseExamples);
+			
+			// Add the created Sense to the result
+			result.add(sense);
+			}
+		
+		/*
+		 * Adding dummy indexes to senses if needed
+		 */
+		for(Sense sense : needDummySenseNumber)
+			sense.setIndex(nextIndex++);
+		
+		return result;
+	}
+	
+	/**
+	 * This method consumes a {@link Set} of lexemes and generates a list of Senses. <br>
+	 * Every {@link Sense} in the returned list is associated with one lexeme in the consumed Set.
+	 * 
+	 * @param lexemeGroup a group of lexemes with equal lemma and part of speech
+	 * 
+	 * @param lexicalEntry a {@link LexicalEntry} instance that contains generated Senses.
+	 * 
+	 * @return list of Sense-instances, based on the consumed group of lexemes
+	 * 
+	 * @since UBY 0.2.0
+	 * 
+	 * @see Word
+	 * 
+	 */
+	public List<Sense> generateSenses(Set<Word> lexemeGroup, LexicalEntry lexicalEntry){
+		List<Sense> result = new ArrayList<Sense>();
+		
+		// a list of Senses that need a dummy sense number
+		List<Sense> needDummySenseNumber = new ArrayList<Sense>();
+		int nextIndex = 1; // dummy index
+		
+		// every lexeme has a sense of it's own
+		for(Word lexeme : lexemeGroup){
+			Sense sense = new Sense();
+			lexemeSenseMappings.put(lexeme, sense);
+			//set ID
+			sense.setId(getNewID());
+			sense.setLexicalEntry(lexicalEntry);
+			// setting index of the Sense (lexeme's Position in the WN-Synset)
+			String senseNumber = isr.getSenseNumber(lexeme.getSenseKey());
+			if(senseNumber != null){
+				int index = Integer.parseInt(senseNumber);
+				if(nextIndex <= index)
+					nextIndex = index+1;
+				sense.setIndex(index);
+			}
+			else{
+				// sense needs a dummy value for index
+				needDummySenseNumber.add(sense);
+				StringBuffer sb = new StringBuffer(128);
+				sb.append("IndexSenseReader did not provide sense number for senseKey ");
+				sb.append(lexeme.getSenseKey()).append('\n');
+				sb.append("adding a dummy value of sense number");
+				logger.log(Level.WARNING, sb.toString());
+			}
+			
+			net.sf.extjwnl.data.Synset lexemeSynset = lexeme.getSynset(); // lexemes Synset
 			
 			//set Synset
 			Synset lmfSynset = synsetGenerator.getLMFSynset(lexemeSynset);

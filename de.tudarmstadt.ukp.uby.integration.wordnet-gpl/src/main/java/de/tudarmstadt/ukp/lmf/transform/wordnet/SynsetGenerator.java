@@ -32,6 +32,7 @@ import net.sf.extjwnl.dictionary.Dictionary;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
@@ -88,55 +89,66 @@ public class SynsetGenerator {
 	public SynsetGenerator(Dictionary wordnet, File lexemeMappingFile) {
 		this.wordnet = wordnet;
 		this.lexemeMappingXML = lexemeMappingFile;
+		boolean readFile = true;
 		SAXReader reader = new SAXReader();
 		try {
 			lexemeMapping = reader.read(lexemeMappingXML);
 		} catch (DocumentException e1) {
 			StringBuffer sb = new StringBuffer(256);
-			sb.append("Error while reading the file contianing manually entered example sentence mappings").append('\n');
-			sb.append("printing stack trace and closing vm!");
-			logger.log(Level.SEVERE, sb.toString());
-			e1.printStackTrace();
-			System.exit(1);
+			sb.append("File contianing manually entered example sentence mappings does not exist or corrupt. ");
+			sb.append("New one will be created. ");
+			sb.append("This will reduce performance of the SynsetGenerator. ");
+			logger.log(Level.WARNING, sb.toString());
+			lexemeMappingFile.delete();
+			readFile = false;
+			try {
+				lexemeMappingFile.createNewFile();
+			} catch (IOException e) {
+				logger.severe("Error on creating new file!");
+			}
+			lexemeMapping = DocumentHelper.createDocument();
+			lexemeMapping.addElement("ExampleSentenceLexemeMapping");
 		}
 		
-		/**
-		 * Parsing the lexemeMapping-file
-		 */
-		logger.log(Level.INFO, "parsing lexeme mappings file...");
-		Element root = lexemeMapping.getRootElement();
-		List<Element> synsets = root.elements("Synset");
-		for(Element eSynset : synsets){
-			net.sf.extjwnl.data.Synset synset = null;
-			try {
-				synset = wordnet.getSynsetAt(POS.getPOSForLabel(eSynset.attributeValue("pos")), Long.parseLong(eSynset.attributeValue("offset")));
-			} catch (Exception e) {
-				StringBuffer sb = new StringBuffer(256);
-				sb.append("Error on retriving WordNet's synset").append('\n');
-				sb.append("printing stack trace and closing vm!");
-				logger.log(Level.SEVERE, sb.toString());
-				e.printStackTrace();
-				System.exit(1);
-			}
-			
-			manuallyMapped.add(synset);
-			if(eSynset.attributeValue("approved").equalsIgnoreCase("yes")){
-				/*
-				 * iterate over all example sentences and record the correspondences
-				 */
-				List<Element> eExampleSentences = eSynset.elements("ExampleSentence");
-				for(Element eExampleSentence : eExampleSentences){
-					String exampleSentence = eExampleSentence.attributeValue("text");
-					Word lexeme = synset.getWords().get(Integer.parseInt(eExampleSentence.attributeValue("index")));
-					List<String> temp = examples.get(lexeme);
-					if(temp == null)
-						temp = new ArrayList<String>();
-					temp.add(exampleSentence);
-					examples.put(lexeme, temp);
+		if(readFile){
+			/**
+			 * Parsing the lexemeMapping-file
+			 */
+			logger.log(Level.INFO, "parsing lexeme mappings file...");
+			Element root = lexemeMapping.getRootElement();
+			List<Element> synsets = root.elements("Synset");
+			for(Element eSynset : synsets){
+				net.sf.extjwnl.data.Synset synset = null;
+				try {
+					synset = wordnet.getSynsetAt(POS.getPOSForLabel(eSynset.attributeValue("pos")), Long.parseLong(eSynset.attributeValue("offset")));
+				} catch (Exception e) {
+					StringBuffer sb = new StringBuffer(256);
+					sb.append("Error on retriving WordNet's synset").append('\n');
+					sb.append("printing stack trace and closing vm!");
+					logger.log(Level.SEVERE, sb.toString());
+					e.printStackTrace();
+					System.exit(1);
+				}
+				
+				manuallyMapped.add(synset);
+				if(eSynset.attributeValue("approved").equalsIgnoreCase("yes")){
+					/*
+					 * iterate over all example sentences and record the correspondences
+					 */
+					List<Element> eExampleSentences = eSynset.elements("ExampleSentence");
+					for(Element eExampleSentence : eExampleSentences){
+						String exampleSentence = eExampleSentence.attributeValue("text");
+						Word lexeme = synset.getWords().get(Integer.parseInt(eExampleSentence.attributeValue("index")));
+						List<String> temp = examples.get(lexeme);
+						if(temp == null)
+							temp = new ArrayList<String>();
+						temp.add(exampleSentence);
+						examples.put(lexeme, temp);
+					}
 				}
 			}
-		}
-		logger.log(Level.INFO, "done parsing");
+			logger.log(Level.INFO, "done parsing");
+			}
 	}
 	
 	
@@ -198,8 +210,10 @@ public class SynsetGenerator {
 		 */
 		logger.log(Level.INFO, "rewriting lexeme mapping file...");
 		OutputFormat format = OutputFormat.createPrettyPrint();
+		format.setEncoding("UTF-8");
 		XMLWriter output;
 		try {
+			
 			output = new XMLWriter(new FileWriter(lexemeMappingXML), format);
 			output.write(lexemeMapping);
 			output.close();

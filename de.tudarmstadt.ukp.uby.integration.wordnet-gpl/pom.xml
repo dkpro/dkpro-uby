@@ -23,6 +23,21 @@
 			<url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
 		</license>
 	</licenses>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+                    <argLine>-Xmx1024m</argLine>
+          			<includes>
+                		<!-- include only TestSuite.java-->
+            			<include>**/TestSuite.java</include>
+          			</includes>
+                </configuration>
+			</plugin>
+		</plugins>
+	</build>
 	<dependencies>
 		<dependency>
 			<groupId>de.tudarmstadt.ukp.uby</groupId>

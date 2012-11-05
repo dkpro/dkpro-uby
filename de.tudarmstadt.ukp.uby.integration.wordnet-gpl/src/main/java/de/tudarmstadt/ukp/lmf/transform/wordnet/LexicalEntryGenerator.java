@@ -37,6 +37,7 @@ import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
 import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrame;
 import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticBehaviour;
 import de.tudarmstadt.ukp.lmf.transform.wordnet.util.IndexSenseReader;
+import de.tudarmstadt.ukp.lmf.transform.wordnet.util.WNConvUtil;
 
 
 /**
@@ -51,9 +52,6 @@ public class LexicalEntryGenerator {
 	 * Mappings of lexemes with equal lemma and part of speech with associated LexicalEntries
 	 */
 	private Map<Set<Word>, LexicalEntry> lexemeGroupLexicalEntryMaping;
-	
-	//  mappings between part of speech, encoded in WordNet, part of speech specified by Uby-LMF
-	private static final Map<String, EPartOfSpeech> posMappings = new HashMap<String, EPartOfSpeech>();
 	
 	private Map<POS,Map<String, Set<Word>>> posLemmaLexemeGroup = new HashMap<POS, Map<String, Set<Word>>>();
 	
@@ -103,11 +101,6 @@ public class LexicalEntryGenerator {
 			syntacticBehaviourNumber = 0;
 			groupLexemes();
 			
-			// Put the POS mappings posKey <-> EPartOfSpeech
-			posMappings.put("n", EPartOfSpeech.noun);
-			posMappings.put("v", EPartOfSpeech.verb);
-			posMappings.put("a", EPartOfSpeech.adjective);
-			posMappings.put("r", EPartOfSpeech.adverb);
 			IndexSenseReader isr = new IndexSenseReader();
 			isr.initialize();
 			senseGenerator = new SenseGenerator(synsetGenerator, isr);
@@ -203,7 +196,7 @@ public class LexicalEntryGenerator {
 		for(Word lexeme : lexemeGroup){
 			if(!posSet){
 				// Extract the POS of the first Lexeme in the group
-				lexicalEntry.setPartOfSpeech(getPOS(lexeme.getPOS()));
+				lexicalEntry.setPartOfSpeech(WNConvUtil.getPOS(lexeme.getPOS()));
 				posSet = true;
 				
 				// Extract lemma
@@ -242,7 +235,7 @@ public class LexicalEntryGenerator {
 		lexicalEntry.setLemma(lemma);
 		
 		//*** Creating Senses ***//
-		lexicalEntry.setSenses(senseGenerator.generateSenses(lexemeGroup));
+		lexicalEntry.setSenses(senseGenerator.generateSenses(lexemeGroup, lexicalEntry));
 		
 		//*** Creating SyntacticBehaviours***//
 		if(!subcatCodes.isEmpty()){
@@ -308,17 +301,6 @@ public class LexicalEntryGenerator {
 		sb.append(syntacticBehaviour.getSense()).append(syntacticBehaviour.getSubcategorizationFrame());
 		sb.append(syntacticBehaviour.getSubcategorizationFrameSet());
 		return sb.toString();
-	}
-
-	/**
-	 * This method consumes a {@link POS}
-	 * and returns corresponding {@link EPartOfSpeech}
-	 * @param pos part of speech encoded in extJWNL-API
-	 * @return associated part of speech defined in Uby-LMF or null if the associated part of speech does not exist
-	 */
-	private EPartOfSpeech getPOS(POS pos) {
-		EPartOfSpeech result = posMappings.get(pos.getKey());
-		return result;
 	}
 
 	/**
