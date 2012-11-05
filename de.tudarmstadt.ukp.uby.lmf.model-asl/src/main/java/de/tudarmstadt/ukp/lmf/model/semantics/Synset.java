@@ -56,7 +56,7 @@ public class Synset extends HasMonolingualExternalRefs implements IHasID, IHasDe
 
 	// Senses of this synset - not in the model, added for convenience
 	@VarType(type = EVarType.NONE)
-	private List<Sense> senses;
+	private List<Sense> senses = new ArrayList<Sense>();
 	
 	/**
 	 * Constructs an empty {@link Synset} instance.
