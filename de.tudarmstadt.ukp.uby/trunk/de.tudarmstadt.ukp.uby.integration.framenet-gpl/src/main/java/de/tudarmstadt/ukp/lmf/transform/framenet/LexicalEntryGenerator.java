@@ -209,7 +209,7 @@ public class LexicalEntryGenerator {
 				// incorporatedSemArg can only be set for annotated lus
 				String incorporatedFEName = alu.getIncorporatedFE();
 				if(incorporatedFEName != null){
-					// Create a SemanticArgument for the incorporated FrameElement
+					// Add inCorporated=true information to SemanticArguments
 					List<SemanticArgument> semanticArguments = semanticPredicate.getSemanticArguments();
 					SemanticArgument incorporatedArgument = null;
 					if(semanticArguments == null){ // no args => create a new one //not needed
