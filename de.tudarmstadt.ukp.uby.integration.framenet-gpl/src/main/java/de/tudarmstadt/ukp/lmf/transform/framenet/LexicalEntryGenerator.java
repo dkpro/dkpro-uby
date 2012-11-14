@@ -210,14 +210,28 @@ public class LexicalEntryGenerator {
 				String incorporatedFEName = alu.getIncorporatedFE();
 				if(incorporatedFEName != null){
 					// Create a SemanticArgument for the incorporated FrameElement
-					SemanticArgument semanticArgument = semanticPredicateGenerator.createIncorporatedSemanticArgument(incorporatedFEName);
 					List<SemanticArgument> semanticArguments = semanticPredicate.getSemanticArguments();
-					if(semanticArgument == null)
+					SemanticArgument incorporatedArgument = null;
+					if(semanticArguments == null){ // no args => create a new one //not needed
 						semanticArguments = new ArrayList<SemanticArgument>();
-					semanticArguments.add(semanticArgument);
+					}
+					if (semanticArguments.size()==0){
+						incorporatedArgument = semanticPredicateGenerator.createIncorporatedSemanticArgument(incorporatedFEName); 
+						semanticArguments.add(incorporatedArgument);
+					} else { // change the isIncorporated Flag of the corresponding argument
+						for (SemanticArgument semanticArgument: semanticArguments){
+							String role = semanticArgument.getSemanticRole();
+							if (semanticArgument.getSemanticRole().equals(incorporatedFEName)){
+								incorporatedArgument = semanticArgument;
+								incorporatedArgument.setIncorporated(true);
+							}
+						}
+					}
 					semanticPredicate.setSemanticArguments(semanticArguments);
-					sense.setIncorporatedSemArg(semanticArgument);
-				}
+					if (incorporatedArgument != null){
+						sense.setIncorporatedSemArg(incorporatedArgument);
+					}
+ 				}
 				// MAPPING LU'S SEMTYPE TO SENSE NEW
 				HashSet<String> semTypes = alu.getSemTypes();
 				for (String s: semTypes){

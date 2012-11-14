@@ -63,7 +63,7 @@ public class SemanticPredicateGenerator {
 	private Map<String, SemanticArgument> feSemArgMapping = new HashMap<String, SemanticArgument>();
 	
 	// list of incorporated SemanticSArguments
-	private List<SemanticArgument> incorporatedSemArgs = new ArrayList<SemanticArgument>();
+//	private List<SemanticArgument> incorporatedSemArgs = new ArrayList<SemanticArgument>();
 	
 	// all frame relations in FrameNet, used for creating PredicateRelations
 	private Set<String> frameRelations;
@@ -528,7 +528,7 @@ public class SemanticPredicateGenerator {
 
 	/**
 	 * This method consumes the name of the incorporated frame element
-	 * and crates the corresponding SemanticArgument
+	 * and creates the corresponding SemanticArgument
 	 * @param incorporatedFEName
 	 * @return corresponding SemanticArgument
 	 */
@@ -540,7 +540,7 @@ public class SemanticPredicateGenerator {
 		semanticArgument.setId(semArgID.toString());
 		semanticArgument.setSemanticRole(incorporatedFEName);
 		semanticArgument.setIncorporated(true);
-		incorporatedSemArgs.add(semanticArgument);
+//		incorporatedSemArgs.add(semanticArgument);
 		return semanticArgument;
 	}
 	
