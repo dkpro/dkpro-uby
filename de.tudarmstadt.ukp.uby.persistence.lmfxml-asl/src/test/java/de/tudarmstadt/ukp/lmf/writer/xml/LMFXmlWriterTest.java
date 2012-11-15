@@ -61,6 +61,7 @@ import de.tudarmstadt.ukp.lmf.model.enums.EExampleType;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalFunction;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalGender;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalNumber;
+import de.tudarmstadt.ukp.lmf.model.enums.ELabelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
 import de.tudarmstadt.ukp.lmf.model.enums.EPerson;
@@ -194,7 +195,7 @@ public class LMFXmlWriterTest {
 	private static final ERelTypeSemantics senseRelation_relationType = ERelTypeSemantics.label;
 	
 	private static final String semanticLabel_label = "semanticLabel_label";
-	private static final String semanticLabel_type = "semanticLabel_type";
+	private static final ELabelTypeSemantics semanticLabel_type = ELabelTypeSemantics.resourceSpecific;
 	private static final String semanticLabel_quantification = "semanticLabel_quantification";
 	
 	private static final String syntacticBehaviour_id = "syntactibBehaviour_id";

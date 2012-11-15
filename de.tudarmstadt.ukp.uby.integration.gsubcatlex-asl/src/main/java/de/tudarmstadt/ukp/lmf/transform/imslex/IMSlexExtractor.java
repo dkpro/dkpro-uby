@@ -38,6 +38,7 @@ import de.tudarmstadt.ukp.lmf.model.enums.ECase;
 import de.tudarmstadt.ukp.lmf.model.enums.EComplementizer;
 import de.tudarmstadt.ukp.lmf.model.enums.EDeterminer;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalFunction;
+import de.tudarmstadt.ukp.lmf.model.enums.ELabelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalNumber;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
@@ -133,84 +134,88 @@ public class IMSlexExtractor {
 		System.out.print("Parsing preprocessed IMSlex ...");
 		Reader r = new InputStreamReader(new FileInputStream(lexiconInputFile), "UTF8");
 		BufferedReader input = new BufferedReader(r);
-		String line;
-		String[] parts;
-		HashSet<IMSlexSense> imsLexSenses = new HashSet<IMSlexSense>(); // senses that have already been processed for one lemma
-		
-		while ((line = input.readLine()) != null) {
-			parts = line.split("%");
-			IMSlexSense imsLexSense = new IMSlexSense(parts[0],parts[1],null,parts[2],parts[3]);
-			if (imsLexSense.synArgs.contains("semanticLabel")) {
-				imsLexSense.synArgs = "null";
-				imsLexSense.classInformation = parts[2];
-			}
-						
-			if (!imsLexSense.synArgs.equals("null") || !imsLexSense.classInformation.equals("null")) {
-				// skip adjectives without SCF and semantic class information
-				if (syntaxSemClassMap.containsKey(imsLexSense.lemma+"%"+imsLexSense.pos+"%"+imsLexSense.synArgs)) { // there is already an IMSlexSense with the same syntax
-					if (!imsLexSense.classInformation.equals("null") && syntaxSemClassMap.get(imsLexSense.lemma+"%"+imsLexSense.pos+"%"+imsLexSense.synArgs).equals("null")) {
-						//if the class of the existing entry is null, but the class of the new IMSlexSense is not null:
-						//replace the null with the class information
+		try {
+			String line;
+			String[] parts;
+			HashSet<IMSlexSense> imsLexSenses = new HashSet<IMSlexSense>(); // senses that have already been processed for one lemma
+
+			while ((line = input.readLine()) != null) {
+				parts = line.split("%");
+				IMSlexSense imsLexSense = new IMSlexSense(parts[0],parts[1],null,parts[2],parts[3]);
+				if (imsLexSense.synArgs.contains("semanticLabel")) {
+					imsLexSense.synArgs = "null";
+					imsLexSense.classInformation = parts[2];
+				}
+
+				if (!imsLexSense.synArgs.equals("null") || !imsLexSense.classInformation.equals("null")) {
+					// skip adjectives without SCF and semantic class information
+					if (syntaxSemClassMap.containsKey(imsLexSense.lemma+"%"+imsLexSense.pos+"%"+imsLexSense.synArgs)) { // there is already an IMSlexSense with the same syntax
+						if (!imsLexSense.classInformation.equals("null") && syntaxSemClassMap.get(imsLexSense.lemma+"%"+imsLexSense.pos+"%"+imsLexSense.synArgs).equals("null")) {
+							//if the class of the existing entry is null, but the class of the new IMSlexSense is not null:
+							//replace the null with the class information
+							syntaxSemClassMap.put(imsLexSense.lemma+"%"+imsLexSense.pos+"%"+imsLexSense.synArgs, imsLexSense.classInformation);
+						}
+					} else {
 						syntaxSemClassMap.put(imsLexSense.lemma+"%"+imsLexSense.pos+"%"+imsLexSense.synArgs, imsLexSense.classInformation);
 					}
-				} else {
-					syntaxSemClassMap.put(imsLexSense.lemma+"%"+imsLexSense.pos+"%"+imsLexSense.synArgs, imsLexSense.classInformation);
-				}
 
-				if (imsLexSense.synArgs.contains("role")) {
-					String pureSynArgs = imsLexSense.synArgs.replaceFirst(",role=[a-z]+", "");
-					synSemArgSynArgMapping.put(imsLexSense.synArgs, pureSynArgs);
-				} else {
-					synSemArgSynArgMapping.put(imsLexSense.synArgs, imsLexSense.synArgs);	
+					if (imsLexSense.synArgs.contains("role")) {
+						String pureSynArgs = imsLexSense.synArgs.replaceFirst(",role=[a-z]+", "");
+						synSemArgSynArgMapping.put(imsLexSense.synArgs, pureSynArgs);
+					} else {
+						synSemArgSynArgMapping.put(imsLexSense.synArgs, imsLexSense.synArgs);	
+					}
 				}
 			}
-		}
-		
-		Iterator<String> syntaxIterator = syntaxSemClassMap.keySet().iterator();
-		while (syntaxIterator.hasNext()) {
-			String syntax = syntaxIterator.next();
-			parts = syntax.split("%");
-			IMSlexSense sense = new IMSlexSense(parts[0],parts[1],null,parts[2],syntaxSemClassMap.get(syntax));
-			listOfIMSlexSenses.add(sense);
-		}
-		
-		for	(IMSlexSense imsLexSense : listOfIMSlexSenses) {
 
-			if (imsLexSense.pos.equals("verb")) {
-				if (verbLemmaIMSlexSenseMappings.containsKey(imsLexSense.lemma)) {
-					imsLexSenses = verbLemmaIMSlexSenseMappings.get(imsLexSense.lemma);
-					imsLexSenses.add(imsLexSense);
-					verbLemmaIMSlexSenseMappings.put(imsLexSense.lemma,imsLexSenses);
-				} else {
-					HashSet<IMSlexSense> newSense = new HashSet<IMSlexSense>();
-					newSense.add(imsLexSense);
-					verbLemmaIMSlexSenseMappings.put(imsLexSense.lemma,newSense);
-				}
-			} else if (imsLexSense.pos.equals("adj")) {
-				if (adjLemmaIMSlexSenseMappings.containsKey(imsLexSense.lemma)) {
-					imsLexSenses = adjLemmaIMSlexSenseMappings.get(imsLexSense.lemma);
-					imsLexSenses.add(imsLexSense);
-					adjLemmaIMSlexSenseMappings.put(imsLexSense.lemma,imsLexSenses);
-				} else {
-					HashSet<IMSlexSense> newSense = new HashSet<IMSlexSense>();
-					newSense.add(imsLexSense);
-					adjLemmaIMSlexSenseMappings.put(imsLexSense.lemma,newSense);
-				}
-			} else { //noun
-				if (nounLemmaIMSlexSenseMappings.containsKey(imsLexSense.lemma)) {
-					imsLexSenses = nounLemmaIMSlexSenseMappings.get(imsLexSense.lemma);
-					imsLexSenses.add(imsLexSense);
-					nounLemmaIMSlexSenseMappings.put(imsLexSense.lemma,imsLexSenses);
-				} else {
-					HashSet<IMSlexSense> newSense = new HashSet<IMSlexSense>();
-					newSense.add(imsLexSense);
-					nounLemmaIMSlexSenseMappings.put(imsLexSense.lemma,newSense);
+			Iterator<String> syntaxIterator = syntaxSemClassMap.keySet().iterator();
+			while (syntaxIterator.hasNext()) {
+				String syntax = syntaxIterator.next();
+				parts = syntax.split("%");
+				IMSlexSense sense = new IMSlexSense(parts[0],parts[1],null,parts[2],syntaxSemClassMap.get(syntax));
+				listOfIMSlexSenses.add(sense);
+			}
+
+			for	(IMSlexSense imsLexSense : listOfIMSlexSenses) {
+
+				if (imsLexSense.pos.equals("verb")) {
+					if (verbLemmaIMSlexSenseMappings.containsKey(imsLexSense.lemma)) {
+						imsLexSenses = verbLemmaIMSlexSenseMappings.get(imsLexSense.lemma);
+						imsLexSenses.add(imsLexSense);
+						verbLemmaIMSlexSenseMappings.put(imsLexSense.lemma,imsLexSenses);
+					} else {
+						HashSet<IMSlexSense> newSense = new HashSet<IMSlexSense>();
+						newSense.add(imsLexSense);
+						verbLemmaIMSlexSenseMappings.put(imsLexSense.lemma,newSense);
+					}
+				} else if (imsLexSense.pos.equals("adj")) {
+					if (adjLemmaIMSlexSenseMappings.containsKey(imsLexSense.lemma)) {
+						imsLexSenses = adjLemmaIMSlexSenseMappings.get(imsLexSense.lemma);
+						imsLexSenses.add(imsLexSense);
+						adjLemmaIMSlexSenseMappings.put(imsLexSense.lemma,imsLexSenses);
+					} else {
+						HashSet<IMSlexSense> newSense = new HashSet<IMSlexSense>();
+						newSense.add(imsLexSense);
+						adjLemmaIMSlexSenseMappings.put(imsLexSense.lemma,newSense);
+					}
+				} else { //noun
+					if (nounLemmaIMSlexSenseMappings.containsKey(imsLexSense.lemma)) {
+						imsLexSenses = nounLemmaIMSlexSenseMappings.get(imsLexSense.lemma);
+						imsLexSenses.add(imsLexSense);
+						nounLemmaIMSlexSenseMappings.put(imsLexSense.lemma,imsLexSenses);
+					} else {
+						HashSet<IMSlexSense> newSense = new HashSet<IMSlexSense>();
+						newSense.add(imsLexSense);
+						nounLemmaIMSlexSenseMappings.put(imsLexSense.lemma,newSense);
+					}
 				}
 			}
-		}
-						
 
-		System.out.println("done");
+
+			System.out.println("done");
+		} finally {
+			r.close();
+		}
 	}
 	
 	/**
@@ -454,15 +459,13 @@ public class IMSlexExtractor {
 	}
 
 	
-	private String getTypeOfSemanticLabel(String classInformation)
+	private ELabelTypeSemantics getTypeOfSemanticLabel(String classInformation)
 	{
-		String result = null;
 		if (classInformation.contains("Noun")) {
-			result = "semanticNounClass";
+			return ELabelTypeSemantics.semanticNounClass;
 		} else {
-			result = "syntacticAlternationClass";
+			return ELabelTypeSemantics.syntacticAlternationClass;
 		}
-		return result;
 	}
 
 	/**

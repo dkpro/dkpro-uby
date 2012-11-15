@@ -18,13 +18,20 @@
 package de.tudarmstadt.ukp.lmf.transform.wiktionary;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.core.GlobalInformation;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
+import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
+import de.tudarmstadt.ukp.lmf.model.morphology.WordForm;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
+import de.tudarmstadt.ukp.lmf.transform.wiktionary.labels.WiktionaryLabel;
+import de.tudarmstadt.ukp.lmf.transform.wiktionary.labels.WiktionaryLabelLMFMap;
+import de.tudarmstadt.ukp.lmf.transform.wiktionary.labels.WiktionaryLabelType;
 import de.tudarmstadt.ukp.wiktionary.api.IWikiString;
 import de.tudarmstadt.ukp.wiktionary.api.IWiktionaryEdition;
 import de.tudarmstadt.ukp.wiktionary.api.IWiktionaryEntry;
@@ -94,4 +101,71 @@ public class WiktionaryENTransformer extends WiktionaryLMFTransformer {
 		saveLabels(gloss, sense, entry, wktEntry);						// Convert context labels and update LMF entry
 	}
 
+	/**
+	 * Extracts labels from the gloss and saves them to various LMF elements
+	 * @param gloss
+	 * @param sense
+	 * @param entry
+	 */
+	@Deprecated
+	protected void saveLabels(IWikiString gloss, Sense sense, LexicalEntry entry, IWiktionaryEntry wktEntry){
+		if(labelLoader == null) {
+			return;
+		}
+
+		List<SemanticLabel> semanticLabels = new ArrayList<SemanticLabel>();
+		for(WiktionaryLabel label : labelLoader.getLabels(gloss)){
+			WiktionaryLabelType labelType = label.getLabelType();
+			if(labelType.equals(WiktionaryLabelType.FORM_OF)){			// FORM_OF labels --> Word forms
+
+				WordForm wordForm = WiktionaryLabelLMFMap.formOfToWordForm(label, wktEntry.getWord());
+				String targetWord = label.getParameterByName("1");		// Target word is in the first parameter of the label template
+
+				for(IWiktionaryEntry targetEntry: wkt.getEntriesForWord(targetWord)){
+					if(targetEntry.getPartOfSpeech().equals(wktEntry.getPartOfSpeech()) // Only entries with the same POS and language
+						&& targetEntry.getPage().getEntryLanguage().equals(wktEntry.getPage().getEntryLanguage())){
+
+						String entryId = getLmfId(LexicalEntry.class, getEntryId(targetEntry));
+						LexicalEntry lexEntry = (LexicalEntry)getLmfObjectById(LexicalEntry.class, entryId);
+
+						if(lexEntry != null){ // If entry already exists then save directly to it
+
+							if(lexEntry.getWordForms() != null){	// If the entry already has other word forms,
+								lexEntry.getWordForms().add(wordForm); // then add this word form to them
+							}else{
+								List<WordForm> wordForms = new ArrayList<WordForm>();
+								wordForms.add(wordForm);
+								lexEntry.setWordForms(wordForms);
+							}
+							saveList(lexEntry, lexEntry.getWordForms()); // Save word forms and update lexEntry
+
+						}else{				// If lexical entry does not yet exist then save wordForms temporarily
+							if(wordForms.containsKey(entryId)){
+								wordForms.get(entryId).add(wordForm);
+							}else{
+								List<WordForm> temp = new ArrayList<WordForm>();
+								temp.add(wordForm);
+								wordForms.put(entryId, temp);
+							}
+						}
+					}
+				}
+			//}else if(labelType.equals(WiktionaryLabelType.GRAMMATICAL)){
+
+			} else {
+				// Save all other context labels as SemanticLabel.
+				SemanticLabel semanticLabel = WiktionaryLabelLMFMap.labelToSemanticLabel(label);
+				semanticLabels.add(semanticLabel);
+			}
+		}
+		sense.setSemanticLabels(semanticLabels);
+
+		if(wordForms.containsKey(entry.getId())){ // We are currently in an entry,
+												  // for which some unsaved word forms exist
+												  // --> save them and delete from cache
+			entry.setWordForms(wordForms.get(entry.getId()));
+			wordForms.remove(entry.getId());
+		}
+	}
+	
 }

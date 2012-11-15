@@ -40,6 +40,7 @@ import de.tudarmstadt.ukp.lmf.model.enums.EComplementizer;
 import de.tudarmstadt.ukp.lmf.model.enums.EDeterminer;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalFunction;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalNumber;
+import de.tudarmstadt.ukp.lmf.model.enums.ELabelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
 import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticCategory;
@@ -128,31 +129,35 @@ public class GermanVcExtractor {
 		System.out.print("Parsing GVC Input...");
 		Reader r = new InputStreamReader(new FileInputStream(verbInputFile), "UTF8");
 		BufferedReader input = new BufferedReader(r);
-		String line;
-		String[] parts;
-		HashSet<GermanVcSense> gvcSenses = new HashSet<GermanVcSense>(); // Processed verb senses
-		
-		while ((line = input.readLine()) != null) {
-			parts = line.split("%");
-			GermanVcSense gvcSense = new GermanVcSense(parts[0],parts[1],parts[2]);
-			if (LemmaGermanVcSenseMappings.containsKey(gvcSense.lemma)) {
-				gvcSenses = LemmaGermanVcSenseMappings.get(gvcSense.lemma);
-				gvcSenses.add(gvcSense);
-				LemmaGermanVcSenseMappings.put(gvcSense.lemma,gvcSenses);
-			} else {
-				HashSet<GermanVcSense> newSense = new HashSet<GermanVcSense>();
-				newSense.add(gvcSense);
-				LemmaGermanVcSenseMappings.put(gvcSense.lemma,newSense);
-			}
-			listOfGermanVcSenses.add(gvcSense);
-			if (gvcSense.synArgs.contains("role")) {
-				String pureSynArgs = gvcSense.synArgs.replaceFirst(",role=[a-z]+", "");
-				synSemArgSynArgMapping.put(gvcSense.synArgs, pureSynArgs);
-			} else {
-				synSemArgSynArgMapping.put(gvcSense.synArgs, gvcSense.synArgs);	
-			}
-		}		
-		System.out.println("done");
+		try {
+			String line;
+			String[] parts;
+			HashSet<GermanVcSense> gvcSenses = new HashSet<GermanVcSense>(); // Processed verb senses
+
+			while ((line = input.readLine()) != null) {
+				parts = line.split("%");
+				GermanVcSense gvcSense = new GermanVcSense(parts[0],parts[1],parts[2]);
+				if (LemmaGermanVcSenseMappings.containsKey(gvcSense.lemma)) {
+					gvcSenses = LemmaGermanVcSenseMappings.get(gvcSense.lemma);
+					gvcSenses.add(gvcSense);
+					LemmaGermanVcSenseMappings.put(gvcSense.lemma,gvcSenses);
+				} else {
+					HashSet<GermanVcSense> newSense = new HashSet<GermanVcSense>();
+					newSense.add(gvcSense);
+					LemmaGermanVcSenseMappings.put(gvcSense.lemma,newSense);
+				}
+				listOfGermanVcSenses.add(gvcSense);
+				if (gvcSense.synArgs.contains("role")) {
+					String pureSynArgs = gvcSense.synArgs.replaceFirst(",role=[a-z]+", "");
+					synSemArgSynArgMapping.put(gvcSense.synArgs, pureSynArgs);
+				} else {
+					synSemArgSynArgMapping.put(gvcSense.synArgs, gvcSense.synArgs);	
+				}
+			}		
+			System.out.println("done");
+		} finally {
+			r.close();
+		}
 	}
 	
 	/**
@@ -313,7 +318,7 @@ public class GermanVcExtractor {
 				List<SemanticLabel> semanticLabels = new ArrayList<SemanticLabel>();
 				SemanticLabel semanticLabel = new SemanticLabel();
 				semanticLabel.setLabel(gvcSense.classInformation);
-				semanticLabel.setType("alternationClass");
+				semanticLabel.setType(ELabelTypeSemantics.syntacticAlternationClass);
 				semanticLabels.add(semanticLabel);
 				sense.setSemanticLabels(semanticLabels);
 										

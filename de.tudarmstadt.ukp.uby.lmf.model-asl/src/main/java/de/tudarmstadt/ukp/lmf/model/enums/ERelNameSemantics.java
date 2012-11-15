@@ -20,11 +20,11 @@ package de.tudarmstadt.ukp.lmf.model.enums;
 /**
  * Frequently used relation names for {@link SenseRelation}s and 
  * {@link SynsetRelation}s. Relation names are not limited to those specified
- * by this enumeration; the enumeration focuses on the most common relations
+ * by this class; the constants focus only on the most common relations
  * and on those relations used in WordNet and GermaNet.
  * 
  * @author Christian M. Meyer
- * @author Eckle-Kohler
+ * @author Judith Eckle-Kohler
  *
  */
 public final class ERelNameSemantics {

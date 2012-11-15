@@ -31,6 +31,7 @@ import de.tudarmstadt.ukp.lmf.model.enums.ECase;
 import de.tudarmstadt.ukp.lmf.model.enums.EExampleType;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalGender;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalNumber;
+import de.tudarmstadt.ukp.lmf.model.enums.ELabelNameSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.ELabelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.EStatementType;
 import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticProperty;
@@ -217,15 +218,15 @@ class SenseGenerator {
 				{
 					if (value.equals("Singularetantum")) {
 						sl = new SemanticLabel();
-						sl.setType(ELabelTypeSemantics.SEMANTICNOUNCLASS);
-						sl.setLabel(value);
+						sl.setType(ELabelTypeSemantics.semanticNounClass);
+						sl.setLabel(ELabelNameSemantics.SEMANTIC_NOUN_CLASS_ONLY_SINGULAR);
 
 						//lexicalEntry.setSingularetantum(EYesNo.yes);
 					}
 					else if (value.equals("Pluraletantum")) {
 						sl = new SemanticLabel();
-						sl.setType(ELabelTypeSemantics.SEMANTICNOUNCLASS);
-						sl.setLabel(value);
+						sl.setType(ELabelTypeSemantics.semanticNounClass);
+						sl.setLabel(ELabelNameSemantics.SEMANTIC_NOUN_CLASS_ONLY_PLURAL);
 
 						//lexicalEntry.setPluraletantum(EYesNo.yes);
 					}
@@ -288,13 +289,13 @@ class SenseGenerator {
 
 					sl = new SemanticLabel();
 					if(value.equals("vulgar")||value.equals("technical")||value.equals("poetic")||value.equals("pejorative")||value.equals("offensive")||value.equals("colloquial")||value.equals("medical")||value.equals("juvenile")||value.equals("informal")||value.equals("humorous")||value.equals("euphemistic")||value.equals("kindersprache")) {
-						sl.setType(ELabelTypeSemantics.USAGE);
+						sl.setType(ELabelTypeSemantics.usage);
 					}
 					else if(value.equals("archaic")||value.equals("alte deutsche Schreibweise")||value.equals("dated")||value.equals("neologism")||value.equals("obsolete")) {
-						sl.setType(ELabelTypeSemantics.TIMEPERIODOFUSAGE);
+						sl.setType(ELabelTypeSemantics.timePeriodOfUsage);
 					}
 					else  {
-						sl.setType(ELabelTypeSemantics.REGIONOFUSAGE);
+						sl.setType(ELabelTypeSemantics.regionOfUsage);
 					}
 					//sl.setType("time");
 					sl.setLabel(value);

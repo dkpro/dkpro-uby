@@ -163,7 +163,7 @@ public class SemanticPredicateGenerator {
 							// Creating SemanticLabels for FN-"Ontological types"
 							SemanticLabel semanticLabel = new SemanticLabel();
 							semanticLabel.setLabel(semanticType.getName());
-							semanticLabel.setType(ELabelTypeSemantics.SEMANTICCATEGORY);
+							semanticLabel.setType(ELabelTypeSemantics.semanticCategory);
 							
 							// creating MonolingualExternalRef
 							List<MonolingualExternalRef> monolingualExternalRefs = new LinkedList<MonolingualExternalRef>();
@@ -257,7 +257,7 @@ public class SemanticPredicateGenerator {
 					// Creating SemanticLabels for FN-"Ontological types"
 					SemanticLabel semanticLabel = new SemanticLabel();
 					semanticLabel.setLabel(semanticType.getName());
-					semanticLabel.setType(ELabelTypeSemantics.SELECTIONALPREFERENCE);
+					semanticLabel.setType(ELabelTypeSemantics.selectionalPreference);
 
 					// creating MonolingualExternalRef
 					List<MonolingualExternalRef> monolingualExternalRefs = new LinkedList<MonolingualExternalRef>();

@@ -60,7 +60,7 @@ public class SynsetRelationGenerator {
 	
 	private Set<String> ignoredPointerKeys; // A set of ignored pointer keys, used for error-detection purposes
 	
-	private Map<String, String> domainOfRegisterMappings = new HashMap<String,String>(); // <domainOfRelationKey, register>
+	private Map<String, ELabelTypeSemantics> domainOfRegisterMappings = new HashMap<String,ELabelTypeSemantics>(); // <domainOfRelationKey, register>
 	
 	// String representations of relation names that are not part of ERelNameSemantics
 	
@@ -414,8 +414,8 @@ public class SynsetRelationGenerator {
 
 		
 		// Setting mappings related to domainOf Relations
-		domainOfRegisterMappings.put(";c", ELabelTypeSemantics.DOMAIN);
-		domainOfRegisterMappings.put(";r", ELabelTypeSemantics.REGIONOFUSAGE);
-		domainOfRegisterMappings.put(";u", ELabelTypeSemantics.USAGE);
+		domainOfRegisterMappings.put(";c", ELabelTypeSemantics.domain);
+		domainOfRegisterMappings.put(";r", ELabelTypeSemantics.regionOfUsage);
+		domainOfRegisterMappings.put(";u", ELabelTypeSemantics.usage);
 	}
 }

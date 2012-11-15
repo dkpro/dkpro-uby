@@ -60,7 +60,7 @@ public class SynsetRelationGenerator {
 	 */
 	private  HashMap<String, ERelTypeSemantics> relTypeMappings;
 
-	private final  Map<String, String> domainOfRegisterMappings = new HashMap<String,String>(); // <domainOfRelationKey, register>
+	private final  Map<String, ELabelTypeSemantics> domainOfRegisterMappings = new HashMap<String,ELabelTypeSemantics>(); // <domainOfRelationKey, register>
 
 	/**
 	 * Constructs a SynsetRelationGenerator
@@ -407,9 +407,9 @@ public class SynsetRelationGenerator {
 		relTypeMappings.put("antonym", ERelTypeSemantics.complementary);
 
 		// Setting mappings related to domainOf Relations
-		domainOfRegisterMappings.put("is part of theme", ELabelTypeSemantics.DOMAIN);
-		domainOfRegisterMappings.put("subject", ELabelTypeSemantics.DOMAIN);
-		domainOfRegisterMappings.put("topic", ELabelTypeSemantics.DOMAIN);
+		domainOfRegisterMappings.put("is part of theme", ELabelTypeSemantics.domain);
+		domainOfRegisterMappings.put("subject", ELabelTypeSemantics.domain);
+		domainOfRegisterMappings.put("topic", ELabelTypeSemantics.domain);
 
 	}
 }

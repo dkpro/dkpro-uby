@@ -132,7 +132,7 @@ public class SenseGenerator {
 			SemanticLabel semanticLabel = new SemanticLabel();
 			semanticLabels.add(semanticLabel);
 			semanticLabel.setLabel(lexemeSynset.getLexFileName());
-			semanticLabel.setType("lexicographerFileName");
+			semanticLabel.setType(ELabelTypeSemantics.semanticField);
 			
 			sense.setSemanticLabels(semanticLabels);
 			
@@ -251,7 +251,7 @@ public class SenseGenerator {
 			SemanticLabel semanticLabel = new SemanticLabel();
 			semanticLabels.add(semanticLabel);
 			semanticLabel.setLabel(lexemeSynset.getLexFileName());
-			semanticLabel.setType(ELabelTypeSemantics.SEMANTICFIELD);
+			semanticLabel.setType(ELabelTypeSemantics.semanticField);
 			
 			sense.setSemanticLabels(semanticLabels);
 			
