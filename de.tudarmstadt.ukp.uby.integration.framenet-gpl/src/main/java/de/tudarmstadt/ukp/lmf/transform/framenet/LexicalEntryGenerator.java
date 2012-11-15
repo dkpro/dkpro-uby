@@ -220,7 +220,6 @@ public class LexicalEntryGenerator {
 						semanticArguments.add(incorporatedArgument);
 					} else { // change the isIncorporated Flag of the corresponding argument
 						for (SemanticArgument semanticArgument: semanticArguments){
-							String role = semanticArgument.getSemanticRole();
 							if (semanticArgument.getSemanticRole().equals(incorporatedFEName)){
 								incorporatedArgument = semanticArgument;
 								incorporatedArgument.setIncorporated(true);
@@ -463,8 +462,7 @@ public class LexicalEntryGenerator {
 						formRepresentation.setWrittenForm(lemma);
 						formRepresentations.add(formRepresentation);
 						Lemma lemmaObj = new Lemma();
-						lemmaObj.setLexicalEntryId(lexicalEntry.getId());
-//						lemmaObj.setLexicalEntry(lexicalEntry);
+						lemmaObj.setLexicalEntry(lexicalEntry);
 						lemmaObj.setFormRepresentations(formRepresentations);
 						component.setTargetLexicalEntry(lexicalEntry);
 						lexicalEntry.setLemma(lemmaObj);
