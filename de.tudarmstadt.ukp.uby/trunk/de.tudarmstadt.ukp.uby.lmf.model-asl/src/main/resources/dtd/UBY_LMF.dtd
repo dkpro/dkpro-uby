@@ -51,21 +51,22 @@ languageIdentifier 	http://www.isocat.org/datcat/DC-279
     partOfSpeech (adjective|adverb|adverbPronominal|
     adpositionPreposition|adpositionPostposition|adpositionCircumposition|
     determiner|determinerArticle|determinerPossessive|determinerIndefinite|determinerDemonstrative|determinerInterrogative|numeral|
-    interjection|interjectionSalutation|interjectionOnomatopoeia|
-    phraseme|phrasemeIdiom|phrasemeCollocation|phrasemeProverb|phrasemeMnemonic|
+    interjection|
+    phraseme|
+    symbol|
     conjunction|conjunctionCoordinating|conjunctionSubordinating|
-    noun|nounCommon|nounProper|nounProperFirstName|nounProperLastName|nounProperToponym|
+    noun|nounCommon|nounProper|nounProperFirstName|nounProperLastName|
     pronoun|pronounPersonal|pronounPossessive|pronounDemonstrative|pronounRelative|pronounIndefinite|
     pronounPersonalReflexive|pronounPersonalIrreflexive|pronounInterrogative|
     particle|particleNegative|particleInfinitive|particleComparative|particleAnswer|
-    particleModal|particleFocus|particleIntensifying|
     verbAuxiliary|verbModal|verbMain|verb|
-    abbreviation|abbreviationAcronym|abbreviationInitialism|
-    affix|affixPrefix|affixSuffix|contraction) #REQUIRED
+    abbreviation|abbreviationAcronym|abbreviationInitialism|contraction|
+    affix|affixPrefix|affixSuffix) #REQUIRED
     separableParticle CDATA #IMPLIED>  
   
 <!-- 
 partOfSpeech	http://www.isocat.org/datcat/DC-396
+
 adjective	http://www.isocat.org/datcat/DC-1230
 adverb	http://www.isocat.org/datcat/DC-1232
 adverbPronominal http://www.isocat.org/datcat/DC-2998
@@ -79,15 +80,21 @@ determinerIndefinite 	http://www.isocat.org/datcat/DC-1307
 determinerDemonstrative 	http://www.isocat.org/datcat/DC-1269
 determinerInterrogative 	http://www.isocat.org/datcat/DC-1320
 numeral 	http://www.isocat.org/datcat/DC-1334
+
 interjection 	http://www.isocat.org/datcat/DC-1318
+phraseme		http://www.isocat.org/datcat/DC-339
+symbol			http://www.isocat.org/datcat/DC-1398
 
 conjunction 	http://www.isocat.org/datcat/DC-3132
 conjunctionCoordinating 	http://www.isocat.org/datcat/DC-1262
 conjunctionSubordinating 	http://www.isocat.org/datcat/DC-1393
 
-noun 	http://www.isocat.org/datcat/DC-3347
-nounCommon 	http://www.isocat.org/datcat/DC-385
-nounProper 	http://www.isocat.org/datcat/DC-1371
+noun 					http://www.isocat.org/datcat/DC-3347
+nounCommon 				http://www.isocat.org/datcat/DC-385
+nounProper 				http://www.isocat.org/datcat/DC-1371
+nounProperFirstName		http://www.isocat.org/datcat/DC-4194
+nounProperLastName		http://www.isocat.org/datcat/DC-4195
+
 pronoun 	http://www.isocat.org/datcat/DC-1370
 pronounPersonal 	http://www.isocat.org/datcat/DC-3013
 pronounPersonalReflexive 	http://www.isocat.org/datcat/DC-3014
@@ -107,6 +114,15 @@ verbAuxiliary 	http://www.isocat.org/datcat/DC-1244
 verbModal 	http://www.isocat.org/datcat/DC-1329
 verbMain 	http://www.isocat.org/datcat/DC-1400
 verb 	http://www.isocat.org/datcat/DC-1424
+
+abbreviation				http://www.isocat.org/datcat/DC-329
+abbreviationAcronym			http://www.isocat.org/datcat/DC-334
+abbreviationInitialism		http://www.isocat.org/datcat/DC-333
+contraction					http://www.isocat.org/datcat/DC-354
+
+affix						http://www.isocat.org/datcat/DC-1234
+affixPrefix					http://www.isocat.org/datcat/DC-1365
+affixSuffix					http://www.isocat.org/datcat/DC-1395
 
 separableParticle 	http://www.isocat.org/datcat/DC-3546
 -->            
