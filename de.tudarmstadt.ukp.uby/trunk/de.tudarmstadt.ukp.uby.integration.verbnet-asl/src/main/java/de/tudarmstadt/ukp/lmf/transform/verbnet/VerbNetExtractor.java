@@ -129,28 +129,32 @@ public class VerbNetExtractor {
 	private void parseVerbNetInput() throws IOException {
 		System.out.print("Parsing VerbNet Input...");
 		BufferedReader input = new BufferedReader(new FileReader(verbNetInputFile));
-		String line;
-		String[] parts;
-		List<String> synSemArgs = new LinkedList <String>();
-		HashSet<VerbNetSense> vnSenses = new HashSet<VerbNetSense>(); // Processed VerbNet senses
-		
-		while ((line = input.readLine()) != null) {
-			parts = line.split("#");
-			VerbNetSense verbNetSense = new VerbNetSense(parts[0],parts[1],parts[2],parts[3],parts[4],parts[5],parts[6],parts[7]);
-			synSemArgs = getSelRestr(verbNetSense.arguments,verbNetSense.roleSet);
-			verbNetSense.synSemArgs = synSemArgs;
-			if (LemmaVerbNetSenseMappings.containsKey(verbNetSense.lemma)) {
-				vnSenses = LemmaVerbNetSenseMappings.get(verbNetSense.lemma);
-				vnSenses.add(verbNetSense);
-				LemmaVerbNetSenseMappings.put(verbNetSense.lemma,vnSenses);
-			} else {
-				HashSet<VerbNetSense> newSense = new HashSet<VerbNetSense>();
-				newSense.add(verbNetSense);
-				LemmaVerbNetSenseMappings.put(verbNetSense.lemma,newSense);
-			}
-			listOfVerbNetSenses.add(verbNetSense);
-		}		
-		System.out.println("done");
+		try {
+			String line;
+			String[] parts;
+			List<String> synSemArgs = new LinkedList <String>();
+			HashSet<VerbNetSense> vnSenses = new HashSet<VerbNetSense>(); // Processed VerbNet senses
+
+			while ((line = input.readLine()) != null) {
+				parts = line.split("#");
+				VerbNetSense verbNetSense = new VerbNetSense(parts[0],parts[1],parts[2],parts[3],parts[4],parts[5],parts[6],parts[7]);
+				synSemArgs = getSelRestr(verbNetSense.arguments,verbNetSense.roleSet);
+				verbNetSense.synSemArgs = synSemArgs;
+				if (LemmaVerbNetSenseMappings.containsKey(verbNetSense.lemma)) {
+					vnSenses = LemmaVerbNetSenseMappings.get(verbNetSense.lemma);
+					vnSenses.add(verbNetSense);
+					LemmaVerbNetSenseMappings.put(verbNetSense.lemma,vnSenses);
+				} else {
+					HashSet<VerbNetSense> newSense = new HashSet<VerbNetSense>();
+					newSense.add(verbNetSense);
+					LemmaVerbNetSenseMappings.put(verbNetSense.lemma,newSense);
+				}
+				listOfVerbNetSenses.add(verbNetSense);
+			}		
+			System.out.println("done");
+		} finally {
+			input.close();
+		}
 	}
 	
 	/**
@@ -383,7 +387,7 @@ public class VerbNetExtractor {
 				List<SemanticLabel> semanticLabels = new ArrayList<SemanticLabel>();
 				SemanticLabel semanticLabel = new SemanticLabel();
 				semanticLabel.setLabel(classInfo[0]);
-				semanticLabel.setType("VerbNet alternation class");
+				semanticLabel.setType(ELabelTypeSemantics.verbnetClass);
 				semanticLabels.add(semanticLabel);
 				sense.setSemanticLabels(semanticLabels);
 				
@@ -484,7 +488,7 @@ public class VerbNetExtractor {
 							List<SemanticLabel> semanticLabels = new LinkedList<SemanticLabel>();
 							SemanticLabel semanticLabel = new SemanticLabel();
 							semanticLabel.setLabel(selRes);
-							semanticLabel.setType(ELabelTypeSemantics.SELECTIONALPREFERENCE);
+							semanticLabel.setType(ELabelTypeSemantics.selectionalPreference);
 							semanticLabels.add(semanticLabel);
 							semanticArgument.setSemanticLabels(semanticLabels);
 						} else {
@@ -534,7 +538,7 @@ public class VerbNetExtractor {
 								List<SemanticLabel> semanticLabels = new LinkedList<SemanticLabel>();
 								SemanticLabel semanticLabel = new SemanticLabel();
 								semanticLabel.setLabel(selRes);
-								semanticLabel.setType(ELabelTypeSemantics.SELECTIONALPREFERENCE);
+								semanticLabel.setType(ELabelTypeSemantics.selectionalPreference);
 								semanticLabels.add(semanticLabel);
 								semanticArgument.setSemanticLabels(semanticLabels);
 							} else {

@@ -149,15 +149,14 @@ public class WiktionaryLMFMap {
 				return EPartOfSpeech.determiner;
 
 			case PROPER_NOUN:
+			case TOPONYM: // further distinguished by Semantic Labels.
 				return EPartOfSpeech.nounProper;
 			case FIRST_NAME:
 				return EPartOfSpeech.nounProperFirstName;
 			case LAST_NAME:
 				return EPartOfSpeech.nounProperLastName;
-			case TOPONYM:
-				return EPartOfSpeech.nounProperToponym;
-			case SINGULARE_TANTUM:
-			case PLURALE_TANTUM:
+			case SINGULARE_TANTUM: // further distinguished by Semantic Labels.
+			case PLURALE_TANTUM: // further distinguished by Semantic Labels.
 				return EPartOfSpeech.noun;
 				
 			case CONJUNCTION:
@@ -170,24 +169,18 @@ public class WiktionaryLMFMap {
 			case POSTPOSITION:
 				return EPartOfSpeech.adpositionPostposition;
 			
-			case INTERJECTION:
+			case INTERJECTION: 
+			case SALUTATION: // further distinguished by Semantic Labels.
+			case ONOMATOPOEIA: // further distinguished by Semantic Labels.
 				return EPartOfSpeech.interjection;				
-			case SALUTATION:
-				return EPartOfSpeech.interjectionSalutation;
-			case ONOMATOPOEIA:
-				return EPartOfSpeech.interjectionOnomatopoeia;
 
 			case PHRASE:
+			case IDIOM: // further distinguished by Semantic Labels.
+			case COLLOCATION: // further distinguished by Semantic Labels.
+			case PROVERB: // further distinguished by Semantic Labels.
+			case MNEMONIC: // further distinguished by Semantic Labels.
 			case NOUN_PHRASE: // not used anymore!
 				return EPartOfSpeech.phraseme;
-			case IDIOM:
-				return EPartOfSpeech.phrasemeIdiom;
-			case COLLOCATION:
-				return EPartOfSpeech.phrasemeCollocation;
-			case PROVERB:
-				return EPartOfSpeech.phrasemeProverb;
-			case MNEMONIC:
-				return EPartOfSpeech.phrasemeMnemonic;
 
 			case PRONOUN:
 				return EPartOfSpeech.pronoun;
@@ -208,6 +201,9 @@ public class WiktionaryLMFMap {
 				return EPartOfSpeech.pronounInterrogative;
 				
 			case PARTICLE:
+			case MODAL_PARTICLE: // further distinguished by Semantic Labels.
+			case FOCUS_PARTICLE: // further distinguished by Semantic Labels.
+			case INTENSIFYING_PARTICLE: // further distinguished by Semantic Labels.
 				return EPartOfSpeech.particle;
 			case NEGATIVE_PARTICLE:
 				return EPartOfSpeech.particleNegative;
@@ -215,12 +211,6 @@ public class WiktionaryLMFMap {
 				return EPartOfSpeech.particleComparative;
 			case ANSWERING_PARTICLE:
 				return EPartOfSpeech.particleAnswer;
-			case MODAL_PARTICLE:
-				return EPartOfSpeech.particleModal;
-			case FOCUS_PARTICLE:
-				return EPartOfSpeech.particleFocus;
-			case INTENSIFYING_PARTICLE:
-				return EPartOfSpeech.particleIntensifying;
 				
 			case ABBREVIATION:
 				return EPartOfSpeech.abbreviation;
@@ -251,6 +241,7 @@ public class WiktionaryLMFMap {
 			case HIRAGANA:
 			case KANJI:
 			case KATAKANA:
+				return EPartOfSpeech.symbol;
 
 			case TRANSLITERATION:
 			case WORD_FORM:

@@ -22,6 +22,7 @@ import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.abstracts.HasMonolingualExternalRefs;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
+import de.tudarmstadt.ukp.lmf.model.enums.ELabelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
@@ -44,7 +45,7 @@ public class SemanticLabel extends HasMonolingualExternalRefs implements Compara
 	
 	// the type of semantic class
 	@VarType(type = EVarType.ATTRIBUTE)
-	private String type;
+	private ELabelTypeSemantics type;
 	
 	// the quantification of the label class
 	@VarType(type = EVarType.ATTRIBUTE)
@@ -62,7 +63,7 @@ public class SemanticLabel extends HasMonolingualExternalRefs implements Compara
 	 * @param parent the parent UBY-LMF class instance containing the semantic label
 	 * @param monolingualExternalRefs {@link List} containing monolingual external references of the semantic label
 	 */
-	public SemanticLabel(String label, String type, String quantification,
+	public SemanticLabel(String label, ELabelTypeSemantics type, String quantification,
 			IHasID parent, List<MonolingualExternalRef> monolingualExternalRefs){
 		
 		this.setLabel(label);
@@ -125,20 +126,20 @@ public class SemanticLabel extends HasMonolingualExternalRefs implements Compara
 	}
 
 	/**
-	 * Sets the {@link String} instance representing the type of this {@link SemanticLabel} instance.
+	 * Sets the {@link ELabelTypeSemantics} value representing the type of this {@link SemanticLabel} instance.
 	 * 
 	 * @param type the type of the semantic label to set
 	 */
-	public void setType(String type) {
+	public void setType(ELabelTypeSemantics type) {
 		this.type = type;
 	}
 
 	/**
-	 * Returns the {@link String} instance representing the type of this {@link SemanticLabel} instance.
+	 * Returns the {@link ELabelTypeSemantics} instance representing the type of this {@link SemanticLabel} instance.
 	 * 
 	 * @return the type of semantic label or null if the type is not set
 	 */
-	public String getType() {
+	public ELabelTypeSemantics getType() {
 		return type;
 	}
 

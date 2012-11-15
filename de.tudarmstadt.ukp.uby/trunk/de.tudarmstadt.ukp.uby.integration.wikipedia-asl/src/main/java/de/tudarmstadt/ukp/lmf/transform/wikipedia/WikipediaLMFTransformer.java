@@ -32,7 +32,6 @@ import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.core.TextRepresentation;
 import de.tudarmstadt.ukp.lmf.model.enums.EDefinitionType;
 import de.tudarmstadt.ukp.lmf.model.enums.ELabelTypeSemantics;
-import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
 import de.tudarmstadt.ukp.lmf.model.enums.ERelNameSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.ERelTypeSemantics;
@@ -217,7 +216,7 @@ public abstract class WikipediaLMFTransformer extends LMFDBTransformer {
 					}
 
 					SemanticLabel semanticLabel = new SemanticLabel();
-					semanticLabel.setType(ELabelTypeSemantics.CATEGORY);
+					semanticLabel.setType(ELabelTypeSemantics.category);
 					//subjectField.setRegisterType(ERegisterType.usage);
 					//subjectField.setSubjectField(category.getTitle().getPlainTitle());
 					semanticLabel.setLabel(category.getTitle().getPlainTitle());

@@ -59,17 +59,17 @@ public class WiktionaryLabelLMFMap {
 		WiktionaryLabelType type = label.getLabelType();
 		
 		if(type.equals(WiktionaryLabelType.PERIOD)){
-			semanticLabel.setType(ELabelTypeSemantics.TIMEPERIODOFUSAGE);
+			semanticLabel.setType(ELabelTypeSemantics.timePeriodOfUsage);
 		}else if(type.equals(WiktionaryLabelType.QUALIFIER)){
-			semanticLabel.setType(ELabelTypeSemantics.USAGE);
+			semanticLabel.setType(ELabelTypeSemantics.usage);
 		}else if(type.equals(WiktionaryLabelType.REGIONAL)){
-			semanticLabel.setType(ELabelTypeSemantics.REGIONOFUSAGE);
+			semanticLabel.setType(ELabelTypeSemantics.regionOfUsage);
 		}else if(type.equals(WiktionaryLabelType.USAGE)){
-			semanticLabel.setType(ELabelTypeSemantics.REGISTER);
+			semanticLabel.setType(ELabelTypeSemantics.register);
 		}else if(type.equals(WiktionaryLabelType.TOPIC)){
-			semanticLabel.setType(ELabelTypeSemantics.DOMAIN);
+			semanticLabel.setType(ELabelTypeSemantics.domain);
 		}else if(type.equals(WiktionaryLabelType.GRAMMATICAL)){
-			semanticLabel.setType(ELabelTypeSemantics.SYNTAX);
+			semanticLabel.setType(ELabelTypeSemantics.syntax);
 		}
 		
 		return semanticLabel;

@@ -247,23 +247,22 @@ public class LexicalEntryGenerator {
 							SemanticLabel semanticLabel = new SemanticLabel();
 							if (s.equalsIgnoreCase("Negative_judgment")||s.equalsIgnoreCase("Positive_judgment")){
 								//type 
-								semanticLabel.setType(ELabelTypeSemantics.SENTIMENT);
+								semanticLabel.setType(ELabelTypeSemantics.sentiment);
 								semanticLabel.setLabel(t.getName());
 							} else if (s.equalsIgnoreCase("Bound_LU") || s.equalsIgnoreCase("Bound_dependent_LU") || s.equalsIgnoreCase("Support")||s.equals("223")){
-								semanticLabel.setType(ELabelTypeSemantics.COLLOCATE);
+								semanticLabel.setType(ELabelTypeSemantics.collocate);
 								semanticLabel.setLabel(t.getName());
 							} else if (s.equalsIgnoreCase("Biframal_LU")){
 								//Does not occur
-								semanticLabel.setType(ELabelTypeSemantics.RESOURCESPECIFIC);
+								semanticLabel.setType(ELabelTypeSemantics.resourceSpecific);
 								semanticLabel.setLabel(t.getName());
 							} else if (s.equalsIgnoreCase("Tendency_Grading_LU")){
-								semanticLabel.setType(ELabelTypeSemantics.RESOURCESPECIFIC);
+								semanticLabel.setType(ELabelTypeSemantics.resourceSpecific);
 								semanticLabel.setLabel(t.getName());
 							} else {
 								// this should be ontological types
-								String type = ELabelTypeSemantics.SEMANTICCATEGORY;
+								semanticLabel.setType(ELabelTypeSemantics.semanticCategory);
 								semanticLabel.setLabel(t.getName()); 
-								semanticLabel.setType(type);
 							}
 							// for all semantic labels
 							// creating MonolingualExternalRef for SemanticLabel

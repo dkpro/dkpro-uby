@@ -17,31 +17,36 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.enums;
 
+import de.tudarmstadt.ukp.lmf.model.core.Sense;
+
 /**
  * Label types for {@link SemanticLabels}s
  *
- * @author Eckle-Kohler
+ * @author Judith Eckle-Kohler
+ * @author Christian M. Meyer
  *
  */
-public class ELabelTypeSemantics
+public enum ELabelTypeSemantics
 {
 
-
-	public static final String CATEGORY = "category";
-	public static final String DOMAIN = "domain";
-	public static final String SYNTAX = "syntax";
-	public static final String TIMEPERIODOFUSAGE = "timePeriodOfUsage";
-	public static final String REGISTER = "register";
-	public static final String REGIONOFUSAGE = "regionOfUsage";
-	public static final String USAGE = "usage";
-	public static final String SEMANTICFIELD = "semanticField";
-	public static final String SELECTIONALPREFERENCE = "selectionalPreference";
-	public static final String SEMANTICNOUNCLASS = "semanticNounClass";
-	public static final String VERBNETCLASS = "verbnetClass";
-	public static final String SENTIMENT = "sentiment";
-	public static final String SEMANTICCATEGORY = "semanticCategory";
-	public static final String COLLOCATE = "collocate";
-	public static final String RESOURCESPECIFIC = "resourceSpecific";
-
+	category,
+	collocate,
+	discourseFunction,
+	domain,
+	interjectionClass,
+	phrasemeClass,
+	regionOfUsage,
+	register,
+	resourceSpecific,
+	selectionalPreference,
+	semanticCategory,
+	semanticField,
+	semanticNounClass,
+	sentiment,
+	syntacticAlternationClass,
+	syntax,
+	timePeriodOfUsage,
+	usage,
+	verbnetClass;
 
 }

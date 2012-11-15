@@ -35,6 +35,8 @@ import de.tudarmstadt.ukp.lmf.model.enums.EDefinitionType;
 import de.tudarmstadt.ukp.lmf.model.enums.EDegree;
 import de.tudarmstadt.ukp.lmf.model.enums.EExampleType;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalNumber;
+import de.tudarmstadt.ukp.lmf.model.enums.ELabelNameSemantics;
+import de.tudarmstadt.ukp.lmf.model.enums.ELabelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
 import de.tudarmstadt.ukp.lmf.model.enums.ERelTypeMorphology;
 import de.tudarmstadt.ukp.lmf.model.enums.EStatementType;
@@ -61,10 +63,7 @@ import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 import de.tudarmstadt.ukp.lmf.transform.LMFDBTransformer;
 import de.tudarmstadt.ukp.lmf.transform.StringUtils;
 import de.tudarmstadt.ukp.lmf.transform.wiktionary.TemplateParser.EtymologyTemplateHandler;
-import de.tudarmstadt.ukp.lmf.transform.wiktionary.labels.WiktionaryLabel;
-import de.tudarmstadt.ukp.lmf.transform.wiktionary.labels.WiktionaryLabelLMFMap;
 import de.tudarmstadt.ukp.lmf.transform.wiktionary.labels.WiktionaryLabelLoader;
-import de.tudarmstadt.ukp.lmf.transform.wiktionary.labels.WiktionaryLabelType;
 import de.tudarmstadt.ukp.wiktionary.api.IPronunciation;
 import de.tudarmstadt.ukp.wiktionary.api.IPronunciation.PronunciationType;
 import de.tudarmstadt.ukp.wiktionary.api.IWikiString;
@@ -73,6 +72,7 @@ import de.tudarmstadt.ukp.wiktionary.api.IWiktionaryEntry;
 import de.tudarmstadt.ukp.wiktionary.api.IWiktionaryRelation;
 import de.tudarmstadt.ukp.wiktionary.api.IWiktionarySense;
 import de.tudarmstadt.ukp.wiktionary.api.IWiktionaryTranslation;
+import de.tudarmstadt.ukp.wiktionary.api.PartOfSpeech;
 import de.tudarmstadt.ukp.wiktionary.api.Quotation;
 import de.tudarmstadt.ukp.wiktionary.api.entry.WiktionaryIterator;
 import de.tudarmstadt.ukp.wiktionary.api.util.ILanguage;
@@ -94,8 +94,10 @@ public abstract class WiktionaryLMFTransformer extends LMFDBTransformer {
 	protected int currentEntryNr = 0;								
 
 	// Loader of Wiktionary context labels
+	@Deprecated
 	protected WiktionaryLabelLoader labelLoader;					
 	// Cache of unsaved word forms, that were extracted from Wiktionary FORM_OF context labels
+	@Deprecated
 	protected final HashMap<String, List<WordForm>> wordForms;			
 	
 	protected final String dtd_version;
@@ -268,8 +270,10 @@ public abstract class WiktionaryLMFTransformer extends LMFDBTransformer {
 		sense.setDefinitions(definitions);
 
 		// Semantic Labels.
-		saveLabels(sense, wktSense, entry, wktEntry);
-
+		List<SemanticLabel> semanticLabels = createSemanticLabels(entry, sense, wktSense);
+		if (semanticLabels != null && semanticLabels.size() > 0)
+			sense.setSemanticLabels(semanticLabels);
+		
 		// Etymology (Statement class; type etymology).
 		IWikiString etymology = null;
 		if (wktEntry.getWordEtymology() != null)
@@ -382,74 +386,89 @@ public abstract class WiktionaryLMFTransformer extends LMFDBTransformer {
 		return sense;
 	}
 
+	protected List<SemanticLabel> createSemanticLabels(
+			final LexicalEntry entry, final Sense sense, 
+			final IWiktionarySense wktSense) {
+		List<SemanticLabel> result = new ArrayList<SemanticLabel>();
+		
+		// Create semantic labels from part of speech tags.
+		for (PartOfSpeech p : wktSense.getEntry().getPartsOfSpeech()) {
+			ELabelTypeSemantics semanticLabelType;
+			String semanticLabelName;
+			switch (p) {
+				case TOPONYM:
+					semanticLabelType = ELabelTypeSemantics.semanticNounClass;
+					semanticLabelName = ELabelNameSemantics.SEMANTIC_NOUN_CLASS_TOPONYM;
+					break;
+				case SINGULARE_TANTUM:
+					semanticLabelType = ELabelTypeSemantics.semanticNounClass;
+					semanticLabelName = ELabelNameSemantics.SEMANTIC_NOUN_CLASS_ONLY_SINGULAR;
+					break;
+				case PLURALE_TANTUM:
+					semanticLabelType = ELabelTypeSemantics.semanticNounClass;
+					semanticLabelName = ELabelNameSemantics.SEMANTIC_NOUN_CLASS_ONLY_PLURAL;
+					break;
+					
+				case SALUTATION:
+					semanticLabelType = ELabelTypeSemantics.interjectionClass;
+					semanticLabelName = ELabelNameSemantics.INTERJECTION_SALUTATION;
+					break;
+				case ONOMATOPOEIA:
+					semanticLabelType = ELabelTypeSemantics.interjectionClass;
+					semanticLabelName = ELabelNameSemantics.INTERJECTION_ONOMATOPOEIA;
+					break;
+					
+				case IDIOM:
+					semanticLabelType = ELabelTypeSemantics.phrasemeClass;
+					semanticLabelName = ELabelNameSemantics.PHRASEME_CLASS_IDIOM;
+					break;
+				case COLLOCATION:
+					semanticLabelType = ELabelTypeSemantics.phrasemeClass;
+					semanticLabelName = ELabelNameSemantics.PHRASEME_CLASS_COLLOCATION;
+					break;
+				case PROVERB:
+					semanticLabelType = ELabelTypeSemantics.phrasemeClass;
+					semanticLabelName = ELabelNameSemantics.PHRASEME_CLASS_PROVERB;
+					break;
+				case MNEMONIC:
+					semanticLabelType = ELabelTypeSemantics.phrasemeClass;
+					semanticLabelName = ELabelNameSemantics.PHRASEME_CLASS_MNEMONIC;
+					break;
+					
+				case MODAL_PARTICLE:
+					semanticLabelType = ELabelTypeSemantics.discourseFunction;
+					semanticLabelName = ELabelNameSemantics.DISCOURSE_FUNCTION_MODAL_PARTICLE;
+					break;
+				case FOCUS_PARTICLE:
+					semanticLabelType = ELabelTypeSemantics.discourseFunction;
+					semanticLabelName = ELabelNameSemantics.DISCOURSE_FUNCTION_FOCUS_PARTICLE;
+					break;
+				case INTENSIFYING_PARTICLE:
+					semanticLabelType = ELabelTypeSemantics.discourseFunction;
+					semanticLabelName = ELabelNameSemantics.DISCOURSE_FUNCTION_INTENSIFYING_PARTICLE;
+					break;
+				
+				default:
+					continue;
+			}
+			
+			SemanticLabel label = new SemanticLabel();
+			label.setType(semanticLabelType);
+			label.setLabel(semanticLabelName);
+			result.add(label);
+		}
+		
+		// Create semantic labels from the sense definition.
+		saveLabels(sense, wktSense, entry, wktSense.getEntry());
+		
+		return result;
+	}
+
+	//TODO: provide a generic version for all Wiktionary converters.
+	@Deprecated
 	protected void saveLabels(Sense sense, IWiktionarySense wktSense,
 			LexicalEntry entry, IWiktionaryEntry wktEntry) {}
 
-	/**
-	 * Extracts labels from the gloss and saves them to various LMF elements
-	 * @param gloss
-	 * @param sense
-	 * @param entry
-	 */
-	protected void saveLabels(IWikiString gloss, Sense sense, LexicalEntry entry, IWiktionaryEntry wktEntry){
-		if(labelLoader == null) {
-			return;
-		}
-
-		List<SemanticLabel> semanticLabels = new ArrayList<SemanticLabel>();
-		for(WiktionaryLabel label : labelLoader.getLabels(gloss)){
-			WiktionaryLabelType labelType = label.getLabelType();
-			if(labelType.equals(WiktionaryLabelType.FORM_OF)){			// FORM_OF labels --> Word forms
-
-				WordForm wordForm = WiktionaryLabelLMFMap.formOfToWordForm(label, wktEntry.getWord());
-				String targetWord = label.getParameterByName("1");		// Target word is in the first parameter of the label template
-
-				for(IWiktionaryEntry targetEntry: wkt.getEntriesForWord(targetWord)){
-					if(targetEntry.getPartOfSpeech().equals(wktEntry.getPartOfSpeech()) // Only entries with the same POS and language
-						&& targetEntry.getPage().getEntryLanguage().equals(wktEntry.getPage().getEntryLanguage())){
-
-						String entryId = getLmfId(LexicalEntry.class, getEntryId(targetEntry));
-						LexicalEntry lexEntry = (LexicalEntry)getLmfObjectById(LexicalEntry.class, entryId);
-
-						if(lexEntry != null){ // If entry already exists then save directly to it
-
-							if(lexEntry.getWordForms() != null){	// If the entry already has other word forms,
-								lexEntry.getWordForms().add(wordForm); // then add this word form to them
-							}else{
-								List<WordForm> wordForms = new ArrayList<WordForm>();
-								wordForms.add(wordForm);
-								lexEntry.setWordForms(wordForms);
-							}
-							saveList(lexEntry, lexEntry.getWordForms()); // Save word forms and update lexEntry
-
-						}else{				// If lexical entry does not yet exist then save wordForms temporarily
-							if(wordForms.containsKey(entryId)){
-								wordForms.get(entryId).add(wordForm);
-							}else{
-								List<WordForm> temp = new ArrayList<WordForm>();
-								temp.add(wordForm);
-								wordForms.put(entryId, temp);
-							}
-						}
-					}
-				}
-			//}else if(labelType.equals(WiktionaryLabelType.GRAMMATICAL)){
-
-			} else {
-				// Save all other context labels as SemanticLabel.
-				SemanticLabel semanticLabel = WiktionaryLabelLMFMap.labelToSemanticLabel(label);
-				semanticLabels.add(semanticLabel);
-			}
-		}
-		sense.setSemanticLabels(semanticLabels);
-
-		if(wordForms.containsKey(entry.getId())){ // We are currently in an entry,
-												  // for which some unsaved word forms exist
-												  // --> save them and delete from cache
-			entry.setWordForms(wordForms.get(entry.getId()));
-			wordForms.remove(entry.getId());
-		}
-	}
 
 	protected List<TextRepresentation> createTextRepresentationList(
 			final String writtenText, final ILanguage language) {
@@ -520,7 +539,7 @@ public abstract class WiktionaryLMFTransformer extends LMFDBTransformer {
 	 * @param entry
 	 * @return
 	 */
-	private String getEntryId(IWiktionaryEntry entry){
+	protected String getEntryId(IWiktionaryEntry entry){
 		return "e" + entry.getKey();
 	}
 
@@ -529,7 +548,7 @@ public abstract class WiktionaryLMFTransformer extends LMFDBTransformer {
 	 * @param sense
 	 * @return
 	 */
-	private String getSenseId(IWiktionarySense sense){
+	protected String getSenseId(IWiktionarySense sense){
 		return "s" + sense.getKey();
 	}
 	

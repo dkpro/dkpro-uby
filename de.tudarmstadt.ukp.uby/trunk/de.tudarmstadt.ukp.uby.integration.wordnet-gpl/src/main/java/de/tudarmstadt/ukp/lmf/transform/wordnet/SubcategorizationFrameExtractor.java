@@ -360,7 +360,7 @@ public class SubcategorizationFrameExtractor {
 						// Create a semantic label
 						SemanticLabel semanticLabel = new SemanticLabel();
 						semanticLabel.setLabel(splits[1]);
-						semanticLabel.setType(ELabelTypeSemantics.SELECTIONALPREFERENCE);
+						semanticLabel.setType(ELabelTypeSemantics.selectionalPreference);
 						List<SemanticLabel> semanticLabels = new LinkedList<SemanticLabel>();
 						semanticLabels.add(semanticLabel);
 						semanticArgument.setSemanticLabels(semanticLabels);
