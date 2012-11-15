@@ -538,8 +538,7 @@ idiomaticExpression 	http://www.isocat.org/datcat/DC-351
 <!ATTLIST SynsetRelation
     target      IDREF #IMPLIED
     relName CDATA #IMPLIED
-    relType (taxonomic|partWhole|association|label|labelOmegaWiki|predicative|predicativeOmegaWiki) #IMPLIED>
-
+    relType (taxonomic|partWhole|association|label|predicative) #IMPLIED>
 <!--
 target	http://www.isocat.org/datcat/DC-435
 relName	http://www.isocat.org/datcat/DC-1857
