@@ -979,7 +979,7 @@ public class LMFXmlWriterTest {
 		Element semanticLabel = checkHasSingleChild(lmfClassInstance, SemanticLabel.class);
 		assertEquals(semanticLabel_label, semanticLabel.getAttribute("label"));
 		assertEquals(semanticLabel_quantification, semanticLabel.getAttribute("quantification"));
-		assertEquals(semanticLabel_type, semanticLabel.getAttribute("type"));
+		assertEquals(semanticLabel_type.toString(), semanticLabel.getAttribute("type"));
 		assertEquals(lmfClassInstance.getAttribute("id"), semanticLabel.getAttribute("parent"));
 		checkHasSingleMonolingualExternalRef(semanticLabel);
 	}
