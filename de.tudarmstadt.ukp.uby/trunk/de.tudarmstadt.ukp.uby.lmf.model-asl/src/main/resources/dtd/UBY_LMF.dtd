@@ -49,7 +49,7 @@ languageIdentifier 	http://www.isocat.org/datcat/DC-279
 <!ATTLIST LexicalEntry
     id ID #REQUIRED
     partOfSpeech (adjective|adverb|adverbPronominal|
-    adpositionPreposition|adpositionPostposition|adpositionCircumposition|
+    adposition|adpositionPreposition|adpositionPostposition|adpositionCircumposition|
     determiner|determinerArticle|determinerPossessive|determinerIndefinite|determinerDemonstrative|determinerInterrogative|numeral|
     interjection|
     phraseme|
@@ -70,6 +70,7 @@ partOfSpeech	http://www.isocat.org/datcat/DC-396
 adjective	http://www.isocat.org/datcat/DC-1230
 adverb	http://www.isocat.org/datcat/DC-1232
 adverbPronominal http://www.isocat.org/datcat/DC-2998
+adposition		 	http://www.isocat.org/datcat/DC-1231
 adpositionPreposition 	http://www.isocat.org/datcat/DC-1366
 adpositionPostposition 	http://www.isocat.org/datcat/DC-1360
 adpositionCircumposition 	http://www.isocat.org/datcat/DC-1906
@@ -77,6 +78,7 @@ adpositionCircumposition 	http://www.isocat.org/datcat/DC-1906
 determiner 	http://www.isocat.org/datcat/DC-1272
 determinerPossessive 	http://www.isocat.org/datcat/DC-1357
 determinerIndefinite 	http://www.isocat.org/datcat/DC-1307
+determinerDefinite 	http://www.isocat.org/datcat/DC-1430 	
 determinerDemonstrative 	http://www.isocat.org/datcat/DC-1269
 determinerInterrogative 	http://www.isocat.org/datcat/DC-1320
 numeral 	http://www.isocat.org/datcat/DC-1334
@@ -98,6 +100,7 @@ nounProperLastName		http://www.isocat.org/datcat/DC-4195
 pronoun 	http://www.isocat.org/datcat/DC-1370
 pronounPersonal 	http://www.isocat.org/datcat/DC-3013
 pronounPersonalReflexive 	http://www.isocat.org/datcat/DC-3014
+pronounPersonalIrreflexive 	http://www.isocat.org/datcat/DC-3013
 pronounPossessive 	http://www.isocat.org/datcat/DC-1359
 pronounDemonstrative 	http://www.isocat.org/datcat/DC-1270
 pronounIndefinite 	http://www.isocat.org/datcat/DC-1309
