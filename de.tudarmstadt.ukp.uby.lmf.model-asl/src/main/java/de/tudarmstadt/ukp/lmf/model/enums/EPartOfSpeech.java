@@ -39,7 +39,7 @@ public enum EPartOfSpeech {
 	affixSuffix,
 	contraction,
 	determiner,
-	determinerArticle,
+	determinerDefinite,
     determinerPossessive,
     determinerIndefinite,
     determinerDemonstrative,
