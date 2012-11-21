@@ -49,8 +49,8 @@ languageIdentifier 	http://www.isocat.org/datcat/DC-279
 <!ATTLIST LexicalEntry
     id ID #REQUIRED
     partOfSpeech (adjective|adverb|adverbPronominal|
-    adposition|adpositionPreposition|adpositionPostposition|adpositionCircumposition|
-    determiner|determinerArticle|determinerPossessive|determinerIndefinite|determinerDemonstrative|determinerInterrogative|numeral|
+    adpositionPreposition|adpositionPostposition|adpositionCircumposition|
+    determiner|determinerDefinite|determinerPossessive|determinerIndefinite|determinerDemonstrative|determinerInterrogative|numeral|
     interjection|
     phraseme|
     symbol|
@@ -70,7 +70,6 @@ partOfSpeech	http://www.isocat.org/datcat/DC-396
 adjective	http://www.isocat.org/datcat/DC-1230
 adverb	http://www.isocat.org/datcat/DC-1232
 adverbPronominal http://www.isocat.org/datcat/DC-2998
-adposition		 	http://www.isocat.org/datcat/DC-1231
 adpositionPreposition 	http://www.isocat.org/datcat/DC-1366
 adpositionPostposition 	http://www.isocat.org/datcat/DC-1360
 adpositionCircumposition 	http://www.isocat.org/datcat/DC-1906
