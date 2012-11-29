@@ -265,6 +265,26 @@ public class Uby
 
 	}
 
+    /**
+     * Fetches a {@link List} of {@link LexicalEntry} instances which written representation is the specified word.
+     *
+     * Optionally lexical entries can be filtered by part-of-speech and a {@link Lexicon}.
+     *
+     * @param word the written representation of the lexical entries to be fetched
+     *
+     * @param lexicon If not null, filters lexical entries by the specified lexicon. Note that the Lexicon instance has to be
+     * obtained beforehand.
+     *
+     * @return A list of lexical entries matching the specified criteria. If no lexical entry matches the specified
+     * criteria, this method returns an empty list.
+     *
+     * @see LexicalEntry#getLemma()
+     */
+    public List<LexicalEntry> getLexicalEntries(String word, Lexicon lexicon)
+    {
+        return getLexicalEntries(word, null, lexicon);
+    }	
+	
 	/**
 	 * Fetches a {@link List} of {@link LexicalEntry} instances which written representation is the specified word.
 	 *
@@ -310,6 +330,26 @@ public class Uby
 		return result;
 	}
 
+    /**
+     * Returns an {@link Iterator} over {@link LexicalEntry} instances which written representation is the specified word.
+     *
+     * Optionally lexical entries can be filtered by part-of-speech and a {@link Lexicon}.
+     *
+     * @param word the written representation of the lexical entries to be iterated over
+     *
+     * @param lexicon If not null, filters lexical entries by the specified lexicon. Note that the Lexicon instance has to be
+     * obtained beforehand.
+     *
+     * @return An Iterator over lexical entries matching the specified criteria
+     *
+     * @see EPartOfSpeech
+     * @see LexicalEntry#getLemma()
+     */
+    public Iterator<LexicalEntry> getLexicalEntryIterator(Lexicon lexicon)
+    {
+        return getLexicalEntryIterator(null, lexicon);
+    }	
+	
 	/**
 	 * Returns an {@link Iterator} over {@link LexicalEntry} instances which written representation is the specified word.
 	 *
@@ -1049,11 +1089,13 @@ public class Uby
 	 */
 	public List<Sense> wordNetSenses(String partOfSpeech, String offset) throws UbyInvalidArgumentException {
 		
-		if(partOfSpeech == null)
-			throw new UbyInvalidArgumentException("partOfSpeech is null");
+		if(partOfSpeech == null) {
+            throw new UbyInvalidArgumentException("partOfSpeech is null");
+        }
 		
-		if(offset == null)
-			throw new UbyInvalidArgumentException("offset is null");
+		if(offset == null) {
+            throw new UbyInvalidArgumentException("offset is null");
+        }
 
 		String refId="[POS: noun] ";
 		if (partOfSpeech.equals("adjective")){
@@ -1062,11 +1104,12 @@ public class Uby
 			refId=refId.replaceAll("noun", "adverb");
 		}else if (partOfSpeech.equals("verb")){
 			refId=refId.replaceAll("noun", "verb");
-		}else if (!partOfSpeech.equals("noun"))
-				throw new UbyInvalidArgumentException(
-						"\""+partOfSpeech+"\""+
-						" is not a valid part of speech. Only \"noun\", \"verb\", \"adverb\" or \"adjective\" are allowed"
-						);
+		}else if (!partOfSpeech.equals("noun")) {
+            throw new UbyInvalidArgumentException(
+            		"\""+partOfSpeech+"\""+
+            		" is not a valid part of speech. Only \"noun\", \"verb\", \"adverb\" or \"adjective\" are allowed"
+            		);
+        }
 
 		refId=refId+offset;
 
@@ -1116,11 +1159,13 @@ public class Uby
 	 */
 	public Sense wordNetSense(String partOfSpeech, String senseKey) throws UbyInvalidArgumentException {
 		
-		if(partOfSpeech == null)
-			throw new UbyInvalidArgumentException("partOfSpeech is null");
+		if(partOfSpeech == null) {
+            throw new UbyInvalidArgumentException("partOfSpeech is null");
+        }
 		
-		if(senseKey == null)
-			throw new UbyInvalidArgumentException("senseKey is null");
+		if(senseKey == null) {
+            throw new UbyInvalidArgumentException("senseKey is null");
+        }
 
 		String refId="[POS: noun] ";
 		if (partOfSpeech.equals("adjective")){
@@ -1130,11 +1175,12 @@ public class Uby
 		}else if (partOfSpeech.equals("verb")){
 			refId=refId.replaceAll("noun", "verb");
 		}
-		else if(!partOfSpeech.equals("noun"))
-				throw new UbyInvalidArgumentException(
-						"\""+partOfSpeech+"\""+
-						" is not a valid part of speech. Only \"noun\", \"verb\", \"adverb\" or \"adjective\" are allowed"
-						);
+		else if(!partOfSpeech.equals("noun")) {
+            throw new UbyInvalidArgumentException(
+            		"\""+partOfSpeech+"\""+
+            		" is not a valid part of speech. Only \"noun\", \"verb\", \"adverb\" or \"adjective\" are allowed"
+            		);
+        }
 
 		refId=refId+senseKey;
 
@@ -1485,7 +1531,8 @@ public class Uby
 		return builder.toString();
 	}
 	
-	protected void finalize()
+	@Override
+    protected void finalize()
 		throws Throwable
 	{
 		dbConfig = null;
