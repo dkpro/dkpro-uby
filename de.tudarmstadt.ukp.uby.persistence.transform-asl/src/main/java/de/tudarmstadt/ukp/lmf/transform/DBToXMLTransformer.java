@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright 2012
  * Ubiquitous Knowledge Processing (UKP) Lab
- * Technische Universität Darmstadt
+ * Technische Universit��t Darmstadt
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -184,6 +184,66 @@ public class DBToXMLTransformer {
 		this.selectedLexicons = new HashSet<String>();
 	}
 	
+	
+	public void transform(LexicalResource lexicalResource, Lexicon lexicon) throws LMFWriterException{
+		Session session = sessionFactory.openSession();
+		String lexicalResourceName = lexicalResource.getName();
+		lexicalResource = (LexicalResource)session.get(LexicalResource.class, lexicalResourceName);
+		
+		
+		if(writer instanceof LMFXmlWriter)
+			logger.log(Level.INFO, "Started writing lexicalResource "+ lexicalResourceName
+					+ "to " + ((LMFXmlWriter) writer).getOutputPath());
+		else
+			logger.log(Level.INFO, "Started writing lexicalResource " +  lexicalResourceName);
+			
+		
+		writer.writeStartElement(lexicalResource);
+		
+		// write GlobalInformation
+		GlobalInformation globalInformation = lexicalResource.getGlobalInformation();
+		writer.writeElement(globalInformation);
+		int counter = 1;
+		
+		int bufferSize = 100;
+		// Iterate over all lexicons
+		//for(Lexicon lexicon : lexicalResource.getLexicons()){
+			
+			String lexiconName = lexicon.getName();
+						
+			logger.info("processing lexicon: " + lexiconName);
+			writer.writeStartElement(lexicon);
+
+			// Iterate over all possible sub-elements of this Lexicon and write them to the XML
+			@SuppressWarnings("rawtypes")
+			Class[] lexiconClassesToSave = {LexicalEntry.class, SubcategorizationFrame.class,
+				SubcategorizationFrameSet.class, SemanticPredicate.class,Synset.class,
+				SynSemCorrespondence.class,ConstraintSet.class
+			};
+
+			for(@SuppressWarnings("rawtypes") Class clazz : lexiconClassesToSave){
+				Criteria criteria = session.createCriteria(clazz)
+					.add(Restrictions.sqlRestriction("lexiconId = '"+lexicon.getId()+"'"));
+				@SuppressWarnings("rawtypes")
+				CriteriaIterator iter = new CriteriaIterator(criteria, bufferSize);
+				while(iter.hasNext()){
+					if(counter % 1000 == 0) {
+						logProcessedInstances(counter);
+					}
+					Object obj = iter.next();
+					writer.writeElement(obj);
+					session.evict(obj);
+					counter++;
+				}
+			}
+			writer.writeEndElement(lexicon);
+		//}
+		
+		writer.writeEndElement(lexicalResource);
+		writer.writeEndDocument();
+		
+	}
+
 	/**
 	 * Transforms a {@link LexicalResource} instance retrieved from a database
 	 * to a XML file. The created XML only contains {@link Lexicon} instances which
