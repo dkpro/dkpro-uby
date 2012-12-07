@@ -205,7 +205,7 @@ public class DBToXMLTransformer {
 		writer.writeElement(globalInformation);
 		int counter = 1;
 		
-		int bufferSize = 100;
+		int bufferSize = 50;
 		// Iterate over all lexicons
 		//for(Lexicon lexicon : lexicalResource.getLexicons()){
 			
