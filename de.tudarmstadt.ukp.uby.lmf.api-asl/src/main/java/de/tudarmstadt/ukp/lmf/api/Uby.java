@@ -387,6 +387,35 @@ public class Uby
 	}
 
 
+	
+	/**
+	 * This methods allows retrieving a {@link LexicalEntry} instance by its exact
+	 * identifier.
+	 *
+	 * @param lexicalEntryId
+	 *            the unique identifier of the LexicalEntry which should be returned
+	 *
+	 * @return the LexicalEntry with the consumed lexicalEntryId
+	 *
+	 * @throws UbyInvalidArgumentException
+	 *             if a LexicalEntry with this identifier does not exist
+	 */
+	public LexicalEntry getLexicalEntryById(String lexicalEntryId)
+			throws UbyInvalidArgumentException {
+		Criteria criteria = session.createCriteria(LexicalEntry.class).add(
+				Restrictions.sqlRestriction("lexicalEntryId = \"" + lexicalEntryId + "\""));
+		LexicalEntry ret = null;
+		if (criteria.list() != null && criteria.list().size() > 0) {
+			ret = (LexicalEntry) criteria.list().get(0);
+		}
+		if (ret == null) {
+			throw new UbyInvalidArgumentException(
+					"LexicalEntry with this ID does not exist");
+		}
+		return ret;
+	}
+
+	
 	/**
 	 * Returns a {@link List} of all {@link Lexicon} instances contained in the database accessed by this
 	 * {@link Uby} instance.
