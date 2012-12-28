@@ -415,6 +415,52 @@ public class Uby
 		return ret;
 	}
 
+	/**
+	 * Retrieves a {@link List} of {@link LexicalEntry} instances with lemmas that start with the parameter lemma.
+	 * E.g. lemma = "leave" -> LexicalEntry with lemma = "leave no stone unturned" is retrieved (among others)
+	 *
+	 * Optionally lexical entries can be filtered by part-of-speech and a {@link Lexicon}.
+	 *
+	 * @param lemma the lemma the lexical entries has to start with
+	 *
+	 * @param pos the part-of-speech of the lexical entries to be fetched. Set to null in order to skip
+	 * part-of-speech filtering and fetch all lexical entries matching other constraints, regardless of their part-of-speech.
+	 *
+	 * @param lexicon If not null, filters lexical entries by the specified lexicon. Note that the Lexicon instance has to be
+	 * obtained beforehand.
+	 *
+	 * @return A list of lexical entries matching the specified criteria. If no lexical entry matches the specified
+	 * criteria, this method returns an empty list.
+	 *
+	 * @see EPartOfSpeech
+	 * @see LexicalEntry#getLemma()
+	 */
+	public List<LexicalEntry> getLexicalEntriesByLemmaPrefix(String lemma, EPartOfSpeech pos, Lexicon lexicon)
+	{
+		Criteria criteria = session.createCriteria(LexicalEntry.class);
+		if (pos != null) {
+			criteria = criteria.add(Restrictions.eq("partOfSpeech", pos));
+		}
+
+		if (lexicon != null) {
+			criteria = criteria.add(Restrictions.sqlRestriction("lexiconId = '"
+					+ lexicon.getId() + "'"));
+		}
+		criteria = criteria.createCriteria("lemma")
+			.createCriteria("formRepresentations")
+			.add(Restrictions.or(
+					Restrictions.sqlRestriction("writtenForm like '" +lemma +" %'"),
+					Restrictions.eq( "writtenForm", lemma )
+			));
+		
+		@SuppressWarnings("unchecked")
+		List<LexicalEntry> result = criteria.list();
+		if(result == null) {
+			result = new ArrayList<LexicalEntry>(0);
+		}
+		return result;
+	}
+
 	
 	/**
 	 * Returns a {@link List} of all {@link Lexicon} instances contained in the database accessed by this
