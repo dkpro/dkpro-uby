@@ -44,7 +44,7 @@ import de.tudarmstadt.ukp.lmf.transform.wordnet.util.IndexSenseReader;
  * @since 0.2.0
  *
  */
-public class SenseGeneratorTest {
+@Ignore public class SenseGeneratorTest {
 	
 	/**
 	 * Invokes {@link GNConverter#toLMF()} method.

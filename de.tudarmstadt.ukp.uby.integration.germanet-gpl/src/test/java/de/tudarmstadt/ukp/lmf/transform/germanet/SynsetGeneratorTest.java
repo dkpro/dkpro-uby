@@ -25,6 +25,7 @@ import net.sf.extjwnl.JWNLException;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
@@ -41,7 +42,7 @@ import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
  * @since 0.2.0
  *
  */
-public class SynsetGeneratorTest {
+@Ignore public class SynsetGeneratorTest {
 	
 	
 private static SynsetGenerator synsetGenerator;

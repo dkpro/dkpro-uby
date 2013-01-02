@@ -30,6 +30,7 @@ import net.sf.extjwnl.JWNLException;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
@@ -51,7 +52,7 @@ import static org.junit.Assert.fail;
  * @since 0.2.0
  *
  */
-public class InterlingualIndexConverterTest {
+@Ignore public class InterlingualIndexConverterTest {
 	
 	private static InterlingualIndexConverter iliConverter;
 	private GNConverter gnConverter;
