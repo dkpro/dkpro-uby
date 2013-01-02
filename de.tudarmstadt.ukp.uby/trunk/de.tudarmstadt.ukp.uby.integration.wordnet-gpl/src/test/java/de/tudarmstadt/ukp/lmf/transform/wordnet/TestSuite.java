@@ -17,6 +17,7 @@ import net.sf.extjwnl.JWNLException;
 import net.sf.extjwnl.dictionary.Dictionary;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -33,6 +34,7 @@ import de.tudarmstadt.ukp.lmf.transform.wordnet.util.WNConvUtilTest;
  * @since UBY 0.2.0
  *
  */
+@Ignore
 @RunWith(Suite.class)
 @SuiteClasses({WNConvUtilTest.class, SenseGeneratorTest.class})
 public class TestSuite {
@@ -52,8 +54,10 @@ public class TestSuite {
 	 */
 	@BeforeClass
 	public static void setUpClass() throws FileNotFoundException, JWNLException {
+		
 		String extJWNL_configuration = UBY_HOME+"/WordNet/extJWNL/file_properties.xml";
 		wordNet = Dictionary.getInstance(new FileInputStream(extJWNL_configuration));
+		
 	}
 	
 }

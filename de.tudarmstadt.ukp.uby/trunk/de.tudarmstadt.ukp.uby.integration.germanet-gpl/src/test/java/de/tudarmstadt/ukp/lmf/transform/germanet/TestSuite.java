@@ -21,6 +21,7 @@ import net.sf.extjwnl.JWNLException;
 import net.sf.extjwnl.dictionary.Dictionary;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -42,6 +43,7 @@ import de.tuebingen.uni.sfs.germanet.api.GermaNet;
  * @since UBY 0.2.0
  *
  */
+@Ignore
 @RunWith(Suite.class)
 @SuiteClasses({SynsetGeneratorTest.class, SenseGeneratorTest.class, InterlingualIndexConverterTest.class, GNConverterTest.class})
 public class TestSuite {
@@ -72,15 +74,18 @@ public class TestSuite {
 		
 		gnet = new GermaNet(gnetDir);
 		
+		
 		/*
 		 * Prepare wordNetLexicon
 		 */
+		
 		String extJWNL_configuration = UBY_HOME+"/WordNet/extJWNL/file_properties.xml";
 		Dictionary extWordnet = Dictionary.getInstance(new FileInputStream(extJWNL_configuration));
 		String dtd_version = "dtd_version_test";
 		WNConverter converterWN = new WNConverter(extWordnet, new LexicalResource(), dtd_version, UBY_HOME+"/WordNet/cache/ExampleSentenceLexemeMapping.xml");
 		converterWN.toLMF();
 		wordNetLexicon = converterWN.getLexicalResource().getLexicons().get(0);	
+		
 		
 	}
 	

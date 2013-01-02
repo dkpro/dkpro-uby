@@ -14,6 +14,7 @@ import static org.junit.Assert.*;
 
 import net.sf.extjwnl.data.POS;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
@@ -30,7 +31,7 @@ import de.tudarmstadt.ukp.lmf.transform.wordnet.util.WNConvUtil;
  * @since 0.2.0
  *
  */
-public class WNConvUtilTest {
+@Ignore public class WNConvUtilTest {
 
 	@Test
 	public void testGetPos() {

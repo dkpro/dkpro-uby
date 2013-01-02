@@ -26,6 +26,7 @@ import javax.xml.stream.XMLStreamException;
 import net.sf.extjwnl.JWNLException;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.tudarmstadt.ukp.lmf.model.core.GlobalInformation;
@@ -51,7 +52,7 @@ import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
  * @since 0.2.0
  *
  */
-public class GNConverterTest {
+@Ignore public class GNConverterTest {
 	
 	/*
 	 * The GNConverter

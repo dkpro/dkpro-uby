@@ -25,6 +25,7 @@ import net.sf.extjwnl.JWNLException;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
@@ -42,7 +43,7 @@ import de.tuebingen.uni.sfs.germanet.api.LexUnit;
  * @since 0.2.0
  *
  */
-public class SenseGeneratorTest {
+@Ignore public class SenseGeneratorTest {
 	
 	private static SenseGenerator senseGenerator;
 	
