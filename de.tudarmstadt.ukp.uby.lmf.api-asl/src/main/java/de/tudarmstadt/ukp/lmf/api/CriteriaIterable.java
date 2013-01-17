@@ -20,6 +20,8 @@ package de.tudarmstadt.ukp.lmf.api;
 import java.util.Iterator;
 
 import org.hibernate.Criteria;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.DetachedCriteria;
 
 /**
  * This class represents an {@link Iterable} for {@link CriteriaIterator}.
@@ -31,16 +33,18 @@ import org.hibernate.Criteria;
 public class CriteriaIterable<T> implements Iterable<T>{
 	
 	private int bufferSize;
-	private Criteria criteria;
+	private DetachedCriteria criteria;
+	private SessionFactory sessionFactory;
 
-	public CriteriaIterable(Criteria criteria, int bufferSize){
+	public CriteriaIterable(DetachedCriteria criteria, SessionFactory sessionFactory, int bufferSize){
 		this.bufferSize = bufferSize;
+		this.sessionFactory = sessionFactory;
 	}
 	
 	@Override
 	public Iterator<T> iterator() {
 		
-		return new CriteriaIterator<T>(criteria, bufferSize);
+		return new CriteriaIterator<T>(criteria, sessionFactory, bufferSize);
 	}
 	
 }

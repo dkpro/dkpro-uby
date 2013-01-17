@@ -21,6 +21,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.SessionFactory;
+import org.hibernate.classic.Session;
+import org.hibernate.criterion.DetachedCriteria;
 
 /**
  * Universal {@link Iterator} that can be used for iteration over any UBY-LMF element.
@@ -36,17 +39,21 @@ import org.hibernate.Criteria;
 public class CriteriaIterator<T>  implements Iterator<T> {
 	
 	private int bufferSize;	    // Max. number of objects to load into memory
-	private Criteria criteria;  // Hibernate Criteria
+	private DetachedCriteria criteria;  // Hibernate Criteria
 	private Iterator<T> buffer;	// Buffer with loaded objects
 	private int firstResult;	// Current result number
+	private Session session;	// Current hibernate session
+	private SessionFactory sessionFactory; // Hibernate session factory
+	
 	
 	/**
 	 * @param criteria   Criteria which holds selection settings for the iterated element
 	 * @param bufferSize Max. number of objects to load into memory
 	 */
-	public CriteriaIterator(Criteria criteria, int bufferSize){
+	public CriteriaIterator(DetachedCriteria criteria, SessionFactory sessionFactory, int bufferSize){
 		this.bufferSize = bufferSize;
 		this.criteria = criteria;	
+		this.sessionFactory = sessionFactory;
 		this.firstResult = 0;		
 	}
 	
@@ -69,8 +76,13 @@ public class CriteriaIterator<T>  implements Iterator<T> {
 	 * @return
 	 */
 	private boolean fillBuffer(){
+		if(session != null && session.isOpen())
+			session.close();
+		session = sessionFactory.openSession();		
+		Criteria execCriteria = criteria.getExecutableCriteria(session);
+		
 		@SuppressWarnings("rawtypes")
-		List result = criteria.setFirstResult(firstResult)
+		List result = execCriteria.setFirstResult(firstResult)
 			.setMaxResults(bufferSize).list();		
 		
 		if(result.size() == 0)
