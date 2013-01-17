@@ -28,6 +28,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
 import de.tudarmstadt.ukp.lmf.api.CriteriaIterator;
@@ -140,10 +141,10 @@ public class DBToXMLTransformer {
 			};
 
 			for(@SuppressWarnings("rawtypes") Class clazz : lexiconClassesToSave){
-				Criteria criteria = session.createCriteria(clazz)
+				DetachedCriteria criteria = DetachedCriteria.forClass(clazz)
 					.add(Restrictions.sqlRestriction("lexiconId = '"+lexicon.getId()+"'"));
 				@SuppressWarnings("rawtypes")
-				CriteriaIterator iter = new CriteriaIterator(criteria, bufferSize);
+				CriteriaIterator iter = new CriteriaIterator(criteria, sessionFactory, bufferSize);
 				while(iter.hasNext()){
 					if(counter % 1000 == 0) {
 						logProcessedInstances(counter);
@@ -160,10 +161,10 @@ public class DBToXMLTransformer {
 		if(!lexiconsOnly){
 			
 			// Iterate over SenseAxes and write them to XMLX when not only lexicons should be converted
-			Criteria criteria = session.createCriteria(SenseAxis.class)
+			DetachedCriteria criteria = DetachedCriteria.forClass(SenseAxis.class)
 					.add(Restrictions.sqlRestriction("lexicalResourceId = '"+lexicalResource.getName()+"'"));
 			@SuppressWarnings("rawtypes")
-			CriteriaIterator iter = new CriteriaIterator(criteria, bufferSize);
+			CriteriaIterator iter = new CriteriaIterator(criteria, sessionFactory, bufferSize);
 			logger.info("started processing sense axes");
 			while(iter.hasNext()){
 				if(counter % 1000 == 0) {
@@ -222,10 +223,10 @@ public class DBToXMLTransformer {
 			};
 
 			for(@SuppressWarnings("rawtypes") Class clazz : lexiconClassesToSave){
-				Criteria criteria = session.createCriteria(clazz)
+				DetachedCriteria criteria = DetachedCriteria.forClass(clazz)
 					.add(Restrictions.sqlRestriction("lexiconId = '"+lexicon.getId()+"'"));
 				@SuppressWarnings("rawtypes")
-				CriteriaIterator iter = new CriteriaIterator(criteria, bufferSize);
+				CriteriaIterator iter = new CriteriaIterator(criteria, sessionFactory, bufferSize);
 				while(iter.hasNext()){
 					if(counter % 1000 == 0) {
 						logProcessedInstances(counter);

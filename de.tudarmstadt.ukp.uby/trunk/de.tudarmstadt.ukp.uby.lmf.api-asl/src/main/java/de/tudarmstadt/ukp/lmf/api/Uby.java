@@ -29,6 +29,7 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
@@ -372,7 +373,7 @@ public class Uby
 	public Iterator<LexicalEntry> getLexicalEntryIterator(EPartOfSpeech pos,
 			Lexicon lexicon)
 	{
-		Criteria criteria = session.createCriteria(LexicalEntry.class);
+		DetachedCriteria criteria = DetachedCriteria.forClass(LexicalEntry.class);
 		if (pos != null) {
 			criteria = criteria.add(Restrictions.eq("partOfSpeech", pos));
 		}
@@ -382,7 +383,7 @@ public class Uby
 		}
 
 		CriteriaIterator<LexicalEntry> lexEntryIterator = new CriteriaIterator<LexicalEntry>(
-				criteria, 10);
+				criteria, sessionFactory, 500);
 		return lexEntryIterator;
 	}
 
@@ -552,13 +553,13 @@ public class Uby
 	 */
 	public Iterator<Sense> getSenseIterator(Lexicon lexicon)
 	{
-		Criteria criteria = session.createCriteria(Sense.class);
+		DetachedCriteria criteria = DetachedCriteria.forClass(Sense.class);
 		if (lexicon != null) {
 			criteria = criteria.createCriteria("lexicalEntry").add(
 					Restrictions.eq("lexicon", lexicon));
 		}
 		CriteriaIterator<Sense> senseIterator = new CriteriaIterator<Sense>(
-				criteria, 10);
+				criteria, sessionFactory, 500);
 		return senseIterator;
 	}
 
@@ -575,13 +576,13 @@ public class Uby
 	 */
 	public Iterator<Synset> getSynsetIterator(Lexicon lexicon)
 	{
-		Criteria criteria = session.createCriteria(Synset.class);
+		DetachedCriteria criteria = DetachedCriteria.forClass(Synset.class);
 		if (lexicon != null) {
 			criteria = criteria.add(Restrictions.sqlRestriction("lexiconId = '"
 					+ lexicon.getId() + "'"));
 		}
 		CriteriaIterator<Synset> synsetIterator = new CriteriaIterator<Synset>(
-				criteria, 10);
+				criteria, sessionFactory, 500);
 		return synsetIterator;
 	}
 
@@ -1401,14 +1402,14 @@ public class Uby
 	 */
 	public Iterator<SemanticPredicate> getSemanticPredicateIterator(
 			Lexicon lexicon) {
-		Criteria criteria = session.createCriteria(SemanticPredicate.class);
+		DetachedCriteria criteria = DetachedCriteria.forClass(SemanticPredicate.class);
 		if (lexicon != null) {
 			String lexId = lexicon.getId();
 			criteria = criteria.add(Restrictions.sqlRestriction("lexiconId=\""
 					+ lexId + "\""));
 		}
 		CriteriaIterator<SemanticPredicate> predicateIterator = new CriteriaIterator<SemanticPredicate>(
-				criteria, 10);
+				criteria, sessionFactory, 500);
 		return predicateIterator;
 	}
 
