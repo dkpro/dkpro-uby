@@ -1,0 +1,19 @@
+<?xml version="1.0"?><!DOCTYPE hibernate-mapping PUBLIC
+ "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>  
+<class name="de.tudarmstadt.ukp.lmf.model.mrd.Equivalent" table="Equivalent" node="Equivalent" dynamic-insert="true">
+    <id column="equivalentId" type="long">
+           <generator class="increment"/>
+    </id>	
+	
+	<property name="languageIdentifier" column="languageIdentifier" node="@languageIdentifier" type="string" />
+    <property name="writtenForm" column="writtenForm" node="@writtenForm" type="string" />
+    <!-- <property name="geographicalVariant" column="geographicalVariant" node="@geographicalVariant" type="string" /> -->
+    <!-- <property name="orthographyName" column="orthographyName" node="@orthographyName" type="string" /> -->
+    <property name="transliteration" column="transliteration" node="@transliteration" type="string" />
+    <property name="usage" column="translationusage" node="@usage" type="string" />
+
+</class>
+
+</hibernate-mapping>
