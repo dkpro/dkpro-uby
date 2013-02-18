@@ -8,7 +8,7 @@
            <generator class="increment"/>
     </id>     
    <list name="formRepresentations" node=".">
-          <key column="relatedFormId" on-delete="cascade"/>
+          <key column="relatedFormId" />
           <index column="idx"/>            
           <one-to-many class="de.tudarmstadt.ukp.lmf.model.morphology.FormRepresentation"
           		 entity-name="FormRepresentation_RelatedForm" node="FormRepresentation"/>
@@ -19,7 +19,8 @@
          	<param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.ERelTypeMorphology</param>         	
       	</type>
   	</property>  	
-   	<many-to-one name="targetLexicalEntry" class="de.tudarmstadt.ukp.lmf.model.core.LexicalEntry" column="targetLexicalEntry" 
+  	
+  	<many-to-one name="targetLexicalEntry" class="de.tudarmstadt.ukp.lmf.model.core.LexicalEntry" column="targetLexicalEntry" 
 			node="@targetLexicalEntry" foreign-key="none" not-found="ignore"/>
 	<many-to-one name="targetSense" class="de.tudarmstadt.ukp.lmf.model.core.Sense" column="targetSense" 
 			node="@targetSense" foreign-key="none" not-found="ignore"/>		

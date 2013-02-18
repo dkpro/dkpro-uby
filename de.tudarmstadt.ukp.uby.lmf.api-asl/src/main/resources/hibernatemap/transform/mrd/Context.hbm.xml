@@ -14,14 +14,14 @@
   	</property>
   	
   	 <list name="textRepresentations" node=".">
-          <key column="contextId" on-delete="cascade"/>
+          <key column="contextId" />
           <index column="idx"/>            
           <one-to-many class="de.tudarmstadt.ukp.lmf.model.core.TextRepresentation" 
           		entity-name="TextRepresentation_Context" node="TextRepresentation"/>
     </list>
     
     <list name="monolingualExternalRefs" node=".">
-            <key column="contextId" on-delete="cascade"/>
+            <key column="contextId" />
             <index column="idx"/>
             <one-to-many class="de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef" node="MonolingualExternalRef"/>
     </list>

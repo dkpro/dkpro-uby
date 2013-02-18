@@ -79,17 +79,17 @@ public abstract class LMFDBTransformer extends LMFTransformer{
 	 * Transforms Resource to LMF sequentially
 	 */
 	@Override
-	public void transform(boolean constraints, boolean delete){
+	public void transform(/*boolean constraints, boolean delete*/){ //TODO YC Remove constraints and delete
 		System.out.println("START DB TRANSFORM");
 		openSession();
 		resourceAlias = getResourceAlias();
 		lexicalResource = createLexicalResource();
-		if(delete) {
+		/*if(delete) {
 			LMFDBUtils.deleteLexicalResourceFromDatabase(lexicalResource, dbConfig); // Delete LexicalResource before importing new one
 		}
 		if(constraints) {
 			LMFDBUtils.turnOffConstraints(dbConfig); // We need to turn off some constraints in order not to get
-		}
+		}*/
 												 // constraint errors during the import
 		lexicalResource.setLexicons(new ArrayList<Lexicon>());
 		saveCascade(lexicalResource, null);
@@ -167,9 +167,9 @@ public abstract class LMFDBTransformer extends LMFTransformer{
 		closeSession();
 		// Turn on the constraints in order to have consistent connections
 		// in the database (e.g. to delete cascade in the future)
-		if(constraints) {
+		/*if(constraints) {
 			LMFDBUtils.turnOnConstraints(dbConfig);
-		}
+		}*/
 	}
 
 	/**

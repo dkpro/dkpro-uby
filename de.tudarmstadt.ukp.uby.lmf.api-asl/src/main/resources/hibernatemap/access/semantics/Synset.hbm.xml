@@ -22,8 +22,8 @@
     </list>
     
     <!-- Not in the model, mapped for convenience -->
-    <bag name="senses" >
-            <key column="synsetId"/>
+    <bag name="senses">
+            <key column="synsetId" foreign-key="none" />
             <one-to-many class="de.tudarmstadt.ukp.lmf.model.core.Sense" />
     </bag>   
 </class>
