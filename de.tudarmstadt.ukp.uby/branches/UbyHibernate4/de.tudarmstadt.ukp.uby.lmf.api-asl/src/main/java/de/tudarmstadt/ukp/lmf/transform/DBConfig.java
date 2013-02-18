@@ -85,7 +85,7 @@ public class DBConfig
 	 *            If true all SQL queries are printed on the console
 	 */
 	public DBConfig(String url, String jdbc_driver_class, String db_vendor,
-			String user, String password, boolean isAccess,
+			String user, String password, boolean isAccess, //TODO YC Remove isAccess
 			boolean showSQL)
 	{
 		this.db_vendor = db_vendor;

@@ -151,7 +151,7 @@ public class HibernateConnect {
         // Do only update schema on changes e.g. validate | update | create | create-drop
         p.setProperty("hibernate.hbm2ddl.auto","update");
 
-          return p;
+        return p;
     }
 
 	/**
