@@ -325,13 +325,13 @@ public class XMLToDBTransformer implements ElementHandler {
 						setMethod = clazz.getMethod(setFuncName, Object.class);
 					}
 					
-					if(type.equals(EVarType.ATTRIBUTE)){ // Save Attribute to the DB
+					if(type.equals(EVarType.ATTRIBUTE)){ // Save attribute
 						String value = el.attributeValue(fieldName);
 						if(value != null){
 							Object valueToSet = value;
-							if(fieldClass.equals(boolean.class))
+							if(fieldClass.equals(boolean.class) || fieldClass.equals(Boolean.class))
 								valueToSet = GenericUtils.getBoolean(value);
-							else if (fieldClass.equals(int.class))
+							else if (fieldClass.equals(int.class) || fieldClass.equals(Integer.class))
 								valueToSet = GenericUtils.getInteger(value);
 							else if (fieldClass.isEnum()){
 								valueToSet = GenericUtils.getEnum(fieldClass, value);
@@ -541,7 +541,8 @@ public class XMLToDBTransformer implements ElementHandler {
 			//LMFDBUtils.updateTables(dbConfig);
 			XMLToDBTransformer trans = new XMLToDBTransformer(dbConfig);
 			
-			File xmlFile = new File("e:/Dokumente/HiWi/uby/GN7_0UbyLMF.xml");
+			//File xmlFile = new File("e:/Dokumente/HiWi/uby/GN7_0UbyLMF.xml");
+			File xmlFile = new File("C:/uby/ubyTestLexicon.xml");
 			trans.transform(xmlFile, "UBY");
 			
 		}catch(Exception e){

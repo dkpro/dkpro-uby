@@ -10,7 +10,7 @@
     		node="@sense" foreign-key="none" not-found="ignore"/>    
     <many-to-one name="subcategorizationFrame" class="de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrame" column="subcategorizationFrame" 
     		node="@subcategorizationFrame" foreign-key="none" not-found="ignore"/>
-    <many-to-one name="subcategorizationFrameSet" class="de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrame" column="subcategorizationFrameSet" 
+    <many-to-one name="subcategorizationFrameSet" class="de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrameSet" column="subcategorizationFrameSet" 
     		node="@subcategorizationFrameSet" foreign-key="none" not-found="ignore"/>       
 </class>
 </hibernate-mapping>
