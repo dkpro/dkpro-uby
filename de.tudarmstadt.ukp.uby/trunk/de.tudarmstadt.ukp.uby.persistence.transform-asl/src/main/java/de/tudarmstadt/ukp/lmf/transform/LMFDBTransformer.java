@@ -79,7 +79,8 @@ public abstract class LMFDBTransformer extends LMFTransformer{
 	 * Transforms Resource to LMF sequentially
 	 */
 	@Override
-	public void transform(/*boolean constraints, boolean delete*/){ //TODO YC Remove constraints and delete
+	public void transform(){
+		// OLD: public void transform(/*boolean constraints, boolean delete*/)
 		System.out.println("START DB TRANSFORM");
 		openSession();
 		resourceAlias = getResourceAlias();
