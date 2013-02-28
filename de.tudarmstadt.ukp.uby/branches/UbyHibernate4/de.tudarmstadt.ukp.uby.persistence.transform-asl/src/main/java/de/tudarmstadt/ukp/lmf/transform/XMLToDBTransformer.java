@@ -533,20 +533,4 @@ public class XMLToDBTransformer implements ElementHandler {
 		openSession();
 	}
 		
-	public static void main(String[] args){
-		try{
-			
-			DBConfig dbConfig = new DBConfig("localhost/uby","com.mysql.jdbc.Driver","mysql","root", "", true, false);
-			//LMFDBUtils.createTables(dbConfig);
-			LMFDBUtils.updateTables(dbConfig);
-			XMLToDBTransformer trans = new XMLToDBTransformer(dbConfig);
-			
-			File xmlFile = new File("C:/uby/ubyTestLexicon.xml");
-			trans.transform(xmlFile, "UBY");
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		
-	}
 }
