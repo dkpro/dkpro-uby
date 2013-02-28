@@ -6,7 +6,6 @@
     <id column="argumentRelationId" type="long">
            <generator class="increment"/>
     </id>
-    
     <property name="relType" column="relType" node="@relType" type="string"/>
    	<property name="relName" column="relName" node="@relName" type="string"/>
 	<many-to-one name="target" class="de.tudarmstadt.ukp.lmf.model.semantics.SemanticArgument" column="target"

@@ -10,12 +10,12 @@
     <many-to-one name="parentSubcatFrameSet" class="de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrameSet" column="parentSubcatFrameSet"
     		 node="@parentSubcatFrameSet" foreign-key="none" not-found="ignore"/>
 
-    <list name="subcatFrameSetElements" node="." >
+    <list name="subcatFrameSetElements" node=".">
             <key column="subcatFrameSetId" />
             <index column="idx"/>
             <one-to-many class="de.tudarmstadt.ukp.lmf.model.syntax.SubcatFrameSetElement" node="SubcatFrameSetElement"/>
     </list>
-     <list name="synArgMaps" node="." >
+     <list name="synArgMaps" node=".">
             <key column="subcatFrameSetId" />
             <index column="idx"/>
             <one-to-many class="de.tudarmstadt.ukp.lmf.model.syntax.SynArgMap" node="SynArgMap"/>

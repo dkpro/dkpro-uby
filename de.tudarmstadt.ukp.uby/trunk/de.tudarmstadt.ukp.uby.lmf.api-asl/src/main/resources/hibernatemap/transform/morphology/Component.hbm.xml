@@ -9,7 +9,7 @@
     </id>         
 
     <property name="isBreakBefore" column="isBreakBefore" node="@isBreakBefore" access="field">    
-    	<type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">
+    	<type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">	
          <param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.EYesNo</param>	      	
       	</type>
   	</property>  
@@ -19,11 +19,13 @@
          <param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.EYesNo</param>	      	      	
       </type>
   	</property>  	
-    
+  	
     <property name="position" column="position" node="@position" type="integer"/>
 		
   	<many-to-one name="targetLexicalEntry" class="de.tudarmstadt.ukp.lmf.model.core.LexicalEntry" column="targetLexicalEntry" 
 			node="@targetLexicalEntry" foreign-key="none" not-found="ignore"/>
-		
+			
+
+
 </class>
 </hibernate-mapping>

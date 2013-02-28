@@ -54,9 +54,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-c3p0</artifactId>
-			<version>3.6.7.Final</version>
-			<type>jar</type>
+			<version>4.1.9.Final</version>
 		</dependency>
-
 	</dependencies>
 </project>

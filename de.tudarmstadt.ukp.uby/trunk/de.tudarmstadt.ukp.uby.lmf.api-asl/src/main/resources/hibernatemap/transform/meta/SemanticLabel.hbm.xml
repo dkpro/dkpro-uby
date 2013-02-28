@@ -8,7 +8,7 @@
            <generator class="increment"/>
     </id>
 	<property name="label" column="label" node="@label" type="string"/>
-	<property name="type" column="type" node="@type">    
+    <property name="type" column="type" node="@type">    
         <type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">
             <param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.ELabelTypeSemantics</param>            
         </type>
@@ -16,12 +16,11 @@
 	<property name="quantification" column="quantification" node="@quantification" type="long" />    
  
      <list name="monolingualExternalRefs" node=".">
-            <key column="semanticLabelId" on-delete="cascade"/>
+            <key column="semanticLabelId" />
             <index column="idx"/>
             <one-to-many class="de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef" node="MonolingualExternalRef"/>
     </list> 
 </class>
-
 
 
 </hibernate-mapping>
