@@ -64,8 +64,9 @@ public abstract class LMFTransformer {
 	 * Transforms Resource to LMF
 	 * @throws LMFWriterException
 	 */
-	public abstract void transform(/*boolean constraints, boolean delete*/) throws Exception; //TODO YC Remove constraints and delete
-
+	public abstract void transform() throws Exception;
+	// public abstract void transform(/*boolean constraints, boolean delete*/)
+	
 	/**
 	 * Maps unique original ID to unique LMF ID
 	 * @param resourceAlias
