@@ -59,10 +59,18 @@ public class SubcategorizationFrame extends HasFrequencies implements IHasID, Co
 	@VarType(type = EVarType.CHILDREN)
 	private List<SyntacticArgument> syntacticArguments = new ArrayList<SyntacticArgument>();
 	
+	/**
+	 * 
+	 */
+	@Override
 	public String getId() {
 		return id;
 	}
 
+	/**
+	 * 
+	 */
+	@Override
 	public void setId(String id) {
 		this.id = id;
 	}

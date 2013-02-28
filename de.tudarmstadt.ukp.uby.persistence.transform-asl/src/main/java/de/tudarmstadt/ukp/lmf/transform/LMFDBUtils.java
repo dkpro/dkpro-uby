@@ -34,6 +34,7 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 
 import de.tudarmstadt.ukp.lmf.hibernate.HibernateConnect;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
@@ -46,16 +47,35 @@ public class LMFDBUtils {
 	 * @param dbConfig
 	 * @throws FileNotFoundException
 	 */
-	public static  void createTables(DBConfig dbConfig, boolean constraints) throws FileNotFoundException{
+	public static  void createTables(DBConfig dbConfig/*, boolean constraints*/)  //TODO YC Remove constraints 
+			throws FileNotFoundException{
 		System.out.println("CREATE TABLES");
 		Configuration cfg = HibernateConnect.getConfiguration(dbConfig);
 		SchemaExport  se = new SchemaExport(cfg);
 		se.create(true, true);
-		if (constraints) {
+		
+		/*if (constraints) {
 			turnOnConstraints(dbConfig);
-		}
+		}*/
 	}
-
+	
+	
+	/**
+	 * Create all LMF Tables in the database based on the hibernate mapping
+	 * @param dbConfig
+	 * @throws FileNotFoundException
+	 */
+	public static  void updateTables(DBConfig dbConfig/*, boolean constraints*/) //TODO Remove constraints
+			throws FileNotFoundException{
+		System.out.println("UPDATE TABLES");
+		Configuration cfg = HibernateConnect.getConfiguration(dbConfig);
+		SchemaUpdate su = new SchemaUpdate(cfg);
+		su.execute(true, true);
+		/*if (constraints) {
+			turnOnConstraints(dbConfig);
+		}*/
+	}
+	
 	public static void dropTables(final DBConfig dbConfig) {
 		System.out.println("DROP TABLES");
 		Configuration cfg = HibernateConnect.getConfiguration(dbConfig);
@@ -90,10 +110,13 @@ public class LMFDBUtils {
 		}
 	}
 
+	
+	//TODO YC Remove turnOffConstraints and turnOnConstraints
 	/**
 	 * Adds some constraints to the Uby database, that can not be automatically added by Hibernate
 	 * @param dbConfig
 	 */
+	/*
 	public static void turnOnConstraints(DBConfig dbConfig){
 		try{
 			Connection connection = DriverManager.getConnection("jdbc:"+dbConfig.getDb_vendor()+"://"
@@ -132,7 +155,7 @@ public class LMFDBUtils {
 		}
 		System.out.println("Turned on constraints");
 	}
-
+	 */
 	/**
 	 * Drops constraints from the Uby database, that were added manually in turnOnConstraints(..)
 	 * @param dbConfig
@@ -171,36 +194,41 @@ public class LMFDBUtils {
 	 * @param lexicalResource
 	 * @param dbConfig
 	 */
-	public static void deleteLexicalResourceFromDatabase(LexicalResource lexicalResource, DBConfig dbConfig){
+	/*public static void deleteLexicalResourceFromDatabase(LexicalResource lexicalResource, DBConfig dbConfig){
 		try{
-			turnOnConstraints(dbConfig); // To be sure that all constraints are turned on
+	//		turnOnConstraints(dbConfig); // To be sure that all constraints are turned on
 			 							 // and cascade deleting will work
 			Configuration cfg = HibernateConnect.getConfiguration(dbConfig);
 			SessionFactory sf = cfg.buildSessionFactory();
 			Session session = sf.openSession();
 			Transaction tx = session.beginTransaction();
 
-			String sql = "delete from LexicalResource where lexicalResourceId='"+lexicalResource.getName()+"'";
-			System.out.println(sql);
-			session.createQuery(sql).executeUpdate();
+			LexicalResource lexicalResourceSess = (LexicalResource) session.get(
+					LexicalResource.class, lexicalResource.getName());
+			if(lexicalResourceSess != null)
+				session.delete(lexicalResourceSess);
+
+	//		String sql = "delete from LexicalResource where lexicalResourceId='"+lexicalResource.getName()+"'";
+	//		System.out.println(sql);
+	//		session.createQuery(sql).executeUpdate();
 
 			tx.commit();
 			session.close();
 			System.out.println("deleted "+lexicalResource.getName());
-			turnOffConstraints(dbConfig);
+	//		turnOffConstraints(dbConfig);
 		}catch(Exception ex){
 			ex.printStackTrace();
 			System.exit(1);
 		}
 	}
-
+	 */
 	/**
 	 * Deletes Lexicon and all its elements from the database
 	 * @param lexicon
 	 * @param dbConfig
 	 * @throws FileNotFoundException
 	 */
-	public static void deleteLexiconFromDatabase(Lexicon lexicon, DBConfig dbConfig) throws FileNotFoundException{
+	/*public static void deleteLexiconFromDatabase(Lexicon lexicon, DBConfig dbConfig) throws FileNotFoundException{
 
 		turnOnConstraints(dbConfig); // To be sure that all constraints are turned on
 									 // and cascade deleting will work
@@ -217,5 +245,5 @@ public class LMFDBUtils {
 		session.close();
 		System.out.println("deleted "+lexicon.getId());
 	}
-
+	*/
 }

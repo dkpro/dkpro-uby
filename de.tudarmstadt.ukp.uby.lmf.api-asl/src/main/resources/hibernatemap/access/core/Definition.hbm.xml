@@ -11,12 +11,12 @@
          	<param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.EDefinitionType</param>         	
       	</type>
   	</property>  	
-  	<list name="statements" node=".">
+  	<list name="statements" node="." >
           <key column="definitionId"  />
           <index column="idx"/>            
           <one-to-many class="de.tudarmstadt.ukp.lmf.model.core.Statement" node="Statement"/>
     </list>    
-    <list name="textRepresentations" node=".">
+    <list name="textRepresentations" node="." >
           <key column="definitionId" />
           <index column="idx"/>            
           <one-to-many class="de.tudarmstadt.ukp.lmf.model.core.TextRepresentation" 

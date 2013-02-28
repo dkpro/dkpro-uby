@@ -19,7 +19,7 @@ package de.tudarmstadt.ukp.lmf.api;
 
 import java.util.Iterator;
 
-import org.hibernate.Criteria;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
 

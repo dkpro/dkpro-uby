@@ -25,6 +25,7 @@ import java.sql.Types;
 import java.util.Properties;
  
 import org.hibernate.HibernateException;
+import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.usertype.EnhancedUserType;
 import org.hibernate.usertype.ParameterizedType;
 
@@ -75,7 +76,7 @@ public class EnumUserType implements EnhancedUserType, ParameterizedType {
         return false;
     }
  
-    @SuppressWarnings("unchecked")
+    /*@SuppressWarnings("unchecked")
 	public Object nullSafeGet(ResultSet rs, String[] names, Object owner) 
     throws HibernateException, SQLException {
         String name = rs.getString( names[0] );
@@ -91,6 +92,25 @@ public class EnumUserType implements EnhancedUserType, ParameterizedType {
             st.setString( index, ( (Enum) value ).name() ); 
         }
     }
+    */
+    
+    @Override
+	public Object nullSafeGet(ResultSet rs, String[] names, SessionImplementor si, Object owner) 
+			throws HibernateException,SQLException {
+    	 String name = rs.getString( names[0] );
+         return rs.wasNull() ? null : Enum.valueOf(enumClass, name);
+   	}
+
+	@Override
+	public void nullSafeSet(PreparedStatement st, Object value, int index, SessionImplementor si) 
+			throws HibernateException, SQLException {
+		 if (value==null) {
+	        st.setNull(index, Types.VARCHAR);
+	     }else{
+	        st.setString( index, ( (Enum) value ).name() ); 
+	     }
+		
+	} 
  
     public Object replace(Object original, Object target, Object owner) 
     throws HibernateException {
@@ -116,5 +136,7 @@ public class EnumUserType implements EnhancedUserType, ParameterizedType {
  
     public String toXMLString(Object value) {
         return ( (Enum) value ).name();
-    } 
+    }
+
+	
 }
