@@ -42,7 +42,7 @@ public class DBConfig
 	 * true if the user wants to load Hibernate mapping files used only for reading LMF database
 	 * false if the user wants to load Hibernate mapping files used only for writing to LMF database
 	 */
-	private boolean accessMode = true;
+	//private boolean accessMode = true;
 
 	/**
 	 * This constructor does nothing to all attributes. If you use it, you have to
@@ -85,7 +85,7 @@ public class DBConfig
 	 *            If true all SQL queries are printed on the console
 	 */
 	public DBConfig(String url, String jdbc_driver_class, String db_vendor,
-			String user, String password, boolean isAccess, //TODO YC Remove isAccess
+			String user, String password, 
 			boolean showSQL)
 	{
 		this.db_vendor = db_vendor;
@@ -93,7 +93,6 @@ public class DBConfig
 		this.jdbc_url = url;
 		this.user = user;
 		this.password = password;
-		this.accessMode = isAccess;
 		this.showSQL = showSQL;
 	}
 
@@ -260,30 +259,6 @@ public class DBConfig
 	 */
 	public void setHost(String host) {
 		this.host = host;
-	}
-
-	/**
-	 * Returns true if the UBY database accessed using this {@link DBConfig} instance
-	 * is used only for access read.<p>
-	 *  
-	 * @return true if the accessed UBY database is used only for reading, false
-	 * if the database is used only for writing
-	 */
-	public boolean isAccessMode() {
-		return accessMode;
-	}
-
-	/**
-	 * Specifies if UBY database used by this {@link DBConfig} instance is used for reading or
-	 * writing.<p>
-	 * 
-	 * By default, every DBConfig instance is set to access (read) mode.
-	 * 
-	 * @param accessMode set to true, in order to only read from UBY database, set to false
-	 * in order to write to UBY database
-	 */
-	public void setAccessMode(boolean accessMode) {
-		this.accessMode = accessMode;
 	}
 
 }

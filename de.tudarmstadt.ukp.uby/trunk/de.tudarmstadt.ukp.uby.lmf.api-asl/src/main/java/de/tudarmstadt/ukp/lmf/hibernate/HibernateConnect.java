@@ -62,16 +62,8 @@ public class HibernateConnect {
 				cl);
 		Resource[] mappings = null;
 		try {
-			if (dbConfig.isAccessMode()) {
-				// load access mappings
-				mappings = resolver
-						.getResources("hibernatemap/access/**/*.hbm.xml");
-			} else {
-				// load transform (write) mappings
-				mappings = resolver
-						.getResources("hibernatemap/transform/**/*.hbm.xml");
-			}
-
+			mappings = resolver
+				.getResources("hibernatemap/access/**/*.hbm.xml");
 			for (Resource mapping : mappings) {
 				cfg.addURL(mapping.getURL());
 			}
