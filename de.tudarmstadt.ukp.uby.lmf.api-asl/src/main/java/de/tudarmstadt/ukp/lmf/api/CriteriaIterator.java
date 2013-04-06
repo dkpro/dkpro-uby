@@ -85,8 +85,11 @@ public class CriteriaIterator<T>  implements Iterator<T> {
 		List result = execCriteria.setFirstResult(firstResult)
 			.setMaxResults(bufferSize).list();		
 		
-		if(result.size() == 0)
+		if(result.size() == 0){
+			if(session != null)
+				session.close();
 			return false;		
+		}
 		buffer = result.iterator();
 		return true;
 	}
