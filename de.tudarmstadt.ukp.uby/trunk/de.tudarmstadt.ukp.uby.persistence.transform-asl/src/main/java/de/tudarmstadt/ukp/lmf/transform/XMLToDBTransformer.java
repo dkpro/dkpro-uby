@@ -39,7 +39,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
-import de.tudarmstadt.ukp.lmf.api.Uby;
 import de.tudarmstadt.ukp.lmf.exceptions.UbyInvalidArgumentException;
 import de.tudarmstadt.ukp.lmf.hibernate.HibernateConnect;
 import de.tudarmstadt.ukp.lmf.model.core.GlobalInformation;
@@ -77,6 +76,7 @@ public class XMLToDBTransformer implements ElementHandler {
 	private boolean externalLexicalResource;
 	private long startTime;
 
+	@SuppressWarnings("deprecation")
 	public XMLToDBTransformer(DBConfig dbConfig) throws FileNotFoundException {
 		this.dbConfig = dbConfig;
 		cfg = HibernateConnect.getConfiguration(dbConfig);
@@ -295,7 +295,7 @@ public class XMLToDBTransformer implements ElementHandler {
 	 * @param clazz Java-Class of the Element
 	 * @return
 	 */
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private Object fromXmlToObject(Element el, Class clazz)  {			
 		try{
 			Object lmfObject = clazz.newInstance();
@@ -400,6 +400,7 @@ public class XMLToDBTransformer implements ElementHandler {
 	 * @param list
 	 * @param child
 	 */
+	@SuppressWarnings("unchecked")
 	private void saveListElement(Object parent, @SuppressWarnings("rawtypes") List list, Object child){
 		commitCounter ++;
 		list.add(child);
@@ -430,7 +431,7 @@ public class XMLToDBTransformer implements ElementHandler {
 	 * @param obj
 	 * @param parent
 	 */
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void saveCascade(Object obj, Object parent){
 		Class objClass = obj.getClass();
 		obj.toString();	// It can happen that a Hibernate object is not initialized properly

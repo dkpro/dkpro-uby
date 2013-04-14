@@ -31,6 +31,7 @@ public class GenericUtils {
 	 * @param clazz
 	 * @return
 	 */
+	@SuppressWarnings("rawtypes")
 	public static HashMap<Field, Class> getFields(Class clazz){
 		HashMap<Field, Class> fields = new HashMap<Field, Class>();
 		
@@ -60,6 +61,7 @@ public class GenericUtils {
 	 * @param field
 	 * @return
 	 */
+	@SuppressWarnings("rawtypes")
 	public static Class getListElementClass(Field field) {
 		Type genericFieldType = field.getGenericType();
 
@@ -102,7 +104,7 @@ public class GenericUtils {
 	 * @param value
 	 * @return
 	 */
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static Object getEnum(Class fieldClass, String value) {
 		if(value != null)
 			return Enum.valueOf(fieldClass, value);
