@@ -68,6 +68,7 @@ public abstract class LMFDBTransformer extends LMFTransformer{
 	 * @param writer
 	 * @throws FileNotFoundException
 	 */
+	@SuppressWarnings("deprecation")
 	public LMFDBTransformer(DBConfig dbConfig) throws FileNotFoundException{
 		super();
 		this.dbConfig = dbConfig;

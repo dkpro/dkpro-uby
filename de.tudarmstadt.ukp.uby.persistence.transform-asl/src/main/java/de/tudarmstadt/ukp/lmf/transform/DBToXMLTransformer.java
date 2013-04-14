@@ -24,7 +24,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -79,6 +78,7 @@ public class DBToXMLTransformer {
 	 * 
 	 * @since UBY 0.1.0
 	 */
+	@SuppressWarnings("deprecation")
 	public DBToXMLTransformer(DBConfig dbConfig, LMFWriter writer) {
 		Configuration cfg = HibernateConnect.getConfiguration(dbConfig);
 

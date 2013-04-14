@@ -19,10 +19,6 @@
 package de.tudarmstadt.ukp.lmf.transform;
 
 import java.io.FileNotFoundException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
@@ -37,8 +33,6 @@ import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 
 import de.tudarmstadt.ukp.lmf.hibernate.HibernateConnect;
-import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
-import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 
 public class LMFDBUtils {
 	
@@ -78,6 +72,7 @@ public class LMFDBUtils {
 		}*/
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static void dropTables(final DBConfig dbConfig) {
 		System.out.println("DROP TABLES");
 		Configuration cfg = HibernateConnect.getConfiguration(dbConfig);
