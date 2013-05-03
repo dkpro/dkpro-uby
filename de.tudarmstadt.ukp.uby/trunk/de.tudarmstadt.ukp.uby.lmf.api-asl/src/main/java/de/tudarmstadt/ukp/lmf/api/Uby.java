@@ -356,8 +356,6 @@ public class Uby
 	 *
 	 * Optionally lexical entries can be filtered by part-of-speech and a {@link Lexicon}.
 	 *
-	 * @param word the written representation of the lexical entries to be iterated over
-	 *
 	 * @param pos the part-of-speech of the lexical entries to be iterated over. Set to null in order to skip
 	 * part-of-speech filtering and create an iterator over all lexical entries matching other constraints, regardless of
 	 * their part-of-speech.
@@ -388,6 +386,31 @@ public class Uby
 	}
 
 
+	/**
+	 * Returns an {@link Iterator} over {@link SenseAxis} instances
+	 *
+	 * Optionally sense axes can be filtered by a {@link Lexicon}.
+	 *	 
+	 * @param lexicon If not null, filters sense axes by the specified lexicon. Note that the Lexicon instance has to be
+	 * obtained beforehand.
+	 *
+	 * @return An Iterator over sense axes matching the specified criteria
+	 *
+	 */
+	public Iterator<SenseAxis> getSenseAxisIterator(Lexicon lexicon)
+	{
+		DetachedCriteria criteria = DetachedCriteria.forClass(SenseAxis.class);
+		if (lexicon != null) {
+			criteria = criteria.add(Restrictions.sqlRestriction("lexiconId = '"
+					+ lexicon.getId() + "'"));
+		}
+
+		CriteriaIterator<SenseAxis> senseAxisIterator = new CriteriaIterator<SenseAxis>(
+				criteria, sessionFactory, 500);
+		return senseAxisIterator;
+	}
+
+	
 	
 	/**
 	 * This methods allows retrieving a {@link LexicalEntry} instance by its exact
