@@ -397,13 +397,9 @@ public class Uby
 	 * @return An Iterator over sense axes matching the specified criteria
 	 *
 	 */
-	public Iterator<SenseAxis> getSenseAxisIterator(Lexicon lexicon)
+	public Iterator<SenseAxis> getSenseAxisIterator()
 	{
 		DetachedCriteria criteria = DetachedCriteria.forClass(SenseAxis.class);
-		if (lexicon != null) {
-			criteria = criteria.add(Restrictions.sqlRestriction("lexiconId = '"
-					+ lexicon.getId() + "'"));
-		}
 
 		CriteriaIterator<SenseAxis> senseAxisIterator = new CriteriaIterator<SenseAxis>(
 				criteria, sessionFactory, 500);
