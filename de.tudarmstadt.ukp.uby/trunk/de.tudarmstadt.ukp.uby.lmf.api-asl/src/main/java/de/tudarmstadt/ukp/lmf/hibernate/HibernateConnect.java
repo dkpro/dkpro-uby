@@ -93,15 +93,34 @@ public class HibernateConnect {
 	public static Properties getProperties(String jdbc_url, String jdbc_driver_class, String db_vendor,String user, String password, boolean showSQL) {
 
         Properties p = new Properties();
+        /*
+         *         <property name="driverClassName" value="org.h2.Driver"/>
+        <property name="url" value="jdbc:h2:mem:test;DB_CLOSE_DELAY=-1"/>
+    </bean>
+ 
+    <bean id="jpaAdaptor" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <property name="showSql" value="false" />
+        <!-- Let Hibernate generate the DDL for the schema -->
+        <property name="generateDdl" value="true" />
+        <property name="databasePlatform" value="org.hibernate.dialect.H2Dialect" />
 
-        // Database connection settings
+         */
+
+        // Database connection settings common for mysql and h2
         p.setProperty("hibernate.connection.driver_class", jdbc_driver_class);
-        p.setProperty("hibernate.connection.url", "jdbc:"+db_vendor+"://" +jdbc_url+"?characterEncoding=UTF-8&useUnicode=true");
         p.setProperty("hibernate.connection.characterEncoding", "UTF-8");
         p.setProperty("hibernate.connection.useUnicode", "true");
         p.setProperty("hibernate.connection.charSet", "UTF-8");
         p.setProperty("hibernate.connection.username", user);
         p.setProperty("hibernate.connection.password", password);
+        
+        // connection url
+        if (db_vendor.equals("mysql")) {
+        	p.setProperty("hibernate.connection.url", "jdbc:"+db_vendor+"://" +jdbc_url+"?characterEncoding=UTF-8&useUnicode=true");
+        } else if (db_vendor.equals("h2")){
+        	p.setProperty("hibernate.connection.url", "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1");
+        }
+
 
         // JDBC connection pool (use the built-in) -->
         //  p.setProperty("hibernate.connection.pool_size","1");
@@ -113,8 +132,12 @@ public class HibernateConnect {
         p.setProperty("hibernate.c3p0.max_statements","0");
         p.setProperty("hibernate.c3p0.idle_test_period","5");
 
-        // Custom SQL dialect
-        p.setProperty("hibernate.dialect","de.tudarmstadt.ukp.lmf.hibernate.CustomMySQLDialect");
+        // SQL dialect
+        if (db_vendor.equals("mysql")) {
+        	p.setProperty("hibernate.dialect","de.tudarmstadt.ukp.lmf.hibernate.CustomMySQLDialect");
+        } else if (db_vendor.equals("h2")){
+        	p.setProperty("hibernate.dialect","org.hibernate.dialect.H2Dialect");
+        }
 
         // Enable Hibernate's automatic session context management
         p.setProperty("hibernate.current_session_context_class","thread");
