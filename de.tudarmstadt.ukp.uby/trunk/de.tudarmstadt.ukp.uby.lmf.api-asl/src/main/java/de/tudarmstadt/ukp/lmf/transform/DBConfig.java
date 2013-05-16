@@ -53,7 +53,6 @@ public class DBConfig
 	 * <li><b>user</b>: User for accessing the database</li>
 	 * <li><b>password</b>: Password for accessing the database</li>
 	 * <li><b>url</b>: Host_to_the_database/database_name</li>
-	 * <li><b>accessMode</b>: default=true; set to false if you want to use Hibernate mappings for writing to LMF database
 	 * <li><b>showSQL</b>: default=false; set to true if you want to print all
 	 * sql queries.</li>
 	 * </ul>
@@ -73,14 +72,12 @@ public class DBConfig
 	 * @param jdbc_driver_class
 	 *            The jdbc driver class using to access database
 	 * @param db_vendor
-	 * 			  vendor name of the accessed database
+	 * 			  vendor name of the accessed database, e.g. mysql, hsqldb
+	 * 			  used in combination with the @param url to glue together the hibernate.connection.url
 	 * @param user
 	 * 			  User name used for accessing the database
 	 * @param password
 	 *            Password for accessing the database
-	 * @param isAccess
-	 * 			  This argument should be true if mappings for reading the LMF database should be loaded,<br>
-	 * false for loading the mappings for writing to LMF database
 	 * @param showSQL
 	 *            If true all SQL queries are printed on the console
 	 */
