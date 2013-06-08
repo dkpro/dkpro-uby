@@ -826,6 +826,166 @@
                 <MonolingualExternalRef externalSystem="OW SynTrans ID" externalReference="304827"/>
             </Sense>
         </LexicalEntry>
+        <LexicalEntry id="OW_deu_LexicalEntry_6810" lexicon="OW_Lexicon_deu">
+            <Lemma>
+                <FormRepresentation languageIdentifier="deu" writtenForm="Bildungsstand"/>
+            </Lemma>
+            <Sense id="OW_deu_Sense_7662" index="296584" synset="OW_deu_Synset_7567" lexicalEntry="OW_deu_LexicalEntry_6810">
+                <Definition>
+                    <TextRepresentation languageIdentifier="deu"/>
+                </Definition>
+                <SenseRelation target="OW_deu_Sense_3987" relType="taxonomic" relName="hyponym"/>
+                <SenseRelation target="OW_deu_Sense_4143" relType="taxonomic" relName="hypernym"/>
+                <SenseRelation target="OW_deu_Sense_2357" relType="taxonomic" relName="hyponym"/>
+                <SenseRelation target="OW_deu_Sense_6524" relType="taxonomic" relName="hyponym"/>
+                <SenseRelation target="OW_deu_Sense_7970" relType="taxonomic" relName="hyponym"/>
+                <SenseRelation target="OW_deu_Sense_26467" relType="taxonomic" relName="hyponym"/>
+                <SenseRelation target="OW_deu_Sense_28580" relType="taxonomic" relName="hyponym"/>
+                <SenseRelation target="OW_deu_Sense_22730" relType="taxonomic" relName="hyponym"/>
+                <SenseRelation target="OW_deu_Sense_4712" relType="taxonomic" relName="hyponym"/>
+                <SenseRelation target="OW_deu_Sense_2711" relType="taxonomic" relName="hyponym"/>
+                <SenseRelation target="OW_deu_Sense_14297" relType="taxonomic" relName="hyponym"/>
+                <SenseRelation target="OW_deu_Sense_18693" relType="taxonomic" relName="hyponym"/>
+                <SenseRelation target="OW_deu_Sense_28789" relType="taxonomic" relName="hyponym"/>
+                <SenseRelation target="OW_deu_Sense_3800" relType="taxonomic" relName="hyponym"/>
+                <Equivalent languageIdentifier="est" writtenForm="haridustase"/>
+                <Equivalent languageIdentifier="spa" writtenForm="nivel de enseñanza"/>
+                <Equivalent languageIdentifier="eng" writtenForm="level of education"/>
+                <Equivalent languageIdentifier="ell" writtenForm="επίπεδο εκπαίδευσης"/>
+                <Equivalent languageIdentifier="hun" writtenForm="oktatási szint"/>
+                <Equivalent languageIdentifier="fra" writtenForm="niveau d'études"/>
+                <Equivalent languageIdentifier="fin" writtenForm="koulutustaso"/>
+                <Equivalent languageIdentifier="eus" writtenForm="hezkuntza-maila"/>
+                <Equivalent languageIdentifier="eng" writtenForm="level of education"/>
+                <Equivalent languageIdentifier="dan" writtenForm="uddannelsesniveau"/>
+                <Equivalent languageIdentifier="ces" writtenForm="úroveň vzdělání"/>
+                <Equivalent languageIdentifier="bul" writtenForm="ниво на обучение"/>
+                <Equivalent languageIdentifier="swe" writtenForm="utbildningsnivå"/>
+                <Equivalent languageIdentifier="nob" writtenForm="utdanningsnivå"/>
+                <Equivalent languageIdentifier="pol" writtenForm="poziom wykształcenia"/>
+                <Equivalent languageIdentifier="ita" writtenForm="grado d'istruzione"/>
+                <Equivalent languageIdentifier="nld" writtenForm="opleidingsniveau"/>
+                <Equivalent languageIdentifier="slk" writtenForm="úroveň vzdelania"/>
+                <Equivalent languageIdentifier="slv" writtenForm="stopnja izobrazbe"/>
+                <Equivalent languageIdentifier="por" writtenForm="nível de educação"/>
+                <Equivalent languageIdentifier="rus" writtenForm="уровень образования"/>
+                <MonolingualExternalRef externalSystem="OW SynTrans ID" externalReference="296584"/>
+            </Sense>
+        </LexicalEntry>
+        <LexicalEntry id="OW_deu_LexicalEntry_16320" lexicon="OW_Lexicon_deu">
+            <Lemma>
+                <FormRepresentation languageIdentifier="deu" writtenForm="Bildungswesen"/>
+            </Lemma>
+            <Sense id="OW_deu_Sense_18362" index="209109" synset="OW_deu_Synset_1620" lexicalEntry="OW_deu_LexicalEntry_16320">
+                <Definition>
+                    <TextRepresentation languageIdentifier="deu"/>
+                </Definition>
+                <SenseRelation target="OW_deu_Sense_14341" relType="taxonomic" relName="hypernym"/>
+                <Equivalent languageIdentifier="rus" writtenForm="система образования"/>
+                <Equivalent languageIdentifier="slk" writtenForm="vzdelávací systém"/>
+                <Equivalent languageIdentifier="pol" writtenForm="system edukacyjny"/>
+                <Equivalent languageIdentifier="por" writtenForm="sistemas educativos"/>
+                <Equivalent languageIdentifier="slv" writtenForm="izobraževalni sistem"/>
+                <Equivalent languageIdentifier="swe" writtenForm="utbildningssystem"/>
+                <Equivalent languageIdentifier="kat" writtenForm="საგანმანათლებლო სისტემა"/>
+                <Equivalent languageIdentifier="jpn" writtenForm="教育制度"/>
+                <Equivalent languageIdentifier="jpn" writtenForm="教育システム"/>
+                <Equivalent languageIdentifier="nld" writtenForm="onderwijssysteem"/>
+                <Equivalent languageIdentifier="nob" writtenForm="utdanningssystem"/>
+                <Equivalent languageIdentifier="hun" writtenForm="oktatási rendszer"/>
+                <Equivalent languageIdentifier="ita" writtenForm="sistema educativo"/>
+                <Equivalent languageIdentifier="fin" writtenForm="koulutusjärjestelmä"/>
+                <Equivalent languageIdentifier="fra" writtenForm="système éducatif"/>
+                <Equivalent languageIdentifier="est" writtenForm="haridussüsteem"/>
+                <Equivalent languageIdentifier="eus" writtenForm="hezkuntza-sistema"/>
+                <Equivalent languageIdentifier="eng" writtenForm="educational system"/>
+                <Equivalent languageIdentifier="spa" writtenForm="sistema educativo"/>
+                <Equivalent languageIdentifier="ell" writtenForm="εκπαιδευτικό σύστημα"/>
+                <Equivalent languageIdentifier="ces" writtenForm="systém vzdělávací"/>
+                <Equivalent languageIdentifier="dan" writtenForm="uddannelsessystem"/>
+                <Equivalent languageIdentifier="eng" writtenForm="educational system"/>
+                <Equivalent languageIdentifier="bul" writtenForm="образователна система"/>
+                <MonolingualExternalRef externalSystem="OW SynTrans ID" externalReference="209109"/>
+            </Sense>
+        </LexicalEntry>
+        <LexicalEntry id="OW_deu_LexicalEntry_3690" lexicon="OW_Lexicon_deu">
+            <Lemma>
+                <FormRepresentation languageIdentifier="deu" writtenForm="Bildung"/>
+            </Lemma>
+            <Sense id="OW_deu_Sense_4143" index="209021" synset="OW_deu_Synset_1582" lexicalEntry="OW_deu_LexicalEntry_3690">
+                <Definition>
+                    <TextRepresentation languageIdentifier="deu"/>
+                </Definition>
+                <SenseRelation target="OW_deu_Sense_4446" relType="taxonomic" relName="hyponym"/>
+                <SenseRelation target="OW_deu_Sense_14140" relType="taxonomic" relName="hyponym"/>
+                <SenseRelation target="OW_deu_Sense_7662" relType="taxonomic" relName="hyponym"/>
+                <SenseRelation target="OW_deu_Sense_8672" relType="taxonomic" relName="hyponym"/>
+                <SenseRelation target="OW_deu_Sense_22257" relType="taxonomic" relName="hyponym"/>
+                <SenseRelation target="OW_deu_Sense_14341" relType="taxonomic" relName="hyponym"/>
+                <Equivalent languageIdentifier="eng" writtenForm="education"/>
+                <Equivalent languageIdentifier="bul" writtenForm="Образование"/>
+                <Equivalent languageIdentifier="arb" writtenForm="تعليم"/>
+                <Equivalent languageIdentifier="ces" writtenForm="vzdělávání"/>
+                <Equivalent languageIdentifier="dan" writtenForm="uddannelse"/>
+                <Equivalent languageIdentifier="ell" writtenForm="εκπαίδευση/μόρφωση/αγωγή/παιδεία"/>
+                <Equivalent languageIdentifier="eng" writtenForm="education"/>
+                <Equivalent languageIdentifier="spa" writtenForm="educación"/>
+                <Equivalent languageIdentifier="glg" writtenForm="educación"/>
+                <Equivalent languageIdentifier="kor" writtenForm="교육"/>
+                <Equivalent languageIdentifier="nld" writtenForm="onderricht"/>
+                <Equivalent languageIdentifier="nld" writtenForm="educatie"/>
+                <Equivalent languageIdentifier="ron" writtenForm="educaţie"/>
+                <Equivalent languageIdentifier="nld" writtenForm="scholing"/>
+                <Equivalent languageIdentifier="heb" writtenForm="חינוך"/>
+                <Equivalent languageIdentifier="nld" writtenForm="opleiding"/>
+                <Equivalent languageIdentifier="bul" writtenForm="образование"/>
+                <Equivalent languageIdentifier="afr" writtenForm="opleiding"/>
+                <Equivalent languageIdentifier="ell" writtenForm="μόρφωση"/>
+                <Equivalent languageIdentifier="jpn" writtenForm="教育"/>
+                <Equivalent languageIdentifier="ell" writtenForm="εκπαίδευση"/>
+                <Equivalent languageIdentifier="ind" writtenForm="pendidikan"/>
+                <Equivalent languageIdentifier="ell" writtenForm="παιδεία"/>
+                <Equivalent languageIdentifier="eus" writtenForm="heziketa"/>
+                <Equivalent languageIdentifier="ell" writtenForm="αγωγή"/>
+                <Equivalent languageIdentifier="hun" writtenForm="oktatás"/>
+                <Equivalent languageIdentifier="eus" writtenForm="hezkuntza"/>
+                <Equivalent languageIdentifier="slk" writtenForm="vzdelávanie"/>
+                <Equivalent languageIdentifier="rus" writtenForm="образование"/>
+                <Equivalent languageIdentifier="por" writtenForm="educação"/>
+                <Equivalent languageIdentifier="kat" writtenForm="განათლება"/>
+                <Equivalent languageIdentifier="pol" writtenForm="edukacja"/>
+                <Equivalent languageIdentifier="swe" writtenForm="utbildning"/>
+                <Equivalent languageIdentifier="hun" writtenForm="nevelés"/>
+                <Equivalent languageIdentifier="slv" writtenForm="izobraževanje"/>
+                <Equivalent languageIdentifier="fra" writtenForm="éducation"/>
+                <Equivalent languageIdentifier="fin" writtenForm="koulutus"/>
+                <Equivalent languageIdentifier="slk" writtenForm="vychovávanie"/>
+                <Equivalent languageIdentifier="eus" writtenForm="heziketa; hezkuntza"/>
+                <Equivalent languageIdentifier="ina" writtenForm="education"/>
+                <Equivalent languageIdentifier="est" writtenForm="haridus"/>
+                <Equivalent languageIdentifier="slk" writtenForm="výchova"/>
+                <Equivalent languageIdentifier="nob" writtenForm="utdanning"/>
+                <Equivalent languageIdentifier="nld" writtenForm="onderwijs"/>
+                <Equivalent languageIdentifier="ita" writtenForm="educazione"/>
+                <Equivalent languageIdentifier="hun" writtenForm="oktatás/nevelés"/>
+                <MonolingualExternalRef externalSystem="OW SynTrans ID" externalReference="209021"/>
+            </Sense>
+        </LexicalEntry>
+        <Synset id="OW_deu_Synset_1582">
+            <Definition>
+                <TextRepresentation languageIdentifier="deu"/>
+            </Definition>
+            <SynsetRelation target="OW_deu_Synset_6329" relType="taxonomic" relName="hyponym"/>
+            <SynsetRelation target="OW_deu_Synset_7158" relType="association" relName="related"/>
+            <SynsetRelation target="OW_deu_Synset_7567" relType="taxonomic" relName="hyponym"/>
+            <SynsetRelation target="OW_deu_Synset_6451" relType="association" relName="related"/>
+            <SynsetRelation target="OW_deu_Synset_6454" relType="taxonomic" relName="hyponym"/>
+            <SynsetRelation target="OW_deu_Synset_5587" relType="association" relName="related"/>
+            <SynsetRelation target="OW_deu_Synset_8195" relType="association" relName="related"/>
+            <SynsetRelation target="OW_deu_Synset_1369" relType="taxonomic" relName="hyponym"/>
+            <MonolingualExternalRef externalSystem="OmegaWiki ID" externalReference="1087"/>
+        </Synset>
+        
     </Lexicon>
 
     <SenseAxis id="AnoEx_SenseAxis_3" senseOne="WktEn_sense_3" senseTwo="WN_Sense_7" senseAxisType="monolingualSenseAlignment"/>
