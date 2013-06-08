@@ -181,7 +181,7 @@ public class UbyQuickAPI extends Uby
 	 * <p>
 	 *
 	 * The method is meant for fast fetching of alignments. For retrieving of
-	 * complete alignments use {@link #getSenseAxisBySense(Sense)} instead.
+	 * complete alignments use {@link #getSenseAxesBySense(Sense)} instead.
 	 *
 	 * @param sense
 	 *            all returned identifiers must belong to senses which are
@@ -231,9 +231,9 @@ public class UbyQuickAPI extends Uby
 	 * <p>
 	 *
 	 * The method is meant for fast fetching of alignments. For retrieving of
-	 * complete alignments use {@link #getSenseAxisBySense(Sense)} instead.
+	 * complete alignments use {@link #getSenseAxesBySense(Sense)} instead.
 	 *
-	 * @param id
+	 * @param senseId
 	 *            all returned identifiers must belong to senses which are
 	 *            aligned to the sense represented by the id
 	 *
@@ -246,13 +246,13 @@ public class UbyQuickAPI extends Uby
 	 * @since 0.2.0
 	 *
 	 */
-	public List<String> alignedSenseIDs(String id) {
+	public List<String> alignedSenseIDs(String senseId) {
 		List<String> list = new ArrayList<String>();
-		if (id != null && !id.equals("")) {
+		if (senseId != null && !senseId.equals("")) {
 			// Select senseOneId, senseTwoId from SenseAxis where
 			// senseOneId='WN_Sense_100' or senseTwoId='WN_Sense_100'
 			String sql = "Select senseOneId, senseTwoId from SenseAxis where senseOneId='"
-					+ id + "' or senseTwoId='" + id + "'";
+					+ senseId + "' or senseTwoId='" + senseId + "'";
 			@SuppressWarnings("rawtypes")
 			List query = session.createSQLQuery(sql).list();
 			@SuppressWarnings("rawtypes")
@@ -261,7 +261,7 @@ public class UbyQuickAPI extends Uby
 				Object[] row = (Object[]) iter.next();
 				String sense1 = (String) row[0];
 				String sense2 = (String) row[1];
-				if (sense1.matches(id)) {
+				if (sense1.matches(senseId)) {
 					list.add(sense2);
 				} else {
 					list.add(sense1);
@@ -378,4 +378,33 @@ public class UbyQuickAPI extends Uby
 		}
 		return senseAxes;
 	}
+	
+	/**
+	 * Consumes a {@link List} of {@link Sense} instances and a {@link String}
+	 * representing the unique identifier of a sense. It returns the sense from
+	 * the consumed list which unique identifier is equal to the consumed
+	 * identifier.
+	 *
+	 * @param senses
+	 *            a list of sense to be searched in
+	 *
+	 * @param senseId
+	 *            the unique identifier of the searched sense
+	 *
+	 * @return the sense in the consumed list which unique identifier matches
+	 *         the consumed unique identifier or null if the list does not
+	 *         contain such sense
+	 */
+	// TODO not neccessary?
+	protected Sense getSenseFromList(List<Sense> senses, String senseId) {
+		Sense sense = null;
+		for (Sense s : senses) {
+			if (s.getId().equals(senseId)) {
+				sense = s;
+				break;
+			}
+		}
+		return sense;
+	}
+
 }
