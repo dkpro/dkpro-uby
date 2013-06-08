@@ -24,7 +24,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -32,6 +31,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.service.ServiceRegistryBuilder;
 
 import de.tudarmstadt.ukp.lmf.exceptions.UbyInvalidArgumentException;
 import de.tudarmstadt.ukp.lmf.hibernate.HibernateConnect;
@@ -48,8 +48,6 @@ import de.tudarmstadt.ukp.lmf.model.semantics.SemanticArgument;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
 import de.tudarmstadt.ukp.lmf.model.semantics.SynSemArgMap;
 import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
-import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrame;
-import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticArgument;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 
 /**
@@ -94,7 +92,9 @@ public class Uby
 		}
 		this.dbConfig = dbConfig;
 		cfg = HibernateConnect.getConfiguration(dbConfig);
-		sessionFactory = cfg.buildSessionFactory();
+		ServiceRegistryBuilder serviceRegistryBuilder = new ServiceRegistryBuilder()
+					.applySettings(cfg.getProperties());
+		sessionFactory = cfg.buildSessionFactory(serviceRegistryBuilder.buildServiceRegistry());		
 		openSession();
 	}
 
@@ -501,37 +501,6 @@ public class Uby
 	}
 
 	/**
-	 * This method fetches a {@link List} of light {@link Lexicon} instances containing only
-	 * the name and the id.<p>
-	 *
-	 * The method is meant for fast fetching of lexicons. In order to get complete
-	 * Lexicon instances use {@link #getLexicons()} instead.
-	 *
-	 * @return a list of all lexicons contained in the database. The returned lexicons are light
-	 * and consist only of an id and a name. If the accessed database does not contain any lexicons,
-	 * this method returns an empty list.
-	 *
-	 * @see Lexicon#getName()
-	 * @see Lexicon#getId()
-	 * @deprecate use {@link UbyQuickAPI#lightLexicons()} instead
-	 */
-	@Deprecated
-	public List<Lexicon> getLightLexicons(){
-		List<Lexicon>lexicons=new ArrayList<Lexicon>();
-		String sql="Select lexiconId,lexiconName from Lexicon";
-		SQLQuery query = session.createSQLQuery(sql);
-		Iterator<?> iter = query.list().iterator();
-		while (iter.hasNext()) {
-			Object[] row = (Object[]) iter.next();
-			Lexicon lexicon=new Lexicon();
-			lexicon.setId((String)row[0]);
-			lexicon.setName((String)row[1]);
-			lexicons.add(lexicon);
-		}
-		return lexicons;
-	}
-
-	/**
 	 * This method fetches all {@link Lexicon} instances from the accessed database by the
 	 * specified language identifier.
 	 *
@@ -624,8 +593,7 @@ public class Uby
 	 * if one of the given arguments is null or the accessed database does not contain any
 	 * senses matching both constraints
 	 */
-	public List<Sense> getSensesByOriginalReference(String externalSys, String externalRef)
-	{
+	public List<Sense> getSensesByOriginalReference(String externalSys, String externalRef){
 		Criteria criteria = session.createCriteria(Sense.class);
 
 		criteria = criteria.createCriteria("monolingualExternalRefs").add(
@@ -648,7 +616,7 @@ public class Uby
 	 * @return a list of all sense axes in the accessed database or an empty list
 	 * if the accessed database does not contain any sense axes
 	 */
-	public List<SenseAxis> getSenseAxis(){
+	public List<SenseAxis> getSenseAxes(){
 		Criteria criteria = session.createCriteria(SenseAxis.class);
 		@SuppressWarnings("unchecked")
 		List<SenseAxis> result = criteria.list();
@@ -668,12 +636,12 @@ public class Uby
 	 * This method returns an empty list is no sense axis contains the specified string in its id
 	 * or the specified string is null.
 	 *
-	 * @see #getSenseAxis()
-	 * @see #getSenseAxisBySense(Sense)
-	 * @see #getSenseAxisBySenseID(String)
+	 * @see #getSenseAxes()
+	 * @see #getSenseAxesBySense(Sense)
+	 * @see #getSenseAxesBySenseId(String)
 	 *
 	 */
-	public List<SenseAxis> getSenseAxisbyId(String senseAxisId){
+	public List<SenseAxis> getSenseAxesByIdPattern(String senseAxisId){
 		Criteria criteria= session.createCriteria(SenseAxis.class);
 		criteria=criteria.add(Restrictions.sqlRestriction("senseAxisId like \"%"+ senseAxisId+"%\""));
 
@@ -694,7 +662,7 @@ public class Uby
 	 * This method returns an empty list if the accessed UBY-LMF database does not contain
 	 * any alignments of the specified sense, or the specified sense is null.
 	 */
-	public List<SenseAxis> getSenseAxisBySense(Sense sense){
+	public List<SenseAxis> getSenseAxesBySense(Sense sense){
 		if (sense!=null && sense.getId()!=null && !sense.getId().equals("")){
 			Criteria criteria=session.createCriteria(SenseAxis.class);
 			criteria=criteria.add(Restrictions.sqlRestriction("senseOneId=\""+sense.getId()+"\" or senseTwoId=\""+sense.getId()+"\""));
@@ -706,101 +674,7 @@ public class Uby
 			return new ArrayList<SenseAxis>(0);
 		}
 	}
-
-	/**
-	 *
-	 * @param sense
-	 *            : The Input Sense
-	 * @return: List ID of all senses appear with input sense in senseAxis table
-	 * @throws SQLException
-	 * @deprecated use {@link UbyQuickAPI#alignedSenseIDs(Sense)} instead
-	 */
-	@Deprecated
-	public List<String> getLightSenseAxisBySense(Sense sense)
-		throws SQLException
-	{
-		List<String> list = new ArrayList<String>();
-
-		String id = sense.getId();
-		if (id != null && !id.equals("")) {
-			// Select senseOneId, senseTwoId from SenseAxis where
-			// senseOneId='WN_Sense_100' or senseTwoId='WN_Sense_100'
-			String sql = "Select senseOneId, senseTwoId from SenseAxis where senseOneId='"
-					+ id + "' or senseTwoId='" + id + "'";
-			try {
-				// use Hibernate query
-				SQLQuery query = session.createSQLQuery(sql);
-
-				@SuppressWarnings("rawtypes")
-				Iterator iter = query.list().iterator();
-				while (iter.hasNext()) {
-					Object[] row = (Object[]) iter.next();
-					String sense1 = (String) row[0];
-					String sense2 = (String) row[1];
-					if (sense1.matches(id)) {
-						list.add(sense2);
-					}
-					else {
-						list.add(sense1);
-					}
-				}
-			}
-			catch (Exception ex) {
-				throw new SQLException(
-						"Please set configuration or session before using any method");
-			}
-		}
-
-		return list;
-	}
-
-	/**
-	 * This method fetches a {@link List} of all identifiers of {@link Sense}
-	 * instances which are aligned by a {@link SenseAxis} with the sense
-	 * specified by its identifier.
-	 * <p>
-	 *
-	 * The method is meant for fast fetching of alignments. For retrieving of
-	 * complete alignments use {@link #getSenseAxisBySense(Sense)} instead.
-	 *
-	 * @param id
-	 *            all returned identifiers must belong to senses which are
-	 *            aligned to the sense represented by the id
-	 *
-	 * @return a list of identifiers of all senses which are aligned with the
-	 *         specified sense by a sense axis.<br>
-	 *         If the sense specified by its identifier is not contained in any
-	 *         alignment or the specified id is null, this method returns an
-	 *         empty list.
-	 *         
-	 * @deprecated use {@link UbyQuickAPI#alignedSenseIDs(String)}
-	 *
-	 */
-	@Deprecated
-	public List<String> getSenseAxisBySenseID(String id) {
-		List<String> list = new ArrayList<String>();
-		if (id != null && !id.equals("")) {
-			// Select senseOneId, senseTwoId from SenseAxis where
-			// senseOneId='WN_Sense_100' or senseTwoId='WN_Sense_100'
-			String sql = "Select senseOneId, senseTwoId from SenseAxis where senseOneId='"
-					+ id + "' or senseTwoId='" + id + "'";
-			@SuppressWarnings("rawtypes")
-			List query = session.createSQLQuery(sql).list();
-			@SuppressWarnings("rawtypes")
-			Iterator iter = query.iterator();
-			while (iter.hasNext()) {
-				Object[] row = (Object[]) iter.next();
-				String sense1 = (String) row[0];
-				String sense2 = (String) row[1];
-				if (sense1.matches(id)) {
-					list.add(sense2);
-				} else {
-					list.add(sense1);
-				}
-			}
-		}
-		return list;
-	}
+	
 
 	/**
 	 * Consumes two {@link Sense} instances and returns true if and only if the
@@ -822,7 +696,6 @@ public class Uby
 	 * @see SenseAxis#getSenseOne()
 	 * @see SenseAxis#getSenseTwo()
 	 */
-
 	public boolean areSensesAxes(Sense sense1, Sense sense2) {
 		boolean ret = false;
 		if (sense1 != null && sense2 != null && sense1.getId() != null
@@ -840,136 +713,7 @@ public class Uby
 			}
 
 		}
-
 		return ret;
-	}
-
-	/**
-	 * Consumes a {@link List} of {@link Sense} instances and returns a List of
-	 * all {@link SenseAxis} instances aligning senses from the consumed list.
-	 * In particular, every returned sense axis aligns two senses from the
-	 * consumed list.
-	 *
-	 * @param listSense
-	 *            A list of senses for which the sense alignments should be
-	 *            returned.
-	 *            <br>
-	 *            Note that sense instances contained in the list must not be
-	 *            fully initialized. It sufficient to provide a list of senses
-	 *            where each sense only has its unique identifier set.
-	 *
-	 * @return a list of sense alignments available from the input list.
-	 *         <p>
-	 *         If no sense alignments are available, this method returns an
-	 *         empty list.
-	 *         
-	 * @deprecated use {@link UbyQuickAPI#lightSenseAxes(List)} instead
-	 */
-	@Deprecated
-	public List<SenseAxis> getSensesAxis(List<Sense> listSense) {
-		String list = "";
-		List<SenseAxis> senseAxes = new ArrayList<SenseAxis>();
-
-		for (Sense sense : listSense) {
-			list += "'" + sense.getId() + "',";
-		}
-		if (list.endsWith(",")) {
-			list = list.substring(0, list.length() - 1);
-		}
-		String sql = "Select senseOneId,senseTwoId from SenseAxis where senseOneId in ("
-				+ list + ") and senseTwoId in (" + list + ")";
-
-		Query query = session.createSQLQuery(sql);
-		Iterator<?> iter = query.list().iterator();
-		while (iter.hasNext()) {
-			Object[] rows = (Object[]) iter.next();
-
-			SenseAxis sa = new SenseAxis();
-			Sense sense1 = getSenseFromList(listSense, (String) rows[0]);
-			Sense sense2 = getSenseFromList(listSense, (String) rows[1]);
-			sa.setSenseOne(sense1);
-			sa.setSenseTwo(sense2);
-
-			senseAxes.add(sa);
-		}
-		return senseAxes;
-	}
-
-	/**
-	 * Consumes a {@link List} of unique identifiers of {@link Sense} instances
-	 * and returns a List of all {@link SenseAxis} instances aligning senses
-	 * which identifiers are in the consumed list. In particular, every returned
-	 * sense axis aligns two senses which unique identifiers are in the consumed
-	 * list.
-	 *
-	 * @param listSenseId
-	 *            A list of sense identifiers for which the sense alignments
-	 *            should be returned.
-	 *
-	 * @return a list of sense alignments available from the input list.
-	 *         <p>
-	 *         If no sense alignments are available, this method returns an
-	 *         empty list.
-	 *
-	 * @see #getSensesAxis(List)
-	 * 
-	 * @deprecated {@link UbyQuickAPI#lightSenseAxesBySenseIDs(List)}
-	 */
-	@Deprecated
-	public List<SenseAxis> getSensesAxisbyListSenseId(List<String> listSenseId) {
-		String list = "";
-		List<SenseAxis> senseAxes = new ArrayList<SenseAxis>();
-
-		for (String senseId : listSenseId) {
-			list += "'" + senseId + "',";
-		}
-		if (list.endsWith(",")) {
-			list = list.substring(0, list.length() - 1);
-		}
-		String sql = "Select senseOneId,senseTwoId from SenseAxis where senseOneId in ("
-				+ list + ") and senseTwoId in (" + list + ")";
-
-		Query query = session.createSQLQuery(sql);
-		Iterator<?> iter = query.list().iterator();
-		while (iter.hasNext()) {
-			Object[] rows = (Object[]) iter.next();
-			SenseAxis sa = new SenseAxis();
-			Sense sense1 = new Sense();
-			Sense sense2 = new Sense();
-			sense1.setId((String) rows[0]);
-			sense2.setId((String) rows[1]);
-			sa.setSenseOne(sense1);
-			sa.setSenseTwo(sense2);
-			senseAxes.add(sa);
-		}
-		return senseAxes;
-	}
-
-	/**
-	 * Consumes a {@link List} of {@link Sense} instances and a {@link String}
-	 * representing the unique identifier of a sense. It returns the sense from
-	 * the consumed list which unique identifier is equal to the consumed
-	 * identifier.
-	 *
-	 * @param senses
-	 *            a list of sense to be searched in
-	 *
-	 * @param senseId
-	 *            the unique identifier of the searched sense
-	 *
-	 * @return the sense in the consumed list which unique identifier matches
-	 *         the consumed unique identifier or null if the list does not
-	 *         contain such sense
-	 */
-	protected Sense getSenseFromList(List<Sense> senses, String senseId) {
-		Sense sense = null;
-		for (Sense s : senses) {
-			if (s.getId().equals(senseId)) {
-				sense = s;
-				break;
-			}
-		}
-		return sense;
 	}
 
 	/**
@@ -987,7 +731,7 @@ public class Uby
 	 *         this {@link Uby} instance contains the consumed pattern this
 	 *         method returns an empty list.
 	 */
-	public List<Sense> getListSensesbyIdPattern(String idPattern) {
+	public List<Sense> getSensesbyIdPattern(String idPattern) {
 		Criteria criteria = session.createCriteria(Sense.class);
 		criteria = criteria.add(Restrictions.sqlRestriction("senseId like \"%"
 				+ idPattern + "%\""));
@@ -1008,7 +752,7 @@ public class Uby
 	 * @throws UbyInvalidArgumentException
 	 *             if a sense with this identifier does not exist
 	 */
-	public Sense getSenseByExactId(String senseId)
+	public Sense getSenseById(String senseId)
 			throws UbyInvalidArgumentException {
 		Criteria criteria = session.createCriteria(Sense.class).add(
 				Restrictions.sqlRestriction("senseId = \"" + senseId + "\""));
@@ -1036,7 +780,7 @@ public class Uby
 	 * @throws UbyInvalidArgumentException
 	 *             if a synset with this identifier does not exist
 	 */
-	public Synset getSynsetByExactId(String synsetId) throws UbyInvalidArgumentException{
+	public Synset getSynsetById(String synsetId) throws UbyInvalidArgumentException{
 		Criteria criteria= session.createCriteria(Synset.class).add(Restrictions.sqlRestriction("synsetId = \""+ synsetId+"\""));
 		Synset ret=null;
 		if (criteria.list()!=null && criteria.list().size()>0){
@@ -1047,7 +791,8 @@ public class Uby
 		}
 		return ret;
 	}
-
+	
+	
 	/**
 	 * @deprecated use {@link #wordNetSenses(String, String)} or
 	 * {@link #wordNetSense(String, String)} instead
@@ -1182,6 +927,7 @@ public class Uby
 	 * 
 	 * @since 0.2.0
 	 */
+	@Deprecated
 	public List<Sense> wordNetSenses(String partOfSpeech, String offset) throws UbyInvalidArgumentException {
 		
 		if(partOfSpeech == null) {
@@ -1252,6 +998,7 @@ public class Uby
 	 * 
 	 * @since 0.2.0
 	 */
+	@Deprecated
 	public Sense wordNetSense(String partOfSpeech, String senseKey) throws UbyInvalidArgumentException {
 		
 		if(partOfSpeech == null) {
@@ -1295,6 +1042,8 @@ public class Uby
 		Sense result = (Sense) criteria.uniqueResult();
 		return result;
 	}
+	
+	// OmegaWiki
 
 	/**
 	 * Consumes an identifier of a SynTrans (in OmegaWiki terminology) and
@@ -1317,6 +1066,7 @@ public class Uby
 	 *         {@link Uby} instance does not contain a OmegaWiki {@link Lexicon}.
 	 * 
 	 */
+	@Deprecated
 	public List<Sense> getSensesByOWSynTransId(String synTransId) {
 		Criteria criteria = session.createCriteria(Sense.class);
 		criteria = criteria.add(Restrictions.eq("index",
@@ -1338,7 +1088,7 @@ public class Uby
 	 * if a sense with such identifier does not exist or the sense does not
 	 * have any associated semantic labels
 	 */
-	public List<SemanticLabel> getSemanticLabelbySenseId(String senseId){
+	public List<SemanticLabel> getSemanticLabelsbySenseId(String senseId){
 		Criteria criteria= session.createCriteria(SemanticLabel.class);
 		criteria=criteria.add(Restrictions.sqlRestriction("senseId=\""+ senseId+"\""));
 		@SuppressWarnings("unchecked")
@@ -1375,7 +1125,7 @@ public class Uby
 	 * @param predicateId
 	 * @return semantic predicate
 	 */
-	public SemanticPredicate getSemanticPredicateByExactId(String predicateId){
+	public SemanticPredicate getSemanticPredicateById(String predicateId){
 		Criteria criteria = session.createCriteria(SemanticPredicate.class);
 		criteria=criteria.add(Restrictions.sqlRestriction("semanticPredicateId=\""+predicateId+"\""));
 		return (SemanticPredicate) criteria.uniqueResult();
@@ -1442,7 +1192,7 @@ public class Uby
 	 * If a semantic argument with the specified identifier does not exist, this method
 	 * return null.
 	 */
-	public SemanticArgument getSemanticArgumentByExactId(String argumentId){
+	public SemanticArgument getSemanticArgumentById(String argumentId){
 		Criteria criteria = session.createCriteria(SemanticArgument.class);
 		criteria=criteria.add(Restrictions.sqlRestriction("semanticArgumentId=\""+argumentId+"\""));
 		return (SemanticArgument) criteria.uniqueResult();
@@ -1465,167 +1215,6 @@ public class Uby
         return result;
     }
 
-	/**
-	 * Returns the String describing a specific {@link SubcategorizationFrame} instance which occurs with the
-	 * specified lemma. It omits the field of subcategorization frame which are set to null when creating
-	 * the pretty print.
-	 * 
-	 * @param frame the subcategorization frame to be printed 
-	 * @param yourLemma the {@link String} representation of the lemma which occurs with the consumed {@link SubcategorizationFrame}.
-	 * 
-	 * @return string representing the consumed subcategorization frame with the specified lemma
-	 */
-    public String getSubcatFrameString(SubcategorizationFrame frame, String yourLemma){
-		StringBuilder sbFrame = new StringBuilder();
-		List<String> arguments = new ArrayList<String>();
-		for (int j = 0; j < frame.getSyntacticArguments().size(); j++) {
-			SyntacticArgument arg = frame.getSyntacticArguments().get(j);
-			StringBuilder sbArg = new StringBuilder();
-			sbArg.append(arg.getGrammaticalFunction().toString() +"_" +arg.getSyntacticCategory().toString());
-
-			List<String> additional = new ArrayList<String>();
-			if (arg.getComplementizer() != null){
-				additional.add(arg.getComplementizer().toString());
-			}
-			additional.add("isOptional=" +arg.isOptional());
-
-			if (arg.getDeterminer() != null){
-				additional.add(arg.getDeterminer().toString());
-			}
-			if (arg.getCase() != null){
-				additional.add(arg.getCase().toString());
-			}
-			if (arg.getLexeme() != null){
-				additional.add(arg.getLexeme());
-			}
-			if (arg.getNumber() != null){
-				additional.add(arg.getNumber().toString());
-			}
-			if (arg.getPreposition() != null){
-				additional.add(arg.getPreposition());
-			}
-			if (arg.getPrepositionType() != null){
-				additional.add(arg.getPrepositionType());
-			}
-			if (arg.getTense() != null){
-				additional.add(arg.getTense().toString());
-			}
-			if (arg.getVerbForm() != null){
-				additional.add(arg.getVerbForm().toString());
-			}
-			if (additional.size() > 0) {
-				String additionalAsString = concat(additional,",");
-
-				sbArg.append("(" +additionalAsString +")");
-			}
-
-			if (j == 0) {
-				sbArg.append(" " +yourLemma);
-			}
-			arguments.add(sbArg.toString());
-		}
-		String argumentString = this.concat(arguments," ");
-		sbFrame.append(argumentString);
-		if (frame.getLexemeProperty() != null){
-			sbFrame.append(" - " +frame.getLexemeProperty().getSyntacticProperty().toString());
-		}
-		return sbFrame.toString();
-	}
-
-	/**
-	 * Returns the {@link String} describing a specific {@link SyntacticArgument} instance.
-	 *
-	 * @param arg the syntactic argument for which the string representation should be returned
-	 *
-	 * @return string representation of the consumed syntactic argument
-	 */
-	public String getArgumentString(SyntacticArgument arg){
-			StringBuilder sbArg = new StringBuilder();
-			sbArg.append(arg.getGrammaticalFunction().toString() +"_" +arg.getSyntacticCategory().toString());
-
-			List<String> additional = new ArrayList<String>();
-			if (arg.getComplementizer() != null){
-				additional.add(arg.getComplementizer().toString());
-			}
-
-			additional.add("isOptional=" +arg.isOptional());
-
-
-			if (arg.getDeterminer() != null){
-				additional.add(arg.getDeterminer().toString());
-			}
-			if (arg.getCase() != null){
-				additional.add(arg.getCase().toString());
-			}
-			if (arg.getLexeme() != null){
-				additional.add(arg.getLexeme());
-			}
-			if (arg.getNumber() != null){
-				additional.add(arg.getNumber().toString());
-			}
-			if (arg.getPreposition() != null){
-				additional.add(arg.getPreposition());
-			}
-			if (arg.getPrepositionType() != null){
-				additional.add(arg.getPrepositionType());
-			}
-			if (arg.getTense() != null){
-				additional.add(arg.getTense().toString());
-			}
-			if (arg.getVerbForm() != null){
-				additional.add(arg.getVerbForm().toString());
-			}
-			if (additional.size() > 0) {
-				String additionalAsString = concat(additional,",");
-
-				sbArg.append("(" +additionalAsString +")");
-			}
-
-		return sbArg.toString();
-	}
-
-	/**
-	 * Utility method for transforming a {@link List} of {@link String} instances into a
-	 * String with delimiters.
-	 *
-	 * @param list the list of strings
-	 * @param delimiter the delimiter to be used
-	 * @return string containing the concatenated list
-	 * @deprecated marked for deletion
-	 */
-	@Deprecated
-	public String join(List<String> list, String delimiter){
-		if (list == null || list.isEmpty()) {
-			return "";
-		}
-		Iterator<String> iter = list.iterator();
-		StringBuilder builder = new StringBuilder(iter.next());
-		while( iter.hasNext() ) {
-		  builder.append(delimiter).append(iter.next());
-		}
-		return builder.toString();
-	}
-
-	/**
-	 * Utility method for transforming a {@link List} of {@link String} instances into a
-	 * String with delimiters.
-	 *
-	 * @param list the list of strings
-	 * @param delimiter the delimiter to be used
-	 * @return string containing the concatenated list
-	 */
-	private String concat(List<String> list, String delimiter){
-		if (list == null || list.isEmpty()) {
-			return "";
-		}
-		Iterator<String> iter = list.iterator();
-		StringBuilder builder = new StringBuilder(iter.next());
-		while( iter.hasNext() ) {
-		  builder.append(delimiter).append(iter.next());
-		}
-		return builder.toString();
-	}
-	
 	@Override
     protected void finalize()
 		throws Throwable
