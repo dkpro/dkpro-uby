@@ -352,7 +352,7 @@ class SenseGenerator {
 			}
 
 			// setting index of the Sense (lexeme's SynTrans ID)
-			sense.setIndex(lexeme.getSyntransid());
+			//	sense.setIndex(lexeme.getSyntransid());
 
 			DefinedMeaning lexemesSynset = lexeme.getDefinedMeaning(); // Lexeme's DM
 
