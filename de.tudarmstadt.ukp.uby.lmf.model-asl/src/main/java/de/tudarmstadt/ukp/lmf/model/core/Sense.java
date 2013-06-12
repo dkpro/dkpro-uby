@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.abstracts.HasMonolingualExternalRefs;
+import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.enums.EYesNo;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasDefinitions;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasFrequencies;
@@ -110,22 +111,22 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 	// Backlink to LexicalEntry added for convenience
 	@VarType(type = EVarType.IDREF)
 	private LexicalEntry lexicalEntry;
-	
+
 	/**
 	 * Constructs an empty {@link Sense} instance.
-	 * 
+	 *
 	 * @since UBY 0.2.0
 	 */
 	public Sense(){
 		// nothing to do
 	}
-	
+
 	/**
 	 * Constructs a {@link Sense} instance with the specified
 	 * unique identifier.
-	 * 
+	 *
 	 * @param id the unique identifier of the sense to be created
-	 * 
+	 *
 	 * @since UBY 0.2.0
 	 */
 	public Sense(String id){
@@ -211,7 +212,7 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 	public void setTransparentMeaning(EYesNo transparentMeaning) {
 		this.transparentMeaning = transparentMeaning;
 	}
-	
+
 	/**
 	 * Sets the transparent meaning flag to this {@link Sense} instance.<p>
 	 * Explanation:<br>
@@ -220,23 +221,27 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 	 * @param flag set it to true to indicate that the sense has a transparent meaning, or to false otherwise
 	 */
 	public void setTransparentMeaning(boolean flag){
-		if(flag)
+		if(flag) {
 			this.transparentMeaning = EYesNo.yes;
-		else
+		}
+		else {
 			this.transparentMeaning = EYesNo.no;
-				
+		}
+
 	}
 
 	/**
 	 * Returns true if this {@link Sense} instance has a transparent meaning, false otherwise.
 	 * @return true if the sense has a transparent meaning, false otherwise
-	 * 
+	 *
 	 */
 	public boolean isTransparentMeaning() {
-		if(transparentMeaning != null)
+		if(transparentMeaning != null) {
 			return (transparentMeaning.equals(EYesNo.yes)? true : false);
-		else
+		}
+		else {
 			return false;
+		}
 	}
 
 	/**
@@ -271,7 +276,7 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 	}
 
 	/**
-	 * Associates a {@link List} of {@link Context} instances to this {@link Sense} instance. 
+	 * Associates a {@link List} of {@link Context} instances to this {@link Sense} instance.
 	 * @param contexts the list of contexts to set
 	 */
 	public void setContexts(List<Context> contexts) {
@@ -299,7 +304,7 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 
 	/**
 	 * Returns the {@link List} of all {@link SenseExample} instances illustrating
-	 * the particular meaning of this {@link Sense} instance. 
+	 * the particular meaning of this {@link Sense} instance.
 	 * @return the list of all examples of this sense or an empty list, if the sense does not have
 	 * any examples set
 	 */
@@ -337,7 +342,7 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 	 * Returns the {@link List} of all {@link SenseRelation} instances in which
 	 * this {@link Sense} instance is the source.
 	 * @return th elist of all sense relations in which this sense is the source or
-	 * an empty list, if this sense does not have any sense relations set 
+	 * an empty list, if this sense does not have any sense relations set
 	 */
 	public List<SenseRelation> getSenseRelations() {
 		return senseRelations;
@@ -345,7 +350,7 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 
 	/**
 	 * Sets the {@link List} of all {@link SenseRelation} instances to this
-	 * {@link Sense} in which the Sense is the source of the relation. 
+	 * {@link Sense} in which the Sense is the source of the relation.
 	 * @param senseRelations the list of sense relations to set
 	 */
 	public void setSenseRelations(List<SenseRelation> senseRelations) {
@@ -353,7 +358,7 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 	}
 
 	/**
-	 * Returns the {@link List} of all {@link Equivalent} instances of this 
+	 * Returns the {@link List} of all {@link Equivalent} instances of this
 	 * {@link Sense}. That is, the translation of the this sense.
 	 * @return the list of all equivalents; might be empty, but never null.
 	 */
@@ -362,20 +367,38 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 	}
 
 	/**
+	 * Returns the {@link List} of all {@link Equivalent} instances of this
+	 * {@link Sense} in the specified language. That is, the translation of the this sense into a language
+	 * specified by a language code, usually defined by a constant in {@link ELanguageIdentifier}.
+	 * @return the list of all equivalents in this language; might be empty, but never null.
+	 */
+	public List<Equivalent> getEquivalentsByLanguage(String language) {
+		List<Equivalent> language_equivalents = new ArrayList<Equivalent>();
+		for(Equivalent eq : equivalents)
+		{
+			if(eq.getLanguageIdentifier().equals(language))
+			{
+				language_equivalents.add(eq);
+			}
+		}
+		return language_equivalents;
+	}
+	/**
 	 * Sets the {@link List} of all {@link Equivalent} instances to this
-	 * {@link Sense}. 
+	 * {@link Sense}.
 	 * @param equivalents the list of equivalents to set
 	 */
 	public void setEquivalents(List<Equivalent> equivalents) {
 		this.equivalents = equivalents;
 	}
-	
+
 	/**
 	 * Returns the {@link List} of all {@link MonolingualExternalRef} instances which
 	 * link this {@link Sense} to an external system.
 	 * @return the list of all monolingual external references of this sense or an empty
 	 * list if the sense does not have any monolingual external references set
 	 */
+	@Override
 	public List<MonolingualExternalRef> getMonolingualExternalRefs() {
 		return monolingualExternalRefs;
 	}
@@ -385,6 +408,7 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 	 * {@link Sense}.
 	 * @param monolingualExternalRefs the monolingual external references to set
 	 */
+	@Override
 	public void setMonolingualExternalRefs(List<MonolingualExternalRef> monolingualExternalRefs) {
 		this.monolingualExternalRefs = monolingualExternalRefs;
 	}
@@ -411,22 +435,23 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 	 * Returns the definition text of this {@link Sense} instance.<br>
 	 * Definition text is extracted from the first {@link Definition} instance
 	 * of this Sense.
-	 * 
+	 *
 	 * @return definition text of this sense or null
 	 * if the sense does not have any definitions attached or the first
 	 * attached definition does not contain any text representations
-	 * 
+	 *
 	 * @see TextRepresentation
-	 * 
+	 *
 	 */
 	public String getDefinitionText(){
-		
+
 		if(!definitions.isEmpty()){
 			List<TextRepresentation> textRepresentations = definitions.get(0).getTextRepresentations();
-			if(!textRepresentations.isEmpty())
+			if(!textRepresentations.isEmpty()) {
 				return textRepresentations.get(0).getWrittenText();
+			}
 		}
-		
+
 		return null;
 	}
 
@@ -467,18 +492,19 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 	public List<SemanticLabel> getSemanticLabels() {
 		return semanticLabels;
 	}
-	
+
 	/**
 	 * Attaches a {@link SemanticLabel} instance to this {@link Sense} instance.
-	 * 
+	 *
 	 * @param semanticLabel the semantic label to attach to this sense
-	 * 
+	 *
 	 * @return true if semanticLabel is not already attached to this sense, false if not or semanticLabel
 	 * is null
 	 */
 	public boolean addSemanticLabel(SemanticLabel semanticLabel){
-		if(semanticLabel == null || this.semanticLabels.contains(semanticLabel))
+		if(semanticLabel == null || this.semanticLabels.contains(semanticLabel)) {
 			return false;
+		}
 		else{
 			this.semanticLabels.add(semanticLabel);
 			return true;
