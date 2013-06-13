@@ -39,6 +39,7 @@ import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.ConstraintSet;
 import de.tudarmstadt.ukp.lmf.model.morphology.FormRepresentation;
 import de.tudarmstadt.ukp.lmf.model.morphology.Lemma;
+import de.tudarmstadt.ukp.lmf.model.mrd.Equivalent;
 import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis;
 import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
@@ -49,20 +50,23 @@ import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrame;
 import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrameSet;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 import de.tudarmstadt.ukp.lmf.transform.LMFDBTransformer;
+import de.tudarmstadt.ukp.lmf.transform.StringUtils;
 import de.tudarmstadt.ukp.wikipedia.api.Category;
 import de.tudarmstadt.ukp.wikipedia.api.Page;
 import de.tudarmstadt.ukp.wikipedia.api.PageIterator;
 import de.tudarmstadt.ukp.wikipedia.api.Wikipedia;
 import de.tudarmstadt.ukp.wikipedia.api.exception.WikiApiException;
+import de.tudarmstadt.ukp.wikipedia.parser.Link;
 import de.tudarmstadt.ukp.wikipedia.parser.ParsedPage;
 import de.tudarmstadt.ukp.wikipedia.parser.mediawiki.FlushTemplates;
 import de.tudarmstadt.ukp.wikipedia.parser.mediawiki.MediaWikiParser;
 import de.tudarmstadt.ukp.wikipedia.parser.mediawiki.MediaWikiParserFactory;
 
 /**
- * Converts Wikipedia to the LMF model and saves it to the database
+ * Converts Wikipedia to the LMF model and saves it to the database. Creation of Equivalents is optional, as it requires considerably more time.
  * @author Yevgen Chebotar
  * @author Christian M. Meyer
+ * @param createEquivalents Decides if TranslationEquivalents are created or not
 */
 public abstract class WikipediaLMFTransformer extends LMFDBTransformer {
 
@@ -72,6 +76,7 @@ public abstract class WikipediaLMFTransformer extends LMFDBTransformer {
 	protected final Set<Integer> categoryBlackList; // List of categories that should not be saved as SubjectFields
 	protected final MediaWikiParser mediaWikiParser; // Parser needed for parsing of Wikipedia pages
 	protected final String dtd_version;
+	protected final boolean createEquivalents; //Decision if Translation Equivalents should be generated. This takes a lot more time!!
 
 	/**
 	 * @param dbConfig
@@ -79,12 +84,13 @@ public abstract class WikipediaLMFTransformer extends LMFDBTransformer {
 	 * @throws WikiApiException
 	 * @throws FileNotFoundException
 	 */
-	public WikipediaLMFTransformer(DBConfig dbConfig, Wikipedia wiki, String dtd) throws WikiApiException, FileNotFoundException {
+	public WikipediaLMFTransformer(DBConfig dbConfig, Wikipedia wiki, String dtd, boolean createEquivalents) throws WikiApiException, FileNotFoundException {
 		super(dbConfig);
 		this.wiki = wiki;
 		this.pageIterator = new PageIterator(wiki, true, 7000);
 		this.categoryBlackList = wiki.getCategory(getHiddenCategoryName()).getChildrenIDs();
 		this.currentEntryNr = 0;
+		this.createEquivalents = createEquivalents;
 		MediaWikiParserFactory pf = new MediaWikiParserFactory();		// Parse with MediaWikiParser
 		pf.setCalculateSrcSpans(false);
 		pf.setTemplateParserClass(FlushTemplates.class);
@@ -177,8 +183,38 @@ public abstract class WikipediaLMFTransformer extends LMFDBTransformer {
 
 				sense.setDefinitions(new ArrayList<Definition>());
 				String pageText = page.getText(); // Parse the page, take only first 10000 characters to improve performance
-				ParsedPage ppage = mediaWikiParser.parse(pageText.substring(0, Math.min(10000, pageText.length())));
+				ParsedPage ppage;
+				if(!createEquivalents)
+				{
+					ppage = mediaWikiParser.parse(pageText.substring(0, Math.min(10000, pageText.length())));
+				}
+				else
+				{
+					ppage = mediaWikiParser.parse(pageText);
+					if (ppage.getLanguagesElement()!=null)
+					{
+						List<Equivalent> equivalents = new ArrayList<Equivalent>();
+						List<Link> languageLinks = ppage.getLanguages();
+						for(Link link : languageLinks)
+						{
+						String languageCode = link.getTarget().split(":")[0];
+						String targetForm = convert(link.getTarget().split(":")[1], 255);
+						if (targetForm == null || targetForm.isEmpty()) {
+							continue; // Do not save empty translations.
+						}
+						ILanguage language = WikipediaLanguageMapper.findByCode(languageCode);
+						if (language == null) {
+							continue; // Do not save translations to unknown languages.
+						}
+						Equivalent equivalent = new Equivalent();
+						equivalent.setWrittenForm(targetForm);
+						equivalent.setLanguageIdentifier(language.getISO639_3());
 
+						equivalents.add(equivalent);
+					}
+					sense.setEquivalents(equivalents);
+				}
+				}
 				if(ppage.getFirstParagraph() == null) {
 					continue;
 				}
@@ -241,10 +277,19 @@ public abstract class WikipediaLMFTransformer extends LMFDBTransformer {
 		return null;
 	}
 
+	private static String convert(final String text, int maxLength) {
+		String returnString =StringUtils.replaceNonUtf8(StringUtils.replaceHtmlEntities(text), maxLength);
+		returnString = returnString.split("_\\(")[0].replace("_", " ");
+		return returnString;
+	}
+
 	protected abstract boolean isDiscussionPage(final String pageTitle);
+
+
 
 	@Override
 	protected void finish() {}
+
 
 	@Override
 	protected ConstraintSet getNextConstraintSet() {return null;}
