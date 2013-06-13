@@ -22,21 +22,21 @@ import java.io.FileNotFoundException;
 import de.tudarmstadt.ukp.lmf.model.core.GlobalInformation;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
-import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 import de.tudarmstadt.ukp.wikipedia.api.Wikipedia;
 import de.tudarmstadt.ukp.wikipedia.api.exception.WikiApiException;
 
 /**
- * Converts the German Wikipedia edition to LMF.
+ * Converts the German Wikipedia edition to LMF. Creation of Equivalents is optional, as it requires considerably more time
  * @author Yevgen Chebotar
  * @author Christian M. Meyer
+ * @param createEquivalents Decides if TranslationEquivalents are created or not
 */
 public class WikipediaDETransformer extends WikipediaLMFTransformer {
 
 	public WikipediaDETransformer(final DBConfig dbConfig,
-			final Wikipedia wiki, final String dtd) throws WikiApiException, FileNotFoundException {
-		super(dbConfig, wiki, dtd);
+			final Wikipedia wiki, final String dtd,boolean createEquivalents) throws WikiApiException, FileNotFoundException {
+		super(dbConfig, wiki, dtd,createEquivalents);
 	}
 
 	@Override
