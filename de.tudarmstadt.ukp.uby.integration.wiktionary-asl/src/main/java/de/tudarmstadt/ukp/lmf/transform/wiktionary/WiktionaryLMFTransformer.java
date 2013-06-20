@@ -198,10 +198,13 @@ public abstract class WiktionaryLMFTransformer extends LMFDBTransformer {
 				if (text == null || "".equals(text)
 						|| "...".equals(text) || "…".equals(text))
 					continue;
-					
+				
+				String writtenForm = null; //TODO: merge with inflection table result!
+				if (pronunciation.getNote() == null || pronunciation.getNote().isEmpty())
+					writtenForm = wktEntry.getWord();
 				WordForm wordForm = new WordForm();
 				List<FormRepresentation> formRep = createFormRepresentationList(
-						wktEntry.getWord(), wktEntry.getWordLanguage()); //TODO: merge with inflection table result!
+						writtenForm, wktEntry.getWordLanguage());
 				formRep.get(0).setPhoneticForm(pronunciation.getText());
 				wordForm.setFormRepresentations(formRep);
 				if ("Pl.".equals(pronunciation.getNote())
