@@ -39,7 +39,6 @@ import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
-import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
 import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis;
@@ -423,7 +422,7 @@ public class Uby
 	public LexicalEntry getLexicalEntryById(String lexicalEntryId)
 			throws UbyInvalidArgumentException {
 		Criteria criteria = session.createCriteria(LexicalEntry.class).add(
-				Restrictions.sqlRestriction("lexicalEntryId = \"" + lexicalEntryId + "\""));
+				Restrictions.sqlRestriction("lexicalEntryId = '" + lexicalEntryId + "'"));
 		LexicalEntry ret = null;
 		if (criteria.list() != null && criteria.list().size() > 0) {
 			ret = (LexicalEntry) criteria.list().get(0);
@@ -469,7 +468,7 @@ public class Uby
 		criteria = criteria.createCriteria("lemma")
 			.createCriteria("formRepresentations")
 			.add(Restrictions.or(
-					Restrictions.sqlRestriction("writtenForm like '" +lemma +" %'"),
+					Restrictions.sqlRestriction("writtenForm like '" +lemma +"%'"),
 					Restrictions.eq( "writtenForm", lemma )
 			));
 		
@@ -514,7 +513,9 @@ public class Uby
 	 * @see Lexicon#getLanguageIdentifier()
 	 *
 	 */
-	public List<Lexicon> getLexiconsByLanguage(ELanguageIdentifier lang)
+	
+	//TODO LanguageIdentifier is now a String
+	public List<Lexicon> getLexiconsByLanguage(String lang)
 	{
 
 		Criteria criteria = session.createCriteria(Lexicon.class);
@@ -598,7 +599,7 @@ public class Uby
 
 		criteria = criteria.createCriteria("monolingualExternalRefs").add(
 				Restrictions.sqlRestriction("externalSystem like '%"
-						+ externalSys + "%' and externalReference =\""+ externalRef + "\""));
+						+ externalSys + "%' and externalReference ='"+ externalRef + "'"));
 
 		@SuppressWarnings("unchecked")
 		List<Sense> result = criteria.list();
@@ -643,7 +644,7 @@ public class Uby
 	 */
 	public List<SenseAxis> getSenseAxesByIdPattern(String senseAxisId){
 		Criteria criteria= session.createCriteria(SenseAxis.class);
-		criteria=criteria.add(Restrictions.sqlRestriction("senseAxisId like \"%"+ senseAxisId+"%\""));
+		criteria=criteria.add(Restrictions.sqlRestriction("senseAxisId like '%"+ senseAxisId+"%'"));
 
 		@SuppressWarnings("unchecked")
 		List<SenseAxis> result =  criteria.list();
@@ -665,7 +666,7 @@ public class Uby
 	public List<SenseAxis> getSenseAxesBySense(Sense sense){
 		if (sense!=null && sense.getId()!=null && !sense.getId().equals("")){
 			Criteria criteria=session.createCriteria(SenseAxis.class);
-			criteria=criteria.add(Restrictions.sqlRestriction("senseOneId=\""+sense.getId()+"\" or senseTwoId=\""+sense.getId()+"\""));
+			criteria=criteria.add(Restrictions.sqlRestriction("senseOneId='"+sense.getId()+"' or senseTwoId='"+sense.getId()+"'"));
 			@SuppressWarnings("unchecked")
 			List<SenseAxis> result =  criteria.list();
 			return result;
@@ -696,7 +697,7 @@ public class Uby
 	 * @see SenseAxis#getSenseOne()
 	 * @see SenseAxis#getSenseTwo()
 	 */
-	public boolean areSensesAxes(Sense sense1, Sense sense2) {
+	public boolean hasSensesAxis(Sense sense1, Sense sense2) {
 		boolean ret = false;
 		if (sense1 != null && sense2 != null && sense1.getId() != null
 				&& sense1.getId().length() > 0 && sense2.getId() != null
@@ -733,8 +734,8 @@ public class Uby
 	 */
 	public List<Sense> getSensesbyIdPattern(String idPattern) {
 		Criteria criteria = session.createCriteria(Sense.class);
-		criteria = criteria.add(Restrictions.sqlRestriction("senseId like \"%"
-				+ idPattern + "%\""));
+		criteria = criteria.add(Restrictions.sqlRestriction("senseId like '%"
+				+ idPattern + "%'"));
 		@SuppressWarnings("unchecked")
 		List<Sense> result = criteria.list();
 		return result;
@@ -755,7 +756,7 @@ public class Uby
 	public Sense getSenseById(String senseId)
 			throws UbyInvalidArgumentException {
 		Criteria criteria = session.createCriteria(Sense.class).add(
-				Restrictions.sqlRestriction("senseId = \"" + senseId + "\""));
+				Restrictions.sqlRestriction("senseId = '" + senseId + "'"));
 		Sense ret = null;
 		if (criteria.list() != null && criteria.list().size() > 0) {
 			ret = (Sense) criteria.list().get(0);
@@ -781,7 +782,7 @@ public class Uby
 	 *             if a synset with this identifier does not exist
 	 */
 	public Synset getSynsetById(String synsetId) throws UbyInvalidArgumentException{
-		Criteria criteria= session.createCriteria(Synset.class).add(Restrictions.sqlRestriction("synsetId = \""+ synsetId+"\""));
+		Criteria criteria= session.createCriteria(Synset.class).add(Restrictions.sqlRestriction("synsetId = '"+ synsetId+"'"));
 		Synset ret=null;
 		if (criteria.list()!=null && criteria.list().size()>0){
 			ret=(Synset)criteria.list().get(0);
@@ -1090,7 +1091,7 @@ public class Uby
 	 */
 	public List<SemanticLabel> getSemanticLabelsbySenseId(String senseId){
 		Criteria criteria= session.createCriteria(SemanticLabel.class);
-		criteria=criteria.add(Restrictions.sqlRestriction("senseId=\""+ senseId+"\""));
+		criteria=criteria.add(Restrictions.sqlRestriction("senseId='"+ senseId+"'"));
 		@SuppressWarnings("unchecked")
 		List<SemanticLabel> result = criteria.list();
 		return result;
@@ -1112,9 +1113,9 @@ public class Uby
 	 * type or an empty list if the database accessed by this {@link Uby} instance
 	 * does not contain any semantic labels matching the criteria
 	 */
-	public List<SemanticLabel> getSemanticLabelbySenseIdbyType(String senseId, String type){
+	public List<SemanticLabel> getSemanticLabelsbySenseIdbyType(String senseId, String type){
 		Criteria criteria= session.createCriteria(SemanticLabel.class);
-		criteria=criteria.add(Restrictions.sqlRestriction("senseId=\""+ senseId +"\" and type =\""+type+"\""));
+		criteria=criteria.add(Restrictions.sqlRestriction("senseId='"+ senseId +"' and type ='"+type+"'"));
 		@SuppressWarnings("unchecked")
 		List<SemanticLabel> result = criteria.list();
 		return result;
@@ -1127,7 +1128,7 @@ public class Uby
 	 */
 	public SemanticPredicate getSemanticPredicateById(String predicateId){
 		Criteria criteria = session.createCriteria(SemanticPredicate.class);
-		criteria=criteria.add(Restrictions.sqlRestriction("semanticPredicateId=\""+predicateId+"\""));
+		criteria=criteria.add(Restrictions.sqlRestriction("semanticPredicateId='"+predicateId+"'"));
 		return (SemanticPredicate) criteria.uniqueResult();
 
 	}
@@ -1148,8 +1149,8 @@ public class Uby
 		Criteria criteria = session.createCriteria(SemanticPredicate.class);
 		if (lexicon != null) {
 			String lexId = lexicon.getId();
-			criteria = criteria.add(Restrictions.sqlRestriction("lexiconId=\""
-					+ lexId + "\""));
+			criteria = criteria.add(Restrictions.sqlRestriction("lexiconId='"
+					+ lexId + "'"));
 		}
 		@SuppressWarnings("unchecked")
 		List<SemanticPredicate> result = criteria.list();
@@ -1174,8 +1175,8 @@ public class Uby
 		DetachedCriteria criteria = DetachedCriteria.forClass(SemanticPredicate.class);
 		if (lexicon != null) {
 			String lexId = lexicon.getId();
-			criteria = criteria.add(Restrictions.sqlRestriction("lexiconId=\""
-					+ lexId + "\""));
+			criteria = criteria.add(Restrictions.sqlRestriction("lexiconId='"
+					+ lexId + "'"));
 		}
 		CriteriaIterator<SemanticPredicate> predicateIterator = new CriteriaIterator<SemanticPredicate>(
 				criteria, sessionFactory, 500);
@@ -1194,7 +1195,7 @@ public class Uby
 	 */
 	public SemanticArgument getSemanticArgumentById(String argumentId){
 		Criteria criteria = session.createCriteria(SemanticArgument.class);
-		criteria=criteria.add(Restrictions.sqlRestriction("semanticArgumentId=\""+argumentId+"\""));
+		criteria=criteria.add(Restrictions.sqlRestriction("semanticArgumentId='"+argumentId+"'"));
 		return (SemanticArgument) criteria.uniqueResult();
 	}
 
