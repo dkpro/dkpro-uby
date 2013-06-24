@@ -429,7 +429,7 @@
         </SemanticPredicate>
     </Lexicon>
 
-    <Lexicon languageIdentifier="en" id="VN_Lexicon_0" name="VerbNet">
+    <Lexicon languageIdentifier="eng" id="VN_Lexicon_0" name="VerbNet">
 
         <LexicalEntry id="VN_LexicalEntry_314" partOfSpeech="verb">
             <Lemma>
@@ -620,19 +620,19 @@
     </Lexicon>
 
 
-    <Lexicon languageIdentifier="en" id="WN_Lexicon_0" name="WordNet">
+    <Lexicon languageIdentifier="eng" id="WN_Lexicon_0" name="WordNet">
         <LexicalEntry id="WN_LexicalEntry_8251" partOfSpeech="verb">
             <Lemma>
-                <FormRepresentation languageIdentifier="en" writtenForm="question"/>
+                <FormRepresentation languageIdentifier="eng" writtenForm="question"/>
             </Lemma>
             <RelatedForm targetLexicalEntry="WN_LexicalEntry_31301" relType="derivative" targetSense="WN_Sense_6">
-                <FormRepresentation languageIdentifier="en" writtenForm="question"/>
+                <FormRepresentation languageIdentifier="eng" writtenForm="question"/>
             </RelatedForm>
             <RelatedForm targetLexicalEntry="WN_LexicalEntry_31301" relType="derivative" targetSense="WN_Sense_7">
-                <FormRepresentation languageIdentifier="en" writtenForm="question"/>
+                <FormRepresentation languageIdentifier="eng" writtenForm="question"/>
             </RelatedForm>
             <RelatedForm targetLexicalEntry="WN_LexicalEntry_31301" relType="derivative" targetSense="WN_Sense_8">
-                <FormRepresentation languageIdentifier="en" writtenForm="question"/>
+                <FormRepresentation languageIdentifier="eng" writtenForm="question"/>
             </RelatedForm>
             <Sense id="WN_Sense_1" index="0" synset="WN_Synset_86301">
                 <MonolingualExternalRef externalSystem="WordNet 3.0 part of speech and sense key" externalReference="[POS: verb] question%2:32:01::"/>
@@ -649,16 +649,16 @@
         </LexicalEntry>
         <LexicalEntry id="WN_LexicalEntry_31301" partOfSpeech="noun">
             <Lemma>
-                <FormRepresentation languageIdentifier="en" writtenForm="question"/>
+                <FormRepresentation languageIdentifier="eng" writtenForm="question"/>
             </Lemma>
             <RelatedForm targetLexicalEntry="WN_LexicalEntry_8251" relType="derivative" targetSense="WN_Sense_1">
-                <FormRepresentation languageIdentifier="en" writtenForm="question"/>
+                <FormRepresentation languageIdentifier="eng" writtenForm="question"/>
             </RelatedForm>
             <RelatedForm targetLexicalEntry="WN_LexicalEntry_8251" relType="derivative" targetSense="WN_Sense_3">
-                <FormRepresentation languageIdentifier="en" writtenForm="question"/>
+                <FormRepresentation languageIdentifier="eng" writtenForm="question"/>
             </RelatedForm>
             <RelatedForm targetLexicalEntry="WN_LexicalEntry_8251" relType="derivative" targetSense="WN_Sense_2">
-                <FormRepresentation languageIdentifier="en" writtenForm="question"/>
+                <FormRepresentation languageIdentifier="eng" writtenForm="question"/>
             </RelatedForm>
             <Sense id="WN_Sense_6" index="0" synset="WN_Synset_26478">
                 <MonolingualExternalRef externalSystem="WordNet 3.0 part of speech and sense key" externalReference="[POS: noun] question%1:07:00::"/>
@@ -666,7 +666,7 @@
             </Sense>
             <Sense id="WN_Sense_8" index="1" synset="WN_Synset_38915">
                 <SenseRelation target="WN_Sense_151518" relType="complementary" relName="antonym">
-                    <FormRepresentation languageIdentifier="en" writtenForm="answer"/>
+                    <FormRepresentation languageIdentifier="eng" writtenForm="answer"/>
                 </SenseRelation>
                 <MonolingualExternalRef externalSystem="WordNet 3.0 part of speech and sense key" externalReference="[POS: noun] question%1:10:00::"/>
                 <SemanticLabel label="noun.communication" type="semanticField"/>
@@ -678,11 +678,11 @@
         </LexicalEntry>
         <LexicalEntry id="WN_LexicalEntry_114653" partOfSpeech="noun">
             <Lemma>
-                <FormRepresentation languageIdentifier="en" writtenForm="answer"/>
+                <FormRepresentation languageIdentifier="eng" writtenForm="answer"/>
             </Lemma>
             <Sense id="WN_Sense_151518" index="0" synset="WN_Synset_38949">
                 <SenseRelation target="WN_Sense_8" relType="complementary" relName="antonym">
-                    <FormRepresentation languageIdentifier="en" writtenForm="question"/>
+                    <FormRepresentation languageIdentifier="eng" writtenForm="question"/>
                 </SenseRelation>
                 <MonolingualExternalRef externalSystem="WordNet 3.0 part of speech and sense key" externalReference="[POS: noun] answer%1:10:00::"/>
                 <SemanticLabel label="noun.communication" type="semanticField"/>
@@ -690,72 +690,72 @@
         </LexicalEntry>
         <Synset id="WN_Synset_86301">
             <Definition>
-                <TextRepresentation languageIdentifier="en" writtenText="challenge the accuracy, probity, or propriety of; &quot;We must question your judgment in this matter&quot;"/>
+                <TextRepresentation languageIdentifier="eng" writtenText="challenge the accuracy, probity, or propriety of; &quot;We must question your judgment in this matter&quot;"/>
             </Definition>
             <MonolingualExternalRef externalSystem="WordNet 3.0 part of speech and synset offset" externalReference="[POS: verb] 867409"/>
         </Synset>
         <Synset id="WN_Synset_85960">
             <Definition>
-                <TextRepresentation languageIdentifier="en" writtenText="pose a series of questions to; &quot;The suspect was questioned by the police&quot;; &quot;We questioned the survivor about the details of the explosion&quot;"/>
+                <TextRepresentation languageIdentifier="eng" writtenText="pose a series of questions to; &quot;The suspect was questioned by the police&quot;; &quot;We questioned the survivor about the details of the explosion&quot;"/>
             </Definition>
             <MonolingualExternalRef externalSystem="WordNet 3.0 part of speech and synset offset" externalReference="[POS: verb] 788184"/>
         </Synset>
         <Synset id="WN_Synset_85947">
             <Definition>
-                <TextRepresentation languageIdentifier="en" writtenText="pose a question"/>
+                <TextRepresentation languageIdentifier="eng" writtenText="pose a question"/>
             </Definition>
             <MonolingualExternalRef externalSystem="WordNet 3.0 part of speech and synset offset" externalReference="[POS: verb] 785008"/>
         </Synset>
         <Synset id="WN_Synset_26478">
             <Definition>
-                <TextRepresentation languageIdentifier="en" writtenText="uncertainty about the truth or factuality or existence of something; &quot;the dubiousness of his claim&quot;; &quot;there is no question about the validity of the enterprise&quot;"/>
+                <TextRepresentation languageIdentifier="eng" writtenText="uncertainty about the truth or factuality or existence of something; &quot;the dubiousness of his claim&quot;; &quot;there is no question about the validity of the enterprise&quot;"/>
             </Definition>
             <MonolingualExternalRef externalSystem="WordNet 3.0 part of speech and synset offset" externalReference="[POS: noun] 4757522"/>
         </Synset>
         <Synset id="WN_Synset_38915">
             <Definition>
-                <TextRepresentation languageIdentifier="en" writtenText="an instance of questioning; &quot;there was a question about my training&quot;; &quot;we made inquiries of all those who were present&quot;"/>
+                <TextRepresentation languageIdentifier="eng" writtenText="an instance of questioning; &quot;there was a question about my training&quot;; &quot;we made inquiries of all those who were present&quot;"/>
             </Definition>
             <SynsetRelation target="WN_Synset_38930" relType="association" relName="related"/>
             <MonolingualExternalRef externalSystem="WordNet 3.0 part of speech and synset offset" externalReference="[POS: noun] 7193596"/>
         </Synset>
         <Synset id="WN_Synset_38930">
             <Definition>
-                <TextRepresentation languageIdentifier="en" writtenText="a sentence of inquiry that asks for a reply; &quot;he asked a direct question&quot;; &quot;he had trouble phrasing his interrogations&quot;"/>
+                <TextRepresentation languageIdentifier="eng" writtenText="a sentence of inquiry that asks for a reply; &quot;he asked a direct question&quot;; &quot;he had trouble phrasing his interrogations&quot;"/>
             </Definition>
 	    <SynsetRelation target="WN_Synset_38915" relType="association" relName="related"/>
             <MonolingualExternalRef externalSystem="WordNet 3.0 part of speech and synset offset" externalReference="[POS: noun] 7196682"/>
         </Synset>
     </Lexicon>
-    <Lexicon languageIdentifier="en" id="WktEn_Lexicon_1" name="Wiktionary">
+    <Lexicon languageIdentifier="eng" id="WktEn_Lexicon_1" name="Wiktionary">
         <LexicalEntry id="WktEn_lexicalEntry_18566" partOfSpeech="verb">
             <Lemma>
-                <FormRepresentation languageIdentifier="en" writtenForm="question"/>
+                <FormRepresentation languageIdentifier="eng" writtenForm="question"/>
             </Lemma>
             <Sense id="WktEn_sense_1" index="0">
                 <Definition definitionType="intensionalDefinition">
-                    <TextRepresentation languageIdentifier="en" writtenText="To ask questions of; interrogate; enquire; ask for information."/>
+                    <TextRepresentation languageIdentifier="eng" writtenText="To ask questions of; interrogate; enquire; ask for information."/>
                 </Definition>
                 <Equivalent languageIdentifier="nl" writtenForm="ondervragen"/>
                 <MonolingualExternalRef externalSystem="Wiktionary sense key" externalReference="49890:1:1"/>
             </Sense>
             <Sense id="WktEn_sense_2" index="1">
                 <Definition definitionType="intensionalDefinition">
-                    <TextRepresentation languageIdentifier="en" writtenText="To raise doubts about; have doubts about."/>
+                    <TextRepresentation languageIdentifier="eng" writtenText="To raise doubts about; have doubts about."/>
                 </Definition>
                 <MonolingualExternalRef externalSystem="Wiktionary sense key" externalReference="49890:1:2"/>
             </Sense>
 	      </LexicalEntry>
         <LexicalEntry id="WktEn_lexicalEntry_18565" partOfSpeech="noun">
             <Lemma>
-                <FormRepresentation languageIdentifier="en" writtenForm="question"/>
+                <FormRepresentation languageIdentifier="eng" writtenForm="question"/>
             </Lemma>
             <Sense id="WktEn_sense_3" index="0">
                 <SenseExample id="WktEN_SenseExample_13039">
-                  <TextRepresentation languageIdentifier="en" writtenText="What is your question"/>
+                  <TextRepresentation languageIdentifier="eng" writtenText="What is your question"/>
                 </SenseExample>
                 <Definition definitionType="intensionalDefinition">
-                    <TextRepresentation languageIdentifier="en" writtenText="A sentence, phrase or word which asks for information, reply or response; an interrogative."/>
+                    <TextRepresentation languageIdentifier="eng" writtenText="A sentence, phrase or word which asks for information, reply or response; an interrogative."/>
                 </Definition>
                 <MonolingualExternalRef externalSystem="Wiktionary sense key" externalReference="49890:0:1"/>
             </Sense>
@@ -764,7 +764,7 @@
                         <TextRepresentation languageIdentifier="de" writtenText="The question of seniority will be discussed at the meeting."/>
                 </SenseExample>
                 <Definition definitionType="intensionalDefinition">
-                    <TextRepresentation languageIdentifier="en" writtenText="A subject or topic for consideration or investigation."/>
+                    <TextRepresentation languageIdentifier="eng" writtenText="A subject or topic for consideration or investigation."/>
                 </Definition>
                <MonolingualExternalRef externalSystem="Wiktionary sense key" externalReference="49890:0:2"/>
             </Sense>
@@ -773,16 +773,16 @@
                    <TextRepresentation languageIdentifier="de" writtenText="There was a question of which material to use."/>
                 </SenseExample>
                 <Definition definitionType="intensionalDefinition">
-                    <TextRepresentation languageIdentifier="en" writtenText="An unknown."/>
+                    <TextRepresentation languageIdentifier="eng" writtenText="An unknown."/>
                 </Definition>
                 <MonolingualExternalRef externalSystem="Wiktionary sense key" externalReference="49890:0:3"/>
             </Sense>
 	      </LexicalEntry>    
     </Lexicon>
-    <Lexicon languageIdentifier="en" id="WikiEn_Lexicon_1" name="Wikipedia">
+    <Lexicon languageIdentifier="eng" id="WikiEn_Lexicon_1" name="Wikipedia">
        <LexicalEntry id="WikiEn_lexicalEntry_161689" partOfSpeech="noun">
             <Lemma>
-                <FormRepresentation languageIdentifier="en" writtenForm="Question"/>
+                <FormRepresentation languageIdentifier="eng" writtenForm="Question"/>
             </Lemma>
             <Sense id="WikiEn_sense_1" index="0">
                 <Definition definitionType="intensionalDefinition">
