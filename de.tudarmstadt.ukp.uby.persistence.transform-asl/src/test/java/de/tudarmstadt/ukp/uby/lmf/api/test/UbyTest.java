@@ -32,12 +32,16 @@ import org.junit.Test;
 import de.tudarmstadt.ukp.lmf.api.Uby;
 import de.tudarmstadt.ukp.lmf.exceptions.UbyInvalidArgumentException;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
-import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.enums.ELabelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
+import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
+import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis;
+import de.tudarmstadt.ukp.lmf.model.semantics.SemanticArgument;
+import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
+import de.tudarmstadt.ukp.lmf.model.semantics.SynSemArgMap;
 import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 import de.tudarmstadt.ukp.lmf.transform.LMFDBUtils;
@@ -216,5 +220,107 @@ public class UbyTest extends TestCase
 			i++;
 		}
 		assertEquals(i,6);
+	}
+	
+	@Test
+	public void testSenseAxes() throws UbyInvalidArgumentException{
+		List<SenseAxis> senseAxes = uby.getSenseAxes();
+		assertEquals(senseAxes.size(), 6);
+		Set<String> senseAxisIds =  new HashSet<String>();
+		for(SenseAxis senseAxis : senseAxes){
+			senseAxisIds.add(senseAxis.getId());
+		}
+		
+		Iterator<SenseAxis> senseAxisIterator = uby.getSenseAxisIterator();
+		int i = 0;
+		while(senseAxisIterator.hasNext()){
+			SenseAxis senseAxis = senseAxisIterator.next();
+			assertTrue(senseAxisIds.contains(senseAxis.getId()));
+			i++;
+		}
+		assertEquals(i,6);
+
+		senseAxes = uby.getSenseAxesByIdPattern("AnoEx");
+		assertEquals(senseAxes.size(), 6);
+
+		senseAxes = uby.getSenseAxesByIdPattern("AnoEx_SenseAxis_7");
+		assertEquals(senseAxes.size(), 1);
+		assertEquals(senseAxes.get(0).getSenseOne().getId(), "WN_Sense_2");
+		
+		Sense sense = uby.getSenseById("WktEn_sense_3");
+		senseAxes = uby.getSenseAxesBySense(sense);
+		assertEquals(senseAxes.size(), 1);
+		assertEquals(senseAxes.get(0).getSenseTwo().getId(), "WN_Sense_7");
+		
+		Sense sense2 = uby.getSenseById("WN_Sense_7");
+		assertTrue(uby.hasSensesAxis(sense, sense2));
+		Sense sense3 = uby.getSenseById("VN_Sense_2");
+		assertFalse(uby.hasSensesAxis(sense, sense3));
+	}
+	
+	@Test
+	public void testSemanticPredicates() throws UbyInvalidArgumentException{
+		Lexicon lexicon = uby.getLexiconByName("FrameNet");
+		List<SemanticPredicate> semanticPredicates = uby.getSemanticPredicates(lexicon);
+		Iterator<SemanticPredicate> semanticPredicateIterator = uby.getSemanticPredicateIterator(lexicon);
+		assertEquals(semanticPredicates.size(),3);
+
+		Set<String> semanticPredicateIds = new HashSet<String>();
+		for(SemanticPredicate semanticPredicate : semanticPredicates){
+			semanticPredicateIds.add(semanticPredicate.getId());
+		}
+		assertTrue(semanticPredicateIds.contains("FN_SemanticPredicate_29"));
+		assertTrue(semanticPredicateIds.contains("FN_SemanticPredicate_700"));
+		assertTrue(semanticPredicateIds.contains("FN_SemanticPredicate_591"));
+		
+		int i = 0;
+		while(semanticPredicateIterator.hasNext()){
+			SemanticPredicate semanticPredicate = semanticPredicateIterator.next();
+			assertTrue(semanticPredicateIds.contains(semanticPredicate.getId()));
+			i++;
+		}
+		assertEquals(i, 3);
+	
+		SemanticPredicate semanticPredicate = uby.getSemanticPredicateById("VN_SemanticPredicate_500");
+		List<SemanticArgument> semanticArguments = semanticPredicate.getSemanticArguments();
+		assertEquals(semanticArguments.size(),2);
+		Set<String> semanticRoles = new HashSet<String>();
+		for(SemanticArgument semanticArgument : semanticArguments){
+			SemanticArgument semanticArgument2 = uby.getSemanticArgumentById(semanticArgument.getId());
+			semanticRoles.add(semanticArgument2.getSemanticRole());
+		}		
+		assertTrue(semanticRoles.contains("Theme[+animate|+machine]"));
+		assertTrue(semanticRoles.contains("Location[+concrete]"));		
+	}
+	
+	@Test
+	public void testSemanticLabels(){
+		List<SemanticLabel> semanticLabels = uby.getSemanticLabelsbySenseId("VN_Sense_2430");
+		assertEquals(semanticLabels.size(),1);
+		SemanticLabel semanticLabel = semanticLabels.get(0);
+		assertEquals(semanticLabel.getLabel(),"run-51.3.2");
+		
+		semanticLabels = uby.getSemanticLabelsbySenseIdbyType("WN_Sense_2", "semanticField");
+		assertEquals(semanticLabels.size(), 1);
+		semanticLabel = semanticLabels.get(0);
+		assertEquals(semanticLabel.getLabel(), "verb.communication");
+		semanticLabels = uby.getSemanticLabelsbySenseIdbyType("WN_Sense_2", "verbnetClass");
+		assertEquals(semanticLabels.size(), 0);
+	}
+	
+	@Test
+	public void testSynSemArgMaps(){
+		List<SynSemArgMap> synSemArgMaps = uby.getSynSemArgMaps();
+		assertEquals(synSemArgMaps.size(), 14);
+		boolean found = false;
+		for(SynSemArgMap synSemArgMap : synSemArgMaps){
+			System.out.println(synSemArgMap.getSyntacticArgument()+" "+synSemArgMap.getSemanticArgument());
+			if(synSemArgMap.getSyntacticArgument().getId().equals("VN_SyntacticArgument_7") &&
+			   synSemArgMap.getSemanticArgument().getId().equals("VN_SemanticArgument_7")){
+				found = true;
+				break;
+			}		   
+		}
+		assertTrue(found);
 	}
 }

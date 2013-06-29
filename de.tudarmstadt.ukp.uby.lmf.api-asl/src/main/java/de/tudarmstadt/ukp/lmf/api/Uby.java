@@ -580,14 +580,23 @@ public class Uby
 	 * {@link Uby} instance. The returned senses are filtered by the given
 	 * name of the external system and external reference.
 	 *
-	 * @param externalSys the {@link String} representing the name of external system,
-	 * such as "VerbNet" or "WordNet".
+	 * @param externalSys the {@link String} representing the name of external system
+	 * such as:
+	 * WordNet, VerbNet, FrameNet, Wiktionary, 
+	 * Wikipedia, OW
 	 *
 	 * @param externalRef the reference string from external system,
 	 * such as:
 	 * <list>
-	 * 			 <li>with verbnet: "retire_withdraw-82-3"</li>
-	 *           <li>with wordnet: "bow_out%2:41:01::"</li>
+	 * 		<li>WordNet: "[POS: noun] house%1:15:00::" - POS and sense key
+	 * 			Returns a list of one sense</li>
+	 * 		<li>VerbNet: "retire_withdraw-82-3" 
+	 * 	        Several UBY senses can have the same original sense ID</li>
+	 *      <li>FrameNet: "2676" - lexical unit ID</li>
+	 *      <li>Wiktionary: "16:0:1" - sense key</li>      
+	 *      <li>Wikipedia: "House" - article title</li>      
+	 *      <li>OW: "303002" - OW SynTrans Id </li>
+	 *           
 	 * </list>
 	 *
 	 * @return a {@link List} of all senses filtered by the given arguments or an empty list if

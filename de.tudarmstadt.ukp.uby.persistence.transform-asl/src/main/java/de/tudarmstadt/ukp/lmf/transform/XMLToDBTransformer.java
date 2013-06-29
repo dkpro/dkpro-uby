@@ -163,6 +163,8 @@ public class XMLToDBTransformer implements ElementHandler {
 			saveConstraintSet(el);
 		else if (n.equals("SenseAxis"))
 			saveSenseAxis(el);
+		else if (n.equals("SemanticPredicate"))
+			saveSemanticPredicate(el);
 		else return;
 	}
 	
