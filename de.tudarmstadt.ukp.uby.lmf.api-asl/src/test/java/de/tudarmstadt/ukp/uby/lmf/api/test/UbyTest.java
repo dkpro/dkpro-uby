@@ -17,7 +17,6 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.uby.lmf.api.test;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -43,9 +42,7 @@ import de.tudarmstadt.ukp.lmf.model.semantics.SemanticArgument;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
 import de.tudarmstadt.ukp.lmf.model.semantics.SynSemArgMap;
 import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
-import de.tudarmstadt.ukp.lmf.transform.DBConfig;
-import de.tudarmstadt.ukp.lmf.transform.LMFDBUtils;
-import de.tudarmstadt.ukp.lmf.transform.XMLToDBTransformer;
+import de.tudarmstadt.ukp.test.resources.UbyTestDbProvider;
 
 
 /**
@@ -58,27 +55,25 @@ public class UbyTest extends TestCase
 {
 	
 	private Uby uby;
+	
 	public UbyTest(){
+		UbyTestDbProvider testDbProvider;
 		try {
-			this.uby = createDB();
-		} catch (Exception e) {
-			fail(e.getMessage());			
+			testDbProvider = new UbyTestDbProvider();
+			try {
+				uby = testDbProvider.getUby();
+			} catch (Exception e) {
+				fail(e.getMessage());			
+			}
+		} catch (FileNotFoundException e1) {
+			
+		} catch (UbyInvalidArgumentException e1) {
+			
+			e1.printStackTrace();
+		} catch (DocumentException e1) {
+			
+			e1.printStackTrace();
 		}
-	}
-
-	private Uby createDB() throws FileNotFoundException, DocumentException, UbyInvalidArgumentException {
-		String uby_user = "root";
-		String uby_pass = "pass";
-
-		DBConfig dbConfig = 
-			new DBConfig("not_important","org.h2.Driver","h2",uby_user,uby_pass,true);
-		LMFDBUtils.createTables(dbConfig);
-		XMLToDBTransformer trans = new XMLToDBTransformer(dbConfig);
-		File ubyTestXmlFile = new File("src/test/resources/UbyTestLexicon.xml");
-		trans.transform(ubyTestXmlFile, "UbyTest");
-		Uby uby = new Uby(dbConfig);
-		return uby;
-		
 	}
 	
 	@Test
