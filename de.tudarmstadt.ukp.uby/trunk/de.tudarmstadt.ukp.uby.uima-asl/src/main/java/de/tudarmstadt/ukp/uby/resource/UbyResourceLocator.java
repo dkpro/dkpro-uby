@@ -65,6 +65,7 @@ public class UbyResourceLocator extends Resource_ImplBase implements ExternalRes
 	bindResource(fineGrainedPosTagWriter, FineGrainedPosTagWriter.RES_UBY, UbyResourceLocator.class,
 			UbyResourceLocator.PARAM_URL, "localhost/uby_open",
 			UbyResourceLocator.PARAM_DRIVER, "com.mysql.jdbc.Driver",
+			UbyResourceLocator.PARAM_NAME, "mysql",
 			UbyResourceLocator.PARAM_USERNAME, "root",
 			UbyResourceLocator.PARAM_PASSWORD, "pass"
 			);
