@@ -29,10 +29,6 @@
 			<artifactId>de.tudarmstadt.ukp.uby.lmf.model-asl</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>de.tudarmstadt.ukp.uby</groupId>
-			<artifactId>de.tudarmstadt.ukp.uby.testing-asl</artifactId>
-		</dependency>		
-		<dependency>
 			<groupId>jboss</groupId>
 			<artifactId>javassist</artifactId>
 		</dependency>
@@ -60,10 +56,5 @@
 			<artifactId>hibernate-c3p0</artifactId>
 			<version>4.1.9.Final</version>
 		</dependency>
-		<dependency>
-	  		<groupId>junit</groupId>
-	  		<artifactId>junit</artifactId>
-	  		<scope>test</scope>
-  	    </dependency>		
 	</dependencies>
 </project>
