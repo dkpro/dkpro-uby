@@ -7,13 +7,14 @@
     <artifactId>de.tudarmstadt.ukp.uby</artifactId>
     <version>0.3.0-SNAPSHOT</version>
   </parent>
-  <groupId>de.tudarmstadt.ukp.uby.testing-asl</groupId>
   <artifactId>de.tudarmstadt.ukp.uby.testing-asl</artifactId>
-  <name>de.tudarmstadt.ukp.uby.testing-asl</name>
-  <url>http://maven.apache.org</url>
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+  <name>Testing: API testing with in-memory DB</name>
+	<licenses>
+		<license>
+			<name>Apache License Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
   <dependencies>
   
   		<dependency>
