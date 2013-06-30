@@ -30,7 +30,8 @@
 		<module>de.tudarmstadt.ukp.uby.persistence.transform-asl</module>
 		<module>de.tudarmstadt.ukp.uby.distribution</module>
     	<module>de.tudarmstadt.ukp.uby.testing-asl</module>
-  </modules>
+    	<module>de.tudarmstadt.ukp.uby.uima-asl</module>
+	</modules>
 	<scm>
 		<connection>http://uby.googlecode.com/svn/de.tudarmstadt.ukp.uby/trunk/</connection>
 		<developerConnection>scm:svn:https://uby.googlecode.com/svn/de.tudarmstadt.ukp.uby/trunk/</developerConnection>
