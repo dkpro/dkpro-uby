@@ -21,6 +21,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang.StringUtils;
+
 import de.saar.coli.salsa.reiter.framenet.FrameNet;
 import de.saar.coli.salsa.reiter.framenet.Lexeme;
 import de.saar.coli.salsa.reiter.framenet.LexicalUnit;
@@ -54,7 +56,7 @@ import de.tudarmstadt.ukp.lmf.model.semantics.SenseExample;
 /**
  * Instance of this class offers methods for creating {@link LexicalEntry} out of FrameNet's data
  * @author Zijad Maksuti, Silvana Hartmann
- *
+ * 
  */
 public class LexicalEntryGenerator {
 	private SemanticPredicateGenerator semanticPredicateGenerator;
@@ -152,8 +154,20 @@ public class LexicalEntryGenerator {
 		for(LexicalUnit lu : luGroup){
 			if(pos == null)
 				pos = lu.getPartOfSpeech();
-			if(lemmaString == null)
-				lemmaString = lu.getLexemeString();
+			if(lemmaString == null);
+//				lemmaString = lu.getLexemeString(); //wrong order for some mwes from API
+				// workaround:
+				List<Lexeme> lexemeList = lu.getLexemes(); // get all units
+			    int lexemeCount = lexemeList.size();
+				if (lexemeCount>1){ 	//if multiword lemma
+					String[] ordered = new String[lexemeCount];
+					for (Lexeme lex:lexemeList){
+						ordered[lex.getOrder()-1] = lex.getValue();
+					}
+					lemmaString = StringUtils.join(ordered, " ");
+				} else {				// unigram lemma
+					lemmaString = lu.getLexemeString();
+				}
 			
 			// CREATING SENSE FOR THE LU
 			Sense sense = new Sense();
