@@ -36,23 +36,34 @@ import de.tudarmstadt.ukp.lmf.transform.XMLToDBTransformer;
 public class UbyTestDbProvider {
 
 	private Uby uby;
+	public UbyTestDbProvider() throws FileNotFoundException, DocumentException, UbyInvalidArgumentException {
+			
+		this.uby = createDB();
 
-	public UbyTestDbProvider() throws UbyInvalidArgumentException, DocumentException, FileNotFoundException{
+	}
+
+	public Uby getUby() {
+		return this.uby;
+	}
+	
+	private Uby createDB() throws DocumentException, UbyInvalidArgumentException, FileNotFoundException {
 		String uby_user = "root";
 		String uby_pass = "pass";
 
 		DBConfig dbConfig = 
-				new DBConfig("not_important","org.h2.Driver","h2",uby_user,uby_pass,true);
+			new DBConfig("not_important","org.h2.Driver","h2",uby_user,uby_pass,true);
+		
 			LMFDBUtils.createTables(dbConfig);
+			
 			XMLToDBTransformer trans = new XMLToDBTransformer(dbConfig);
-			File ubyTestXmlFile = new File("src/main/resources/UbyTestLexicon.xml");
-			trans.transform(ubyTestXmlFile,"UbyTest");
-				
-	}
+			
+			trans.transform(new File("src/main/resources/UbyTestLexicon.xml"),"UbyTest");
+			
+			Uby uby = new Uby(dbConfig);	
 
-	public Uby getUby() {
 		return uby;
 	}
+
 
 
 }
