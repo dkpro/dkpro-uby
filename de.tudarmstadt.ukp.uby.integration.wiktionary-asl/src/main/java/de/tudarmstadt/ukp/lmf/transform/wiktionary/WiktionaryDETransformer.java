@@ -17,7 +17,7 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.transform.wiktionary;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import de.tudarmstadt.ukp.lmf.model.core.GlobalInformation;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
@@ -35,7 +35,7 @@ public class WiktionaryDETransformer extends WiktionaryLMFTransformer {
 
 	public WiktionaryDETransformer(final DBConfig dbConfig,
 			final IWiktionaryEdition wkt, final ILanguage wktLang,
-			final String dtd) throws FileNotFoundException {
+			final String dtd) throws IOException {
 		super(dbConfig, wkt, wktLang, dtd);
 	}
 
@@ -48,7 +48,7 @@ public class WiktionaryDETransformer extends WiktionaryLMFTransformer {
 	protected LexicalResource createLexicalResource() {
 		LexicalResource resource = new LexicalResource();
 		GlobalInformation glInformation = new GlobalInformation();
-		glInformation.setLabel("Wiktionary German edition, dump of 20110406, JWKTL 0.15.2");
+		glInformation.setLabel("Wiktionary German edition, dump of 20110406, JWKTL 0.16.1");
 		resource.setGlobalInformation(glInformation);
 		resource.setName("WiktionaryDE");
 		resource.setDtdVersion(dtd_version);
@@ -61,7 +61,7 @@ public class WiktionaryDETransformer extends WiktionaryLMFTransformer {
 		if(!entryIterator.hasNext()/* || currentEntryNr > 1000*/) {
 			return null;
 		}
-		Lexicon lexicon = new Lexicon();
+		lexicon = new Lexicon();
 		String lmfLang = WiktionaryLMFMap.mapLanguage(wktLang);
 		lexicon.setId(getLmfId(Lexicon.class, "lexiconWkt" + lmfLang));
 		lexicon.setLanguageIdentifier(lmfLang);

@@ -49,6 +49,8 @@ public class WiktionaryLMFMap {
 	private static final boolean PRINT_MISSING_LANGUAGES = true;
 	
 	private static final String LANGUAGE_CODES_RESOURCE = "language_codes.txt";
+	private static final String PRAGMATIC_LABELS_RESOURCE = "pragmatic_labels.txt";
+	private static final String WORD_FORM_LABELS_RESOURCE = "form_labels.txt";
 	
 	private static Map<String, String> languageMap; // Language maps from Wiktionary to LMF
 	private static Set<String> missingLanguages;
@@ -355,6 +357,18 @@ public class WiktionaryLMFMap {
 //				return null;
 			default:
 				return null;
+		}
+	}
+
+	public static WiktionaryLabelManager createLabelManager() {
+		try {
+			return new WiktionaryLabelManager(
+					WiktionaryLMFMap.class.getClassLoader()
+					.getResource(PRAGMATIC_LABELS_RESOURCE).openStream(),
+					WiktionaryLMFMap.class.getClassLoader()
+					.getResource(WORD_FORM_LABELS_RESOURCE).openStream());
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 	
