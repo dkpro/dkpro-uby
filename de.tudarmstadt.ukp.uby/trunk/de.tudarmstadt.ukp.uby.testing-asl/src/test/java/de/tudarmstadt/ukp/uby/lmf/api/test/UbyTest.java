@@ -17,13 +17,15 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.uby.lmf.api.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-import junit.framework.TestCase;
 
 import org.dom4j.DocumentException;
 import org.junit.Test;
@@ -51,31 +53,21 @@ import de.tudarmstadt.ukp.test.resources.UbyTestDbProvider;
  * Unit tests for UBY-API methods on in-memory test database
  *
  */
-public class UbyTest extends TestCase
+public class UbyTest
 {
 	
 	private Uby uby;
 	
-	public UbyTest(){
-		UbyTestDbProvider testDbProvider;
-		try {
-			testDbProvider = new UbyTestDbProvider();
-			try {
-				uby = testDbProvider.getUby();
-			} catch (Exception e) {
-				fail(e.getMessage());			
-			}
-		} catch (FileNotFoundException e1) {
-			
-		} catch (UbyInvalidArgumentException e1) {
-			
-			e1.printStackTrace();
-		} catch (DocumentException e1) {
-			
-			e1.printStackTrace();
-		}
+	public UbyTest() throws FileNotFoundException, DocumentException, UbyInvalidArgumentException{
+		
+		UbyTestDbProvider testDbProvider = new UbyTestDbProvider();
+		this.uby = testDbProvider.getUby();
+
 	}
 	
+	
+
+
 	@Test
 	public void testLexicons() throws UbyInvalidArgumentException{		
 		List<String> lexiconNames = uby.getLexiconNames();

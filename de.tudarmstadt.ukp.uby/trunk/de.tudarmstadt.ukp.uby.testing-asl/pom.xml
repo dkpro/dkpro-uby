@@ -33,7 +33,8 @@
 		    <groupId>com.h2database</groupId>
 		    <artifactId>h2</artifactId>
 		    <version>1.3.160</version>
-		    <scope>test</scope>
+			<type>jar</type>
+			<scope>compile</scope>
 		</dependency>		
 		<dependency>
 				<groupId>junit</groupId>
