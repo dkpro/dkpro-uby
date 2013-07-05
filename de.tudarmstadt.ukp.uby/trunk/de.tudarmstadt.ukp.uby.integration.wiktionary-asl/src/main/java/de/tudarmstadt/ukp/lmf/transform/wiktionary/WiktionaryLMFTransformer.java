@@ -18,6 +18,7 @@
 package de.tudarmstadt.ukp.lmf.transform.wiktionary;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -26,6 +27,7 @@ import java.util.regex.Pattern;
 
 import de.tudarmstadt.ukp.lmf.model.core.Definition;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
+import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.core.Statement;
 import de.tudarmstadt.ukp.lmf.model.core.TextRepresentation;
@@ -63,7 +65,7 @@ import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 import de.tudarmstadt.ukp.lmf.transform.LMFDBTransformer;
 import de.tudarmstadt.ukp.lmf.transform.StringUtils;
 import de.tudarmstadt.ukp.lmf.transform.wiktionary.TemplateParser.EtymologyTemplateHandler;
-import de.tudarmstadt.ukp.lmf.transform.wiktionary.labels.WiktionaryLabelLoader;
+import de.tudarmstadt.ukp.lmf.transform.wiktionary.WiktionaryLabelManager.PragmaticLabel;
 import de.tudarmstadt.ukp.wiktionary.api.IPronunciation;
 import de.tudarmstadt.ukp.wiktionary.api.IPronunciation.PronunciationType;
 import de.tudarmstadt.ukp.wiktionary.api.IWikiString;
@@ -84,6 +86,8 @@ import de.tudarmstadt.ukp.wiktionary.api.util.ILanguage;
  */
 public abstract class WiktionaryLMFTransformer extends LMFDBTransformer {
 
+	// The embracing lexicon instance.
+	protected Lexicon lexicon;
 	// JWKTL Wiktionary object
 	protected final IWiktionaryEdition wkt;		 						
 	// Language of Wiktionary edition that should be transformed
@@ -92,17 +96,16 @@ public abstract class WiktionaryLMFTransformer extends LMFDBTransformer {
 	protected final WiktionaryIterator<IWiktionaryEntry> entryIterator;
 	// Current entry number
 	protected int currentEntryNr = 0;								
-
-	// Loader of Wiktionary context labels
-	@Deprecated
-	protected WiktionaryLabelLoader labelLoader;					
-	// Cache of unsaved word forms, that were extracted from Wiktionary FORM_OF context labels
-	@Deprecated
+	// Handler for Wiktionary's pragmatic labels.
+	protected WiktionaryLabelManager labelManager;
+	// Cache of unsaved word forms defined by Wiktionary word form labels.
 	protected final HashMap<String, List<WordForm>> wordForms;			
 	
 	protected final String dtd_version;
 
 	static int exampleIdx = 1;
+	static int subcatFrameIdx = 1;
+	static int syntacticBehaviourIdx = 1;
 
 	/**
 	 * @param dbConfig - Database configuration of LMF database
@@ -111,20 +114,14 @@ public abstract class WiktionaryLMFTransformer extends LMFDBTransformer {
 	 */
 	public WiktionaryLMFTransformer(final DBConfig dbConfig, 
 			final IWiktionaryEdition wkt, final ILanguage wktLang, 
-			final String dtd) throws FileNotFoundException{
+			final String dtd) throws IOException{
 		super(dbConfig);
 		this.wkt = wkt;
 		this.wktLang = wktLang;
 		this.entryIterator = wkt.getAllEntries();
 		this.wordForms = new HashMap<String, List<WordForm>>();
+		this.labelManager = WiktionaryLMFMap.createLabelManager();
 		dtd_version = dtd;
-	}
-
-	/**
-	 * @param labelLoader Loader of Wiktionary context labels
-	 */
-	public void setLabelLoader(WiktionaryLabelLoader labelLoader){
-		this.labelLoader = labelLoader;
 	}
 
 	@Override
@@ -455,24 +452,119 @@ public abstract class WiktionaryLMFTransformer extends LMFDBTransformer {
 					continue;
 			}
 			
-			SemanticLabel label = new SemanticLabel();
-			label.setType(semanticLabelType);
-			label.setLabel(semanticLabelName);
-			result.add(label);
+			SemanticLabel semanticLabel = new SemanticLabel();
+			semanticLabel.setType(semanticLabelType);
+			semanticLabel.setLabel(semanticLabelName);
+			result.add(semanticLabel);
 		}
 		
 		// Create semantic labels from the sense definition.
-		saveLabels(sense, wktSense, entry, wktSense.getEntry());
-		
+		IWikiString senseDefinition = wktSense.getGloss();
+		List<PragmaticLabel> labels = labelManager.parseLabels(
+				senseDefinition.getText(), wktSense.getEntry().getWord());
+		if (labels != null) {			
+			for (PragmaticLabel label : labels) {
+				String labelGroup = label.getLabelGroup();
+				if (labelGroup == null || labelGroup.length() == 0)
+					continue;
+
+				if (labelManager.isWordFormLabel(label)) {
+					// Morphological labels.
+					String targetWord = labelManager.extractTargetWordForm(senseDefinition.getText()); 
+					IWiktionaryEntry wktEntry = wktSense.getEntry();
+					WordForm wordForm = new WordForm();
+					List<FormRepresentation> formRepresentations = new ArrayList<FormRepresentation>();
+					FormRepresentation formRepresentation = new FormRepresentation();
+					formRepresentation.setWrittenForm(StringUtils.replaceNonUtf8(wktEntry.getWord(), 1000));						
+					formRepresentations.add(formRepresentation);	
+					wordForm.setFormRepresentations(formRepresentations);
+
+					for (IWiktionaryEntry targetEntry : wkt.getEntriesForWord(targetWord)) {
+						// Ignore entries of a different language.
+						if (targetEntry.getWordLanguage() == null 
+								|| !targetEntry.getWordLanguage().equals(wktEntry.getWordLanguage()))
+							continue;
+
+						// Ignore entries of a different part of speech.
+						if (targetEntry.getPartOfSpeech() == null 
+								|| !targetEntry.getPartOfSpeech().equals(wktEntry.getPartOfSpeech()))
+							continue;
+
+						String entryId = getLmfId(LexicalEntry.class, getEntryId(targetEntry));
+						LexicalEntry lexEntry = (LexicalEntry) getLmfObjectById(LexicalEntry.class, entryId);
+						if (lexEntry != null) { 
+							// If the entry already exists then save directly to it
+							List<WordForm> wordForms = lexEntry.getWordForms(); 
+							if (wordForm == null) {
+								wordForms = new ArrayList<WordForm>();
+								lexEntry.setWordForms(wordForms);
+							}
+							wordForms.add(wordForm);
+							saveList(lexEntry, lexEntry.getWordForms());
+						} else {
+							// If the lexical entry does not yet exist, then 
+							// save the wordForms temporarily.
+							if (wordForms.containsKey(entryId)) {
+								wordForms.get(entryId).add(wordForm);
+							} else {
+								List<WordForm> temp = new ArrayList<WordForm>();
+								temp.add(wordForm);
+								wordForms.put(entryId, temp);
+							}
+						}
+					}
+				} else				
+					if (labelGroup.startsWith("syntax:gram")) {
+			/*			// Grammatical labels.				
+						List<SubcategorizationFrame> subcatFrames = lexicon.getSubcategorizationFrames();
+						if (subcatFrames == null) {
+							subcatFrames = new LinkedList<SubcategorizationFrame>();
+							lexicon.setSubcategorizationFrames(subcatFrames);
+						}
+						SubcategorizationFrame subcatFrame = new SubcategorizationFrame();
+						subcatFrame.setSubcatLabel(label.getLabel());
+						subcatFrame.setId(getResourceAlias() + "_SubcatFrame_" + (subcatFrameIdx++));
+						subcatFrames.add(subcatFrame);
+
+						SyntacticBehaviour sb = new SyntacticBehaviour();
+						sb.setSubcategorizationFrame(subcatFrame);
+						sb.setId(getResourceAlias() + "_SyntacticBehaviour_" + (syntacticBehaviourIdx++));
+						sb.setSense(sense);
+						if (entry.getSyntacticBehaviours() == null) {
+							entry.setSyntacticBehaviours(new LinkedList<SyntacticBehaviour>());
+						}
+						entry.getSyntacticBehaviours().add(sb);
+						//subcatFrame.setLexemeProperty(lp);
+*/
+					} else {
+						// Semantic labels.
+						SemanticLabel semanticLabel = new SemanticLabel();
+						semanticLabel.setLabel(StringUtils.replaceNonUtf8(label.getLabel()));
+						if (labelGroup.startsWith("dom"))
+							semanticLabel.setType(ELabelTypeSemantics.domain);
+						else
+						if (labelGroup.startsWith("reg") || labelGroup.startsWith("dia"))
+							semanticLabel.setType(ELabelTypeSemantics.regionOfUsage);
+						else
+						if (labelGroup.startsWith("phas") || labelGroup.startsWith("strat") || labelGroup.startsWith("eval"))
+							semanticLabel.setType(ELabelTypeSemantics.register);
+						else
+						if (labelGroup.startsWith("temp"))
+							semanticLabel.setType(ELabelTypeSemantics.timePeriodOfUsage);
+						else
+						if (labelGroup.startsWith("freq") || labelGroup.startsWith("norm"))
+							semanticLabel.setType(ELabelTypeSemantics.usage);
+						else
+							continue;
+
+						result.add(semanticLabel);
+					}
+				// etym;request;syntax:form;syntax:pos
+			}
+		}
 		return result;
 	}
-
-	//TODO: provide a generic version for all Wiktionary converters.
-	@Deprecated
-	protected void saveLabels(Sense sense, IWiktionarySense wktSense,
-			LexicalEntry entry, IWiktionaryEntry wktEntry) {}
-
-
+	
 	protected List<TextRepresentation> createTextRepresentationList(
 			final String writtenText, final ILanguage language) {
 		List<TextRepresentation> result = new ArrayList<TextRepresentation>();
