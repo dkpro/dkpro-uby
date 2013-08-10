@@ -265,6 +265,36 @@
 			<build>
 				<plugins>
 					<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<configuration>
+						<notimestamp>true</notimestamp>
+						<groups>
+							<group>
+								<title>Converters</title>
+								<packages>de.tudarmstadt.ukp.uby.integration*</packages>
+							</group>
+							<group>
+								<title>UBY-LMF object model and UBY-API</title>
+								<packages>de.tudarmstadt.ukp.uby.lmf*</packages>
+							</group>
+							<group>
+								<title>I/O Components</title>
+								<packages>de.tudarmstadt.ukp.uby.persistence*</packages>
+							</group>
+							<group>
+								<title>Testing</title>
+								<packages>de.tudarmstadt.ukp.uby.testing*</packages>
+							</group>
+							<group>
+								<title>UIMA interfacing</title>
+								<packages>de.tudarmstadt.ukp.uby.uima*</packages>
+							</group>
+						</groups>
+					</configuration>
+				</plugin>
+				
+					<plugin>
 						<groupId>org.apache.rat</groupId>
 						<artifactId>apache-rat-plugin</artifactId>
 						<executions>
