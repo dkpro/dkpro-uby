@@ -2837,7 +2837,7 @@ norm	norm	norm	nonstandard
 norm	norm	norm	intentionally incorrect
 norm	norm	norm	politically correct
 norm	norm	norm	non-standard
-norm    norm    norm    historisch und politisch inkorrekt
+norm	norm	norm	historisch und politisch inkorrekt
 phas	phas:register:formal	formal	торж.
 phas	phas:register:formal	formal	familiar
 phas	phas:register:formal	formal	geh.
