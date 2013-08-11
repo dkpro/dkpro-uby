@@ -259,7 +259,7 @@ public class Uby
 		criteria = criteria.add(Restrictions.sqlRestriction("lexiconName = '"+name+"'"));
 		Lexicon result = (Lexicon) criteria.uniqueResult();
 		if (result==null) {
-			throw new UbyInvalidArgumentException("Database does not contain a lexicon with such name");
+			throw new UbyInvalidArgumentException("Database does not contain a lexicon called " +name);
 		}
 		return result;
 
@@ -429,7 +429,7 @@ public class Uby
 		}
 		if (ret == null) {
 			throw new UbyInvalidArgumentException(
-					"LexicalEntry with this ID does not exist");
+					"LexicalEntry with the ID " +lexicalEntryId +" does not exist");
 		}
 		return ret;
 	}
@@ -797,7 +797,7 @@ public class Uby
 			ret=(Synset)criteria.list().get(0);
 		}
 		if (ret==null) {
-			throw new UbyInvalidArgumentException(new Exception("Synset with this ID does not exist"));
+			throw new UbyInvalidArgumentException(new Exception("Synset with the ID " +synsetId +" does not exist"));
 		}
 		return ret;
 	}
