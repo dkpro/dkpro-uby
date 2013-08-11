@@ -318,7 +318,12 @@ public class XMLToDBTransformer implements ElementHandler {
 					continue;
 				
 				// Set-Method for the field
-				String setFuncName = "set"+fieldName.substring(0,1).toUpperCase() + fieldName.substring(1);
+				
+				String setFieldName = fieldName;
+				if(setFieldName.startsWith("is")) // E.g. isHead --> setHead
+					setFieldName = setFieldName.replaceFirst("is", "");
+				
+				String setFuncName = "set"+setFieldName.substring(0,1).toUpperCase() + setFieldName.substring(1);
 				try{
 					Method setMethod = null;
 					try{
