@@ -19,11 +19,11 @@ package de.tudarmstadt.ukp.uby.resource;
 
 import java.util.Map;
 
+import org.apache.uima.fit.component.Resource_ImplBase;
+import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.descriptor.ExternalResourceLocator;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
-import org.uimafit.component.Resource_ImplBase;
-import org.uimafit.descriptor.ConfigurationParameter;
-import org.uimafit.descriptor.ExternalResourceLocator;
 
 import de.tudarmstadt.ukp.lmf.api.Uby;
 import de.tudarmstadt.ukp.lmf.exceptions.UbyInvalidArgumentException;
@@ -44,8 +44,8 @@ public class UbyResourceLocator extends Resource_ImplBase implements ExternalRes
 	private String databaseDriver;
 	
 	//vendor name of the accessed database, e.g. mysql, hsqldb
-	public static final String PARAM_NAME = "databaseDriverName"; //name of database driver (this parameter is called "vendor" in DBConfig), e.g. mysql, h2
-	@ConfigurationParameter(name = PARAM_NAME, mandatory = true)
+	public static final String PARAM_DRIVER_NAME = "databaseDriverName"; //name of database driver (this parameter is called "vendor" in DBConfig), e.g. mysql, h2
+	@ConfigurationParameter(name = PARAM_DRIVER_NAME, mandatory = true)
 	private String databaseDriverName;
 	
 	public static final String PARAM_USERNAME = "ubyUsername";
@@ -57,25 +57,6 @@ public class UbyResourceLocator extends Resource_ImplBase implements ExternalRes
 	private String ubyPassword;
 
 
-	/*
- * 			AnalysisEngineDescription fineGrainedPosTagWriter =
-			AnalysisEngineFactory.createPrimitiveDescription(
-					FineGrainedPosTagWriter.class,
-					FineGrainedPosTagWriter.PARAM_OUTPUT, VERB_POS_FILE);
-	bindResource(fineGrainedPosTagWriter, FineGrainedPosTagWriter.RES_UBY, UbyResourceLocator.class,
-			UbyResourceLocator.PARAM_URL, "localhost/uby_open",
-			UbyResourceLocator.PARAM_DRIVER, "com.mysql.jdbc.Driver",
-			UbyResourceLocator.PARAM_NAME, "mysql",
-			UbyResourceLocator.PARAM_USERNAME, "root",
-			UbyResourceLocator.PARAM_PASSWORD, "pass"
-			);
-
-	
-			DBConfig dbConfig = 
-		new DBConfig("not_important","org.h2.Driver","h2",uby_user,uby_pass,true);
-
-	
- */
 	private Object resource;
 
 	@SuppressWarnings("rawtypes")
