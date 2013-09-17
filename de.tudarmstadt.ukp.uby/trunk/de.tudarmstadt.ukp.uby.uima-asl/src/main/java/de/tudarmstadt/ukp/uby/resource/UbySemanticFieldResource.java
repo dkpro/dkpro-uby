@@ -20,9 +20,11 @@ package de.tudarmstadt.ukp.uby.resource;
 import static de.tudarmstadt.ukp.uby.resource.UbyResourceUtils.corePosToUbyPos;
 import static de.tudarmstadt.ukp.uby.resource.UbyResourceUtils.getMostFrequentSense;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.uima.fit.component.Resource_ImplBase;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.resource.ResourceAccessException;
@@ -151,8 +153,49 @@ public class UbySemanticFieldResource
 		} catch (Exception e) {
 	        throw new ResourceAccessException(e);
 		}
-
 				
+	}
+
+	@Override
+	public String getSemanticTag(List<Token> tokens) throws ResourceAccessException {
+
+		List<String> lemmas = new ArrayList<String>();
+		for (Token token : tokens) {
+			lemmas.add(token.getLemma().getValue());
+		}
+		String lemmaString = StringUtils.join(lemmas, " ");
+				
+		try {
+			// the documentLanguage is specified as ISO 2-letter code (following the DKPro-Core convention)
+			if (tokens.get(0).getCAS().getDocumentLanguage().equals("en")) {
+				wordnet = uby.getLexiconByName("WordNet");
+			} else if (tokens.get(0).getCAS().getDocumentLanguage().equals("de")) {
+				wordnet = uby.getLexiconByName("GermaNet");
+			}			
+					
+			// we do not check, if the lemmaString has an entry in the lexicon with a POS corresponding to the Core POS type
+			// because multiwords tend to have non-consistent POS assigned in the lexicon
+			if (uby.getLexicalEntries(lemmaString,null,null).isEmpty()) { 
+				return "UNKNOWN"; 
+			} else { // there is at least one UBY lexicon that contains the multiword as lemma					
+				if (!uby.getLexicalEntries(lemmaString,null,wordnet).isEmpty()) { 
+					// the lemma is listed in the English or German wordnet 					
+					List<LexicalEntry> lexicalEntries = uby.getLexicalEntries(lemmaString,null,wordnet);
+					Sense sense = getWordnetSense(lexicalEntries);
+					return getSemanticField(sense);					
+				} else {
+					 // find the UBY lexical entry for the given lemma,
+					 // get a semantic label of type domain, if it exists
+					 // and retrieve the semantic field of the domain label 
+					List<LexicalEntry> lexicalEntries = uby.getLexicalEntries(lemmaString,null,null);						
+					String otherSemanticLabelValue = getOtherSemanticLabelValue(lexicalEntries);
+					return getSemanticField(otherSemanticLabelValue);						
+				}	
+			}
+						
+		} catch (Exception e) {
+	        throw new ResourceAccessException(e);
+		}
 	}
 
 
