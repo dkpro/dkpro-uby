@@ -10,10 +10,10 @@
  */
 package de.tudarmstadt.ukp.lmf.transform.wordnet.util;
 
-import static org.uimafit.factory.AnalysisEngineFactory.createAggregate;
-import static org.uimafit.factory.AnalysisEngineFactory.createAggregateDescription;
-import static org.uimafit.factory.AnalysisEngineFactory.createPrimitiveDescription;
-import static org.uimafit.util.JCasUtil.select;
+
+import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngine;
+import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
+import static org.apache.uima.fit.util.JCasUtil.select;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,8 +26,8 @@ import java.util.logging.Logger;
 import net.sf.extjwnl.data.POS;
 
 import org.apache.uima.analysis_engine.AnalysisEngine;
+import org.apache.uima.fit.factory.JCasFactory;
 import org.apache.uima.jcas.JCas;
-import org.uimafit.factory.JCasFactory;
 
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Lemma;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordLemmatizer;
@@ -69,22 +69,20 @@ public class WNConvUtil {
 			else {
 				jcas.reset();
 			}
+
 			sentence = sentence.replace("-", " ");
 			jcas.setDocumentLanguage("en");
 			jcas.setDocumentText(sentence);
 
 			if (ae == null) {
-				ae = createAggregate(createAggregateDescription(
-						createPrimitiveDescription(BreakIteratorSegmenter.class),
-						
-						
-						createPrimitiveDescription(StanfordLemmatizer.class)
-						
-						
+				ae = createEngine(createEngineDescription(
+						createEngineDescription(BreakIteratorSegmenter.class),						
+						createEngineDescription(StanfordLemmatizer.class)						
 						));
 			}
 			
 			ae.process(jcas);
+					
 			List<String> lemmas = new ArrayList<String>();
 			for (Lemma l : select(jcas, Lemma.class)) {
 				lemmas.add(l.getValue());
