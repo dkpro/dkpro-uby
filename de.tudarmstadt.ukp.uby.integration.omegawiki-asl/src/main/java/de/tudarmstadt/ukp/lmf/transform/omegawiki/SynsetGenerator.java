@@ -123,7 +123,6 @@ public class SynsetGenerator {
 			} catch (OmegaWikiException e) {
 				e.printStackTrace();
 			}
-			int i =0;
 
 			while(dmIter.hasNext() ) {//&& i++<=100 ){
 				DefinedMeaning dm = dmIter.next();
