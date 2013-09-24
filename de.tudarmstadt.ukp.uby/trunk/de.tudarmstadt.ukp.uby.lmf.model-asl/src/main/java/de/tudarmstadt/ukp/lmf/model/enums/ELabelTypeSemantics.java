@@ -17,8 +17,6 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.enums;
 
-import de.tudarmstadt.ukp.lmf.model.core.Sense;
-
 /**
  * Label types for {@link SemanticLabels}s
  *
