@@ -1,13 +1,23 @@
-/**
+/*******************************************************************************
  * Copyright 2012
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the GNU Public License v3.0
- * which accompanies this distribution, and is available at
- * http://www.gnu.org/licenses/gpl-3.0.txt
- */
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ ******************************************************************************/
+
 package de.tudarmstadt.ukp.lmf.transform.wordnet;
 
 import static de.tudarmstadt.ukp.lmf.transform.wordnet.TestSuite.UBY_HOME;
@@ -35,28 +45,29 @@ import de.tudarmstadt.ukp.lmf.transform.wordnet.util.IndexSenseReader;
 
 /**
  * Tests methods of {@link SenseGenerator} class.<br>
- * 
+ *
  * Tests are made for WordNet 3.0
  * data and UBY-LMF DTD version 0.2.0.
- * 
+ *
  * @author Zijad Maksuti
- * 
+ *
  * @since 0.2.0
  *
  */
 @Ignore public class SenseGeneratorTest {
-	
+
 	/**
 	 * Invokes {@link GNConverter#toLMF()} method.
-	 * @throws JWNLException 
-	 * @throws FileNotFoundException 
-	 * 
+	 * @throws JWNLException
+	 * @throws FileNotFoundException
+	 *
 	 * @since 0.2.0
 	 */
 	@BeforeClass
 	public static void setUpClass() throws FileNotFoundException, JWNLException {
-		if(wordNet == null)
-			TestSuite.setUpClass();
+		if(wordNet == null) {
+            TestSuite.setUpClass();
+        }
 	}
 
 	/**
@@ -70,27 +81,29 @@ import de.tudarmstadt.ukp.lmf.transform.wordnet.util.IndexSenseReader;
 
 	/**
 	 * Test method for {@link de.tudarmstadt.ukp.lmf.transform.wordnet.SenseGenerator#generateSenses(java.util.Set, de.tudarmstadt.ukp.lmf.model.core.LexicalEntry)}.
-	 * @throws JWNLException 
+	 * @throws JWNLException
 	 */
 	@Test
 	public final void testGenerateSensesSetOfWordLexicalEntry() throws JWNLException {
 		SynsetGenerator synsetGenerator = new SynsetGenerator(wordNet, new File(UBY_HOME +"/WordNet/cache/ExampleSentenceLexemeMapping.xml"));
 		synsetGenerator.initialize();
-		
+
 		IndexSenseReader isr = new IndexSenseReader();
 		isr.initialize();
-		
+
 		SenseGenerator senseGenerator = new SenseGenerator(synsetGenerator, isr);
 		String lexicalEntryId = "testLexicalEntry";
 		LexicalEntry lexicalEntry = new LexicalEntry(lexicalEntryId);
-		
+
 		Set<Word> lexemeGroup = new HashSet<Word>();
 		lexemeGroup.add(wordNet.getWordBySenseKey("polemics%1:09:00::"));
-		
+
 		List<Sense> senses = senseGenerator.generateSenses(lexemeGroup, lexicalEntry);
 		for(Sense sense : senses)
-			assertEquals(lexicalEntry, sense.getLexicalEntry());
+         {
+            assertEquals(lexicalEntry, sense.getLexicalEntry());
 		// TODO test the rest of the method
+        }
 	}
 
 	/**

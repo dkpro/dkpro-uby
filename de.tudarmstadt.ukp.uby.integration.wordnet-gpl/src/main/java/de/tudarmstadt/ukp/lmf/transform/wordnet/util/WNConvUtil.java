@@ -1,13 +1,23 @@
-/**
+/*******************************************************************************
  * Copyright 2012
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the GNU Public License v3.0
- * which accompanies this distribution, and is available at
- * http://www.gnu.org/licenses/gpl-3.0.txt
- */
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ ******************************************************************************/
+
 package de.tudarmstadt.ukp.lmf.transform.wordnet.util;
 
 
@@ -36,18 +46,18 @@ import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
 
 /**
  * This class offers methods offers some helper methods used when converting
- * WordNet UBY-LMF. 
+ * WordNet UBY-LMF.
  * @author Zijad Maksuti
- * 
+ *
  */
 public class WNConvUtil {
 
 	private static JCas jcas;
 	private static AnalysisEngine ae;
-	
+
 	//  mappings between part of speech, encoded in WordNet, part of speech specified by Uby-LMF
 	private static final Map<String, EPartOfSpeech> _posMappings = new HashMap<String, EPartOfSpeech>();
-	
+
 	static{
 		// Put the POS mappings posKey <-> EPartOfSpeech
 		_posMappings.put("n", EPartOfSpeech.noun);
@@ -62,7 +72,7 @@ public class WNConvUtil {
 	 */
 	public static List<String> lemmatize(String sentence) {
 		try {
-			
+
 			if (jcas == null) {
 				jcas = JCasFactory.createJCas();
 			}
@@ -76,20 +86,20 @@ public class WNConvUtil {
 
 			if (ae == null) {
 				ae = createEngine(createEngineDescription(
-						createEngineDescription(BreakIteratorSegmenter.class),						
-						createEngineDescription(StanfordLemmatizer.class)						
+						createEngineDescription(BreakIteratorSegmenter.class),
+						createEngineDescription(StanfordLemmatizer.class)
 						));
 			}
-			
+
 			ae.process(jcas);
-					
+
 			List<String> lemmas = new ArrayList<String>();
 			for (Lemma l : select(jcas, Lemma.class)) {
 				lemmas.add(l.getValue());
 			}
-			
+
 			return lemmas;
-			
+
 		} catch (Exception e) {
 			StringBuffer sb = new StringBuffer(512);
 			sb.append("##########################");
@@ -101,7 +111,7 @@ public class WNConvUtil {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Consumes a sentence and returns the list of all tokens of the Sentence
 	 * @param sentence a sentence for which the list of tokens should be returned
@@ -113,9 +123,9 @@ public class WNConvUtil {
 		temp = temp.replaceAll("\\:", "");
 		temp = temp.toLowerCase();
 		return Arrays.asList(temp.split(" "));
-		
+
 	}
-	
+
 	/**
 	 * This method consumes a {@link POS}
 	 * and returns corresponding {@link EPartOfSpeech}
@@ -127,5 +137,5 @@ public class WNConvUtil {
 		EPartOfSpeech result = _posMappings.get(pos.getKey());
 		return result;
 	}
-	
+
 }

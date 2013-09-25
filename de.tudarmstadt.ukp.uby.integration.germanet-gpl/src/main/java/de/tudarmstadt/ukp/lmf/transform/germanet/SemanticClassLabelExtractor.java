@@ -1,13 +1,23 @@
-/**
+/*******************************************************************************
  * Copyright 2012
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the GNU Public License v3.0
- * which accompanies this distribution, and is available at
- * http://www.gnu.org/licenses/gpl-3.0.txt
- */
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ ******************************************************************************/
+
 package de.tudarmstadt.ukp.lmf.transform.germanet;
 
 import java.io.File;
@@ -33,27 +43,27 @@ import de.tuebingen.uni.sfs.germanet.api.Synset;
  * files (semantic labels) and determines the LexUnits and Synsets contained in the file for which the semantic label applies.
  * @author Zijad Maksuti
  * @author Judith Eckle-Kohler
- * 
+ *
  */
 public class SemanticClassLabelExtractor {
 
-	private File gnData; // directory containing the GermaNet files
-	private Map<Integer, String> luMappings = new HashMap<Integer, String>(); // luID <-> filename mappings
-	private Map<Integer, String> synsetMappings = new HashMap<Integer, String>(); // synsetID <-> filename mappings
-	
-	private Logger logger = Logger.getLogger(GNConverter.class.getName());
+	private final File gnData; // directory containing the GermaNet files
+	private final Map<Integer, String> luMappings = new HashMap<Integer, String>(); // luID <-> filename mappings
+	private final Map<Integer, String> synsetMappings = new HashMap<Integer, String>(); // synsetID <-> filename mappings
+
+	private final Logger logger = Logger.getLogger(GNConverter.class.getName());
 
 	/**
 	 * Constructs an instance of {@link SemanticClassLabelExtractor}
-	 * 
+	 *
 	 * @param gn initialized {@link GermaNet} object used to access GermaNet's information
-	 * 
+	 *
 	 */
 	public SemanticClassLabelExtractor(GermaNet gn) {
 		this.gnData = new File(gn.getDir());
 		this.initialize();
 	}
-	
+
 	/**
 	 * This method consumes an instance of {@link LexUnit}, and returns it's semantic class label
 	 * @param lu a LexUnit for which semantic class label should be extracted
@@ -62,20 +72,24 @@ public class SemanticClassLabelExtractor {
 	public String getLUSemanticClassLabel(LexUnit lu){
 		String result = luMappings.get(lu.getId());
 		if(result != null)
-			return result.split("\\.")[1]; // extract the semantic class label
+         {
+            return result.split("\\.")[1]; // extract the semantic class label
+        }
 		return result;
 	}
-	
+
 	/**
 	 * This class consumes an instance of {@link Synset}, and returns it's semantic class label
-	 * @param synset a Synset for which semantic class label should be extracted 
+	 * @param synset a Synset for which semantic class label should be extracted
 	 * @return synset's semantic class label or null if the extractor contains no mapping for the synset's ID
 	 */
 	public String getSynsetSemanticClassLabel(Synset synset){
 		int synsetID=synset.getId();
 		String result = synsetMappings.get(synsetID);
 		if(result != null)
-			return result.split("\\.")[1]; // extract the SemanticClasLabel
+         {
+            return result.split("\\.")[1]; // extract the SemanticClasLabel
+        }
 		return result;
 	}
 
@@ -88,13 +102,13 @@ public class SemanticClassLabelExtractor {
 	private void initialize() {
 		if(luMappings.isEmpty()){
 			logger.log(Level.INFO, "Initializing SemanticClassLabelExtractor... ");
-		
+
 			String[] fileNames = gnData.list(); // Names of all files in GermaNet's directory
-			
+
 			for (String fileName : fileNames) {
 				// If a file starts with "adj.", "nomen." or "verben." and ends with ".xml" it should be examined
 				if ((fileName.startsWith("adj.") || fileName.startsWith("nomen.") || fileName.startsWith("verben")) && fileName.endsWith(".xml")) {
-	
+
 					SAXReader reader = new SAXReader();
 					Document document = null;
 					try {
@@ -109,14 +123,14 @@ public class SemanticClassLabelExtractor {
 						System.exit(1);
 					}
 					Element root = document.getRootElement();
-	
+
 					// Extracting synsets
 					List<?> synsets = root.elements("synset");
 					for (Object synset : synsets) {
 						Element synsetElem = (Element) synset;
 						String synsetID = synsetElem.attributeValue("id").substring(1);
 						synsetMappings.put(Integer.parseInt(synsetID), fileName);
-						
+
 						// Extracting LUs
 						List<?> lus = synsetElem.elements("lexUnit");
 						for (Object lu : lus) {

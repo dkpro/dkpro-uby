@@ -1,13 +1,23 @@
-/**
+/*******************************************************************************
  * Copyright 2012
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the GNU Public License v3.0
- * which accompanies this distribution, and is available at
- * http://www.gnu.org/licenses/gpl-3.0.txt
- */
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ ******************************************************************************/
+
 package de.tudarmstadt.ukp.lmf.transform.framenet;
 
 import java.util.ArrayList;
@@ -24,26 +34,26 @@ import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
 
 /**
- * 
+ *
  * Instance of this class converts
  * <a href="URL#https://framenet.icsi.berkeley.edu/fndrupal/">FrameNet 1.5</a>
  * to LMF-format
- * @author Zijad Maksuti, Silvana Hartmann 
+ * @author Zijad Maksuti, Silvana Hartmann
  *
  */
 public class FNConverter {
 
-	private FrameNet fn; // FrameNet Object
-	private String dtd_version;
+	private final FrameNet fn; // FrameNet Object
+	private final String dtd_version;
 
-	private LexicalResource lexicalResource;
-	
-	private Logger logger = Logger.getLogger(FNConverter.class.getName());
+	private final LexicalResource lexicalResource;
+
+	private final Logger logger = Logger.getLogger(FNConverter.class.getName());
 
 	/**
 	 * Constructs a {@link FNConverter} based on the consumed parameters
 	 * @param frameNet initialized {@link FrameNet} object
-	 * @param lexicalResource initialized object of  {@link LexicalResource}, which will be filled with FrameNet's data 
+	 * @param lexicalResource initialized object of  {@link LexicalResource}, which will be filled with FrameNet's data
 	 * @param dtd_version specifies the version of the .dtd which will be written to lexicalResource
 	 */
 	public FNConverter(FrameNet frameNet, LexicalResource lexicalResource, String dtd_version){
@@ -53,7 +63,7 @@ public class FNConverter {
 	}
 
 	/**
-	 * Converts the informations provided by the initialized {@link FrameNet} object to LMF-format. <br> 
+	 * Converts the informations provided by the initialized {@link FrameNet} object to LMF-format. <br>
 	 * The result of the conversion can be obtained by calling {@link FNConverter#getLexicalResource()}
 	 */
 	public void toLMF() {
@@ -93,7 +103,7 @@ public class FNConverter {
 
 
 	/**
-	 * Returns the {@link LexicalResource} object, which contains the results of the conversion 
+	 * Returns the {@link LexicalResource} object, which contains the results of the conversion
 	 * @return the lexicalResource
 	 */
 	public LexicalResource getLexicalResource() {

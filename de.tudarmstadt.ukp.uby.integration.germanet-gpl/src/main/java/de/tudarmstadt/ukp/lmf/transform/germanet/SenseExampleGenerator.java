@@ -1,13 +1,23 @@
-/**
+/*******************************************************************************
  * Copyright 2012
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the GNU Public License v3.0
- * which accompanies this distribution, and is available at
- * http://www.gnu.org/licenses/gpl-3.0.txt
- */
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ ******************************************************************************/
+
 package de.tudarmstadt.ukp.lmf.transform.germanet;
 
 import java.util.ArrayList;
@@ -32,10 +42,10 @@ import de.tuebingen.uni.sfs.germanet.api.WordCategory;
  */
 public class SenseExampleGenerator {
 	private int exampleNumber=0; // This is the running number used for creating IDs of SenseExamples
-	private Map<LexUnit, List<SenseExample>> generatedExamples = new HashMap<LexUnit, List<SenseExample>>();
-	
+	private final Map<LexUnit, List<SenseExample>> generatedExamples = new HashMap<LexUnit, List<SenseExample>>();
+
 	/**
-	 * This class consumes an instance of {@link LexUnit} and 
+	 * This class consumes an instance of {@link LexUnit} and
 	 * generates a List of SenseExamples for the consumed LexUnit
 	 * @param lu LexicalUnit for which a list SenseExamples should be returned
 	 * @return a list of SenseExamples for the consumed lu
@@ -46,8 +56,9 @@ public class SenseExampleGenerator {
 		if(result == null){
 			result = new ArrayList<SenseExample>();
 			List<Example> examples = lu.getExamples();
-			for(Example example : examples)
-				result.add(generateSenseExample(example, lu.getWordCategory()));
+			for(Example example : examples) {
+                result.add(generateSenseExample(example, lu.getWordCategory()));
+            }
 			generatedExamples.put(lu, result);
 		}
 		return result;
@@ -63,12 +74,12 @@ public class SenseExampleGenerator {
 			exampleNumber++;
 			return sb.toString();
 			}
-	
+
 	/**
 	 * This method consumes an instance of {@link Example} class and generates the corresponding instance of
 	 * {@link SenseExample} class.
 	 * @param example an instance of Example class for which an instance of Uby's SenseExample class should be returned
-	 * @param pos part of speech of the lexical unit from which the example is derived 
+	 * @param pos part of speech of the lexical unit from which the example is derived
 	 * @return instance of SenseExample class equal to consumed example
 	 */
 	private SenseExample generateSenseExample(Example example, WordCategory pos){
@@ -77,10 +88,12 @@ public class SenseExampleGenerator {
 		if(exampleText != null && !exampleText.equals("") && !exampleText.equals(" ")){
 			senseExample = new SenseExample();
 			senseExample.setId(getNewID());
-			if(pos.equals(WordCategory.verben))
-				senseExample.setExampleType(EExampleType.subcatFrame);
-			else
-				senseExample.setExampleType(EExampleType.senseInstance);
+			if(pos.equals(WordCategory.verben)) {
+                senseExample.setExampleType(EExampleType.subcatFrame);
+            }
+            else {
+                senseExample.setExampleType(EExampleType.senseInstance);
+            }
 			TextRepresentation tr = new TextRepresentation();
 			tr.setLanguageIdentifier(ELanguageIdentifier.GERMAN);
 			tr.setWrittenText(exampleText);
@@ -88,6 +101,6 @@ public class SenseExampleGenerator {
 			temp.add(tr);
 			senseExample.setTextRepresentations(temp);
 		}
-		return senseExample;	
+		return senseExample;
 	}
 }

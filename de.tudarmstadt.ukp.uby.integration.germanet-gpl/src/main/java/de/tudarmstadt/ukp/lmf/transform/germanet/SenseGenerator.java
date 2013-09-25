@@ -1,13 +1,23 @@
-/**
+/*******************************************************************************
  * Copyright 2012
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the GNU Public License v3.0
- * which accompanies this distribution, and is available at
- * http://www.gnu.org/licenses/gpl-3.0.txt
- */
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ ******************************************************************************/
+
 package de.tudarmstadt.ukp.lmf.transform.germanet;
 
 import java.util.ArrayList;
@@ -40,11 +50,11 @@ import de.tuebingen.uni.sfs.germanet.api.Synset;
  *
  */
 public class SenseGenerator {
-	private SynsetGenerator synsetGenerator; // SynsetGenerator
-	private SemanticClassLabelExtractor semanticClassLabelExtractor; // for extraction of semantic class labels
-	private Map<LexUnit, Sense> luSenseMappings = new HashMap<LexUnit, Sense>();
-	private SenseExampleGenerator senseExampleGenerator;
-	
+	private final SynsetGenerator synsetGenerator; // SynsetGenerator
+	private final SemanticClassLabelExtractor semanticClassLabelExtractor; // for extraction of semantic class labels
+	private final Map<LexUnit, Sense> luSenseMappings = new HashMap<LexUnit, Sense>();
+	private final SenseExampleGenerator senseExampleGenerator;
+
 	/**
 	 * Constructs a {@link SenseGenerator} for the consumed {@link GermaNet} instance
 	 * @param gnet GermaNet instance used for obtaining GermaNet's information
@@ -56,7 +66,7 @@ public class SenseGenerator {
 		this.semanticClassLabelExtractor = new SemanticClassLabelExtractor(gnet);
 		this.senseExampleGenerator = new SenseExampleGenerator();
 		}
-	
+
 	/**
 	 * This method consumes a group of LexUnits and creates list of {@link Sense}-instances
 	 * for every {@link LexUnit} of the consumed group
@@ -65,7 +75,7 @@ public class SenseGenerator {
 	 */
 	public List<Sense> generateSenses(Set<LexUnit> luGroup){
 		List<Sense> senses = new ArrayList<Sense>();
-		// Generate Sense for each LexUnit in the group 
+		// Generate Sense for each LexUnit in the group
 		for(LexUnit lu : luGroup){
 			Sense sense = synsetGenerator.getSense(lu);
 			luSenseMappings.put(lu, sense);
@@ -74,7 +84,7 @@ public class SenseGenerator {
 			// Create synset-reference
 			de.tudarmstadt.ukp.lmf.model.semantics.Synset lmfSynset = synsetGenerator.getLMFSynset(lu);
 			sense.setSynset(lmfSynset);
-			
+
 			// set semanticLabels
 			List<SemanticLabel> semanticLabels = new LinkedList<SemanticLabel>();
 			SemanticLabel semanticLabel = new SemanticLabel();
@@ -88,14 +98,14 @@ public class SenseGenerator {
 				semanticLabels.add(semanticLabelArt);
 			}
 			sense.setSemanticLabels(semanticLabels);
-		
+
 			//*** Generating SenseExamples ***//
 			List<SenseExample> senseExamples = senseExampleGenerator.generateSenseExamples(lu);
 			sense.setSenseExamples(senseExamples);
-		
+
 			//*** Setting Definitions ***//
 			sense.setDefinitions(lmfSynset.getDefinitions());
-		
+
 			// *** Generating Monolingual ExternalRef**//
 			MonolingualExternalRef mer = new MonolingualExternalRef();
 			mer.setExternalReference(Integer.toString(lu.getId()));
@@ -103,16 +113,16 @@ public class SenseGenerator {
 			LinkedList<MonolingualExternalRef> mers = new LinkedList<MonolingualExternalRef>();
 			mers.add(mer);
 			sense.setMonolingualExternalRefs(mers);
-			
+
 			// Adding this sense to the group of generated sense for the consumed luGroup
 			senses.add(sense);
-			
+
 			// Set the senseRelations
 			setSenseRelations(lu);
 		}
 		return senses;
 	}
-	
+
 	/**
 	 * This method consumes an instance of {@link LexUnit} and generates sense relations associated with the
 	 * consumed lexical relation
@@ -144,7 +154,7 @@ public class SenseGenerator {
 		}
 		return senseRelations;
 	}
-	
+
 	/**
 	 * This method consumes an instance of {@link LexUnit} and generates sense relations associated with the
 	 * consumed conceptual relation
@@ -174,9 +184,9 @@ public class SenseGenerator {
 		}
 		return senseRelations;
 	}
-	
+
 	/**
-	 * This method consumes a lexical relation and returns the 
+	 * This method consumes a lexical relation and returns the
 	 * corresponding Uby-LMF relation type
 	 * @param lexRel for which Uby-LMF relation type should be returned
 	 * @return lexRel's relation type in Uby-LMF or null if no entry for lexRel exists
@@ -188,13 +198,13 @@ public class SenseGenerator {
 		switch (lexRel){
 		case has_antonym : relType = ERelTypeSemantics.complementary; break;
 		case has_synonym : relType = ERelTypeSemantics.association; break;
-		default : System.err.println("Error, LexicalRelation not recognized: "+lexRel); System.exit(1); 
+		default : System.err.println("Error, LexicalRelation not recognized: "+lexRel); System.exit(1);
 		}
 		return relType;
 	}
-	
+
 	/**
-	 * This method consumes a lexical relation and returns the 
+	 * This method consumes a lexical relation and returns the
 	 * corresponding Uby-LMF relation name
 	 * @param lexRel for which Uby-LMF relation name should be returned
 	 * @return lexRel's relation name in Uby-LMF or null if no entry for lexRel exists
@@ -206,13 +216,13 @@ public class SenseGenerator {
 		switch (lexRel){
 		case has_antonym : relName = ERelNameSemantics.ANTONYM; break;
 		case has_synonym : relName = ERelNameSemantics.SYNONYM; break;
-		default : relName = null; 
+		default : relName = null;
 		}
 		return relName;
 	}
-	
+
 	/**
-	 * This method consumes a conceptual relation and returns the 
+	 * This method consumes a conceptual relation and returns the
 	 * corresponding Uby-LMF relation type
 	 * @param conRel for which Uby-LMF relation type should be returned
 	 * @return conRel relation type in Uby-LMF or null if no entry for conRel exists
@@ -236,13 +246,13 @@ public class SenseGenerator {
 		case has_substance_meronym : relType = ERelTypeSemantics.partWhole; break;
 		case is_entailed_by : relType = ERelTypeSemantics.taxonomic; break;
 		case is_related_to : relType = ERelTypeSemantics.association; break;
-		default : relType = null; 
+		default : relType = null;
 		}
 		return relType;
 	}
-	
+
 	/**
-	 * This method consumes a conceptual relation and returns the 
+	 * This method consumes a conceptual relation and returns the
 	 * corresponding Uby-LMF relation name
 	 * @param conRel for which Uby-LMF relation name should be returned
 	 * @return conRel's relation name in Uby-LMF or null if no entry for conRel exists
@@ -266,38 +276,40 @@ public class SenseGenerator {
 		case has_substance_meronym : relName = ERelNameSemantics.MERONYMSUBSTANCE; break;
 		case is_entailed_by : relName = ERelNameSemantics.ENTAILEDBY; break;
 		case is_related_to : relName = ERelNameSemantics.RELATED; break;
-		default : relName = null; 
+		default : relName = null;
 		}
 		return relName;
 	}
-	
+
 	/**
 	 * This method consumes an instance of {@link LexUnit} and appends all sense relations to
 	 * sense associated with the consumed lexical unit.
-	 * @param lu to which sense, sense relation should be generated and appended 
+	 * @param lu to which sense, sense relation should be generated and appended
 	 * @see Sense
 	 * @see SenseRelation
 	 */
 	private void setSenseRelations(LexUnit lu){
 		List<SenseRelation> senseRelations = new ArrayList<SenseRelation>();
-		
+
 		senseRelations.addAll(generateSenseRelation(lu, LexRel.has_antonym));
 		senseRelations.addAll(generateSenseRelation(lu, LexRel.has_synonym));
-		for(ConRel conRel : ConRel.values())
-			senseRelations.addAll(generateSenseRelation(lu, conRel));
+		for(ConRel conRel : ConRel.values()) {
+            senseRelations.addAll(generateSenseRelation(lu, conRel));
+        }
 		Sense sense = synsetGenerator.getSense(lu);
-		if(!senseRelations.isEmpty())
-			sense.setSenseRelations(senseRelations);
+		if(!senseRelations.isEmpty()) {
+            sense.setSenseRelations(senseRelations);
+        }
 	}
 
 	/**
 	 * Returns instance of {@link SynsetGenerator} associated with this {@link SenseGenerator}
-	 * @return the synset generator associated with this sense generator 
+	 * @return the synset generator associated with this sense generator
 	 */
 	public SynsetGenerator getSynsetGenerator() {
 		return synsetGenerator;
 	}
-	
+
 	/**
 	 * This method consumes a lexical unit and returns the associated sense
 	 * @param lu which associated sense will be returned
