@@ -218,9 +218,9 @@
 				<plugins>
 					<plugin>
 						<inherited>true</inherited>
-						<groupId>com.mycila.maven-license-plugin</groupId>
-						<artifactId>maven-license-plugin</artifactId>
-						<version>1.9.0</version>
+						<groupId>com.mycila</groupId>
+						<artifactId>license-maven-plugin</artifactId>
+						<version>2.5</version>
 						<configuration>
 							<header>${basedir}/.activate_license-check</header>
 							<failIfMissing>true</failIfMissing>
