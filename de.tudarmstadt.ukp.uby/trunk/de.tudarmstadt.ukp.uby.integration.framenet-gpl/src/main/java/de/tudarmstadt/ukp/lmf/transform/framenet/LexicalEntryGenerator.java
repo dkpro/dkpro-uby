@@ -1,13 +1,23 @@
-/**
+/*******************************************************************************
  * Copyright 2012
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the GNU Public License v3.0
- * which accompanies this distribution, and is available at
- * http://www.gnu.org/licenses/gpl-3.0.txt
- */
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ ******************************************************************************/
+
 package de.tudarmstadt.ukp.lmf.transform.framenet;
 
 import java.io.File;
@@ -56,45 +66,45 @@ import de.tudarmstadt.ukp.lmf.model.semantics.SenseExample;
 /**
  * Instance of this class offers methods for creating {@link LexicalEntry} out of FrameNet's data
  * @author Zijad Maksuti, Silvana Hartmann
- * 
+ *
  */
 public class LexicalEntryGenerator {
-	private SemanticPredicateGenerator semanticPredicateGenerator;
+	private final SemanticPredicateGenerator semanticPredicateGenerator;
 	private int lexicalEntryNumber; // Running number used for creating IDs of LexicalEntries
 	private int senseNumber; // Running number used for creating IDs of Senses
 	private int senseExampleNumber; // Running number used for creating IDs of SenseExamples
-	private FrameNet fn; // FrameNet object, used for obtaining needed informations out of FrameNet's files
-	
-	
+	private final FrameNet fn; // FrameNet object, used for obtaining needed informations out of FrameNet's files
+
+
 	// all LexicalEntries produced by this LexicalEntryGenerator
-	private List<LexicalEntry> lexicalEntries = new LinkedList<LexicalEntry>();
-	
+	private final List<LexicalEntry> lexicalEntries = new LinkedList<LexicalEntry>();
+
 	/*
 	 * Groups of LexicalUnits with equal lemma,
 	 * divided by PartOfSpeech
 	 */
 	private Map<PartOfSpeech, HashMap<String, HashSet<LexicalUnit>>> mappings;
-	
+
 	// Mapping between luGroups and corresponding LexicalEntries
-	private Map<Set<LexicalUnit>, LexicalEntry> groupLEMappings = new HashMap<Set<LexicalUnit>, LexicalEntry>();
-	
+	private final Map<Set<LexicalUnit>, LexicalEntry> groupLEMappings = new HashMap<Set<LexicalUnit>, LexicalEntry>();
+
 	// Mappings used for creating targetLexicalEntry attribute in Component class
-	private Map<PartOfSpeech, Map<String, List<Component>>> components = new HashMap<PartOfSpeech, Map<String,List<Component>>>(); // all Components
-	
+	private final Map<PartOfSpeech, Map<String, List<Component>>> components = new HashMap<PartOfSpeech, Map<String,List<Component>>>(); // all Components
+
 	/*
 	 *  This mapping contains all "dummy" LexicalEntries,
 	 *  that are created in order to set the targetLexicalEntry attribute in Component class
 	 */
-	private Map<PartOfSpeech, Map<String, LexicalEntry>> dummyLEs = new HashMap<PartOfSpeech, Map<String, LexicalEntry>>();
-	
+	private final Map<PartOfSpeech, Map<String, LexicalEntry>> dummyLEs = new HashMap<PartOfSpeech, Map<String, LexicalEntry>>();
+
 	// used for extracting annotations
 	private AnnotationCorpus ac;
-	
-	// directory where FrameNet's files are located 
-	private String fnhome;
-	
-	private Logger logger = Logger.getLogger(FNConverter.class.getName());
-	
+
+	// directory where FrameNet's files are located
+	private final String fnhome;
+
+	private final Logger logger = Logger.getLogger(FNConverter.class.getName());
+
 	/**
 	 * Constructs an instance of LexicalEntryGenerator, which provides methods for creating <br>
 	 * LexicalEntries out of FrameNet's files
@@ -107,7 +117,7 @@ public class LexicalEntryGenerator {
 		this.fn = fn;
 		this.semanticPredicateGenerator = semanticPredicateGenerator;
 //		ac = new AnnotationCorpus15(fn, logger);
-		fnhome = System.getenv("UBY_HOME")+"/FrameNet/fndata-1.5"; 
+		fnhome = System.getenv("UBY_HOME")+"/FrameNet/fndata-1.5";
 		System.err.println("LUS group to");
 		groupLUs();
 		System.err.println("LUS grouped");
@@ -122,21 +132,22 @@ public class LexicalEntryGenerator {
 		updateComponents();
 		System.err.println("Compontents updated");
 	}
-	
+
 	/**
 	 * This method iterates over all groups of LexicalEntries and <br>
 	 * creates a {@link LexicalEntry} for every group of Lexemes
 	 * @see {@link Lexeme}
 	 */
 	private void createLexicalEntries(){
-		for(PartOfSpeech pos : mappings.keySet())
-			for(HashSet<LexicalUnit> luGroup : mappings.get(pos).values()){
+		for(PartOfSpeech pos : mappings.keySet()) {
+            for(HashSet<LexicalUnit> luGroup : mappings.get(pos).values()){
 				LexicalEntry lexicalEntry = createLexicaltEntry(luGroup);
 				groupLEMappings.put(luGroup, lexicalEntry);
 				lexicalEntries.add(lexicalEntry);
 			}
+        }
 	}
-	
+
 	/**
 	 * This method creates a {@link LexicalEntry} based on the
 	 * consumed group of LexicalUnits
@@ -152,9 +163,12 @@ public class LexicalEntryGenerator {
 		ListOfComponents listOfComponents = null;
 		List<Sense> senses = new ArrayList<Sense>();
 		for(LexicalUnit lu : luGroup){
-			if(pos == null)
-				pos = lu.getPartOfSpeech();
-			if(lemmaString == null);
+			if(pos == null) {
+                pos = lu.getPartOfSpeech();
+            }
+			if(lemmaString == null) {
+                ;
+            }
 //				lemmaString = lu.getLexemeString(); //wrong order for some mwes from API
 				// workaround:
 				List<Lexeme> lexemeList = lu.getLexemes(); // get all units
@@ -168,7 +182,7 @@ public class LexicalEntryGenerator {
 				} else {				// unigram lemma
 					lemmaString = lu.getLexemeString();
 				}
-			
+
 			// CREATING SENSE FOR THE LU
 			Sense sense = new Sense();
 			// setting id
@@ -186,7 +200,7 @@ public class LexicalEntryGenerator {
 			List<Definition> definitions = new ArrayList<Definition>();
 			definitions.add(definition);
 			sense.setDefinitions(definitions);
-			
+
 			// setting MonolingualExternalRef
 			MonolingualExternalRef monolingualExternalRef = new MonolingualExternalRef();
 			monolingualExternalRef.setExternalSystem("FrameNet 1.5 lexical unit ID");
@@ -194,7 +208,7 @@ public class LexicalEntryGenerator {
 			List<MonolingualExternalRef> monolingualExternalRefs = new ArrayList<MonolingualExternalRef>();
 			monolingualExternalRefs.add(monolingualExternalRef);
 			sense.setMonolingualExternalRefs(monolingualExternalRefs);
-			
+
 			// setting PredicativeRepresentation
 			SemanticPredicate semanticPredicate = semanticPredicateGenerator.getSemanticPredicate(lu.getFrame());
 			if(semanticPredicate == null){
@@ -211,9 +225,9 @@ public class LexicalEntryGenerator {
 			List<PredicativeRepresentation> predicativeRepresentations = new ArrayList<PredicativeRepresentation>();
 			predicativeRepresentations.add(predicativeRepresentation);
 			sense.setPredicativeRepresentations(predicativeRepresentations);
-			
+
 			// SETTING incorporatedSemArg
-			// Parse the corpus in order to get more information about the lu 
+			// Parse the corpus in order to get more information about the lu
 			ac = new AnnotationCorpus15(fn, logger);//works
 			ac.parse(new File(fnhome+File.separator+"lu"), "lu"+lu.getId()+".xml");
 			AnnotatedLexicalUnit alu = ac.getAnnotation(lu);
@@ -228,7 +242,7 @@ public class LexicalEntryGenerator {
 						semanticArguments = new ArrayList<SemanticArgument>();
 					}
 					if (semanticArguments.size()==0){
-						incorporatedArgument = semanticPredicateGenerator.createIncorporatedSemanticArgument(incorporatedFEName); 
+						incorporatedArgument = semanticPredicateGenerator.createIncorporatedSemanticArgument(incorporatedFEName);
 						semanticArguments.add(incorporatedArgument);
 					} else { // change the isIncorporated Flag of the corresponding argument
 						for (SemanticArgument semanticArgument: semanticArguments){
@@ -260,7 +274,7 @@ public class LexicalEntryGenerator {
 						} else {// semantic label format
 							SemanticLabel semanticLabel = new SemanticLabel();
 							if (s.equalsIgnoreCase("Negative_judgment")||s.equalsIgnoreCase("Positive_judgment")){
-								//type 
+								//type
 								semanticLabel.setType(ELabelTypeSemantics.sentiment);
 								semanticLabel.setLabel(t.getName());
 							} else if (s.equalsIgnoreCase("Bound_LU") || s.equalsIgnoreCase("Bound_dependent_LU") || s.equalsIgnoreCase("Support")||s.equals("223")){
@@ -276,7 +290,7 @@ public class LexicalEntryGenerator {
 							} else {
 								// this should be ontological types
 								semanticLabel.setType(ELabelTypeSemantics.semanticCategory);
-								semanticLabel.setLabel(t.getName()); 
+								semanticLabel.setLabel(t.getName());
 							}
 							// for all semantic labels
 							// creating MonolingualExternalRef for SemanticLabel
@@ -287,25 +301,28 @@ public class LexicalEntryGenerator {
 							merefs.add(meref);
 							semanticLabel.setMonolingualExternalRefs(monolingualExternalRefs);
 							List<SemanticLabel> semanticLabels = sense.getSemanticLabels();
-							if(semanticLabels == null)
-								semanticLabels = new ArrayList<SemanticLabel>();
+							if(semanticLabels == null) {
+                                semanticLabels = new ArrayList<SemanticLabel>();
+                            }
 							semanticLabels.add(semanticLabel);
 							sense.setSemanticLabels(semanticLabels);
 						}
 					}
 				}
-				
+
 				List<Lexeme> lexemes = lu.getLexemes();
 				// Creating a list of components for multiword LexicalUnits
-				if(lexemes.size() > 1)
-					listOfComponents = createListOfComponents(lexemes);
-				
-				
+				if(lexemes.size() > 1) {
+                    listOfComponents = createListOfComponents(lexemes);
+                }
+
+
 				List<SenseExample> senseExamples = sense.getSenseExamples();
-				if(senseExamples == null)
-					senseExamples = new ArrayList<SenseExample>();
+				if(senseExamples == null) {
+                    senseExamples = new ArrayList<SenseExample>();
+                }
 				sense.setSenseExamples(senseExamples);
-				
+
 				// GETTING ANNOTATION SENTENCES
 				for(Sentence sentence : alu.getSentences()){
 					// Creating a SenseExample for every Sentence
@@ -323,36 +340,38 @@ public class LexicalEntryGenerator {
 					senseExamples.add(senseExample);
 				}
 			}
-			
+
 			// ##### CREATING FREQUENCY
 			List<Frequency> frequencies = sense.getFrequencies();
-			if(frequencies == null)
-				frequencies = new ArrayList<Frequency>();
-			
+			if(frequencies == null) {
+                frequencies = new ArrayList<Frequency>();
+            }
+
 			// for annotated instances
 			Frequency frequency = new Frequency();
 			frequency.setFrequency(lu.getSentCountAnnotated());
 			frequency.setGenerator("annotated_instances");
 			frequencies.add(frequency);
-			
+
 			// total
 			Frequency freqTotal = new Frequency();
 			freqTotal.setFrequency(lu.getSentCountTotal());
 			freqTotal.setGenerator("all_instances");
 			frequencies.add(freqTotal);
-			
+
 			sense.setFrequencies(frequencies);
 			senses.add(sense);
 		}
 		lexicalEntry.setSenses(senses);
 		//Setting POS
 		EPartOfSpeech epos = FNUtils.getPOS(pos);
-		
-		if(epos == null)
-			posNotFound(pos);
-			
+
+		if(epos == null) {
+            posNotFound(pos);
+        }
+
 		lexicalEntry.setPartOfSpeech(epos);
-		
+
 		// Creting a lemma
 		Lemma lemma = new Lemma();
 		FormRepresentation formRepresentation = new FormRepresentation();
@@ -362,7 +381,7 @@ public class LexicalEntryGenerator {
 		formRepresentations.add(formRepresentation);
 		lemma.setFormRepresentations(formRepresentations);
 		lexicalEntry.setLemma(lemma);
-		
+
 		LexicalEntry control = groupLEMappings.put(luGroup, lexicalEntry);
 		if(control != null){
 			StringBuffer sb = new StringBuffer(128);
@@ -374,19 +393,20 @@ public class LexicalEntryGenerator {
 			logger.log(Level.SEVERE, sb.toString());
 			System.exit(1);
 		}
-		
+
 		// Setting listOfComponents
-		if(listOfComponents != null)
-			lexicalEntry.setListOfComponents(listOfComponents);
-		
+		if(listOfComponents != null) {
+            lexicalEntry.setListOfComponents(listOfComponents);
+        }
+
 		return lexicalEntry;
 	}
-	
+
 	/**
 	 * This method consumes a list of Lexemes and creates a {@link ListOfComponents}. <br>
 	 * The Components do NOT have the  targetLexicalEntry attribute set!
 	 * @param lexemes the list of Lexemes from which a ListOfComponents should be generated
-	 * @return ListOfComponents based on consumed lexemes  
+	 * @return ListOfComponents based on consumed lexemes
 	 * @see {@link Component}
 	 * @see {@link Lexeme}
 	 */
@@ -402,13 +422,14 @@ public class LexicalEntryGenerator {
 			PartOfSpeech pos = lexeme.getPartOfSpeech();
 			components.add(component);
 			String name = lexeme.getValue();
-			
+
 			// Record for creation of targetLexicalEntry attribute later
 			Map<String, List<Component>> mapping =  this.components.get(pos);
-			
+
 			List<Component> cmps = mapping.get(name);
-			if(cmps == null)
-				cmps = new LinkedList<Component>();
+			if(cmps == null) {
+                cmps = new LinkedList<Component>();
+            }
 			cmps.add(component);
 			mapping.put(name, cmps);
 		}
@@ -416,7 +437,7 @@ public class LexicalEntryGenerator {
 		return listOfComponents;
 	}
 
-	
+
 	/**
 	 * This method creates an ID for a {@link LexicalEntry}
 	 * @return ID for an instance of LexicalEntry
@@ -433,9 +454,9 @@ public class LexicalEntryGenerator {
 	 * @see {@link Component}
 	 */
 	private void updateComponents() {
-		for(PartOfSpeech pos : components.keySet())
-			for(String lemma : components.get(pos).keySet())
-				for(Component component : components.get(pos).get(lemma)){
+		for(PartOfSpeech pos : components.keySet()) {
+            for(String lemma : components.get(pos).keySet()) {
+                for(Component component : components.get(pos).get(lemma)){
 					Set<LexicalUnit> luGroup = mappings.get(pos).get(lemma);
 					LexicalEntry lexicalEntry = null;
 					if(luGroup != null){
@@ -449,11 +470,12 @@ public class LexicalEntryGenerator {
 							System.exit(1);
 						}
 					}
-					else
-						// when no luGroup with this lemma has been found
+                    else {
+                        // when no luGroup with this lemma has been found
 						// check if a dummy LexicalEntry exists
 						lexicalEntry = dummyLEs.get(pos).get(lemma);
-					
+                    }
+
 					if(lexicalEntry != null){
 						// component has a corresponding LexicalEntry
 						component.setTargetLexicalEntry(lexicalEntry);
@@ -463,8 +485,9 @@ public class LexicalEntryGenerator {
 						// a new LexicalEntry will be created
 						lexicalEntry = new LexicalEntry();
 						EPartOfSpeech epos = FNUtils.getPOS(pos);
-						if(epos == null)
-							posNotFound(pos);
+						if(epos == null) {
+                            posNotFound(pos);
+                        }
 						lexicalEntry.setPartOfSpeech(epos);
 						lexicalEntry.setId(createID());
 						List<FormRepresentation> formRepresentations = new ArrayList<FormRepresentation>();
@@ -477,34 +500,37 @@ public class LexicalEntryGenerator {
 						lemmaObj.setFormRepresentations(formRepresentations);
 						component.setTargetLexicalEntry(lexicalEntry);
 						lexicalEntry.setLemma(lemmaObj);
-						
-						// Add a record for future 
+
+						// Add a record for future
 						dummyLEs.get(pos).put(lemma, lexicalEntry);
 						lexicalEntries.add(lexicalEntry);
 					}
 				}
+            }
+        }
 	}
-	
+
 	/**
 	 * This method groups all LexicalUnits by lemma and part of speech
 	 */
 	private void groupLUs() {
 		mappings = new HashMap<PartOfSpeech, HashMap<String, HashSet<LexicalUnit>>>();
 		PartOfSpeech[] poses = PartOfSpeech.values();
-		
-		for(PartOfSpeech pos : poses)
-			mappings.put(pos, new HashMap<String, HashSet<LexicalUnit>>());
+
+		for(PartOfSpeech pos : poses) {
+            mappings.put(pos, new HashMap<String, HashSet<LexicalUnit>>());
+        }
 
 		for(LexicalUnit lu : fn.getLexicalUnits()){
 			HashMap<String, HashSet<LexicalUnit>> lemmaLUMappings = mappings.get(lu.getPartOfSpeech());
 			String lemma = lu.getLexemeString(); // lu's lemma
-			
 
-			
+
+
 			// Appending partOfSpeech of components for multiword expressions
 			List<Lexeme> lexemes = lu.getLexemes();
-			if(lexemes.size() > 1)
-				for(Lexeme lexeme : lexemes){
+			if(lexemes.size() > 1) {
+                for(Lexeme lexeme : lexemes){
 					/*
 					 * POS, isBreakBefor, isHeadWord and Order are relevant when grouping
 					 * multiword LexicalUnits
@@ -514,21 +540,23 @@ public class LexicalEntryGenerator {
 					lemma = lemma.concat("isHeadWord:").concat(Boolean.toString(lexeme.isHeadword()));
 					lemma = lemma.concat("order:").concat(Integer.toString(lexeme.getOrder()));
 				}
-			
+            }
+
 			HashSet<LexicalUnit> luGroup = lemmaLUMappings.get(lemma);
-			if(luGroup == null)
-				luGroup = new HashSet<LexicalUnit>();
+			if(luGroup == null) {
+                luGroup = new HashSet<LexicalUnit>();
+            }
 			luGroup.add(lu);
 			lemmaLUMappings.put(lemma, luGroup);
 		}
 		}
-	
+
 	/**
 	 * This method is called when an associated part of speech, defined in {@link EPartOfSpeech}, <br>
 	 * could not be found for part of speech defined in {@link PartOfSpeech}. <br>
 	 * It informs the user about the situation and terminates the running process
 	 * @param pos part of speech defined in {@link PartOfSpeech}, for which an associated part of speech in {@link EPartOfSpeech} could not be found
-	 * 
+	 *
 	 */
 	private void posNotFound(PartOfSpeech pos){
 		StringBuffer sb = new StringBuffer(128);

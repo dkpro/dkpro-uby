@@ -1,13 +1,23 @@
-/**
+/*******************************************************************************
  * Copyright 2012
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the GNU Public License v3.0
- * which accompanies this distribution, and is available at
- * http://www.gnu.org/licenses/gpl-3.0.txt
- */
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ ******************************************************************************/
+
 package de.tudarmstadt.ukp.lmf.transform.germanet;
 
 import java.io.BufferedReader;
@@ -22,7 +32,15 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import de.tudarmstadt.ukp.lmf.model.enums.*;
+import de.tudarmstadt.ukp.lmf.model.enums.ECase;
+import de.tudarmstadt.ukp.lmf.model.enums.EComplementizer;
+import de.tudarmstadt.ukp.lmf.model.enums.EDeterminer;
+import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalFunction;
+import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalNumber;
+import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticCategory;
+import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticProperty;
+import de.tudarmstadt.ukp.lmf.model.enums.ETense;
+import de.tudarmstadt.ukp.lmf.model.enums.EVerbForm;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticArgument;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
 import de.tudarmstadt.ukp.lmf.model.semantics.SynSemArgMap;
@@ -32,46 +50,46 @@ import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrame;
 import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticArgument;
 
 /**
- * This class extracts subcategorization frames of 
+ * This class extracts subcategorization frames of
  * <a href="URL#http://www.sfs.uni-tuebingen.de/lsd/index.shtml">GermaNet 7.0</a>
- * by parising subcategorization-mapping file. 
+ * by parising subcategorization-mapping file.
  * @author Zijad Maksuti
  * @author Judith Eckle-Kohler
- * 
+ *
  */
 public class SubcategorizationFrameExtractor {
-	private InputStream subcatStream; // The file containing subcatMappings
+	private final InputStream subcatStream; // The file containing subcatMappings
 	private int subcatFrameNumber = 0;
 	private int syntacticArgumentNumber = 0; // Running number for creating ID's of SyntacticArguments
-	private Map<String, SubcategorizationFrame> codeFrameMappings  = new HashMap<String, SubcategorizationFrame>();
-	private Map<String, SemanticPredicate> codePredMappings  = new HashMap<String, SemanticPredicate>();
-	
-	private Map<String, String> codeSynSemArgMapping  = new HashMap<String, String>();
-	private Map<String, String> synSemArgSynArgMapping  = new HashMap<String, String>();
-	private Map<String, SubcategorizationFrame> synArgSubcatFrameMapping  = new HashMap<String, SubcategorizationFrame>();
-	
-	private List<SemanticPredicate> semanticPredicates = new LinkedList<SemanticPredicate>(); // List of all SemanticPredicates
+	private final Map<String, SubcategorizationFrame> codeFrameMappings  = new HashMap<String, SubcategorizationFrame>();
+	private final Map<String, SemanticPredicate> codePredMappings  = new HashMap<String, SemanticPredicate>();
+
+	private final Map<String, String> codeSynSemArgMapping  = new HashMap<String, String>();
+	private final Map<String, String> synSemArgSynArgMapping  = new HashMap<String, String>();
+	private final Map<String, SubcategorizationFrame> synArgSubcatFrameMapping  = new HashMap<String, SubcategorizationFrame>();
+
+	private final List<SemanticPredicate> semanticPredicates = new LinkedList<SemanticPredicate>(); // List of all SemanticPredicates
 	private int semanticPredicateNumber = 0;
 	private int semanticArgumentNumber = 0;
-	
-	private List<SynSemCorrespondence> synSemCorrespondences = new LinkedList<SynSemCorrespondence>();
-	private int synSemCorrespondenceNumber = 0; // Running number for creating IDs
-	
-	// Mapping between LMF-Code of arguments (syntactic + semantic roles) and SynSemCorrespondence
-	private Map<String, SynSemCorrespondence> synsemargsSynSemCorrMap  = new HashMap<String, SynSemCorrespondence>();
 
-	private Logger logger = Logger.getLogger(GNConverter.class.getName());
-	
+	private final List<SynSemCorrespondence> synSemCorrespondences = new LinkedList<SynSemCorrespondence>();
+	private int synSemCorrespondenceNumber = 0; // Running number for creating IDs
+
+	// Mapping between LMF-Code of arguments (syntactic + semantic roles) and SynSemCorrespondence
+	private final Map<String, SynSemCorrespondence> synsemargsSynSemCorrMap  = new HashMap<String, SynSemCorrespondence>();
+
+	private final Logger logger = Logger.getLogger(GNConverter.class.getName());
+
 	/**
 	 * Constructs a {@link SubcategorizationFrameExtractor}
 	 * @param subcatStream stream of the File containing the SubcategorizationFrame-mappings
-	 * @return subcategorization-frame extractor based on the consumed subcatStream 
+	 * @return subcategorization-frame extractor based on the consumed subcatStream
 	 */
 	public SubcategorizationFrameExtractor(InputStream subcatStream){
 		this.subcatStream = subcatStream;
 		parseSubcatMappings();
 	}
-	
+
 	/**
 	 * This method consumes a frame
 	 * and returns it's corresponding instance of {@link SubcategorizationFrame} class
@@ -81,7 +99,7 @@ public class SubcategorizationFrameExtractor {
 	public SubcategorizationFrame getSubcategorizationFrame(String frame){
 		return codeFrameMappings.get(frame);
 	}
-	
+
 	/**
 	 * This method consumes a frame string-representation
 	 * and returns it's corresponding instance of {@link SemanticPredicate} class
@@ -92,7 +110,7 @@ public class SubcategorizationFrameExtractor {
 		return codePredMappings.get(frame);
 	}
 
-	
+
 	/**
 	 * Returns a sorted list of all subcategorization frames contained in this extractor
 	 * @return all subcategorization frames in this extractor
@@ -105,7 +123,7 @@ public class SubcategorizationFrameExtractor {
 		Collections.sort(result);
 		return result;
 	}
-	
+
 	/**
 	 * This method returns all semantic predicates generated by this extractor
 	 * @return a list of all semantic predicates generated by this extractor
@@ -115,7 +133,7 @@ public class SubcategorizationFrameExtractor {
 	public List<SemanticPredicate> getSemanticPredicates(){
 		return semanticPredicates;
 	}
-	
+
 	/**
 	 * This method returns all instances of {@link SynSemCorrespondence} class, generated by this extractor
 	 * @return syntacti-semantic correspondences generated by this extractor.
@@ -129,15 +147,17 @@ public class SubcategorizationFrameExtractor {
 	 */
 	private void parseSubcatMappings(){
 		logger.log(Level.INFO, "Parsing subcategorization mappings...");
-		
+
 		BufferedReader input;
 		try {
 			input = new BufferedReader(new InputStreamReader(subcatStream));
-		
+
 			String line;
-			while ((line = input.readLine()) != null)
-				if(!line.startsWith("#")) // Omit comments
-					parseLine(line);
+			while ((line = input.readLine()) != null) {
+                if(!line.startsWith("#")) {
+                    parseLine(line);
+                }
+            }
 		}
 		catch (Exception e) {
 			StringBuffer sb = new StringBuffer(128);
@@ -146,9 +166,9 @@ public class SubcategorizationFrameExtractor {
 			logger.log(Level.SEVERE, sb.toString());
 			System.exit(1);
 		}
-		
+
 		logger.log(Level.INFO, "Parsing subcategorization mappings done");
-		
+
 		// create SubcategorizationFrames
 		Iterator<String> codeIterator = codeSynSemArgMapping.keySet().iterator();
 		while (codeIterator.hasNext()) {
@@ -159,34 +179,34 @@ public class SubcategorizationFrameExtractor {
 			if (!synArgSubcatFrameMapping.containsKey(synArgs)) {
 				SubcategorizationFrame subcategorizationFrame = new SubcategorizationFrame();
 				subcategorizationFrame.setId("GN_SubcategorizationFrame_".concat(Integer.toString(subcatFrameNumber)));
-				subcatFrameNumber++;	
+				subcatFrameNumber++;
 				subcategorizationFrame = parseArguments(synSemArgs,subcategorizationFrame);
 
-				synArgSubcatFrameMapping.put(synArgs,subcategorizationFrame);	
+				synArgSubcatFrameMapping.put(synArgs,subcategorizationFrame);
 				codeFrameMappings.put(code, subcategorizationFrame);
 				if (synSemArgs.contains("semanticRole")) { //only few GN-frames specify a semantic role
 					SemanticPredicate semanticPredicate = new SemanticPredicate();
 					semanticPredicate = parseSemanticArguments(synSemArgs,subcategorizationFrame);
 					codePredMappings.put(code, semanticPredicate);
-					semanticPredicates.add(semanticPredicate);				
-				} 
+					semanticPredicates.add(semanticPredicate);
+				}
 			}
 			else {
-				
+
 				SubcategorizationFrame subcategorizationFrame = synArgSubcatFrameMapping.get(synArgs);
 				codeFrameMappings.put(code, subcategorizationFrame);
-				
+
 				if (synSemArgs.contains("semanticRole")) { //only few GN-frames specify a semantic role
 					SemanticPredicate semanticPredicate = new SemanticPredicate();
 					semanticPredicate = parseSemanticArguments(synSemArgs,subcategorizationFrame);
 					codePredMappings.put(code, semanticPredicate);
-					semanticPredicates.add(semanticPredicate);				
-				} 				
+					semanticPredicates.add(semanticPredicate);
+				}
 			}
 		}
-								
+
 	}
-	
+
 	/**
 	 * This method parses a line of SubcatMappings-file
 	 * Line of SubcatMappings-file has the form: {@literal <CODE>%<Arg>:..:<Arg>}
@@ -195,13 +215,13 @@ public class SubcategorizationFrameExtractor {
 	private void parseLine(String line) {
 		String [] parts = line.split("%");
 		codeSynSemArgMapping.put(parts[0], parts[1]);
-		
+
 		if (parts[1].contains("semanticRole")) {
 			String synArgs = parts[1].replaceFirst(",semanticRole=[a-z]+", "");
 			synSemArgSynArgMapping.put(parts[1], synArgs);
-			
+
 		} else {
-			synSemArgSynArgMapping.put(parts[1], parts[1]);	
+			synSemArgSynArgMapping.put(parts[1], parts[1]);
 		}
 	}
 
@@ -217,11 +237,11 @@ public class SubcategorizationFrameExtractor {
 		SubcategorizationFrame scFrame = subcatFrame;
 		List<SyntacticArgument> synArgs = new LinkedList<SyntacticArgument>();
 		String[] args = synSemArgs.split(":");
-		for(String arg : args) {			
-			if (!arg.contains("syntacticProperty")) {		
+		for(String arg : args) {
+			if (!arg.contains("syntacticProperty")) {
 				SyntacticArgument syntacticArgument = new SyntacticArgument();
 				syntacticArgument.setId("GN_SyntacticArgument_".concat(Integer.toString(syntacticArgumentNumber)));
-				syntacticArgumentNumber++;	
+				syntacticArgumentNumber++;
 				String[] atts = arg.split(",");
 				for(String att : atts){
 					String [] splits = att.split("=");
@@ -258,7 +278,7 @@ public class SubcategorizationFrameExtractor {
 					if(attName.equals("lex")) {
 						syntacticArgument.setLexeme(splits[1]);
 					}
-					if(attName.equals("verbForm")) {						
+					if(attName.equals("verbForm")) {
 						syntacticArgument.setVerbForm(EVerbForm.valueOf(splits[1]));
 					}
 					if(attName.equals("tense")) {
@@ -266,25 +286,25 @@ public class SubcategorizationFrameExtractor {
 					}
 					if(attName.equals("complementizer")) {
 						syntacticArgument.setComplementizer(EComplementizer.valueOf(splits[1]));
-					}																	
+					}
 				}
-				synArgs.add(syntacticArgument);								
+				synArgs.add(syntacticArgument);
 			} else {
 				String [] splits = arg.split("=");
 				String sp = splits[1];
 				if (sp.equals("raising")) {
-					sp = sp.replaceAll("raising", "subjectRaising");							
+					sp = sp.replaceAll("raising", "subjectRaising");
 				}
 				LexemeProperty lexemeProperty = new LexemeProperty();
 				lexemeProperty.setSyntacticProperty(ESyntacticProperty.valueOf(sp));
 				scFrame.setLexemeProperty(lexemeProperty);
-			} 	
+			}
 		}
-		scFrame.setSyntacticArguments(synArgs);		
+		scFrame.setSyntacticArguments(synArgs);
 		return scFrame;
-	}		
-		
-	
+	}
+
+
 	/**
 	 * This method consumes the part of the line of subcategorization mapping file encoding semantic arguments. <br>
 	 * It parses the arguments and returns an instance of {@link SemanticPredicate} class containing the arguments
@@ -299,13 +319,13 @@ public class SubcategorizationFrameExtractor {
 		semanticPredicate.setId("GN_SemanticPredicate_".concat(Integer.toString(semanticPredicateNumber)));
 		semanticPredicateNumber++;
 		List<SemanticArgument> semanticArguments = new LinkedList<SemanticArgument>();
-		List<SynSemArgMap> synSemArgMaps = new LinkedList<SynSemArgMap>();	
+		List<SynSemArgMap> synSemArgMaps = new LinkedList<SynSemArgMap>();
 		SynSemArgMap synSemArgMap = new SynSemArgMap();
-		
+
 		String[] args = synSemArgs.split(":");
 		int index = 0;
 		// iterate over syntactic Arguments
-		for (SyntacticArgument synArg: subcategorizationFrame.getSyntacticArguments()) {			
+		for (SyntacticArgument synArg: subcategorizationFrame.getSyntacticArguments()) {
 			String synsemArg = args[index];
 			if (synsemArg.contains("syntacticProperty")) {
 				index++;
@@ -322,16 +342,16 @@ public class SubcategorizationFrameExtractor {
 					semanticArgumentNumber++;
 					semanticArgument.setSemanticRole(splits[1]);
 					semanticArguments.add(semanticArgument);
-					// Generate SynSemArgMapping	
+					// Generate SynSemArgMapping
 					synSemArgMap.setSyntacticArgument(synArg);
 					synSemArgMap.setSemanticArgument(semanticArgument);
 					synSemArgMaps.add(synSemArgMap);
-				}																									
+				}
 			}
-			index++;									
-		}	
+			index++;
+		}
 		semanticPredicate.setSemanticArguments(semanticArguments);
-		
+
 		SynSemCorrespondence synSemCorrespondence = new SynSemCorrespondence();
 		synSemCorrespondence.setId("GN_SynSemCorrespondence_".concat(Integer.toString(synSemCorrespondenceNumber)));
 		synSemCorrespondenceNumber++;
@@ -340,5 +360,5 @@ public class SubcategorizationFrameExtractor {
 		synsemargsSynSemCorrMap.put(synSemArgs,synSemCorrespondence);
 		return semanticPredicate;
 	}
-	
+
 }

@@ -1,13 +1,23 @@
-/**
+/*******************************************************************************
  * Copyright 2012
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the GNU Public License v3.0
- * which accompanies this distribution, and is available at
- * http://www.gnu.org/licenses/gpl-3.0.txt
- */
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ ******************************************************************************/
+
 package de.tudarmstadt.ukp.lmf.transform.wordnet;
 
 import java.util.ArrayList;
@@ -41,26 +51,26 @@ import de.tudarmstadt.ukp.lmf.transform.wordnet.util.IndexSenseReader;
  *
  */
 public class SenseGenerator {
-	
-	private IndexSenseReader isr;
+
+	private final IndexSenseReader isr;
 
 	/*
 	 * Synset generator used for obtaining mappings between
 	 * WordNet's synsets and synsets defined in Uby-LMF
 	 */
-	private SynsetGenerator synsetGenerator;
+	private final SynsetGenerator synsetGenerator;
 
 	// used for creating IDs of SenseExamples
 	private int senseExampleNumber=0;
 
 	// Running number for creating Sense-IDs
-	private int lmfSenseNumber; 
-	
+	private int lmfSenseNumber;
+
 	// Mappings between lexemes and associated Senses
-	private Map<Word, Sense> lexemeSenseMappings = new HashMap<Word, Sense>();
-	
-	private Logger logger = Logger.getLogger(WNConverter.class.getName());
-	
+	private final Map<Word, Sense> lexemeSenseMappings = new HashMap<Word, Sense>();
+
+	private final Logger logger = Logger.getLogger(WNConverter.class.getName());
+
 	/**
 	 * Constructs a {@link SenseGenerator} based on the consumed parameters
 	 * @param synsetGenerator a SynsetGenerator used for obtaining Synsets
@@ -73,7 +83,7 @@ public class SenseGenerator {
 		this.synsetGenerator = synsetGenerator;
 		this.isr = isr;
 	}
-	
+
 	/**
 	 * This method consumes a {@link Set} of lexemes and generates a list of Senses. <br>
 	 * Every {@link Sense} in the returned list is associated with one lexeme in the consumed Set.
@@ -82,13 +92,14 @@ public class SenseGenerator {
 	 * @see Word
 	 * @deprecated use {@link #generateSenses(Set, LexicalEntry)} instead
 	 */
-	public List<Sense> generateSenses(Set<Word> lexemeGroup){
+	@Deprecated
+    public List<Sense> generateSenses(Set<Word> lexemeGroup){
 		List<Sense> result = new ArrayList<Sense>();
-		
+
 		// a list of Senses that need a dummy sense number
 		List<Sense> needDummySenseNumber = new ArrayList<Sense>();
 		int nextIndex = 1; // dummy index
-		
+
 		// every lexeme has a sense of it's own
 		for(Word lexeme : lexemeGroup){
 			Sense sense = new Sense();
@@ -99,8 +110,9 @@ public class SenseGenerator {
 			String senseNumber = isr.getSenseNumber(lexeme.getSenseKey());
 			if(senseNumber != null){
 				int index = Integer.parseInt(senseNumber);
-				if(nextIndex <= index)
-					nextIndex = index+1;
+				if(nextIndex <= index) {
+                    nextIndex = index+1;
+                }
 				sense.setIndex(index);
 			}
 			else{
@@ -112,9 +124,9 @@ public class SenseGenerator {
 				sb.append("adding a dummy value of sense number");
 				logger.log(Level.WARNING, sb.toString());
 			}
-			
+
 			net.sf.extjwnl.data.Synset lexemeSynset = lexeme.getSynset(); // lexemes Synset
-			
+
 			//set Synset
 			Synset lmfSynset = synsetGenerator.getLMFSynset(lexemeSynset);
 			if(lmfSynset == null){
@@ -125,7 +137,7 @@ public class SenseGenerator {
 				logger.log(Level.SEVERE, sb.toString());
 				System.exit(1);
 			}
-			
+
 			sense.setSynset(lmfSynset);
 			// set semanticLabel
 			List<SemanticLabel> semanticLabels = new LinkedList<SemanticLabel>();
@@ -133,12 +145,12 @@ public class SenseGenerator {
 			semanticLabels.add(semanticLabel);
 			semanticLabel.setLabel(lexemeSynset.getLexFileName());
 			semanticLabel.setType(ELabelTypeSemantics.semanticField);
-			
+
 			sense.setSemanticLabels(semanticLabels);
-			
+
 			// Creating MonolingualExternalRef for a Sense
 			MonolingualExternalRef monolingualExternalRef = new MonolingualExternalRef();
-			
+
 			// create an external reference
 			StringBuffer sb = new StringBuffer(32);
 			sb.append(lexeme.getSynset().getPOS());
@@ -150,14 +162,14 @@ public class SenseGenerator {
 			List<MonolingualExternalRef> monolingualExternalRefs = new LinkedList<MonolingualExternalRef>();
 			monolingualExternalRefs.add(monolingualExternalRef);
 			sense.setMonolingualExternalRefs(monolingualExternalRefs);
-			
+
 			//*** create sense examples of the sense *** //
 			List<SenseExample> senseExamples = new ArrayList<SenseExample>();
 			List<String> exampleStrings = synsetGenerator.getExamples(lexeme);
-			if(exampleStrings != null)
-				for(String exampleSentence : exampleStrings){
+			if(exampleStrings != null) {
+                for(String exampleSentence : exampleStrings){
 					SenseExample senseExample = new SenseExample();
-					
+
 					// Create an id for the senseExample
 					StringBuffer id = new StringBuffer(32);
 					id.append("WN_SenseExample_").append(senseExampleNumber++);
@@ -169,44 +181,46 @@ public class SenseGenerator {
 					senseExample.setTextRepresentations(new ArrayList<TextRepresentation>(Arrays.asList(textRepresentation)));
 					senseExamples.add(senseExample);
 				}
+            }
 			// setting senseExamples
 			sense.setSenseExamples(senseExamples);
-			
+
 			// Add the created Sense to the result
 			result.add(sense);
 			}
-		
+
 		/*
 		 * Adding dummy indexes to senses if needed
 		 */
-		for(Sense sense : needDummySenseNumber)
-			sense.setIndex(nextIndex++);
-		
+		for(Sense sense : needDummySenseNumber) {
+            sense.setIndex(nextIndex++);
+        }
+
 		return result;
 	}
-	
+
 	/**
 	 * This method consumes a {@link Set} of lexemes and generates a list of Senses. <br>
 	 * Every {@link Sense} in the returned list is associated with one lexeme in the consumed Set.
-	 * 
+	 *
 	 * @param lexemeGroup a group of lexemes with equal lemma and part of speech
-	 * 
+	 *
 	 * @param lexicalEntry a {@link LexicalEntry} instance that contains generated Senses.
-	 * 
+	 *
 	 * @return list of Sense-instances, based on the consumed group of lexemes
-	 * 
+	 *
 	 * @since UBY 0.2.0
-	 * 
+	 *
 	 * @see Word
-	 * 
+	 *
 	 */
 	public List<Sense> generateSenses(Set<Word> lexemeGroup, LexicalEntry lexicalEntry){
 		List<Sense> result = new ArrayList<Sense>();
-		
+
 		// a list of Senses that need a dummy sense number
 		List<Sense> needDummySenseNumber = new ArrayList<Sense>();
 		int nextIndex = 1; // dummy index
-		
+
 		// every lexeme has a sense of it's own
 		for(Word lexeme : lexemeGroup){
 			Sense sense = new Sense();
@@ -218,8 +232,9 @@ public class SenseGenerator {
 			String senseNumber = isr.getSenseNumber(lexeme.getSenseKey());
 			if(senseNumber != null){
 				int index = Integer.parseInt(senseNumber);
-				if(nextIndex <= index)
-					nextIndex = index+1;
+				if(nextIndex <= index) {
+                    nextIndex = index+1;
+                }
 				sense.setIndex(index);
 			}
 			else{
@@ -231,9 +246,9 @@ public class SenseGenerator {
 				sb.append("adding a dummy value of sense number");
 				logger.log(Level.WARNING, sb.toString());
 			}
-			
+
 			net.sf.extjwnl.data.Synset lexemeSynset = lexeme.getSynset(); // lexemes Synset
-			
+
 			//set Synset
 			Synset lmfSynset = synsetGenerator.getLMFSynset(lexemeSynset);
 			if(lmfSynset == null){
@@ -244,7 +259,7 @@ public class SenseGenerator {
 				logger.log(Level.SEVERE, sb.toString());
 				System.exit(1);
 			}
-			
+
 			sense.setSynset(lmfSynset);
 			// set semanticLabel
 			List<SemanticLabel> semanticLabels = new LinkedList<SemanticLabel>();
@@ -252,12 +267,12 @@ public class SenseGenerator {
 			semanticLabels.add(semanticLabel);
 			semanticLabel.setLabel(lexemeSynset.getLexFileName());
 			semanticLabel.setType(ELabelTypeSemantics.semanticField);
-			
+
 			sense.setSemanticLabels(semanticLabels);
-			
+
 			// Creating MonolingualExternalRef for a Sense
 			MonolingualExternalRef monolingualExternalRef = new MonolingualExternalRef();
-			
+
 			// create an external reference
 			StringBuffer sb = new StringBuffer(32);
 			sb.append(lexeme.getSynset().getPOS());
@@ -269,14 +284,14 @@ public class SenseGenerator {
 			List<MonolingualExternalRef> monolingualExternalRefs = new LinkedList<MonolingualExternalRef>();
 			monolingualExternalRefs.add(monolingualExternalRef);
 			sense.setMonolingualExternalRefs(monolingualExternalRefs);
-			
+
 			//*** create sense examples of the sense *** //
 			List<SenseExample> senseExamples = new ArrayList<SenseExample>();
 			List<String> exampleStrings = synsetGenerator.getExamples(lexeme);
-			if(exampleStrings != null)
-				for(String exampleSentence : exampleStrings){
+			if(exampleStrings != null) {
+                for(String exampleSentence : exampleStrings){
 					SenseExample senseExample = new SenseExample();
-					
+
 					// Create an id for the senseExample
 					StringBuffer id = new StringBuffer(32);
 					id.append("WN_SenseExample_").append(senseExampleNumber++);
@@ -288,22 +303,24 @@ public class SenseGenerator {
 					senseExample.setTextRepresentations(new ArrayList<TextRepresentation>(Arrays.asList(textRepresentation)));
 					senseExamples.add(senseExample);
 				}
+            }
 			// setting senseExamples
 			sense.setSenseExamples(senseExamples);
-			
+
 			// Add the created Sense to the result
 			result.add(sense);
 			}
-		
+
 		/*
 		 * Adding dummy indexes to senses if needed
 		 */
-		for(Sense sense : needDummySenseNumber)
-			sense.setIndex(nextIndex++);
-		
+		for(Sense sense : needDummySenseNumber) {
+            sense.setIndex(nextIndex++);
+        }
+
 		return result;
 	}
-	
+
 	/**
 	 * This method generates a Sense-ID. <br>
 	 * Every time the method is called, it increments the running number used for the creation of the ID.
@@ -316,19 +333,19 @@ public class SenseGenerator {
 		lmfSenseNumber++;
 		return sb.toString();
 	}
-	
+
 	/**
 	 * Returns the Sense-instance associated with the consumed lexeme
 	 * @param lexeme a lexeme for which the generated Sense-intance should be returned
 	 * @return Sense-instance associated with the consumed lexeme,<br>
 	 * or null if this generator has not generated a Sense for the consumed lexeme
 	 * @see Sense
-	 * @see Word 
+	 * @see Word
 	 */
 	public Sense getSense(Word lexeme){
 		return lexemeSenseMappings.get(lexeme);
 	}
-	
+
 	/**
 	 * Returns all lexemes processed by this {@link SenseGenerator}
 	 * @return all lexemes processed by this SenseGenerator

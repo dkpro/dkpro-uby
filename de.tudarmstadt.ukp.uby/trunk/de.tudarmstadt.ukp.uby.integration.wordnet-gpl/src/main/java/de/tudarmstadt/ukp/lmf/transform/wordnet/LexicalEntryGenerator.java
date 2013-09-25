@@ -1,13 +1,23 @@
-/**
+/*******************************************************************************
  * Copyright 2012
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the GNU Public License v3.0
- * which accompanies this distribution, and is available at
- * http://www.gnu.org/licenses/gpl-3.0.txt
- */
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ ******************************************************************************/
+
 package de.tudarmstadt.ukp.lmf.transform.wordnet;
 
 import java.util.ArrayList;
@@ -47,44 +57,44 @@ import de.tudarmstadt.ukp.lmf.transform.wordnet.util.WNConvUtil;
  *
  */
 public class LexicalEntryGenerator {
-	
+
 	/*
 	 * Mappings of lexemes with equal lemma and part of speech with associated LexicalEntries
 	 */
 	private Map<Set<Word>, LexicalEntry> lexemeGroupLexicalEntryMaping;
-	
-	private Map<POS,Map<String, Set<Word>>> posLemmaLexemeGroup = new HashMap<POS, Map<String, Set<Word>>>();
-	
-	private Set<Set<Word>> lexemeGroups = new HashSet<Set<Word>>();
-	
-	private Map<Word, Set<Word>> lexemeToGroupMappings = new HashMap<Word, Set<Word>> ();
-	
+
+	private final Map<POS,Map<String, Set<Word>>> posLemmaLexemeGroup = new HashMap<POS, Map<String, Set<Word>>>();
+
+	private final Set<Set<Word>> lexemeGroups = new HashSet<Set<Word>>();
+
+	private final Map<Word, Set<Word>> lexemeToGroupMappings = new HashMap<Word, Set<Word>> ();
+
 	private Dictionary extWordnet;
-	
+
 	/*
 	 * All generated LexicalEntries
 	 */
-	private List<LexicalEntry> lexicalEntries = new LinkedList<LexicalEntry>();
-	
+	private final List<LexicalEntry> lexicalEntries = new LinkedList<LexicalEntry>();
+
 	private int lexicalEntryNumber; // used for creating IDs of LexicalEntries
-	
+
 	private int syntacticBehaviourNumber; // used for creating syntacticBehaviour IDs
 
 	private boolean initialized = false; // true only when lexicalEntryGenerator is initialized
-	
+
 	private SenseGenerator senseGenerator; // instance of SenseGenerator used
-	
-	private SubcategorizationFrameExtractor subcategorizationFrameExtractor; // used for creating SyntacticBehaviours
-	
+
+	private final SubcategorizationFrameExtractor subcategorizationFrameExtractor; // used for creating SyntacticBehaviours
+
 	/*
 	 * This map prevents creating identical SyntacticBehaviours with different IDs
 	 * Key of the map is SyntacticBehaviour's string representation without ID
 	 * value is the corresponding SyntacticBehavour
 	 */
-	private Map<String, SyntacticBehaviour> syntBeh = new HashMap<String, SyntacticBehaviour>();
-	
-	private Logger logger = Logger.getLogger(WNConverter.class.getName());
-	
+	private final Map<String, SyntacticBehaviour> syntBeh = new HashMap<String, SyntacticBehaviour>();
+
+	private final Logger logger = Logger.getLogger(WNConverter.class.getName());
+
 	/**
 	 * Constructs a {@link LexicalEntryGenerator} used for generating LexicalEntries
 	 * @param extWordnet an instance of initialized WordNet-{@link Dictionary} used for accessing WordNet's information
@@ -100,7 +110,7 @@ public class LexicalEntryGenerator {
 			lexicalEntryNumber = 0;
 			syntacticBehaviourNumber = 0;
 			groupLexemes();
-			
+
 			IndexSenseReader isr = new IndexSenseReader();
 			isr.initialize();
 			senseGenerator = new SenseGenerator(synsetGenerator, isr);
@@ -117,14 +127,14 @@ public class LexicalEntryGenerator {
 		logger.log(Level.INFO, " grouping lexemes...");
 		lexemeGroupLexicalEntryMaping= new HashMap<Set<Word>, LexicalEntry>();
 		Iterator<Synset> synsetIter = null; // synset iterator
-		for(POS pos : (List<POS>)POS.getAllPOS()){ // Iterate over all POSes
+		for(POS pos : POS.getAllPOS()){ // Iterate over all POSes
 			logger.log(Level.INFO, percentage+"%");
 			Map<String, Set<Word>>lemmaLexemeGroup = new HashMap<String, Set<Word>>();
 			try {
 				synsetIter = extWordnet.getSynsetIterator(pos);
 			} catch (JWNLException e) {
 				e.printStackTrace();
-			} 
+			}
 
 			while(synsetIter.hasNext()){ // Iterate over all Synsets (Lemmas)
 				Synset synset = synsetIter.next();
@@ -132,7 +142,7 @@ public class LexicalEntryGenerator {
 				for(Word lexeme : lexemes){
 					Set<Word> lexemeGroup; // group of lexemes with equal lemma
 					String lemma = lexeme.getLemma(); // lemma's lexeme
-					
+
 					if((lexemeGroup = lemmaLexemeGroup.get(lemma)) == null){
 						lexemeGroup = new HashSet<Word>();
 						lemmaLexemeGroup.put(lemma, lexemeGroup);
@@ -147,9 +157,9 @@ public class LexicalEntryGenerator {
 		}
 		logger.log(Level.INFO, "100%");
 	}
-	
+
 	/**
-	 * This method iterates over all {@link LexicalEntryGenerator#lexemeGroups} and 
+	 * This method iterates over all {@link LexicalEntryGenerator#lexemeGroups} and
 	 * creates a list of LexicalEntries for every group
 	 * @see LexicalEntry
 	 */
@@ -179,29 +189,29 @@ public class LexicalEntryGenerator {
 	 * @return a LexicalEntry that corresponds to lexemeGroup
 	 */
 	private LexicalEntry createLexicalEntry(Set<Word> lexemeGroup) {
-		
+
 		// Create a new LexicalEntry for the consumed group
 		LexicalEntry lexicalEntry = new LexicalEntry();
-		
+
 		// Create ID for this lexicalEntry
 		lexicalEntry.setId(createID());
-		
+
 		// codes of subcat frames
-		List<HashMap<String, Word>> subcatCodes = new LinkedList<HashMap<String,Word>>(); 
+		List<HashMap<String, Word>> subcatCodes = new LinkedList<HashMap<String,Word>>();
 
 		boolean posSet = false; // True when POS is set to the LexicalEntry
-		
+
 		String lemmaString = null; // Lemmas Written form
-		
+
 		for(Word lexeme : lexemeGroup){
 			if(!posSet){
 				// Extract the POS of the first Lexeme in the group
 				lexicalEntry.setPartOfSpeech(WNConvUtil.getPOS(lexeme.getPOS()));
 				posSet = true;
-				
+
 				// Extract lemma
 				lemmaString = lexeme.getLemma();
-				
+
 			}
 			EPartOfSpeech lePOS = lexicalEntry.getPartOfSpeech();
 			if(lePOS.equals(EPartOfSpeech.verb)){
@@ -223,7 +233,7 @@ public class LexicalEntryGenerator {
 				subcatCodes.add(codeLexeme);
 			}
 		}
-		
+
 		//*** Creating Lemma ***//
 		Lemma lemma = new Lemma();
 		List<FormRepresentation> formRepresentations = new LinkedList<FormRepresentation>();
@@ -233,50 +243,53 @@ public class LexicalEntryGenerator {
 		formRepresentations.add(formRepresentation);
 		lemma.setFormRepresentations(formRepresentations);
 		lexicalEntry.setLemma(lemma);
-		
+
 		//*** Creating Senses ***//
 		lexicalEntry.setSenses(senseGenerator.generateSenses(lexemeGroup, lexicalEntry));
-		
+
 		//*** Creating SyntacticBehaviours***//
 		if(!subcatCodes.isEmpty()){
 			Set<SyntacticBehaviour> syntacticBehaviours = new HashSet<SyntacticBehaviour>();
 			for(Map<String, Word> mapping : subcatCodes){
 				// create a SyntacticBehaviour for every subcat code
 				SyntacticBehaviour syntacticBehaviour = new SyntacticBehaviour();
-				
+
 				for(String frame : mapping.keySet()){
 					Word lexeme = mapping.get(frame);
 					Sense sense = senseGenerator.getSense(lexeme);
 					syntacticBehaviour.setSense(sense);
 					SubcategorizationFrame subcategorizationFrame = subcategorizationFrameExtractor.getSubcategorizationFrame(frame);
 					syntacticBehaviour.setSubcategorizationFrame(subcategorizationFrame);
-					
+
 					// Updating PredicativeRepresentations of the sense
 					SemanticPredicate semanticPredicate = subcategorizationFrameExtractor.getSemanticPredicate(frame);
 					if(semanticPredicate != null){
 						// PredicativeRepresentation will only be updated if sementicPredicate for this Sense exists
 						List<PredicativeRepresentation> predicativeRepresentations = new LinkedList<PredicativeRepresentation>();
-					
+
 						PredicativeRepresentation predicativeRepresentation = new PredicativeRepresentation();
 						predicativeRepresentation.setPredicate(semanticPredicate);
 						predicativeRepresentations.add(predicativeRepresentation);
-						
-						if(sense.getPredicativeRepresentations() != null && !sense.getPredicativeRepresentations().isEmpty())
-							sense.getPredicativeRepresentations().addAll(predicativeRepresentations);
-						else
-							sense.setPredicativeRepresentations(predicativeRepresentations);
+
+						if(sense.getPredicativeRepresentations() != null && !sense.getPredicativeRepresentations().isEmpty()) {
+                            sense.getPredicativeRepresentations().addAll(predicativeRepresentations);
+                        }
+                        else {
+                            sense.setPredicativeRepresentations(predicativeRepresentations);
+                        }
 					}
 				}
 				/*
-				 * check in the mapping, if an equivalent SyntactiBehaviour was already created 
+				 * check in the mapping, if an equivalent SyntactiBehaviour was already created
 				 */
 				String synBehString = createString(syntacticBehaviour);
 				SyntacticBehaviour created = syntBeh.get(synBehString);
-				if(created != null)
-					syntacticBehaviours.add(created);
-				else {
+				if(created != null) {
+                    syntacticBehaviours.add(created);
+                }
+                else {
 					// set the id of the new SyntacticBehaviour
-					// and make a record 
+					// and make a record
 					StringBuffer sb = new StringBuffer(64);
 					sb.append("WN_SyntacticBehaviour_").append(syntacticBehaviourNumber++);
 					syntacticBehaviour.setId(sb.toString());
@@ -286,7 +299,7 @@ public class LexicalEntryGenerator {
 			}
 			lexicalEntry.setSyntacticBehaviours(new ArrayList<SyntacticBehaviour>(syntacticBehaviours));
 		}
-		
+
 		return lexicalEntry;
 	}
 
@@ -315,14 +328,14 @@ public class LexicalEntryGenerator {
 	}
 
 	/**
-	 * Returns all LexicalEntries generated by this generator 
+	 * Returns all LexicalEntries generated by this generator
 	 * @return all LexicalEntries generated by this generator
 	 * @see {@link LexicalEntry}
 	 */
 	public List<LexicalEntry> getLexicalEntries() {
 		return lexicalEntries;
 	}
-	
+
 	/**
 	 * Returns a LexicalEntry generated for the consumed lexemeGroup
 	 * @param lexemeGroup a group of lexemes for which a LexicalEntry should be returned
@@ -332,7 +345,7 @@ public class LexicalEntryGenerator {
 	LexicalEntry getLexicalEntry(Set<Word> lexemeGroup){
 		return lexemeGroupLexicalEntryMaping.get(lexemeGroup);
 	}
-	
+
 	/**
 	 * Returns a {@link LexicalEntry} that corresponds to the consumed lexeme
 	 * @param lexeme an instance of {@link Word} for which a LexicalEntry should be returned
@@ -360,7 +373,7 @@ public class LexicalEntryGenerator {
 	SenseGenerator getSenseGenerator() {
 		return senseGenerator;
 	}
-	
+
 	/**
 	 * This method returns a group of lexemes which contains the consumed lexeme
 	 * @param lexeme the lexeme which group should be returned

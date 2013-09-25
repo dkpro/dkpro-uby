@@ -1,13 +1,23 @@
-/**
+/*******************************************************************************
  * Copyright 2012
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the GNU Public License v3.0
- * which accompanies this distribution, and is available at
- * http://www.gnu.org/licenses/gpl-3.0.txt
- */
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ ******************************************************************************/
+
 package de.tudarmstadt.ukp.lmf.transform.germanet;
 
 import java.util.Collections;
@@ -33,17 +43,17 @@ import de.tuebingen.uni.sfs.germanet.api.Synset;
  * Instance of this class offers methods for creating {@link Synset} instances out of GermaNet's data
  * @author Zijad Maksuti
  * @author Judith Eckle-Kohler
- * 
+ *
  */
 public class SynsetGenerator {
-	private GermaNet gnet; // GermaNet Object
+	private final GermaNet gnet; // GermaNet Object
 	private int lmfSynsetNumber = 0; // running number used for creating IDs of LMFSynsets
 	private int senseNumber = 0; // running number used for creating IDs of Senses
-	private Map<Synset, Sense> gnSynsetSenseMappings = new HashMap<Synset, Sense>(); // The mappings between Synset provided by GN and Senses
-	private Map<LexUnit, de.tudarmstadt.ukp.lmf.model.semantics.Synset> LexUnitSynsetMappings = new HashMap<LexUnit, de.tudarmstadt.ukp.lmf.model.semantics.Synset>();
-	private Map<LexUnit, Sense> luSenseMappings = new HashMap<LexUnit, Sense>();
-	// Mappings between LMF-Synsets and Senses 
-	private static Map<de.tudarmstadt.ukp.lmf.model.semantics.Synset, List<Sense>> 
+	private final Map<Synset, Sense> gnSynsetSenseMappings = new HashMap<Synset, Sense>(); // The mappings between Synset provided by GN and Senses
+	private final Map<LexUnit, de.tudarmstadt.ukp.lmf.model.semantics.Synset> LexUnitSynsetMappings = new HashMap<LexUnit, de.tudarmstadt.ukp.lmf.model.semantics.Synset>();
+	private final Map<LexUnit, Sense> luSenseMappings = new HashMap<LexUnit, Sense>();
+	// Mappings between LMF-Synsets and Senses
+	private static Map<de.tudarmstadt.ukp.lmf.model.semantics.Synset, List<Sense>>
 		synsetSenseMappings = new HashMap<de.tudarmstadt.ukp.lmf.model.semantics.Synset, List<Sense>>();
 	// Mappings between LMF-Synsets and GN-Synsets
 	private static Map<de.tudarmstadt.ukp.lmf.model.semantics.Synset, Synset>
@@ -51,7 +61,7 @@ public class SynsetGenerator {
 	// Mappings between GN-Synsets and LMF-Synsets
 	private static Map<Synset, de.tudarmstadt.ukp.lmf.model.semantics.Synset>
 		gnSynsetLMFSynsetMappings = new HashMap<Synset, de.tudarmstadt.ukp.lmf.model.semantics.Synset>();
-	
+
 	//private static final String has_component_holonym ="has_component_holonym";
 	//private static final String has_component_meronym = "has_component_meronym";
 	//private static final String has_member_holonym = "has_member_holonym";
@@ -66,16 +76,16 @@ public class SynsetGenerator {
 	//private static final String is_related_to = "is_related_to";
 	//private static final String has_hyponym = "has_hyponym";
 	//private static final String entails = "entails";
-	
+
 	/**
-	 * Constructs a {@link SynsetGenerator} associated with the consumed {@link GermaNet} instance 
+	 * Constructs a {@link SynsetGenerator} associated with the consumed {@link GermaNet} instance
 	 * @param gnet instance of GermaNet used for obtaining information from GermaNet's files
 	 */
 	public SynsetGenerator(GermaNet gnet){
 		this.gnet = gnet;
 	}
-	
-	
+
+
 	/**
 	 * This method initializes the {@link SynsetGenerator}
 	 */
@@ -87,7 +97,7 @@ public class SynsetGenerator {
 			// Create a LMF-Synset for each gn-Synset
 			de.tudarmstadt.ukp.lmf.model.semantics.Synset lmfSynset = new de.tudarmstadt.ukp.lmf.model.semantics.Synset();
 			lmfSynset.setId(getNewID());
-			
+
 			// *** Generating Monolingual ExternalRef**//
 			MonolingualExternalRef mer = new MonolingualExternalRef();
 			mer.setExternalReference(Integer.toString(gnSynset.getId()));
@@ -95,7 +105,7 @@ public class SynsetGenerator {
 			LinkedList<MonolingualExternalRef> mers = new LinkedList<MonolingualExternalRef>();
 			mers.add(mer);
 			lmfSynset.setMonolingualExternalRefs(mers);
-			
+
 			lmfSynsetGNSynsetMappings.put(lmfSynset, gnSynset);
 			gnSynsetLMFSynsetMappings.put(gnSynset, lmfSynset);
 				// Setting Definitions
@@ -113,7 +123,7 @@ public class SynsetGenerator {
 					definitions.add(definition);
 					lmfSynset.setDefinitions(definitions);
 				}
-			
+
 			for(LexUnit lu : gnSynset.getLexUnits()){
 				// Generating a Sense for each LU
 				Sense sense = new Sense();
@@ -133,7 +143,7 @@ public class SynsetGenerator {
 		}
 		}
 
-	
+
 	/**
 	 * This method consumes an instance of {@link LexUnit} and returns it's corresponing instance of
 	 * {@link de.tudarmstadt.ukp.lmf.model.semantics.Synset}. <br>
@@ -145,8 +155,8 @@ public class SynsetGenerator {
 	public de.tudarmstadt.ukp.lmf.model.semantics.Synset getLMFSynset(LexUnit lu){
 		return LexUnitSynsetMappings.get(lu);
 	}
-	
-		
+
+
 		/**
 		 * This method generates a Synset-ID
 		 * @see de.tudarmstadt.ukp.lmf.model.semantics.Synset
@@ -157,7 +167,7 @@ public class SynsetGenerator {
 			lmfSynsetNumber++;
 			return sb.toString();
 		}
-		
+
 		/**
 		 * This method generates a Sense-ID
 		 * @see de.tudarmstadt.ukp.lmf.model.semantics.Sense
@@ -168,7 +178,7 @@ public class SynsetGenerator {
 			senseNumber++;
 			return sb.toString();
 		}
-		
+
 		/**
 		 * This method returns a Sense for the consumed {@link LexUnit}
 		 * @param lu LexicalUnit for which the corresponding instance of {@link Sense} class should be returned
@@ -177,17 +187,17 @@ public class SynsetGenerator {
 		public Sense getSense(LexUnit lu){
 			return luSenseMappings.get(lu);
 		}
-		
+
 		/**
 		 * This method returns an instance of {@link Sense} class associated with the consumed instance of
-		 * {@link Synset} class 
+		 * {@link Synset} class
 		 * @param gnSynset synset for which associated sense should be returned
 		 * @return sense associated with the consumed gnSynset
 		 */
 		public Sense getSense(Synset gnSynset){
 			return gnSynsetSenseMappings.get(gnSynset);
 		}
-		
+
 		/**
 		 * This method returns a sorted list of all {@link de.tudarmstadt.ukp.lmf.model.semantics.Synset} instances generated by this generator.
 		 * @return a sorted {@link List} of all synsets generated by this generator
@@ -198,7 +208,7 @@ public class SynsetGenerator {
 			Collections.sort(result);
 			return result;
 		}
-		
+
 		/**
 		 * This method consumes an instance of {@link Synset} and generates and returns a {@link List} of synset relations that correspond to
 		 * consumed conceptual relation.
@@ -227,9 +237,9 @@ public class SynsetGenerator {
 			}
 			return synsetRelations;
 		}
-		
+
 		/**
-		 * This method consumes a conceptual relation and returns the 
+		 * This method consumes a conceptual relation and returns the
 		 * corresponding Uby-LMF relation type
 		 * @param conRel for which Uby-LMF relation type should be returned
 		 * @return conRel relation type in Uby-LMF or null if no entry for conRel exists
@@ -253,14 +263,14 @@ public class SynsetGenerator {
 			case has_substance_meronym : relType = ERelTypeSemantics.partWhole; break;
 			case is_entailed_by : relType = ERelTypeSemantics.taxonomic; break;
 			case is_related_to : relType = ERelTypeSemantics.association; break;
-			default : relType = null; 
+			default : relType = null;
 			}
 			return relType;
 		}
-		
-		
+
+
 		/**
-		 * This method consumes a conceptual relation and returns the 
+		 * This method consumes a conceptual relation and returns the
 		 * corresponding Uby-LMF relation name
 		 * @param conRel for which Uby-LMF relation name should be returned
 		 * @return conRel's relation name in Uby-LMF or null if no entry for conRel exists
@@ -284,16 +294,16 @@ public class SynsetGenerator {
 			case has_substance_meronym : relName = ERelNameSemantics.MERONYMSUBSTANCE; break;
 			case is_entailed_by : relName = ERelNameSemantics.ENTAILEDBY; break;
 			case is_related_to : relName = ERelNameSemantics.RELATED; break;
-			default : relName = null; 
+			default : relName = null;
 			}
 			return relName;
 		}
-		
+
 		/**
 		 * This method consumes an instance of {@link Synset} and appends all synset relations to
 		 * it's corresponding instance of {@link de.tudarmstadt.ukp.lmf.model.semantics.Synset}
 		 * @param synset GermaNet's synset on which associated Uby-LMF synset, should be appended
-		 * @see SynsetRelation 
+		 * @see SynsetRelation
 		 */
 		private void setSynsetRelations(Synset gnSynset){
 			List<SynsetRelation> synsetRelations = new LinkedList<SynsetRelation>();
@@ -301,10 +311,11 @@ public class SynsetGenerator {
 				synsetRelations.addAll(generateSynsetRelations(gnSynset,conRel));
 			}
 			de.tudarmstadt.ukp.lmf.model.semantics.Synset lmfSynset = gnSynsetLMFSynsetMappings.get(gnSynset);
-			if(!synsetRelations.isEmpty())
-				lmfSynset.setSynsetRelations(synsetRelations);
+			if(!synsetRelations.isEmpty()) {
+                lmfSynset.setSynsetRelations(synsetRelations);
+            }
 		}
-		
+
 		/**
 		 * This method finalizes the generation of the {@link de.tudarmstadt.ukp.lmf.model.semantics.Synset} instances <br>
 		 * produced by this generator, by appending synset relations to them. <br>
@@ -317,5 +328,5 @@ public class SynsetGenerator {
 				this.setSynsetRelations(gnSynset);
 			}
 		}
-	
+
 }
