@@ -21,7 +21,7 @@
 	<parent>
 		<artifactId>dkpro-parent-pom</artifactId>
 		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-		<version>4</version>
+		<version>6</version>
 	</parent>
 	<groupId>de.tudarmstadt.ukp.uby</groupId>
 	<artifactId>de.tudarmstadt.ukp.uby</artifactId>
