@@ -18,7 +18,6 @@
 package de.tudarmstadt.ukp.lmf.model.morphology;
 
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
-import de.tudarmstadt.ukp.lmf.model.enums.EYesNo;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.AccessType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EAccessType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
@@ -41,7 +40,7 @@ public class Component implements Comparable<Component> {
 	// component is head of multiword
 	@VarType(type = EVarType.ATTRIBUTE)
 	@AccessType(type = EAccessType.FIELD)
-	private EYesNo isHead;
+	private Boolean isHead;
 
 	// position of component in multiword
 	@VarType(type = EVarType.ATTRIBUTE)
@@ -50,7 +49,7 @@ public class Component implements Comparable<Component> {
 	// component can be separated
 	@VarType(type = EVarType.ATTRIBUTE)
 	@AccessType(type = EAccessType.FIELD)
-	private EYesNo isBreakBefore;
+	private Boolean isBreakBefore;
 
 	/**
 	 * Sets the {@link LexicalEntry} instance referenced by this {@link Component}.
@@ -78,11 +77,8 @@ public class Component implements Comparable<Component> {
 	 * @param isHead set to <i>true</i> if the component is the morphological head of a multiword expression,
 	 * set to <i>false</i> otherwise
 	 */
-	public void setHead(boolean isHead) {
-		if(isHead)
-			this.isHead = EYesNo.yes;
-		else
-			this.isHead = EYesNo.no;	
+	public void setHead(Boolean head) {
+		this.isHead = head;
 	}
 
 
@@ -94,10 +90,7 @@ public class Component implements Comparable<Component> {
 	 * If the headword property of the component is not set at all, this method returns null.
 	 */
 	public Boolean isHead() {
-		if(this.isHead == null)
-			return null;
-		else
-			return (isHead.equals(EYesNo.yes)? true : false);
+		return isHead;
 	}
 
 	/**
@@ -121,16 +114,6 @@ public class Component implements Comparable<Component> {
 		return position;
 	}
 
-	/**
-	 *
-	 * @param breakBefore the breakBefore to set
-	 * @deprecated
-	 * Use {@link Component#setBreakBefore(boolean)} instead
-	 */
-	@Deprecated
-	public void setIsBreakBefore(EYesNo breakBefore) {
-		this.isBreakBefore = breakBefore;
-	}
 	
 	/**
 	 * Sets the break-before property to this {@link Component instance}.<br>
@@ -139,11 +122,8 @@ public class Component implements Comparable<Component> {
 	 * @param breakBefore set to true, if the component allows insertion of additional constituents before
 	 * it, otherwise set to false
 	 */
-	public void setBreakBefore(boolean breakBefore) {
-		if(breakBefore)
-			this.isBreakBefore = EYesNo.yes;
-		else
-			this.isBreakBefore = EYesNo.no;
+	public void setBreakBefore(Boolean breakBefore) {
+		this.isBreakBefore = breakBefore;
 	}
 
 
@@ -156,10 +136,7 @@ public class Component implements Comparable<Component> {
 	 * If the break-before property of this component is not set at all, this method returns null.
 	 */
 	public Boolean isBreakBefore() {
-		if(this.isBreakBefore == null)
-			return null;
-		else
-			return (isBreakBefore.equals(EYesNo.yes)? true : false);
+		return isBreakBefore;
 	}
 
 	// be warned: compareTo and hashCode method depend on this!

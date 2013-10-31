@@ -23,7 +23,6 @@ import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.core.Definition;
 import de.tudarmstadt.ukp.lmf.model.enums.ECoreType;
-import de.tudarmstadt.ukp.lmf.model.enums.EYesNo;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasDefinitions;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasSemanticLabels;
@@ -73,7 +72,7 @@ public class SemanticArgument implements IHasID, IHasDefinitions, IHasSemanticLa
 	// incorporatedSemanticArgument yes/no?
 	@VarType(type = EVarType.ATTRIBUTE)
 	@AccessType(type = EAccessType.FIELD)
-	private EYesNo isIncorporated;
+	private Boolean isIncorporated;
 	
 	/**
 	 * Constructs an empty {@link SemanticArgument} instance.
@@ -232,20 +231,8 @@ public class SemanticArgument implements IHasID, IHasDefinitions, IHasSemanticLa
 	 * </i>
 	 * @return true if this semantic argument is incorporated by a verb, false otherwise
 	 */
-	public boolean isIncorporated() {
-		if(isIncorporated != null)
-			return (isIncorporated.equals(EYesNo.yes)? true : false);
-		else
-			return false;
-	}
-
-	/**
-	 * @param isIncorporated the isIncorporated to set
-	 * @deprecated use {@link #setIncorporated(boolean)} instead
-	 */
-	@Deprecated
-	public void setIsIncorporated(EYesNo isIncorporated) {
-		this.isIncorporated = isIncorporated;
+	public Boolean isIncorporated() {
+		return isIncorporated;
 	}
 	
 	/**
@@ -253,11 +240,8 @@ public class SemanticArgument implements IHasID, IHasDefinitions, IHasSemanticLa
 	 * @param incorporated set to true if this semantic argument instance is incorporated
 	 * by a verb, otherwise set to false
 	 */
-	public void setIncorporated(boolean incorporated) {
-		if(incorporated)
-			this.isIncorporated = EYesNo.yes;
-		else
-			this.isIncorporated = EYesNo.no;
+	public void setIncorporated(Boolean incorporated) {
+		this.isIncorporated = incorporated;
 	}
 
 	@Override
@@ -279,7 +263,7 @@ public class SemanticArgument implements IHasID, IHasDefinitions, IHasSemanticLa
 		sb.append(" semanticLabels: ").append(semanticLabels);
 		Collections.sort(definitions);
 		sb.append(" definitions: ").append(definitions);
-		sb.append(" isIncorporated: ").append(isIncorporated);
+		sb.append(" incorporated: ").append(isIncorporated);
 
 		return sb.toString();
 	}

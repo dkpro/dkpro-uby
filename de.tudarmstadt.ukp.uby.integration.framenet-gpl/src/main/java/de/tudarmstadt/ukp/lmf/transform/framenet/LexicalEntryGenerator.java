@@ -246,7 +246,7 @@ public class LexicalEntryGenerator {
 						for (SemanticArgument semanticArgument: semanticArguments){
 							if (semanticArgument.getSemanticRole().equals(incorporatedFEName)){
 								incorporatedArgument = semanticArgument;
-								incorporatedArgument.setIncorporated(true);
+								incorporatedArgument.setIncorporated(true); //TODO: Never set to FALSE
 							}
 						}
 					}
@@ -268,7 +268,7 @@ public class LexicalEntryGenerator {
 						System.err.println("ID: " + s);
 					} else { // filter different types
 						if (s.equalsIgnoreCase("Transparent Noun")|| s.equalsIgnoreCase("9")){ // no semantic label
-						sense.setTransparentMeaning(true);
+						sense.setTransparentMeaning(true); //TODO: Never set to FALSE
 						} else {// semantic label format
 							SemanticLabel semanticLabel = new SemanticLabel();
 							if (s.equalsIgnoreCase("Negative_judgment")||s.equalsIgnoreCase("Positive_judgment")){

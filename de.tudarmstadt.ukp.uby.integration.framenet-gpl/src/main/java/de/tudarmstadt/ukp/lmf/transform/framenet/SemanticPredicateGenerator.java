@@ -132,11 +132,11 @@ public class SemanticPredicateGenerator {
 
 		for(String semTypeID : frame.getSemTypeIDs()){
 			if(semTypeID.equals("16")) {
-                semanticPredicate.setLexicalized(false);
+                semanticPredicate.setLexicalized(false); //TODO: Never set to TRUE
             }
             else
 				if(semTypeID.equals("52")) {
-                    semanticPredicate.setPerspectivalized(false);
+                    semanticPredicate.setPerspectivalized(false); //TODO: Never set to TRUE
                 }
                 else{
 					// semTypeIDs 68 and 182 need to be processed manually because of a bug in FN-API

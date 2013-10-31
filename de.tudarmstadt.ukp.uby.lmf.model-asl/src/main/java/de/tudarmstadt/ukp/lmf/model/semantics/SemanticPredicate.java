@@ -22,7 +22,6 @@ import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.abstracts.HasFrequencies;
 import de.tudarmstadt.ukp.lmf.model.core.Definition;
-import de.tudarmstadt.ukp.lmf.model.enums.EYesNo;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasDefinitions;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasSemanticLabels;
@@ -52,12 +51,12 @@ public class SemanticPredicate extends HasFrequencies implements IHasID, IHasDef
 	// Semantic predicate is lexicalized
 	@VarType(type = EVarType.ATTRIBUTE)
 	@AccessType(type = EAccessType.FIELD)
-	private EYesNo lexicalized;
+	private Boolean lexicalized;
 
 	// Semantic predicate is perspectivalized
 	@VarType(type = EVarType.ATTRIBUTE)
 	@AccessType(type = EAccessType.FIELD)
-	private EYesNo perspectivalized;
+	private Boolean perspectivalized;
 
 	// Definitions of this SemanticPredicate
 	@VarType(type = EVarType.CHILDREN)
@@ -169,50 +168,25 @@ public class SemanticPredicate extends HasFrequencies implements IHasID, IHasDef
 	/**
 	 * 
 	 * @param lexicalized the lexicalized to set
-	 * @deprecated use {@link #setLexicalized(boolean)} isntead
 	 */
-	@Deprecated
-	public void setLexicalized(EYesNo lexicalized) {
+	public void setLexicalized(Boolean lexicalized){
 		this.lexicalized = lexicalized;
-	}
-	
-	public void setLexicalized(boolean lexicalized){
-		if(lexicalized)
-			this.lexicalized = EYesNo.yes;
-		else
-			this.lexicalized = EYesNo.no;	
 	}
 
 	/**
 	 * 
 	 * @return true if the lexicalized attribute is yes, false otherwise
 	 */
-	public boolean isLexicalized() {
-		if(lexicalized != null)
-			return (lexicalized.equals(EYesNo.yes)? true : false);
-		else
-			return false;
+	public Boolean isLexicalized() {
+		return lexicalized;
 	}
 
-	/**
-	 * 
-	 * @param perspectivalized the perspectivalized to set
-	 * @depreca use {@link #setPerspectivalized(boolean)} instead
-	 */
-	@Deprecated
-	public void setPerspectivalized(EYesNo perspectivalized) {
-		this.perspectivalized = perspectivalized;
-	}
-	
 	/**
 	 * Sets the perspectivalized attribute of this {@link SemanticPredicate} instance.
 	 * @param perspectivalized the boolean value of the attribute to set
 	 */
-	public void setPerspectivalized(boolean perspectivalized){
-		if(perspectivalized)
-			this.perspectivalized = EYesNo.yes;
-		else
-			this.perspectivalized = EYesNo.no;
+	public void setPerspectivalized(Boolean perspectivalized){
+		this.perspectivalized = perspectivalized;
 	}
 
 	/**
@@ -231,11 +205,8 @@ public class SemanticPredicate extends HasFrequencies implements IHasID, IHasDef
 	 * 
 	 * @return true if the perspectivalized attribute of the semantic predicate is set, false otherwise
 	 */
-	public boolean isPerspectivalized() {
-		if(perspectivalized != null)
-			return (perspectivalized.equals(EYesNo.yes)? true : false);
-		else
-			return false;
+	public Boolean isPerspectivalized() {
+		return perspectivalized;
 	}
 
 	@Override

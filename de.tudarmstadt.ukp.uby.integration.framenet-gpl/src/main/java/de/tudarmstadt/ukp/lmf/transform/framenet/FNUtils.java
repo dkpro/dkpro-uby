@@ -23,7 +23,6 @@ import de.saar.coli.salsa.reiter.framenet.FrameNetRelationDirection;
 import de.saar.coli.salsa.reiter.framenet.PartOfSpeech;
 import de.tudarmstadt.ukp.lmf.model.enums.ECoreType;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
-import de.tudarmstadt.ukp.lmf.model.enums.EYesNo;
 import de.tudarmstadt.ukp.lmf.model.semantics.PredicateRelation;
 
 /**
@@ -85,20 +84,6 @@ public class FNUtils {
 			case SCON : return EPartOfSpeech.conjunctionCoordinating;
 			default : return null;
 		}
-	}
-
-	/**
-	 * Consumes a boolean value and returns associated value in {@link EYesNo}
-	 * @param bool a boolean value
-	 * @return {@link EYesNo#yes} if bool is true, {@link EYesNo#no} otherwise
-	 */
-	public static EYesNo booleanForHumans(boolean bool){
-		if(bool) {
-            return EYesNo.yes;
-        }
-        else {
-            return EYesNo.no;
-        }
 	}
 
 	/**

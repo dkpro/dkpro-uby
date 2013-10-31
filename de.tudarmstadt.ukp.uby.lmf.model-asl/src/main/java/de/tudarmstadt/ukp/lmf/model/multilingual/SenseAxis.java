@@ -20,9 +20,11 @@ package de.tudarmstadt.ukp.lmf.model.multilingual;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.enums.ESenseAxisType;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
+import de.tudarmstadt.ukp.lmf.model.meta.MetaData;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
@@ -68,6 +70,15 @@ public class SenseAxis implements IHasID {
 	@VarType(type = EVarType.CHILDREN)
 	private List<SenseAxisRelation> senseAxisRelations = new ArrayList<SenseAxisRelation>(); 
 
+	@VarType(type = EVarType.IDREF)
+	private MetaData metaData;
+	
+	@VarType(type = EVarType.IDREF)
+	private Lexicon lexiconOne;
+	
+	@VarType(type = EVarType.IDREF)
+	private Lexicon lexiconTwo;
+	
 	public String getId() {
 		return id;
 	}
@@ -203,5 +214,19 @@ public class SenseAxis implements IHasID {
 	 */
 	public List<SenseAxisRelation> getSenseAxisRelations() {
 		return senseAxisRelations;
+	}
+	
+	/**
+	 * @return the metaData
+	 */
+	public MetaData getMetaData() {
+		return metaData;
+	}
+
+	/**
+	 * @param metaData the metaData to set
+	 */
+	public void setMetaData(MetaData metaData) {
+		this.metaData = metaData;
 	}
 }
