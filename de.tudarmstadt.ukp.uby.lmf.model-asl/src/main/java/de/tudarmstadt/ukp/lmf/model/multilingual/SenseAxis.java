@@ -79,6 +79,10 @@ public class SenseAxis implements IHasID {
 	@VarType(type = EVarType.IDREF)
 	private Lexicon lexiconTwo;
 	
+	@VarType(type = EVarType.ATTRIBUTE)
+	private double confidence;
+	
+	
 	public String getId() {
 		return id;
 	}
@@ -228,5 +232,47 @@ public class SenseAxis implements IHasID {
 	 */
 	public void setMetaData(MetaData metaData) {
 		this.metaData = metaData;
+	}
+	
+	/**
+	 * @return the lexiconOne
+	 */
+	public Lexicon getLexiconOne() {
+		return lexiconOne;
+	}
+
+	/**
+	 * @param lexiconOne the lexiconOne to set
+	 */
+	public void setLexiconOne(Lexicon lexiconOne) {
+		this.lexiconOne = lexiconOne;
+	}
+
+	/**
+	 * @return the lexiconTwo
+	 */
+	public Lexicon getLexiconTwo() {
+		return lexiconTwo;
+	}
+
+	/**
+	 * @param lexiconTwo the lexiconTwo to set
+	 */
+	public void setLexiconTwo(Lexicon lexiconTwo) {
+		this.lexiconTwo = lexiconTwo;
+	}
+
+	/**
+	 * @return the confidence
+	 */
+	public double getConfidence() {
+		return confidence;
+	}
+
+	/**
+	 * @param confidence the confidence to set
+	 */
+	public void setConfidence(double confidence) {
+		this.confidence = confidence;
 	}
 }
