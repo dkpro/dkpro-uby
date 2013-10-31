@@ -132,13 +132,15 @@ public class SemanticPredicateGenerator {
 
 		for(String semTypeID : frame.getSemTypeIDs()){
 			if(semTypeID.equals("16")) {
-                semanticPredicate.setLexicalized(false); //TODO: Never set to TRUE
+                semanticPredicate.setLexicalized(false);
             }
-            else
+            else{
+            	semanticPredicate.setLexicalized(true);
 				if(semTypeID.equals("52")) {
-                    semanticPredicate.setPerspectivalized(false); //TODO: Never set to TRUE
+                    semanticPredicate.setPerspectivalized(false);
                 }
                 else{
+                    semanticPredicate.setPerspectivalized(true);
 					// semTypeIDs 68 and 182 need to be processed manually because of a bug in FN-API
 					SemanticType semanticType = null;
 					if(semTypeID.equals("68")) {
@@ -190,6 +192,7 @@ public class SemanticPredicateGenerator {
 							semanticLabels.add(semanticLabel);
 						}
 				}
+            }
 		}
 		semanticPredicate.setSemanticLabels(semanticLabels);
 
