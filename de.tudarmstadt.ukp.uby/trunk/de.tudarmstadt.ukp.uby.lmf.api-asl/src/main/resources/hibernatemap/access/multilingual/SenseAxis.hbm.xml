@@ -11,7 +11,6 @@
 	       	<param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.ESenseAxisType</param>         	
 	   	</type>
 	</property>
-    	<property name="frequency" column="frequency" node="@frequency" type="integer" />    
     
 	<list name="senseAxisRelations"  node=".">
           <key column="senseAxisId" />
@@ -29,15 +28,15 @@
     	 node="@synsetOne" foreign-key="none" not-found="ignore"/>
     <many-to-one name="synsetTwo" class="de.tudarmstadt.ukp.lmf.model.semantics.Synset" column="synsetTwoId"
     	 node="@synsetTwo" foreign-key="none" not-found="ignore"/>
-   
-	<many-to-one name="metaData" class="de.tudarmstadt.ukp.lmf.model.meta.MetaData" column="metaDataId"
-    	 node="@metaData" foreign-key="none" not-found="ignore"/>
-    
-    
+    	 
     <many-to-one name="lexiconOne" class="de.tudarmstadt.ukp.lmf.model.core.Lexicon" column="lexiconOne"
     	 node="@lexiconOne" foreign-key="none" not-found="ignore"/>
     <many-to-one name="lexiconTwo" class="de.tudarmstadt.ukp.lmf.model.core.Lexicon" column="lexiconTwo"
     	 node="@lexiconTwo" foreign-key="none" not-found="ignore"/>
+   
+	<many-to-one name="metaData" class="de.tudarmstadt.ukp.lmf.model.meta.MetaData" column="metaDataId"
+    	 node="@metaData" foreign-key="none" not-found="ignore"/>
+    <property name="confidence" column="confidence" node="@confidence" type="double" />    
     	 
  </class>
 </hibernate-mapping>
