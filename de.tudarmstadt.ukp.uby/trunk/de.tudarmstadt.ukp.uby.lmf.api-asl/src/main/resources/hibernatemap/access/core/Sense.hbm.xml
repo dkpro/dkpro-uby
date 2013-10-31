@@ -8,12 +8,8 @@
     
      <!-- <property name="semanticClassLabel" column="semanticClassLabel" node="@semanticClassLabel" type="string"/>  -->	
    
-    <property name="transparentMeaning" column="transparentMeaning" node="@transparentMeaning" access="field"> 
-        <type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">
-         <param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.EYesNo</param>	        	
-      	</type>
-  	</property>  
-  	
+    <property name="transparentMeaning" column="transparentMeaning" node="@transparentMeaning" access="field" type="boolean" /> 
+          	
   	<list name="definitions" node=".">
           <key column="senseId" />
           <index column="idx"/>            

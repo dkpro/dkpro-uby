@@ -178,7 +178,7 @@ public class LMFXmlWriter extends LMFWriter{
 			// No VarType-Annotation found for the field, then don't save to XML 
 			if(varType == null)
 				continue;
-		
+			
 			EVarType type = varType.type();
 			
 			// VarType is NONE, don't save to XML
@@ -193,9 +193,18 @@ public class LMFXmlWriter extends LMFWriter{
 			AccessType accessType = field.getAnnotation(AccessType.class);
 			if(accessType == null || accessType.equals(EAccessType.GETTER)){
 				// access using a canonical getter
+				String setFieldName = fieldName;
+				
+				if(fieldName.startsWith("is")) // E.g. isHead --> setHead
+					setFieldName = setFieldName.replaceFirst("is", "");
+				
 				
 				// Get-Method for the field
-				String getFuncName = "get"+fieldName.substring(0,1).toUpperCase() + fieldName.substring(1);
+				String getFuncName = setFieldName.substring(0,1).toUpperCase() + setFieldName.substring(1);
+				if(something.equals(Boolean.class))
+					getFuncName = "is"+getFuncName;
+				else getFuncName = "get"+getFuncName;
+				
 				Method getMethod = null;
 				try {
 					getMethod = something.getMethod(getFuncName);

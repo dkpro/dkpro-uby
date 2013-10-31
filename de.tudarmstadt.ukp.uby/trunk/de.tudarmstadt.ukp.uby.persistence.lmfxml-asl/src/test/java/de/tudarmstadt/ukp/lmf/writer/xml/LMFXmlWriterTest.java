@@ -74,7 +74,6 @@ import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticProperty;
 import de.tudarmstadt.ukp.lmf.model.enums.ETense;
 import de.tudarmstadt.ukp.lmf.model.enums.EVerbForm;
 import de.tudarmstadt.ukp.lmf.model.enums.EVerbFormMood;
-import de.tudarmstadt.ukp.lmf.model.enums.EYesNo;
 import de.tudarmstadt.ukp.lmf.model.meta.Frequency;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.ConstraintSet;
@@ -743,9 +742,9 @@ public class LMFXmlWriterTest {
 		Element syntacticArgument = checkHasSingleChild(subcategorizationFrame, SyntacticArgument.class);
 		assertEquals(syntacticArgument_id, syntacticArgument.getAttribute("id"));
 		if(syntacticArgument_optional)
-			assertEquals(EYesNo.yes.toString(), syntacticArgument.getAttribute("optional"));
+			assertEquals("true", syntacticArgument.getAttribute("optional"));
 		else
-			assertEquals(EYesNo.no.toString(), syntacticArgument.getAttribute("optional"));
+			assertEquals("false", syntacticArgument.getAttribute("optional"));
 		assertEquals(syntacticArgument_grammaticalFunction.toString(), syntacticArgument.getAttribute("grammaticalFunction"));
 		assertEquals(syntacticArgument_syntacticCategory.toString(), syntacticArgument.getAttribute("syntacticCategory"));
 		assertEquals(syntacticArgument_case.toString(), syntacticArgument.getAttribute("case"));
@@ -777,22 +776,22 @@ public class LMFXmlWriterTest {
 		assertEquals(semanticPredicate_id, semanticPredicate.getAttribute("id"));
 		assertEquals(semanticPredicate_label, semanticPredicate.getAttribute("label"));
 		if(semanticPredicate_lexicalized)
-			assertEquals(EYesNo.yes.toString(), semanticPredicate.getAttribute("lexicalized"));
+			assertEquals("true", semanticPredicate.getAttribute("lexicalized"));
 		else
-			assertEquals(EYesNo.no.toString(), semanticPredicate.getAttribute("lexicalized"));
+			assertEquals("false", semanticPredicate.getAttribute("lexicalized"));
 		if(semanticPredicate_perspectivalized)
-			assertEquals(EYesNo.yes.toString(), semanticPredicate.getAttribute("perspectivalized"));
+			assertEquals("true", semanticPredicate.getAttribute("perspectivalized"));
 		else
-			assertEquals(EYesNo.no.toString(), semanticPredicate.getAttribute("perspectivalized"));
+			assertEquals("false", semanticPredicate.getAttribute("perspectivalized"));
 		checkHasSingleDefinition(semanticPredicate, SemanticPredicate.class.getCanonicalName());
 		
 		Element semanticArgument = checkHasSingleChild(semanticPredicate, SemanticArgument.class);
 		assertEquals(semanticArgument_id, semanticArgument.getAttribute("id"));
 		assertEquals(semanticArgument_semanticRole.toString(), semanticArgument.getAttribute("semanticRole"));
 		if(semanticArgument_isIncorporated)
-			assertEquals(EYesNo.yes.toString(), semanticArgument.getAttribute("isIncorporated"));
+			assertEquals("true", semanticArgument.getAttribute("isIncorporated"));
 		else
-			assertEquals(EYesNo.no.toString(), semanticArgument.getAttribute("isIncorporated"));
+			assertEquals("false", semanticArgument.getAttribute("isIncorporated"));
 		assertEquals(semanticArgument_coreType.toString(), semanticArgument.getAttribute("coreType"));
 		
 		Element argumentRelation = checkHasSingleChild(semanticArgument, ArgumentRelation.class);
@@ -882,16 +881,16 @@ public class LMFXmlWriterTest {
 		assertEquals(lexicalEntry_id, component.getAttribute("targetLexicalEntry"));
 		
 		if(component_isHead)
-			assertEquals(EYesNo.yes.toString(), component.getAttribute("isHead"));
+			assertEquals("true", component.getAttribute("isHead"));
 		else
-			assertEquals(EYesNo.no.toString(), component.getAttribute("isHead"));
+			assertEquals("false", component.getAttribute("isHead"));
 		
 		assertEquals(Integer.toString(component_position), component.getAttribute("position"));
 		
 		if(component_isBreakBefore)
-			assertEquals(EYesNo.yes.toString(), component.getAttribute("isBreakBefore"));
+			assertEquals("true", component.getAttribute("isBreakBefore"));
 		else
-			assertEquals(EYesNo.no.toString(), component.getAttribute("isBreakBefore"));
+			assertEquals("false", component.getAttribute("isBreakBefore"));
 		
 		checkHasSingleFrequency(lexicalEntry);
 	}
@@ -917,9 +916,9 @@ public class LMFXmlWriterTest {
 		assertEquals(sense_incorporatedSemArg.getId(), sense.getAttribute("incorporatedSemArg"));
 		
 		if(sense_transparentMeaning)
-			assertEquals(EYesNo.yes.toString(), sense.getAttribute("transparentMeaning"));
+			assertEquals("true", sense.getAttribute("transparentMeaning"));
 		else
-			assertEquals(EYesNo.no.toString(), sense.getAttribute("transparentMeaning"));
+			assertEquals("false", sense.getAttribute("transparentMeaning"));
 		
 		assertEquals(lexicalEntry_id, sense.getAttribute("lexicalEntry"));
 		

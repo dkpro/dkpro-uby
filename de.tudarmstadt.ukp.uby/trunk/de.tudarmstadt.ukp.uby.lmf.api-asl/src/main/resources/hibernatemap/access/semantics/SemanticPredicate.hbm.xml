@@ -9,17 +9,9 @@
 
   	<property name="label" column="label" node="@label" type="string"/>
   		  
-    <property name="lexicalized" column="lexicalized" node="@lexicalized" access="field"> 
-        <type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">	
-         <param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.EYesNo</param>	       	
-      	</type>	
-  	</property>  
+    <property name="lexicalized" column="lexicalized" node="@lexicalized" access="field" type="boolean" />
 
-    <property name="perspectivalized" column="perspectivalized" node="@perspectivalized" access="field"> 
-       <type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">	
-         <param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.EYesNo</param>       	
-      	</type>	
-  	</property>
+    <property name="perspectivalized" column="perspectivalized" node="@perspectivalized" access="field" type="boolean" />
   	    	
   	<list name="semanticLabels"  node=".">
           <key column="semanticPredicateId" />

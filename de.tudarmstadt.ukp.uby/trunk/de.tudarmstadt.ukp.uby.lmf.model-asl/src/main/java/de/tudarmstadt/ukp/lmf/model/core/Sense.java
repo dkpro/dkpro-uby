@@ -22,7 +22,6 @@ import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.abstracts.HasMonolingualExternalRefs;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
-import de.tudarmstadt.ukp.lmf.model.enums.EYesNo;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasDefinitions;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasFrequencies;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
@@ -70,7 +69,7 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 	// Sense has transparent Meaning
 	@VarType(type = EVarType.ATTRIBUTE)
 	@AccessType(type = EAccessType.FIELD)
-	private EYesNo transparentMeaning;
+	private boolean transparentMeaning;
 
 	// List of more specific senses
 	@VarType(type = EVarType.CHILDREN)
@@ -203,15 +202,6 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 		return incorporatedSemArg;
 	}
 
-	/**
-	 *
-	 * @param transparentMeaning the transparentMeaning to set
-	 * @deprecated This method is marked for removal, use {@link Sense#setTransparentMeaning(boolean)} instead
-	 */
-	@Deprecated
-	public void setTransparentMeaning(EYesNo transparentMeaning) {
-		this.transparentMeaning = transparentMeaning;
-	}
 
 	/**
 	 * Sets the transparent meaning flag to this {@link Sense} instance.<p>
@@ -220,14 +210,8 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 	 * i.e. it merely adds information to the semantic center of the phrase.
 	 * @param flag set it to true to indicate that the sense has a transparent meaning, or to false otherwise
 	 */
-	public void setTransparentMeaning(boolean flag){
-		if(flag) {
-			this.transparentMeaning = EYesNo.yes;
-		}
-		else {
-			this.transparentMeaning = EYesNo.no;
-		}
-
+	public void setTransparentMeaning(boolean transparentMeaning){
+		this.transparentMeaning = transparentMeaning;
 	}
 
 	/**
@@ -236,12 +220,7 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 	 *
 	 */
 	public boolean isTransparentMeaning() {
-		if(transparentMeaning != null) {
-			return (transparentMeaning.equals(EYesNo.yes)? true : false);
-		}
-		else {
-			return false;
-		}
+		return transparentMeaning;
 	}
 
 	/**

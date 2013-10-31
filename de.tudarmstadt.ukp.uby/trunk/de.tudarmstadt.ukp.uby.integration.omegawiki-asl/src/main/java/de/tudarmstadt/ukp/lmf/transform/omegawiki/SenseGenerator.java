@@ -35,7 +35,6 @@ import de.tudarmstadt.ukp.lmf.model.enums.ELabelNameSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.ELabelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.EStatementType;
 import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticProperty;
-import de.tudarmstadt.ukp.lmf.model.enums.EYesNo;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
 import de.tudarmstadt.ukp.lmf.model.morphology.FormRepresentation;
 import de.tudarmstadt.ukp.lmf.model.morphology.Lemma;
@@ -269,11 +268,11 @@ class SenseGenerator {
 					//}
 					else if (value.equals("separable"))
 					{
-						lexicalEntry.setSeparableParticle(EYesNo.yes.toString());
+						lexicalEntry.setSeparableParticle("yes"); // TODO is it a boolean?
 					}
 					else if (value.equals("inseparable"))
 					{
-						lexicalEntry.setSeparableParticle(EYesNo.no.toString());
+						lexicalEntry.setSeparableParticle("no");
 					}
 				}
 				else if (name.equals("example sentence"))

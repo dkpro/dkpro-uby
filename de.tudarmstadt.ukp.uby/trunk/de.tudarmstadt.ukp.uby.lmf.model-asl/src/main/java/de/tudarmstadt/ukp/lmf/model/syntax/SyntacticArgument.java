@@ -28,7 +28,6 @@ import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalNumber;
 import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticCategory;
 import de.tudarmstadt.ukp.lmf.model.enums.ETense;
 import de.tudarmstadt.ukp.lmf.model.enums.EVerbForm;
-import de.tudarmstadt.ukp.lmf.model.enums.EYesNo;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.AccessType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EAccessType;
@@ -52,7 +51,7 @@ public class SyntacticArgument extends HasFrequencies implements IHasID, Compara
 	// Optional property of this SyntacticArgument
 	@VarType(type = EVarType.ATTRIBUTE)
 	@AccessType(type = EAccessType.FIELD)
-	private EYesNo optional;
+	private Boolean optional;
 
 	// Grammatical Function property of this SyntacticArgument
 	@VarType(type = EVarType.ATTRIBUTE)
@@ -134,23 +133,11 @@ public class SyntacticArgument extends HasFrequencies implements IHasID, Compara
 	 * the argument "the bill" is not an optional syntactic argument, because it cannot be omitted: "*She paid to her mother".
 	 * @return true if the optional attribute is yes, false otherwise
 	 */
-	public boolean isOptional() {
-		if(optional != null)
-			return (optional.equals(EYesNo.yes)? true : false);
-		else
-			return false;
+	public Boolean isOptional() {
+		return optional;
 	}
 
 
-	/**
-	 * @param optional the optional to set
-	 * @deprecated use {@link #setOptional(boolean)} instead
-	 */
-	@Deprecated
-	public void setOptional(EYesNo optional) {
-		this.optional = optional;
-	}
-	
 	/**
 	 * Sets the optional attribute of this {@link SyntacticArgument} instance.
 	 * An optional syntactic argument is a complement of a verb (or a noun or an adjective) that can be omitted.<p>
@@ -158,11 +145,8 @@ public class SyntacticArgument extends HasFrequencies implements IHasID, Compara
 	 * the argument "the bill" is not an optional syntactic argument, because it cannot be omitted: "*She paid to her mother".
 	 * @param optional boolean value of the attribute to set
 	 */
-	public void setOptional(boolean optional) {
-		if(optional)
-			this.optional = EYesNo.yes;
-		else
-			this.optional = EYesNo.no;
+	public void setOptional(Boolean optional) {
+		this.optional = optional;
 	}
 
 	/**
