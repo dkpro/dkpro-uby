@@ -50,19 +50,19 @@ public class IMSlexConverter {
 	}
 	
 	/**
-	 * Converts a preprocessed version of IMSlex to Uby-LMF
-	 * name of the LMF Lexicon instance: "IMSlexSubcat"
+	 * Converts a preprocessed version of IMSLex to Uby-LMF
+	 * name of the LMF Lexicon instance: "IMSLexSubcat"
 	 * @throws IOException
 	 */
 	public void toLMF(IMSlexExtractor germanVcExtractor) throws IOException {
 		
 		// *** Setting GlobalInformation *** //
 		GlobalInformation globalInformation = new GlobalInformation();
-		globalInformation.setLabel("IMSlex, see PhD thesis of Eckle-Kohler (1999), Version of 09/2011");
+		globalInformation.setLabel("IMSLex, see PhD thesis of Eckle-Kohler (1999), Version of 09/2011");
 		
 		// Setting attributes of LexicalResource
 		lexicalResource.setGlobalInformation(globalInformation);
-		lexicalResource.setName("IMSlexSubcat");
+		lexicalResource.setName("IMSLexSubcat");
 		lexicalResource.setDtdVersion(dtd_version);
 		
 		LinkedList<Lexicon> lexicons = new LinkedList<Lexicon>();

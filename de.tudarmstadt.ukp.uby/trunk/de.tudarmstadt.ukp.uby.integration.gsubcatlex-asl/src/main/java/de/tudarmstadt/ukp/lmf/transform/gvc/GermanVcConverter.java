@@ -29,7 +29,7 @@ import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 
 	
 /**
- * This class converts a preprocessed version of a subset of IMSlex (PhD thesis of Judith Eckle-Kohler) to Uby-LMF
+ * This class converts a preprocessed version of a subset of IMSLex (PhD thesis of Judith Eckle-Kohler) to Uby-LMF
  * GVC stands for German Verb Classes, as a part of the subcategorization lexicon is classified into semantic verb classes
  * @author Judith Eckle-Kohler
  *
@@ -49,18 +49,18 @@ public class GermanVcConverter {
 	}
 	
 	/**
-	 * Converts a preprocessed version of a subset of IMSlex to Uby-LMF
+	 * Converts a preprocessed version of a subset of IMSLex to Uby-LMF
 	 * @throws IOException
 	 */
 	public void toLMF(GermanVcExtractor germanVcExtractor) throws IOException {
 		
 		// *** Setting GlobalInformation *** //
 		GlobalInformation globalInformation = new GlobalInformation();
-		globalInformation.setLabel("Subset of IMSlex, see Eckle-Kohler (1999), Version of 09/2011");
+		globalInformation.setLabel("Subset of IMSLex, see Eckle-Kohler (1999), Version of 09/2011");
 		
 		// Setting attributes of LexicalResource
 		lexicalResource.setGlobalInformation(globalInformation);
-		lexicalResource.setName("IMSlexSubset");
+		lexicalResource.setName("IMSLexSubset");
 		lexicalResource.setDtdVersion(dtd_version);
 		
 		LinkedList<Lexicon> lexicons = new LinkedList<Lexicon>();
