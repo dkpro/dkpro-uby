@@ -101,7 +101,7 @@ public class OWConverter {
 		Lexicon lexicon = new Lexicon();
 		lexicon.setLanguageIdentifier(GlobalLanguageLMF);
 		lexicon.setId("OW_Lexicon_"+GlobalLanguageLMF);
-		lexicon.setName("OmegaWiki"+GlobalLanguageLMF.toString());
+		lexicon.setName("OmegaWiki_"+GlobalLanguageLMF.toString());
 		LinkedList<Lexicon> lexicons = new LinkedList<Lexicon>();
 		lexicons.add(lexicon);
 		lexicalResource.setLexicons(lexicons);

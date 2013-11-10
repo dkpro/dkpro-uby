@@ -65,7 +65,7 @@ public class WiktionaryDETransformer extends WiktionaryLMFTransformer {
 		String lmfLang = WiktionaryLMFMap.mapLanguage(wktLang);
 		lexicon.setId(getLmfId(Lexicon.class, "lexiconWkt" + lmfLang));
 		lexicon.setLanguageIdentifier(lmfLang);
-		lexicon.setName("WiktionaryDE");
+		lexicon.setName("Wiktionary_deu");
 		return lexicon;
 	}
 

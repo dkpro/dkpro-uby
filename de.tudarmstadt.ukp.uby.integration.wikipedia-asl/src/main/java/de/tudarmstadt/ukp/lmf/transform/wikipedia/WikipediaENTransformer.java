@@ -21,6 +21,7 @@ import java.io.FileNotFoundException;
 
 import de.tudarmstadt.ukp.lmf.model.core.GlobalInformation;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
+import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 import de.tudarmstadt.ukp.wikipedia.api.Wikipedia;
 import de.tudarmstadt.ukp.wikipedia.api.exception.WikiApiException;
@@ -58,6 +59,20 @@ public class WikipediaENTransformer extends WikipediaLMFTransformer {
 		resource.setDtdVersion(dtd_version);
 		return resource;
 	}
+	
+	@Override
+	protected Lexicon createNextLexicon() {
+		if(!pageIterator.hasNext() /*|| currentEntryNr > 100*/) {
+			return null;
+		}
+		Lexicon lexicon = new Lexicon();
+		String lmfLang = WikipediaLMFMap.mapLanguage(wiki.getLanguage());
+		lexicon.setId(getLmfId(Lexicon.class, "lexiconWiki"+lmfLang));
+		lexicon.setLanguageIdentifier(lmfLang);
+		lexicon.setName("Wikipedia_eng");
+		return lexicon;
+	}
+
 
 	@Override
 	protected boolean isDiscussionPage(final String pageTitle) {

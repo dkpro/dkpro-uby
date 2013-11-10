@@ -65,7 +65,7 @@ public class WiktionaryENTransformer extends WiktionaryLMFTransformer {
 		String lmfLang = WiktionaryLMFMap.mapLanguage(wktLang);
 		lexicon.setId(getLmfId(Lexicon.class, "lexiconWkt" + lmfLang));
 		lexicon.setLanguageIdentifier(lmfLang);
-		lexicon.setName("WiktionaryEN");
+		lexicon.setName("Wiktionary_eng");
 		return lexicon;
 	}
 

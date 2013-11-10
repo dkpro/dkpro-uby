@@ -61,7 +61,7 @@ import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrameSet;
 import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticArgument;
 import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticBehaviour;
 /**
- * This class extracts information from a preprocessed version of IMSlex - Subcategorization Frames and fills in the corresponding LMF classes
+ * This class extracts information from a preprocessed version of IMSLex - Subcategorization Frames and fills in the corresponding LMF classes
  * @author Eckle-Kohler
  *
  */
@@ -74,7 +74,7 @@ public class IMSlexExtractor {
 	private List<LexicalEntry> lexicalEntries = new LinkedList<LexicalEntry>();
 	
 	private File lexiconInputFile; // The File containing the preprocessed Input lexicon
-	private String resourceName; // name of the LMF lexicon, i.e. "IMSlexSubcat"
+	private String resourceName; // name of the LMF lexicon, i.e. "IMSLexSubcat"
 
 	// running numbers for IDs
 	private static int lexicalEntryNumber = 0; 
@@ -112,7 +112,7 @@ public class IMSlexExtractor {
 	/**
 	 * Constructs a IMSlexExtractor
 	 * @param preprocessedLexicon path of the File containing the preprocessed version of IMSlex
-	 * @param resourceName name of the LMF Lexicon instance: "IMSlexSubcat"
+	 * @param resourceName name of the LMF Lexicon instance: "IMSLexSubcat"
 	 * @return IMSlexExtractor
 	 * @throws IOException 
 	 */
@@ -225,7 +225,7 @@ public class IMSlexExtractor {
 	 */
 	private  void convertIMSlex() {
 		lexicon.setLanguageIdentifier(ELanguageIdentifier.GERMAN);
-		lexicon.setId("IMSlexSubcat_Lexicon_0");
+		lexicon.setId("IMSLexSubcat_Lexicon_0");
 		lexicon.setName(resourceName);
 		
 		// Create subclasses of Lexicon that are independent of particular lexemes
@@ -239,12 +239,12 @@ public class IMSlexExtractor {
 	
 				if (!synargsSubcatFrameMap.containsKey(synArgs)) {
 					SubcategorizationFrame subcategorizationFrame = new SubcategorizationFrame();
-					subcategorizationFrame.setId("IMSlexSubcat_SubcategorizationFrame_".concat(Integer.toString(subcatFrameNumber)));
+					subcategorizationFrame.setId("IMSLexSubcat_SubcategorizationFrame_".concat(Integer.toString(subcatFrameNumber)));
 					subcatFrameNumber++;	
 					subcategorizationFrame = parseArguments(imsLexSense,subcategorizationFrame);
 					
 					synargsSubcatFrameMap.put(synArgs,subcategorizationFrame);	
-					if (imsLexSense.synArgs.contains("role")) { //only few IMSlexSubcat-frames specify a semantic role
+					if (imsLexSense.synArgs.contains("role")) { //only few IMSLexSubcat-frames specify a semantic role
 						SemanticPredicate semanticPredicate = new SemanticPredicate();
 						semanticPredicate = parseSemanticArguments(imsLexSense,subcategorizationFrame);
 						semanticPredicates.add(semanticPredicate);		
@@ -269,7 +269,7 @@ public class IMSlexExtractor {
 				// Create SubcatFrameSets
 				if (!classSubcatFrameSetMap.containsKey(imsLexSense.classInformation)) {
 					SubcategorizationFrameSet subcategorizationFrameSet = new SubcategorizationFrameSet();
-					subcategorizationFrameSet.setId("IMSlexSubcat_SubcategorizationFrameSet_".concat(Integer.toString(subcatFrameSetNumber)));
+					subcategorizationFrameSet.setId("IMSLexSubcat_SubcategorizationFrameSet_".concat(Integer.toString(subcatFrameSetNumber)));
 					subcategorizationFrameSet.setName(imsLexSense.classInformation);
 					subcatFrameSetNumber++;	
 	
@@ -370,7 +370,7 @@ public class IMSlexExtractor {
 			
 			LexicalEntry lexicalEntry = new LexicalEntry();
 			// Create ID
-			lexicalEntry.setId("IMSlexSubcat_LexicalEntry_".concat(Integer.toString(lexicalEntryNumber)));
+			lexicalEntry.setId("IMSLexSubcat_LexicalEntry_".concat(Integer.toString(lexicalEntryNumber)));
 			lexicalEntryNumber++;		
 			// Set partOfSpeech
 			lexicalEntry.setPartOfSpeech(mapPOS(pos));	
@@ -409,7 +409,7 @@ public class IMSlexExtractor {
 				IMSlexSense imsLexSense = senseIterator.next();
 				Sense sense = new Sense();
 
-				sense.setId("IMSlexSubcat_Sense_".concat(Integer.toString(senseNumber)));
+				sense.setId("IMSLexSubcat_Sense_".concat(Integer.toString(senseNumber)));
 				sense.setIndex(senseNumber);
 				senseNumber++;
 				
@@ -426,7 +426,7 @@ public class IMSlexExtractor {
 					// Creating SyntacticBehaviour (one for each sense)
 					SyntacticBehaviour syntacticBehaviour = new SyntacticBehaviour();
 					// Generating an ID
-					syntacticBehaviour.setId("IMSlexSubcat_SyntacticBehaviour_".concat(Integer.toString(syntacticBehaviourNumber)));
+					syntacticBehaviour.setId("IMSLexSubcat_SyntacticBehaviour_".concat(Integer.toString(syntacticBehaviourNumber)));
 					syntacticBehaviourNumber++;
 					
 					syntacticBehaviour.setSense(sense);
@@ -498,7 +498,7 @@ public class IMSlexExtractor {
 		for(String arg : args) {			
 			if (!arg.contains("syntacticProperty")) {			
 				SyntacticArgument syntacticArgument = new SyntacticArgument();
-				syntacticArgument.setId("IMSlexSubcat_SyntacticArgument_".concat(Integer.toString(syntacticArgumentNumber)));
+				syntacticArgument.setId("IMSLexSubcat_SyntacticArgument_".concat(Integer.toString(syntacticArgumentNumber)));
 				syntacticArgumentNumber++;	
 				String[] atts = arg.split(",");
 				for(String att : atts){
@@ -569,7 +569,7 @@ public class IMSlexExtractor {
 	private SemanticPredicate parseSemanticArguments(IMSlexSense IMSlexSubcatSense,SubcategorizationFrame subcategorizationFrame) {
 		// list of mappings between Syntactic and Semantic Arguments are to be created
 		SemanticPredicate semanticPredicate = new SemanticPredicate();
-		semanticPredicate.setId("IMSlexSubcat_SemanticPredicate_".concat(Integer.toString(semanticPredicateNumber)));
+		semanticPredicate.setId("IMSLexSubcat_SemanticPredicate_".concat(Integer.toString(semanticPredicateNumber)));
 		semanticPredicateNumber++;
 		List<SemanticArgument> semanticArguments = new LinkedList<SemanticArgument>();
 		List<SynSemArgMap> synSemArgMaps = new LinkedList<SynSemArgMap>();	
@@ -591,7 +591,7 @@ public class IMSlexExtractor {
 				String attName = splits[0];
 				if(attName.equals("role")){
 					SemanticArgument semanticArgument = new SemanticArgument();
-					semanticArgument.setId("IMSlexSubcat_SemanticArgument_".concat(Integer.toString(semanticArgumentNumber)));
+					semanticArgument.setId("IMSLexSubcat_SemanticArgument_".concat(Integer.toString(semanticArgumentNumber)));
 					semanticArgumentNumber++;
 					semanticArgument.setSemanticRole(splits[1]);
 					semanticArguments.add(semanticArgument);
@@ -606,7 +606,7 @@ public class IMSlexExtractor {
 		semanticPredicate.setSemanticArguments(semanticArguments);
 		
 		SynSemCorrespondence synSemCorrespondence = new SynSemCorrespondence();
-		synSemCorrespondence.setId("IMSlexSubcat_SynSemCorrespondence_".concat(Integer.toString(synSemCorrespondenceNumber)));
+		synSemCorrespondence.setId("IMSLexSubcat_SynSemCorrespondence_".concat(Integer.toString(synSemCorrespondenceNumber)));
 		synSemCorrespondenceNumber++;
 		synSemCorrespondence.setSynSemArgMaps(synSemArgMaps);
 		synSemCorrespondences.add(synSemCorrespondence);

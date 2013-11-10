@@ -69,7 +69,7 @@ public class WikipediaDETransformer extends WikipediaLMFTransformer {
 		String lmfLang = WikipediaLMFMap.mapLanguage(wiki.getLanguage());
 		lexicon.setId(getLmfId(Lexicon.class, "lexiconWiki"+lmfLang));
 		lexicon.setLanguageIdentifier(lmfLang);
-		lexicon.setName("WikipediaDE");
+		lexicon.setName("Wikipedia_deu");
 		return lexicon;
 	}
 
