@@ -162,13 +162,13 @@ public class UbyTest
 				.get(0).getWrittenText(), "I interrogated him as a suspect.");
 		assertEquals(sense.getSemanticLabels().get(0).getType(), ELabelTypeSemantics.verbnetClass);
 		
-		List<Sense> extSenses = uby.getSensesByOriginalReference("FrameNet", "10035");
+		List<Sense> extSenses = uby.getSensesByOriginalReference("FrameNet 1.5 lexical unit ID", "10035");
 		assertEquals(extSenses.size(), 1);
 		for(Sense s : extSenses){
 			assertEquals(s.getLexicalEntry().getLexicon().getName(), "FrameNet");
 		}
 		
-		extSenses = uby.getSensesByOriginalReference("VerbNet", "question_interrogate-37.1.3");
+		extSenses = uby.getSensesByOriginalReference("VerbNet v3.1", "question_interrogate-37.1.3");
 		assertEquals(extSenses.size(), 3);
 		int i = 0;
 		for(Sense s : extSenses){
@@ -176,15 +176,15 @@ public class UbyTest
 			assertEquals(i, s.getIndex());
 			i++;
 		}
-		extSenses = uby.getSensesByOriginalReference("WordNet", "[POS: verb] question%2:32:03::");
+		extSenses = uby.getSensesByOriginalReference("WordNet 3.0 part of speech and sense key", "[POS: verb] question%2:32:03::");
 		assertEquals(extSenses.size(), 1);
 		assertEquals(extSenses.get(0).getIndex(), 1);
 		assertEquals(extSenses.get(0).getLexicalEntry().getLexicon().getName(), "WordNet");
 		
-		extSenses = uby.getSensesByOriginalReference("Wiktionary", "49890:1:2");
+		extSenses = uby.getSensesByOriginalReference("Wiktionary sense key", "49890:1:2");
 		assertEquals(extSenses.get(0).getId(), "WktEn_sense_2");
 
-		extSenses = uby.getSensesByOriginalReference("OW", "209021");
+		extSenses = uby.getSensesByOriginalReference("OW SynTrans ID", "209021");
 		assertEquals(extSenses.get(0).getId(), "OW_deu_Sense_4143");
 
 		
