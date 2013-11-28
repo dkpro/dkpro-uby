@@ -59,6 +59,7 @@ import de.tudarmstadt.ukp.lmf.transform.DBConfig;
  *
  * @author Judith Eckle-Kohler
  * @author Michael Matuschek
+ * @author Christian M. Meyer
  * @author Tri-Duc Nghiem
  * @author Silvana Hartmann
  * @author Zijad Maksuti
@@ -607,8 +608,8 @@ public class Uby
 		Criteria criteria = session.createCriteria(Sense.class);
 
 		criteria = criteria.createCriteria("monolingualExternalRefs").add(
-				Restrictions.sqlRestriction("externalSystem like '%"
-						+ externalSys + "%' and externalReference ='"+ externalRef + "'"));
+				Restrictions.sqlRestriction("externalSystem = '"
+						+ externalSys + "' and externalReference ='"+ externalRef + "'"));
 
 		@SuppressWarnings("unchecked")
 		List<Sense> result = criteria.list();
