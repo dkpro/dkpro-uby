@@ -23,6 +23,7 @@ import java.util.List;
 import de.tudarmstadt.ukp.lmf.model.meta.MetaData;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
+import de.tudarmstadt.ukp.lmf.model.multilingual.PredicateArgumentAxis;
 import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis;
 
 /**
@@ -54,6 +55,10 @@ public class LexicalResource {
 	@VarType(type = EVarType.CHILDREN)
 	private List<SenseAxis> senseAxes = new ArrayList<SenseAxis>();
 	
+	// PredicateArgumentAxes of this LexicalResource
+	@VarType(type = EVarType.CHILDREN)
+	private List<PredicateArgumentAxis> predicateArgumentAxes = new ArrayList<PredicateArgumentAxis>();
+
 	// MetaData of this LexcalResource
 	@VarType(type = EVarType.CHILDREN)
 	private List<MetaData> metaData = new ArrayList<MetaData>();
@@ -110,6 +115,23 @@ public class LexicalResource {
 		this.lexicons = lexicons;
 	}
 
+	/**
+	 * Returns a {@link List} of all {@link PredicateArgumentAxis} instances contained in this {@link LexicalResource}. 
+	 * @return the list of all predicate argument axes contained in this lexical resource or an empty list, if the lexical resource
+	 * does not contain any predicate argument axes. 
+	 */
+	public List<PredicateArgumentAxis> getPredicateArgumentAxes() {
+		return predicateArgumentAxes;
+	}
+
+	/**
+	 * Sets a {@link List} of {@link PredicateArgumentAxis} instances to this {@link LexicalResource}.
+	 * @param predicateArgumentAxes the predicate argument axes to set
+	 */
+	public void setPredicateArgumentAxes(List<PredicateArgumentAxis> predicateArgumentAxes) {
+		this.predicateArgumentAxes = predicateArgumentAxes;
+	}
+	
 	/**
 	 * Returns a {@link List} of all {@link SenseAxis} instances contained in this {@link LexicalResource}. 
 	 * @return the list of all sense axes contained in this lexical resource or an empty list, if the lexical resource

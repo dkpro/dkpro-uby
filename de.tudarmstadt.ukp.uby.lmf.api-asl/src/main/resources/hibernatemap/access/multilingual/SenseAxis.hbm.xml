@@ -20,7 +20,7 @@
     
     
     <many-to-one name="senseOne" class="de.tudarmstadt.ukp.lmf.model.core.Sense" column="senseOneId"
-    	 node="@senseOne" foreign-key="none" not-found="ignore" index="senseOndId_IDX"/>
+    	 node="@senseOne" foreign-key="none" not-found="ignore" index="senseOneId_IDX"/>
     <many-to-one name="senseTwo" class="de.tudarmstadt.ukp.lmf.model.core.Sense" column="senseTwoId"
     	 node="@senseTwo" foreign-key="none" not-found="ignore" index="senseTwoId_IDX"/>
     
