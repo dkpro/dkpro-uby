@@ -21,8 +21,8 @@
   	</property>  	
   	
   	<many-to-one name="targetLexicalEntry" class="de.tudarmstadt.ukp.lmf.model.core.LexicalEntry" column="targetLexicalEntry" 
-			node="@targetLexicalEntry" foreign-key="none" not-found="ignore"/>
+			node="@targetLexicalEntry" foreign-key="none" not-found="ignore" index="targetLexicalEntry_IDX"/>
 	<many-to-one name="targetSense" class="de.tudarmstadt.ukp.lmf.model.core.Sense" column="targetSense" 
-			node="@targetSense" foreign-key="none" not-found="ignore"/>		
+			node="@targetSense" foreign-key="none" not-found="ignore" index="targetSense_IDX"/>		
 </class>
 </hibernate-mapping>

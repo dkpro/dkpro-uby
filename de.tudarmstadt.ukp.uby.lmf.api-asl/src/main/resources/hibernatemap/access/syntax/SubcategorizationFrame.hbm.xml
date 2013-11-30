@@ -8,7 +8,7 @@
     <id name="id" column="subcatFrameId" node="@id" type="string"/>
     
     <many-to-one name="parentSubcatFrame" class="de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrame" column="parentSubcatFrame"
-    		 node="@parentSubcatFrame" foreign-key="none" not-found="ignore"/>
+    		 node="@parentSubcatFrame" foreign-key="none" not-found="ignore" index="parentSubcatFrame_IDX"/>
 
     <property name="subcatLabel" column="subcatLabel" node="@subcatLabel" type="string"/>
       

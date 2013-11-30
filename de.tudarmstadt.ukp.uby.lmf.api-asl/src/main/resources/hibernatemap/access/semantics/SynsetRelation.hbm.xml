@@ -15,7 +15,7 @@
   	<property name="relName" column="relName" node="@relName" type="string"/>	       	
   		
 	<many-to-one name="target" class="de.tudarmstadt.ukp.lmf.model.semantics.Synset" column="target"
-		 node="@target" foreign-key="none" not-found="ignore" />
+		 node="@target" foreign-key="none" not-found="ignore" index="target_IDX"/>
 
 	<list name="frequencies" node=".">
          <key column="synsetRelationId" />
