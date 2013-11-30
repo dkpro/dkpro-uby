@@ -18,7 +18,6 @@
 package de.tudarmstadt.ukp.lmf.model.multilingual;
 
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
-import de.tudarmstadt.ukp.lmf.model.enums.EPredicateArgumentAxisType;
 import de.tudarmstadt.ukp.lmf.model.meta.MetaData;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
@@ -55,7 +54,7 @@ public class PredicateArgumentAxis {
 	private Lexicon lexiconTwo;
 	
 	@VarType(type = EVarType.ATTRIBUTE)
-	private EPredicateArgumentAxisType axisType;
+	private String axisType;
 	
 	@VarType(type = EVarType.ATTRIBUTE)	
 	private double confidence;
@@ -164,14 +163,14 @@ public class PredicateArgumentAxis {
 	/**
 	 * @return the axisType
 	 */
-	public EPredicateArgumentAxisType getAxisType() {
+	public String getAxisType() {
 		return axisType;
 	}
 
 	/**
 	 * @param axisType the axisType to set
 	 */
-	public void setAxisType(EPredicateArgumentAxisType axisType) {
+	public void setAxisType(String axisType) {
 		this.axisType = axisType;
 	}
 

@@ -6,11 +6,7 @@
 
     <id name="id" column="predicateArgumentAxisId" node="@id" type="string"/>
     
-     <property name="axisType" column="axisType" node="@axisType">    
-	   	<type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">
-	       	<param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.EPredicateArgumentAxisType</param>         	
-	   	</type>
-	</property>
+    <property name="axisType" column="axisType" node="@axisType" type="string"/>
     
     <many-to-one name="semanticPredicateOne" class="de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate" 
 		 column="semanticPredicateOne" node="@semanticPredicateOne" foreign-key="none" not-found="ignore" index="semanticPredicateOne_IDX"/>
