@@ -20,6 +20,7 @@ package de.tudarmstadt.ukp.lmf.model.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.tudarmstadt.ukp.lmf.model.meta.MetaData;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis;
@@ -52,6 +53,10 @@ public class LexicalResource {
 	// SenseAxes of this LexicalResource
 	@VarType(type = EVarType.CHILDREN)
 	private List<SenseAxis> senseAxes = new ArrayList<SenseAxis>();
+	
+	// MetaData of this LexcalResource
+	@VarType(type = EVarType.CHILDREN)
+	private List<MetaData> metaData = new ArrayList<MetaData>();
 
 	/**
 	 * Returns the name of the {@link LexicalResource}.
@@ -138,6 +143,21 @@ public class LexicalResource {
 		this.dtdVersion = dtdVersion;
 	}
 	
+	
+	/**
+	 * @return the metaData
+	 */
+	public List<MetaData> getMetaData() {
+		return metaData;
+	}
+
+	/**
+	 * @param metaData the metaData to set
+	 */
+	public void setMetaData(List<MetaData> metaData) {
+		this.metaData = metaData;
+	}
+
 	/**
 	 * Adds a {@link Lexicon} instance to this {@link LexicalResource} instance.
 	 * 
