@@ -8,6 +8,6 @@
            <generator class="increment"/>
     </id>    
     <many-to-one name="element" class="de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrame" column="element"
-    		 node="@element" foreign-key="none" not-found="ignore"/>    
+    		 node="@element" foreign-key="none" not-found="ignore" index="element_IDX"/>    
 </class>
 </hibernate-mapping>
