@@ -21,5 +21,11 @@
          <index column="idx"/>
          <one-to-many class="de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis" node="SenseAxis"/>
      </list>
+     
+     <list name="metaData" node="." lazy="extra">
+         <key column="lexicalResourceId"  />
+         <index column="idx"/>
+         <one-to-many class="de.tudarmstadt.ukp.lmf.model.meta.MetaData" node="MetaData"/>
+     </list>
 </class>
 </hibernate-mapping>
