@@ -222,7 +222,7 @@ public abstract class LMFDBTransformer extends LMFTransformer{
 	/**
 	 * Commits changes made to the Hibernate session
 	 */
-	private void commit(){
+	protected void commit(){
 		closeSession();
 		openSession();
 	}
