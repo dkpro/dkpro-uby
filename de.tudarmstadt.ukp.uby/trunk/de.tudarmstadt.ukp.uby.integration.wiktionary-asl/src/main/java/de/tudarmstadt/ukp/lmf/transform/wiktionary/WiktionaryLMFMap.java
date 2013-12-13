@@ -129,135 +129,136 @@ public class WiktionaryLMFMap {
 	 * @param pos
 	 */
 	public static EPartOfSpeech mapPos(final IWiktionaryEntry entry) {
-		switch (entry.getPartOfSpeech()) {
-			case NOUN:
-				return EPartOfSpeech.noun;
-			case VERB:
-				return EPartOfSpeech.verb;
-			case ADJECTIVE:
-				return EPartOfSpeech.adjective;
-			case ADVERB:
-				return EPartOfSpeech.adverb;
+		if (entry.getPartOfSpeech() != null)
+			switch (entry.getPartOfSpeech()) {
+				case NOUN:
+					return EPartOfSpeech.noun;
+				case VERB:
+					return EPartOfSpeech.verb;
+				case ADJECTIVE:
+					return EPartOfSpeech.adjective;
+				case ADVERB:
+					return EPartOfSpeech.adverb;
 			
-			case NUMBER:
-			case NUMERAL:
-				return EPartOfSpeech.numeral;
+				case NUMBER:
+				case NUMERAL:
+					return EPartOfSpeech.numeral;
 	
-			case AUXILIARY_VERB:
-				return EPartOfSpeech.verbAuxiliary;
+				case AUXILIARY_VERB:
+					return EPartOfSpeech.verbAuxiliary;
 
-			case ARTICLE:
-			case DETERMINER:
-				return EPartOfSpeech.determiner;
+				case ARTICLE:
+				case DETERMINER:
+					return EPartOfSpeech.determiner;
 
-			case PROPER_NOUN:
-			case TOPONYM: // further distinguished by Semantic Labels.
-				return EPartOfSpeech.nounProper;
-			case FIRST_NAME:
-				return EPartOfSpeech.nounProperFirstName;
-			case LAST_NAME:
-				return EPartOfSpeech.nounProperLastName;
-			case SINGULARE_TANTUM: // further distinguished by Semantic Labels.
-			case PLURALE_TANTUM: // further distinguished by Semantic Labels.
-				return EPartOfSpeech.noun;
+				case PROPER_NOUN:
+				case TOPONYM: // further distinguished by Semantic Labels.
+					return EPartOfSpeech.nounProper;
+				case FIRST_NAME:
+					return EPartOfSpeech.nounProperFirstName;
+				case LAST_NAME:
+					return EPartOfSpeech.nounProperLastName;
+				case SINGULARE_TANTUM: // further distinguished by Semantic Labels.
+				case PLURALE_TANTUM: // further distinguished by Semantic Labels.
+					return EPartOfSpeech.noun;
 				
-			case CONJUNCTION:
-				return EPartOfSpeech.conjunction;
-			case SUBORDINATOR:
-				return EPartOfSpeech.conjunctionSubordinating;
+				case CONJUNCTION:
+					return EPartOfSpeech.conjunction;
+				case SUBORDINATOR:
+					return EPartOfSpeech.conjunctionSubordinating;
 
-			case PREPOSITION:
-				return EPartOfSpeech.adpositionPreposition;
-			case POSTPOSITION:
-				return EPartOfSpeech.adpositionPostposition;
+				case PREPOSITION:
+					return EPartOfSpeech.adpositionPreposition;
+				case POSTPOSITION:
+					return EPartOfSpeech.adpositionPostposition;
 			
-			case INTERJECTION: 
-			case SALUTATION: // further distinguished by Semantic Labels.
-			case ONOMATOPOEIA: // further distinguished by Semantic Labels.
-				return EPartOfSpeech.interjection;				
+				case INTERJECTION: 
+				case SALUTATION: // further distinguished by Semantic Labels.
+				case ONOMATOPOEIA: // further distinguished by Semantic Labels.
+					return EPartOfSpeech.interjection;				
 
-			case PHRASE:
-			case IDIOM: // further distinguished by Semantic Labels.
-			case COLLOCATION: // further distinguished by Semantic Labels.
-			case PROVERB: // further distinguished by Semantic Labels.
-			case MNEMONIC: // further distinguished by Semantic Labels.
-			case NOUN_PHRASE: // not used anymore!
-				return EPartOfSpeech.phraseme;
+				case PHRASE:
+				case IDIOM: // further distinguished by Semantic Labels.
+				case COLLOCATION: // further distinguished by Semantic Labels.
+				case PROVERB: // further distinguished by Semantic Labels.
+				case MNEMONIC: // further distinguished by Semantic Labels.
+				case NOUN_PHRASE: // not used anymore!
+					return EPartOfSpeech.phraseme;
 
-			case PRONOUN:
-				return EPartOfSpeech.pronoun;
-			case PERSONAL_PRONOUN:
-				return EPartOfSpeech.pronounPersonal;
-			case REFLEXIVE_PRONOUN:
-				return EPartOfSpeech.pronounPersonalReflexive;
-			case DEMONSTRATIVE_PRONOUN:
-				return EPartOfSpeech.pronounDemonstrative;
-			case INDEFINITE_PRONOUN:
-				return EPartOfSpeech.pronounIndefinite;
-			case POSSESSIVE_PRONOUN:
-				return EPartOfSpeech.pronounPossessive;
-			case RELATIVE_PRONOUN:
-				return EPartOfSpeech.pronounRelative;
-			case INTERROGATIVE_ADVERB:
-			case INTERROGATIVE_PRONOUN:
-				return EPartOfSpeech.pronounInterrogative;
-				
-			case PARTICLE:
-			case MODAL_PARTICLE: // further distinguished by Semantic Labels.
-			case FOCUS_PARTICLE: // further distinguished by Semantic Labels.
-			case INTENSIFYING_PARTICLE: // further distinguished by Semantic Labels.
-				return EPartOfSpeech.particle;
-			case NEGATIVE_PARTICLE:
-				return EPartOfSpeech.particleNegative;
-			case COMPARATIVE_PARTICLE:
-				return EPartOfSpeech.particleComparative;
-			case ANSWERING_PARTICLE:
-				return EPartOfSpeech.particleAnswer;
-				
-			case ABBREVIATION:
-				return EPartOfSpeech.abbreviation;
-			case INITIALISM:
-				return EPartOfSpeech.abbreviationInitialism;
-			case ACRONYM:
-				return EPartOfSpeech.abbreviationAcronym;
-				
-			case AFFIX:
-			case LEXEME: // = bound lexeme
-			case PLACE_NAME_ENDING:
-				return EPartOfSpeech.affix;
-			case PREFIX:
-				return EPartOfSpeech.affixPrefix;
-			case SUFFIX:
-				return EPartOfSpeech.affixSuffix;
-				
-			case CONTRACTION:
-			case EXPRESSION:
-				return EPartOfSpeech.contraction;
-				
-			case LETTER:
-			case SYMBOL:
-			case CHARACTER:
-			case PUNCTUATION_MARK:
-			case GISMU:
-			case HANZI:
-			case HIRAGANA:
-			case KANJI:
-			case KATAKANA:
-				return EPartOfSpeech.symbol;
+				case PRONOUN:
+					return EPartOfSpeech.pronoun;
+				case PERSONAL_PRONOUN:
+					return EPartOfSpeech.pronounPersonal;
+				case REFLEXIVE_PRONOUN:
+					return EPartOfSpeech.pronounPersonalReflexive;
+				case DEMONSTRATIVE_PRONOUN:
+					return EPartOfSpeech.pronounDemonstrative;
+				case INDEFINITE_PRONOUN:
+					return EPartOfSpeech.pronounIndefinite;
+				case POSSESSIVE_PRONOUN:
+					return EPartOfSpeech.pronounPossessive;
+				case RELATIVE_PRONOUN:
+					return EPartOfSpeech.pronounRelative;
+				case INTERROGATIVE_ADVERB:
+				case INTERROGATIVE_PRONOUN:
+					return EPartOfSpeech.pronounInterrogative;
 
-			case TRANSLITERATION:
-			case WORD_FORM:
-			case PARTICIPLE:
+				case PARTICLE:
+				case MODAL_PARTICLE: // further distinguished by Semantic Labels.
+				case FOCUS_PARTICLE: // further distinguished by Semantic Labels.
+				case INTENSIFYING_PARTICLE: // further distinguished by Semantic Labels.
+					return EPartOfSpeech.particle;
+				case NEGATIVE_PARTICLE:
+					return EPartOfSpeech.particleNegative;
+				case COMPARATIVE_PARTICLE:
+					return EPartOfSpeech.particleComparative;
+				case ANSWERING_PARTICLE:
+					return EPartOfSpeech.particleAnswer;
 
-			case COMBINING_FORM:
-			case MEASURE_WORD: // not used
-			case UNKNOWN:
-			case UNSPECIFIED:
-				if (PRINT_MISSING_POS)
-					System.out.println("Unknown POS: " + entry.getWord() + "/" + entry.getPartOfSpeech());
-				return null;
+				case ABBREVIATION:
+					return EPartOfSpeech.abbreviation;
+				case INITIALISM:
+					return EPartOfSpeech.abbreviationInitialism;
+				case ACRONYM:
+					return EPartOfSpeech.abbreviationAcronym;
+
+				case AFFIX:
+				case LEXEME: // = bound lexeme
+				case PLACE_NAME_ENDING:
+					return EPartOfSpeech.affix;
+				case PREFIX:
+					return EPartOfSpeech.affixPrefix;
+				case SUFFIX:
+					return EPartOfSpeech.affixSuffix;
+
+				case CONTRACTION:
+				case EXPRESSION:
+					return EPartOfSpeech.contraction;
+
+				case LETTER:
+				case SYMBOL:
+				case CHARACTER:
+				case PUNCTUATION_MARK:
+				case GISMU:
+				case HANZI:
+				case HIRAGANA:
+				case KANJI:
+				case KATAKANA:
+					return EPartOfSpeech.symbol;
+
+				case TRANSLITERATION:
+				case WORD_FORM:
+				case PARTICIPLE:
+
+				case COMBINING_FORM:
+				case MEASURE_WORD: // not used
+				case UNKNOWN:
+				case UNSPECIFIED:
+					if (PRINT_MISSING_POS)
+						System.out.println("Unknown POS: " + entry.getWord() + "/" + entry.getPartOfSpeech());
+					return null;
 				
-		}
+			}
 		return null;
 	}
 	/**
@@ -265,16 +266,17 @@ public class WiktionaryLMFMap {
 	 * @param gender
 	 */
 	public static EGrammaticalGender mapGender(Gender gender){
-		switch (gender) {
-			case MASCULINE:
-				return EGrammaticalGender.masculine;
-			case FEMININE:
-				return EGrammaticalGender.feminine;
-			case NEUTER:
-				return EGrammaticalGender.neuter;
-			case UNDEFINED:
-				return null;
-		}
+		if (gender != null)
+			switch (gender) {
+				case MASCULINE:
+					return EGrammaticalGender.masculine;
+				case FEMININE:
+					return EGrammaticalGender.feminine;
+				case NEUTER:
+					return EGrammaticalGender.neuter;
+				case UNDEFINED:
+					return null;
+			}
 		return null;
 	}
 	
@@ -332,8 +334,7 @@ public class WiktionaryLMFMap {
 				return "troponym";
 			case SEE_ALSO:
 				return ERelNameSemantics.RELATED;
-
-			//TODO: other types?
+				
 			default:
 				return null;
 		}
@@ -353,8 +354,7 @@ public class WiktionaryLMFMap {
 				return ERelTypeMorphology.etymology;
 			case ETYMOLOGICALLY_RELATED_TERM:
 				return ERelTypeMorphology.etymology;
-//			case SEE_ALSO:
-//				return null;
+
 			default:
 				return null;
 		}
@@ -371,5 +371,75 @@ public class WiktionaryLMFMap {
 			throw new RuntimeException(e);
 		}
 	}
+
+	/*public static ECase mapCase(final IWiktionaryWordForm wordForm) {
+		if (wordForm.getCase() != null)
+			switch (wordForm.getCase()) {
+				case NOMINATIVE:
+					return ECase.nominative;
+				case GENITIVE:
+					return ECase.genitive;
+				case DATIVE:
+					return ECase.dative;
+				case ACCUSATIVE:
+					return ECase.accusative;
+			}
+		return null;
+	}
+
+	public static EDegree mapDegree(final IWiktionaryWordForm wordForm) {
+		if (wordForm.getDegree() != null)
+			switch (wordForm.getDegree()) {
+				case POSITIVE:
+					return EDegree.POSITIVE;
+				case COMPARATIVE:
+					return EDegree.COMPARATIVE;
+				case SUPERLATIVE:
+					return EDegree.SUPERLATIVE;
+			}
+		return null;
+	}
+
+	public static EPerson mapPerson(final IWiktionaryWordForm wordForm) {
+		if (wordForm.getPerson() != null)
+			switch (wordForm.getPerson()) {
+				case FIRST:
+					return EPerson.first;
+				case SECOND:
+					return EPerson.second;
+				case THIRD:
+					return EPerson.third;
+			}
+		return null;
+	}
+
+	public static EGrammaticalNumber mapGrammaticalNumber(
+			final IWiktionaryWordForm wordForm) {
+		if (wordForm.getNumber() != null)
+			switch (wordForm.getNumber()) {
+				case SINGULAR:
+					return EGrammaticalNumber.singular;
+				case PLURAL:
+					return EGrammaticalNumber.plural;
+			}
+		return null;
+	}
+
+	public static ETense mapTense(final IWiktionaryWordForm wordForm) {
+		if (wordForm.getTense() != null)
+			switch (wordForm.getTense()) {
+				case PRESENT:
+					return (wordForm.getAspect() == GrammaticalAspect.IMPERFECT ? ETense.present : null);
+				case PAST:
+					return (wordForm.getAspect() == GrammaticalAspect.IMPERFECT ? ETense.past : null);
+//				case FUTURE:
+//					return ETense.future;
+			}
+		return null;
+	}
+
+	public static EVerbFormMood mapVerbFormMood(final IWiktionaryWordForm wordForm) {
+		return null;
+	}*/
 	
 }
