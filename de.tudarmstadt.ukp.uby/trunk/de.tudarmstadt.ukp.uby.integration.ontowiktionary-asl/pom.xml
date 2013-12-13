@@ -35,11 +35,6 @@
 			<artifactId>de.tudarmstadt.ukp.uby.persistence.transform-asl</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.sleepycat</groupId>
-			<artifactId>je</artifactId>
-			<version>5.0.55</version>
-		</dependency>
-		<dependency>
 			<groupId>de.tudarmstadt.ukp.jwktl</groupId>
 			<artifactId>jwktl</artifactId>
 			<version>1.0.0</version>
