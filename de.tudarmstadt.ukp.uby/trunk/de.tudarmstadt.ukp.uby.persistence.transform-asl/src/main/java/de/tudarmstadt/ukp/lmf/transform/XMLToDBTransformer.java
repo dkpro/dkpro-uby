@@ -46,6 +46,7 @@ import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
+import de.tudarmstadt.ukp.lmf.model.meta.MetaData;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.ConstraintSet;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
@@ -165,6 +166,8 @@ public class XMLToDBTransformer implements ElementHandler {
 			saveSenseAxis(el);
 		else if (n.equals("SemanticPredicate"))
 			saveSemanticPredicate(el);
+		else if (n.equals("MetaData"))
+			saveMetaData(el);
 		else return;
 	}
 	
@@ -220,7 +223,7 @@ public class XMLToDBTransformer implements ElementHandler {
 	
 	
 	/**
-	 * Save LexicalEntry element
+	 * Converts and saves LexicalEntry element
 	 * @return
 	 */
 	protected void saveLexicalEntry(Element el){
@@ -230,7 +233,7 @@ public class XMLToDBTransformer implements ElementHandler {
 	
 	
 	/**
-	 * Returns next SubcategorizationFrame that should be stored in LMF
+	 * Converts and saves SubcategorizationFrame element
 	 * @return
 	 */
 	protected void saveSubcategorizationFrame(Element el){
@@ -240,7 +243,7 @@ public class XMLToDBTransformer implements ElementHandler {
 	}
 
 	/**
-	 * Returns next SubcategorizationFrameSet that should be stored in LMF
+	 * Converts and saves SubcategorizationFrameSet element
 	 * @return
 	 */
 	protected void saveSubcategorizationFrameSet(Element el){
@@ -249,7 +252,7 @@ public class XMLToDBTransformer implements ElementHandler {
 		saveListElement(lexicon, lexicon.getSubcategorizationFrameSets(), obj);
 	}
 	/**
-	 * Returns next SemanticPredicate that should be stored in LMF
+	 * Converts and saves SemanticPredicate element
 	 * @return
 	 */
 	protected void saveSemanticPredicate(Element el){
@@ -257,7 +260,7 @@ public class XMLToDBTransformer implements ElementHandler {
 		saveListElement(lexicon, lexicon.getSemanticPredicates(), obj);
 	}
 	/**
-	 * Returns next Synset that should be stored in LMF
+	 * Converts and saves Synset element
 	 * @return
 	 */
 	protected void saveSynset(Element el){
@@ -265,7 +268,7 @@ public class XMLToDBTransformer implements ElementHandler {
 		saveListElement(lexicon, lexicon.getSynsets(), obj);
 	}
 	/**
-	 * Returns next SynSemCorrespondence that should be stored in LMF
+	 * Converts and saves SynSemCorrespondence element
 	 * @return
 	 */
 	protected void saveSynSemCorrespondence(Element el){
@@ -273,7 +276,7 @@ public class XMLToDBTransformer implements ElementHandler {
 		saveListElement(lexicon, lexicon.getSynSemCorrespondences(), obj);
 	}
 	/**
-	 * Returns next ConstraintSet that should be stored in LMF
+	 * Converts and saves  ConstraintSet element
 	 * @return
 	 */
 	protected void saveConstraintSet(Element el){
@@ -282,13 +285,23 @@ public class XMLToDBTransformer implements ElementHandler {
 	}
 
 	/**
-	 * Returns next SesnseAxis that should be stored in LMF
+	 * Converts and saves SenseAxis element
 	 * @return
 	 */
 	protected void saveSenseAxis(Element el){
 		SenseAxis obj = (SenseAxis)fromXmlToObject(el, SenseAxis.class);
 		saveListElement(lexicalResource, lexicalResource.getSenseAxes(), obj);
 	}	
+	
+	/**
+	 * Converts and saves MetaData element
+	 * @return
+	 */
+	protected void saveMetaData(Element el){
+		MetaData obj = (MetaData)fromXmlToObject(el, MetaData.class);
+		saveListElement(lexicalResource, lexicalResource.getMetaData(), obj);
+	}	
+	
 	
 
 	/**
@@ -340,9 +353,11 @@ public class XMLToDBTransformer implements ElementHandler {
 								valueToSet = GenericUtils.getBoolean(value);
 							else if (fieldClass.equals(int.class) || fieldClass.equals(Integer.class))
 								valueToSet = GenericUtils.getInteger(value);
-							else if (fieldClass.isEnum()){
+							else if (fieldClass.equals(double.class) || fieldClass.equals(Double.class))
+								valueToSet = GenericUtils.getDouble(value);
+							else if (fieldClass.isEnum())
 								valueToSet = GenericUtils.getEnum(fieldClass, value);
-							}
+							
 							setMethod.invoke(lmfObject, valueToSet);
 						}
 					}else if(type.equals(EVarType.CHILD)){ // Save child

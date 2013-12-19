@@ -19,17 +19,33 @@ package de.tudarmstadt.ukp.lmf.model.meta;
 
 import java.util.Date;
 
+import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
+import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
+import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
+
 /**
  * Meta data information for semantic axis
  * @author Yevgen Chebotar
  *
  */
-public class MetaData {
+public class MetaData implements IHasID{
+	
+	@VarType(type = EVarType.ATTRIBUTE)
 	private String id;
+	
+	@VarType(type = EVarType.ATTRIBUTE)
 	private Date creationDate;
+
+	@VarType(type = EVarType.ATTRIBUTE)
 	private String creationTool;
-	private String version;
+
+	@VarType(type = EVarType.ATTRIBUTE)
+	private String version;	
+	
+	@VarType(type = EVarType.ATTRIBUTE)
 	private String creationProcess;
+
+	@VarType(type = EVarType.ATTRIBUTE)
 	private Boolean automatic;
 	
 	/**
