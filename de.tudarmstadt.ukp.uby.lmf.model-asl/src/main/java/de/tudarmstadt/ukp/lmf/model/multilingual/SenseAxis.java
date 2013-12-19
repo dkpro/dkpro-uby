@@ -45,7 +45,6 @@ public class SenseAxis implements IHasID {
 	@VarType(type = EVarType.ATTRIBUTE)
 	private String id;
 	
-
 	// SenseOne  of this SenseAxis
 	@VarType(type = EVarType.IDREF)
 	private Sense senseOne;
@@ -80,7 +79,7 @@ public class SenseAxis implements IHasID {
 	private Lexicon lexiconTwo;
 	
 	@VarType(type = EVarType.ATTRIBUTE)
-	private double confidence;
+	private Double confidence;
 	
 	
 	public String getId() {
@@ -265,14 +264,14 @@ public class SenseAxis implements IHasID {
 	/**
 	 * @return the confidence
 	 */
-	public double getConfidence() {
+	public Double getConfidence() {
 		return confidence;
 	}
 
 	/**
 	 * @param confidence the confidence to set
 	 */
-	public void setConfidence(double confidence) {
+	public void setConfidence(Double confidence) {
 		this.confidence = confidence;
 	}
 }

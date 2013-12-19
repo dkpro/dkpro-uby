@@ -174,6 +174,7 @@ public class LMFXmlWriter extends LMFWriter{
 		// Iterating over all fields
 		for(Field field : fields){
 			String fieldName = field.getName().replace("_", "");
+			Class<?> fieldClass = field.getType();
 			VarType varType = field.getAnnotation(VarType.class);
 			// No VarType-Annotation found for the field, then don't save to XML 
 			if(varType == null)
@@ -198,11 +199,11 @@ public class LMFXmlWriter extends LMFWriter{
 				if(fieldName.startsWith("is")) // E.g. isHead --> setHead
 					setFieldName = setFieldName.replaceFirst("is", "");
 				
-				
 				// Get-Method for the field
 				String getFuncName = setFieldName.substring(0,1).toUpperCase() + setFieldName.substring(1);
-				if(something.equals(Boolean.class))
+				if(fieldClass.equals(Boolean.class)){
 					getFuncName = "is"+getFuncName;
+				}
 				else getFuncName = "get"+getFuncName;
 				
 				Method getMethod = null;

@@ -88,13 +88,24 @@ public class GenericUtils {
 	}
 
 	/**
-	 * Return string value of a string
+	 * Return int value of a string
 	 * @param value
 	 * @return
 	 */
 	public static int getInteger(String value){
 		if(value != null)
 			return Integer.parseInt(value);
+		else return 0;
+	}
+	
+	/**
+	 * Return double value of a string
+	 * @param value
+	 * @return
+	 */
+	public static double getDouble(String value){
+		if(value != null)
+			return Double.parseDouble(value);
 		else return 0;
 	}
 	
