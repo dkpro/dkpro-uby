@@ -51,6 +51,10 @@
   		<groupId>de.tudarmstadt.ukp.uby</groupId>
   		<artifactId>de.tudarmstadt.ukp.uby.integration.omegawiki-asl</artifactId>
   	</dependency>
+   	<dependency>
+  		<groupId>de.tudarmstadt.ukp.uby</groupId> 	
+  		<artifactId>de.tudarmstadt.ukp.uby.integration.ontowiktionary-asl</artifactId>
+   	</dependency> 	  	
   	<dependency>
   		<groupId>de.tudarmstadt.ukp.uby</groupId>
   		<artifactId>de.tudarmstadt.ukp.uby.integration.verbnet-asl</artifactId>
