@@ -51,6 +51,7 @@ import de.tudarmstadt.ukp.lmf.transform.wordnet.util.IndexSenseReader;
 public class SenseGenerator {
 
 	private final IndexSenseReader isr;
+	public final static String EXTERNAL_SYSTEM = "WordNet_3.0_eng_senseKey";
 
 	/*
 	 * Synset generator used for obtaining mappings between
@@ -155,7 +156,7 @@ public class SenseGenerator {
 			sb.append(" ");
 			sb.append(lexeme.getSenseKey());
 
-			monolingualExternalRef.setExternalSystem("WordNet 3.0 part of speech and sense key");
+			monolingualExternalRef.setExternalSystem(EXTERNAL_SYSTEM);
 			monolingualExternalRef.setExternalReference(sb.toString());
 			List<MonolingualExternalRef> monolingualExternalRefs = new LinkedList<MonolingualExternalRef>();
 			monolingualExternalRefs.add(monolingualExternalRef);

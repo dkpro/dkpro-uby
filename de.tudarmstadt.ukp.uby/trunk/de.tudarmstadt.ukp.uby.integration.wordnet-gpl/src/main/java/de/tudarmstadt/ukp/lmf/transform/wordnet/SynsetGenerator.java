@@ -61,6 +61,8 @@ import de.tudarmstadt.ukp.lmf.transform.wordnet.util.WNConvUtil;
  */
 public class SynsetGenerator {
 
+	public final static String EXTERNAL_SYSTEM = "WordNet_3.0_eng_synsetOffset";
+
 	private final Dictionary wordnet; // WordNet Dictionary
 
 	private int lmfSynsetNumber = 0; // running number used for creating IDs of Synsets
@@ -202,7 +204,7 @@ public class SynsetGenerator {
 				// *** Creating MonolingualExternalRef ***//
 				MonolingualExternalRef monolingualExternalRef = new MonolingualExternalRef();
 				// Generating MonolingualExternalRef ID
-				monolingualExternalRef.setExternalSystem("WordNet 3.0 part of speech and synset offset");
+				monolingualExternalRef.setExternalSystem(EXTERNAL_SYSTEM);
 				StringBuffer sb = new StringBuffer(16);
 				sb.append(wnSynset.getPOS());
 				sb.append(" ");

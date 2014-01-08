@@ -71,6 +71,7 @@ import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticBehaviour;
  */
 public class VerbNetExtractor {
 
+	public static final String EXTERNAL_SYSTEM = "VerbNet_3.1_eng_sense";
 	public Lexicon lexicon = new Lexicon();
 	
 	private File verbNetInputFile; // The File containing the VerbNet Input
@@ -378,7 +379,7 @@ public class VerbNetExtractor {
 				String [] classInfo = vnSense.classInformation.split("\\(");
 				
 				MonolingualExternalRef monolingualExternalRef = new MonolingualExternalRef();
-				monolingualExternalRef.setExternalSystem("VerbNet v3.1");
+				monolingualExternalRef.setExternalSystem(EXTERNAL_SYSTEM);
 				monolingualExternalRef.setExternalReference(vnSense.lemma + "_" + classInfo[0]);
 				List<MonolingualExternalRef> monolingualExternalRefs = new LinkedList<MonolingualExternalRef>();
 				monolingualExternalRefs.add(monolingualExternalRef);

@@ -67,6 +67,10 @@ import de.tudarmstadt.ukp.lmf.model.semantics.SenseExample;
  *
  */
 public class LexicalEntryGenerator {
+	public static final String EXTERNAL_SYSTEM_LEXICAL_UNIT = "FrameNet_1.5_eng_lexicalUnit";
+	public static final String EXTERNAL_SYSTEM_SEMANTIC_TYPE = "FrameNet_1.5_eng_semanticType";
+	
+	
 	private final SemanticPredicateGenerator semanticPredicateGenerator;
 	private int lexicalEntryNumber; // Running number used for creating IDs of LexicalEntries
 	private int senseNumber; // Running number used for creating IDs of Senses
@@ -201,7 +205,7 @@ public class LexicalEntryGenerator {
 
 			// setting MonolingualExternalRef
 			MonolingualExternalRef monolingualExternalRef = new MonolingualExternalRef();
-			monolingualExternalRef.setExternalSystem("FrameNet 1.5 lexical unit ID");
+			monolingualExternalRef.setExternalSystem(EXTERNAL_SYSTEM_LEXICAL_UNIT);
 			monolingualExternalRef.setExternalReference(lu.getId());
 			List<MonolingualExternalRef> monolingualExternalRefs = new ArrayList<MonolingualExternalRef>();
 			monolingualExternalRefs.add(monolingualExternalRef);
@@ -296,7 +300,7 @@ public class LexicalEntryGenerator {
 							List<MonolingualExternalRef> merefs = new LinkedList<MonolingualExternalRef>();
 							MonolingualExternalRef meref = new MonolingualExternalRef();
 							meref.setExternalReference(s);
-							meref.setExternalSystem("FrameNet 1.5 semantic type ID");
+							meref.setExternalSystem(EXTERNAL_SYSTEM_SEMANTIC_TYPE);
 							merefs.add(meref);
 							semanticLabel.setMonolingualExternalRefs(monolingualExternalRefs);
 							List<SemanticLabel> semanticLabels = sense.getSemanticLabels();

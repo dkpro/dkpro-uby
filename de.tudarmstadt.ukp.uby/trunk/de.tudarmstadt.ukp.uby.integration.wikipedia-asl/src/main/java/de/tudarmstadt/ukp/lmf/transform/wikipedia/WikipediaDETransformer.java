@@ -23,6 +23,7 @@ import de.tudarmstadt.ukp.lmf.model.core.GlobalInformation;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
+import de.tudarmstadt.ukp.wikipedia.api.MetaData;
 import de.tudarmstadt.ukp.wikipedia.api.Wikipedia;
 import de.tudarmstadt.ukp.wikipedia.api.exception.WikiApiException;
 
@@ -47,6 +48,12 @@ public class WikipediaDETransformer extends WikipediaLMFTransformer {
 	@Override
 	protected String getResourceAlias() {
 		return "WikiDE";
+	}
+	
+	@Override
+	protected String getExternalSystem() throws WikiApiException {
+		MetaData meta = wiki.getMetaData();
+		return "Wikipedia_" + meta.getVersion() + "2009-06-18_deu_articleTitle";
 	}
 
 	@Override
