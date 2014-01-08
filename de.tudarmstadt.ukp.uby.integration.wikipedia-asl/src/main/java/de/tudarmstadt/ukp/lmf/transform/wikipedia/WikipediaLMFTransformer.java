@@ -77,7 +77,8 @@ public abstract class WikipediaLMFTransformer extends LMFDBTransformer {
 	protected final MediaWikiParser mediaWikiParser; // Parser needed for parsing of Wikipedia pages
 	protected final String dtd_version;
 	protected final boolean createEquivalents; //Decision if Translation Equivalents should be generated. This takes a lot more time!!
-
+	protected String externalSystem; //Description of external system
+	
 	/**
 	 * @param dbConfig
 	 * @param wiki
@@ -96,6 +97,7 @@ public abstract class WikipediaLMFTransformer extends LMFDBTransformer {
 		pf.setTemplateParserClass(FlushTemplates.class);
 		mediaWikiParser = pf.createParser();
 		dtd_version = dtd;
+		this.externalSystem = getExternalSystem();
 	}
 
 	protected abstract String getHiddenCategoryName();
@@ -174,7 +176,7 @@ public abstract class WikipediaLMFTransformer extends LMFDBTransformer {
 				sense.setId(getLmfId(Sense.class, String.valueOf(page.getPageId())));
 
 				MonolingualExternalRef monolingualExternalRef = new MonolingualExternalRef();
-				monolingualExternalRef.setExternalSystem("Wikipedia article title");
+				monolingualExternalRef.setExternalSystem(externalSystem);
 				monolingualExternalRef.setExternalReference(pageTitle);
 				List<MonolingualExternalRef> monolingualExternalRefs = new LinkedList<MonolingualExternalRef>();
 				monolingualExternalRefs.add(monolingualExternalRef);
@@ -284,9 +286,8 @@ public abstract class WikipediaLMFTransformer extends LMFDBTransformer {
 	}
 
 	protected abstract boolean isDiscussionPage(final String pageTitle);
-
-
-
+	protected abstract String getExternalSystem() throws WikiApiException;
+	
 	@Override
 	protected void finish() {}
 
@@ -305,6 +306,7 @@ public abstract class WikipediaLMFTransformer extends LMFDBTransformer {
 	protected SynSemCorrespondence getNextSynSemCorrespondence() {return null;}
 	@Override
 	protected Synset getNextSynset() {return null;}
+	
 
 
 }

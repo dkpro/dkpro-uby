@@ -44,6 +44,7 @@ import de.tuebingen.uni.sfs.germanet.api.Synset;
  *
  */
 public class SynsetGenerator {
+	public static final String EXTERNAL_SYSTEM = "GermaNet_7.0_deu_synset";
 	private final GermaNet gnet; // GermaNet Object
 	private int lmfSynsetNumber = 0; // running number used for creating IDs of LMFSynsets
 	private int senseNumber = 0; // running number used for creating IDs of Senses
@@ -99,7 +100,7 @@ public class SynsetGenerator {
 			// *** Generating Monolingual ExternalRef**//
 			MonolingualExternalRef mer = new MonolingualExternalRef();
 			mer.setExternalReference(Integer.toString(gnSynset.getId()));
-			mer.setExternalSystem("GermaNet 7.0 Synset-ID");
+			mer.setExternalSystem(EXTERNAL_SYSTEM);
 			LinkedList<MonolingualExternalRef> mers = new LinkedList<MonolingualExternalRef>();
 			mers.add(mer);
 			lmfSynset.setMonolingualExternalRefs(mers);

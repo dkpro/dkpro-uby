@@ -48,6 +48,8 @@ import de.tuebingen.uni.sfs.germanet.api.Synset;
  *
  */
 public class SenseGenerator {
+	public final static String EXTERNAL_SYSTEM = "GermaNet_7.0_deu_lexicalUnit";
+	
 	private final SynsetGenerator synsetGenerator; // SynsetGenerator
 	private final SemanticClassLabelExtractor semanticClassLabelExtractor; // for extraction of semantic class labels
 	private final Map<LexUnit, Sense> luSenseMappings = new HashMap<LexUnit, Sense>();
