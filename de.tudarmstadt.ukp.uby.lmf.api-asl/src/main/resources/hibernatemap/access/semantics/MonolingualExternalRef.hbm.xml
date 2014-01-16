@@ -9,8 +9,10 @@
     <id column="monolingualExternalRefId" type="long">
            <generator class="increment"/>
     </id>
-    <property name="externalSystem" column="externalSystem" node="@externalSystem" type="string"/>	       	
-    <property name="externalReference" column="externalReference" node="@externalReference" type="string"/>	       	
+    <property name="externalSystem" column="externalSystem" node="@externalSystem" type="string" 
+    	index="externalSystem_IDX"/>	       	
+    <property name="externalReference" column="externalReference" node="@externalReference" type="string"
+    	index="externalReference_IDX"/>	       	
     
     
     

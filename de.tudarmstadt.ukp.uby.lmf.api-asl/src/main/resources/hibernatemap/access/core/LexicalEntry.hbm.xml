@@ -4,7 +4,7 @@
 <hibernate-mapping>
 <class name="de.tudarmstadt.ukp.lmf.model.core.LexicalEntry" table="LexicalEntry" node="LexicalEntry" dynamic-insert="true">        
     <id name="id" column="lexicalEntryId" node="@id" type="string"/>
-    <property name="partOfSpeech" column="partOfSpeech" node="@partOfSpeech">    
+    <property name="partOfSpeech" column="partOfSpeech" node="@partOfSpeech" index="partOfSpeech_IDX">    
     	<type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">
          	<param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech</param>         	
       	</type>

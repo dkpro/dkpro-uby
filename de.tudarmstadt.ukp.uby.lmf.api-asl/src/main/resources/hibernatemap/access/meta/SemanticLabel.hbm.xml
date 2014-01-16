@@ -8,7 +8,7 @@
            <generator class="increment"/>
     </id>
 	<property name="label" column="label" node="@label" type="string"/>
-    <property name="type" column="type" node="@type">    
+    <property name="type" column="type" node="@type" index="type_IDX">    
         <type name="de.tudarmstadt.ukp.lmf.hibernate.EnumUserType">
             <param name="enumClassName">de.tudarmstadt.ukp.lmf.model.enums.ELabelTypeSemantics</param>            
         </type>
