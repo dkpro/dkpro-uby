@@ -158,7 +158,9 @@ public class LMFXmlWriter extends LMFWriter{
 		
 		Class<?> something = lmfObject.getClass();
 		String elementName = something.getSimpleName();
-				
+		int hibernateSuffixIdx = elementName.indexOf("_$$");
+		if(hibernateSuffixIdx > 0)
+			elementName = elementName.substring(0, hibernateSuffixIdx);
 		AttributesImpl atts = new AttributesImpl();
 		List<Object> children = new ArrayList<Object>();
 		

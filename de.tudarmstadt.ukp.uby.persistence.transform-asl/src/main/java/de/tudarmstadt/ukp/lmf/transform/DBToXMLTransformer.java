@@ -104,7 +104,7 @@ public class DBToXMLTransformer {
 		
 		if(writer instanceof LMFXmlWriter)
 			logger.log(Level.INFO, "Started writing lexicalResource "+ lexicalResourceName
-					+ "to " + ((LMFXmlWriter) writer).getOutputPath());
+					+ " to " + ((LMFXmlWriter) writer).getOutputPath());
 		else
 			logger.log(Level.INFO, "Started writing lexicalResource " +  lexicalResourceName);
 			
@@ -116,13 +116,11 @@ public class DBToXMLTransformer {
 		writer.writeElement(globalInformation);
 		int counter = 1;
 		
-
 		int bufferSize = 100;
 		// Iterate over all lexicons
 		for(Lexicon lexicon : lexicalResource.getLexicons()){
 			
 			String lexiconName = lexicon.getName();
-			
 			// write lexicons
 			if((lexiconsOnly && !selectedLexicons.contains(lexiconName)) || senseAxesOnly){
 				// on selective conversion, omit the lexicons not in the list
@@ -194,7 +192,7 @@ public class DBToXMLTransformer {
 		
 		if(writer instanceof LMFXmlWriter)
 			logger.log(Level.INFO, "Started writing lexicalResource "+ lexicalResourceName
-					+ "to " + ((LMFXmlWriter) writer).getOutputPath());
+					+ " to " + ((LMFXmlWriter) writer).getOutputPath());
 		else
 			logger.log(Level.INFO, "Started writing lexicalResource " +  lexicalResourceName);
 			
@@ -211,7 +209,7 @@ public class DBToXMLTransformer {
 		//for(Lexicon lexicon : lexicalResource.getLexicons()){
 			
 			String lexiconName = lexicon.getName();
-						
+			
 			logger.info("processing lexicon: " + lexiconName);
 			writer.writeStartElement(lexicon);
 
