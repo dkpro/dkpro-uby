@@ -90,7 +90,8 @@ public class TestSuite {
 		String extJWNL_configuration = UBY_HOME+"/WordNet/extJWNL/file_properties.xml";
 		Dictionary extWordnet = Dictionary.getInstance(new FileInputStream(extJWNL_configuration));
 		String dtd_version = "dtd_version_test";
-		WNConverter converterWN = new WNConverter(extWordnet, new LexicalResource(), dtd_version, UBY_HOME+"/WordNet/cache/ExampleSentenceLexemeMapping.xml");
+		WNConverter converterWN = new WNConverter(extWordnet, new LexicalResource(), 
+				"GermaNet_7.0_deu", dtd_version, UBY_HOME+"/WordNet/cache/ExampleSentenceLexemeMapping.xml");
 		converterWN.toLMF();
 		wordNetLexicon = converterWN.getLexicalResource().getLexicons().get(0);
 

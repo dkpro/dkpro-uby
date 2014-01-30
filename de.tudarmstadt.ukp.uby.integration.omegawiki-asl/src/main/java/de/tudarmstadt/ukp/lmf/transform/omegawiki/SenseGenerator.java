@@ -56,8 +56,11 @@ import de.tudarmstadt.ukp.omegawiki.exception.OmegaWikiException;
  *
  */
 class SenseGenerator {
-	private final  String GlobalLanguageLMF;
-	private final  int GlobalLanguage;
+	public static final String SYNTRANS = "synTrans";
+	
+	private final String resourceVersion;
+	private final String GlobalLanguageLMF;
+	private final int GlobalLanguage;
 
 	/*
 	 * Synset generator is needed for recovering
@@ -78,12 +81,13 @@ class SenseGenerator {
 	 * Constructs a SenseGenerator
 	 * @param omegawiki
 	 * @param synsetGenerator a SynsetGenerator
+	 * @param resourceVersion Version of the resource
 	 */
-	public SenseGenerator(SynsetGenerator synsetGenerator){
+	public SenseGenerator(SynsetGenerator synsetGenerator, String resourceVersion){
 		this.synsetGenerator = synsetGenerator;
-		this.GlobalLanguageLMF=synsetGenerator.getGlobalLanguageLMF();
+		this.GlobalLanguageLMF = synsetGenerator.getGlobalLanguageLMF();
 		this.GlobalLanguage = synsetGenerator.getGlobalLanguage();
-
+		this.resourceVersion = resourceVersion;
 	}
 
 	/**
@@ -430,7 +434,7 @@ class SenseGenerator {
 			StringBuffer stb = new StringBuffer(32);
 			stb.append(senseKey);
 
-			monolingualExternalRef.setExternalSystem("OW SynTrans ID");
+			monolingualExternalRef.setExternalSystem(resourceVersion + "_" + SYNTRANS);
 			monolingualExternalRef.setExternalReference(stb.toString());
 			List<MonolingualExternalRef> monolingualExternalRefs = new LinkedList<MonolingualExternalRef>();
 			monolingualExternalRefs.add(monolingualExternalRef);

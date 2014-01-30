@@ -36,8 +36,9 @@ import de.tudarmstadt.ukp.wikipedia.api.exception.WikiApiException;
 public class WikipediaENTransformer extends WikipediaLMFTransformer {
 
 	public WikipediaENTransformer(final DBConfig dbConfig,
-			final Wikipedia wiki, final String dtd, boolean createEquivalents) throws WikiApiException, FileNotFoundException {
-		super(dbConfig, wiki, dtd, createEquivalents);
+			final Wikipedia wiki, String resourceVersion, 
+			final String dtd, boolean createEquivalents) throws WikiApiException, FileNotFoundException {
+		super(dbConfig, wiki, resourceVersion, dtd, createEquivalents);
 	}
 
 	@Override
@@ -50,12 +51,6 @@ public class WikipediaENTransformer extends WikipediaLMFTransformer {
 		return "WikiEN";
 	}
 	
-	@Override
-	protected String getExternalSystem() throws WikiApiException {
-		MetaData meta = wiki.getMetaData();
-		return "Wikipedia_" + meta.getVersion() + "2009-08-22_eng_articleTitle";
-	}
-
 	@Override
 	protected LexicalResource createLexicalResource() {
 		LexicalResource resource = new LexicalResource();

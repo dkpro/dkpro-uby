@@ -83,7 +83,7 @@ import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 
 	@Before
 	public void initialize(){
-		gnConverter = new GNConverter(gnet, new LexicalResource(), "test");
+		gnConverter = new GNConverter(gnet, new LexicalResource(),"GermaNet_7.0_deu","test");
 		iliConverter = new InterlingualIndexConverter(gnConverter, gnet, wordNetLexicon);
 	}
 

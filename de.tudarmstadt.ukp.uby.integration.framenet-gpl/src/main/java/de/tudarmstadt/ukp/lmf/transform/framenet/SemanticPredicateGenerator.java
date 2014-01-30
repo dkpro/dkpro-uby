@@ -61,6 +61,8 @@ public class SemanticPredicateGenerator {
 
 	private final FrameNet fn;
 
+	public static final String SEMANTIC_TYPE = "semanticType";
+	
 	//Mappings between SemanticPredicates and corresponding Frames
 	private final Map<Frame, SemanticPredicate> frameSemanticPredicateMappings = new HashMap<Frame, SemanticPredicate>();
 
@@ -78,15 +80,19 @@ public class SemanticPredicateGenerator {
 
 	private final Logger logger = Logger.getLogger(FNConverter.class.getName());
 
+	private final String resourceVersion;
+
 	/**
 	 * Constructs an instance of {@link SemanticPredicateGenerator} used for generating SemanticPredicates
 	 * out of Frames
 	 * @param fn initialized {@link FrameNet} object used for accessing Frames
+	 * @param resourceVersion Version of the resource
 	 * @see {@link Frame}
 	 * @see {@link SemanticPredicate}
 	 */
-	public SemanticPredicateGenerator(FrameNet fn){
+	public SemanticPredicateGenerator(FrameNet fn, String resourceVersion){
 		this.fn = fn;
+		this.resourceVersion = resourceVersion;
 		this.init();
 	}
 
@@ -186,7 +192,7 @@ public class SemanticPredicateGenerator {
 							List<MonolingualExternalRef> monolingualExternalRefs = new LinkedList<MonolingualExternalRef>();
 							MonolingualExternalRef monolingualExternalRef = new MonolingualExternalRef();
 							monolingualExternalRef.setExternalReference(semTypeID);
-							monolingualExternalRef.setExternalSystem("FrameNet 1.5 semantic type ID");
+							monolingualExternalRef.setExternalSystem(resourceVersion + "_" + SEMANTIC_TYPE);
 							monolingualExternalRefs.add(monolingualExternalRef);
 							semanticLabel.setMonolingualExternalRefs(monolingualExternalRefs);
 							semanticLabels.add(semanticLabel);

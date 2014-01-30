@@ -51,7 +51,7 @@ import de.tudarmstadt.ukp.lmf.transform.wordnet.util.IndexSenseReader;
 public class SenseGenerator {
 
 	private final IndexSenseReader isr;
-	public final static String EXTERNAL_SYSTEM = "WordNet_3.0_eng_senseKey";
+	public final static String SENSE_KEY = "senseKey";
 
 	/*
 	 * Synset generator used for obtaining mappings between
@@ -68,19 +68,23 @@ public class SenseGenerator {
 	// Mappings between lexemes and associated Senses
 	private final Map<Word, Sense> lexemeSenseMappings = new HashMap<Word, Sense>();
 
+	private final String resourceVersion;
+	
 	private final Logger logger = Logger.getLogger(WNConverter.class.getName());
 
 	/**
 	 * Constructs a {@link SenseGenerator} based on the consumed parameters
 	 * @param synsetGenerator a SynsetGenerator used for obtaining Synsets
 	 * @param isr reader used for parsing WordNet's index.sense file
+	 * @param resourceVersion Verstion of the resource
 	 * @see Sense
 	 * @see Synset
 	 * @see IndexSenseReader
 	 */
-	public SenseGenerator(SynsetGenerator synsetGenerator, IndexSenseReader isr){
+	public SenseGenerator(SynsetGenerator synsetGenerator, IndexSenseReader isr, String resourceVersion){
 		this.synsetGenerator = synsetGenerator;
 		this.isr = isr;
+		this.resourceVersion = resourceVersion;
 	}
 
 	/**
@@ -156,7 +160,7 @@ public class SenseGenerator {
 			sb.append(" ");
 			sb.append(lexeme.getSenseKey());
 
-			monolingualExternalRef.setExternalSystem(EXTERNAL_SYSTEM);
+			monolingualExternalRef.setExternalSystem(resourceVersion + "_" + SENSE_KEY);
 			monolingualExternalRef.setExternalReference(sb.toString());
 			List<MonolingualExternalRef> monolingualExternalRefs = new LinkedList<MonolingualExternalRef>();
 			monolingualExternalRefs.add(monolingualExternalRef);

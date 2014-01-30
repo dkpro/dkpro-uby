@@ -40,6 +40,11 @@ import de.tudarmstadt.ukp.omegawiki.exception.OmegaWikiException;
  *
  */
 public class SynsetGenerator {
+	
+	public final static String DEFINED_MEANING = "definedMeaning";
+	
+	private final String resourceVersion;
+	
 	private int GlobalLanguage;
 	public int getGlobalLanguage()
 	{
@@ -86,14 +91,15 @@ public class SynsetGenerator {
 	 *  This Method Constructs a SynsetGenerator based on consumed OmegaWiki Dictionary
 	 * @param omegawiki OmegaWiki Dictionary
 	 * @param language
+	 * @param resourceVersion Version of the resource
 	 * @return SynsetGenerator
 	 */
-	public SynsetGenerator(OmegaWiki omegawiki, int language){
+	public SynsetGenerator(OmegaWiki omegawiki, int language, String resourceVersion){
 	//	if(language==OWLanguage.English)
 		{
-
-			this.GlobalLanguage=language;
-			this.GlobalLanguageLMF= OmegaWikiLMFMap.mapLanguage(language);
+			this.GlobalLanguage = language;
+			this.GlobalLanguageLMF = OmegaWikiLMFMap.mapLanguage(language);
+			this.resourceVersion = resourceVersion;
 		}
 //		else if(language==OWLanguage.German)
 //		{
@@ -151,7 +157,7 @@ public class SynsetGenerator {
 				// *** Creating MonolingualExternalRef ***//
 				MonolingualExternalRef monolingualExternalRef = new MonolingualExternalRef();
 				// Generating MonolingualExternalRef ID
-				monolingualExternalRef.setExternalSystem("OmegaWiki ID");
+				monolingualExternalRef.setExternalSystem(resourceVersion + "_" + DEFINED_MEANING);
 				StringBuffer sb = new StringBuffer(16);
 				sb.append(dm.getDefinedMeaningId());
 				monolingualExternalRef.setExternalReference(sb.toString());

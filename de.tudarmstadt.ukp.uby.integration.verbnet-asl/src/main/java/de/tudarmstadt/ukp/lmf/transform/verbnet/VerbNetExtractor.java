@@ -71,7 +71,7 @@ import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticBehaviour;
  */
 public class VerbNetExtractor {
 
-	public static final String EXTERNAL_SYSTEM = "VerbNet_3.1_eng_sense";
+	public static final String SENSE = "sense";
 	public Lexicon lexicon = new Lexicon();
 	
 	private File verbNetInputFile; // The File containing the VerbNet Input
@@ -88,6 +88,8 @@ public class VerbNetExtractor {
 	private static int synSemCorrNumber = 0; 
 	private static int syntacticArgumentNumber = 0; 
 	private static int semanticArgumentNumber = 0;
+	
+	private final String resourceVersion;
 
 	// Mapping between verb lemmas and their' corresponding sense definitions in VerbNet
 	private static HashMap<String, HashSet<VerbNetSense>> LemmaVerbNetSenseMappings = new HashMap<String, HashSet<VerbNetSense>>();
@@ -110,13 +112,15 @@ public class VerbNetExtractor {
 	 * Constructs a VerbNetExtractor
 	 * @param verbNetInput path of the File containing the preprocessed version of VerbNet
 	 * @param resourceID name of the LMF Lexicon instance
+	 * @param resourceVersion Version of the resource
 	 * @return VerbNetExtractor
 	 * @throws IOException 
 	 */
-	public VerbNetExtractor(File verbNetInput, String resourceID) throws IOException {
+	public VerbNetExtractor(File verbNetInput, String resourceID, String resourceVersion) throws IOException {
 
 		this.verbNetInputFile = verbNetInput;
 		this.resourceID = resourceID;
+		this.resourceVersion = resourceVersion;
 		parseVerbNetInput();
 		convertVerbNetInput();
 	}
@@ -379,7 +383,7 @@ public class VerbNetExtractor {
 				String [] classInfo = vnSense.classInformation.split("\\(");
 				
 				MonolingualExternalRef monolingualExternalRef = new MonolingualExternalRef();
-				monolingualExternalRef.setExternalSystem(EXTERNAL_SYSTEM);
+				monolingualExternalRef.setExternalSystem(resourceVersion + "_" + SENSE);
 				monolingualExternalRef.setExternalReference(vnSense.lemma + "_" + classInfo[0]);
 				List<MonolingualExternalRef> monolingualExternalRefs = new LinkedList<MonolingualExternalRef>();
 				monolingualExternalRefs.add(monolingualExternalRef);

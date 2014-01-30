@@ -44,13 +44,16 @@ import de.tuebingen.uni.sfs.germanet.api.Synset;
  *
  */
 public class SynsetGenerator {
-	public static final String EXTERNAL_SYSTEM = "GermaNet_7.0_deu_synset";
+	public static final String SYNSET = "synset";
+	
 	private final GermaNet gnet; // GermaNet Object
 	private int lmfSynsetNumber = 0; // running number used for creating IDs of LMFSynsets
 	private int senseNumber = 0; // running number used for creating IDs of Senses
 	private final Map<Synset, Sense> gnSynsetSenseMappings = new HashMap<Synset, Sense>(); // The mappings between Synset provided by GN and Senses
 	private final Map<LexUnit, de.tudarmstadt.ukp.lmf.model.semantics.Synset> LexUnitSynsetMappings = new HashMap<LexUnit, de.tudarmstadt.ukp.lmf.model.semantics.Synset>();
 	private final Map<LexUnit, Sense> luSenseMappings = new HashMap<LexUnit, Sense>();
+	
+	private final String resourceVersion;
 	// Mappings between LMF-Synsets and Senses
 	private static Map<de.tudarmstadt.ukp.lmf.model.semantics.Synset, List<Sense>>
 		synsetSenseMappings = new HashMap<de.tudarmstadt.ukp.lmf.model.semantics.Synset, List<Sense>>();
@@ -79,9 +82,11 @@ public class SynsetGenerator {
 	/**
 	 * Constructs a {@link SynsetGenerator} associated with the consumed {@link GermaNet} instance
 	 * @param gnet instance of GermaNet used for obtaining information from GermaNet's files
+	 * @param resourceVersion Version of the resource
 	 */
-	public SynsetGenerator(GermaNet gnet){
+	public SynsetGenerator(GermaNet gnet, String resourceVersion){
 		this.gnet = gnet;
+		this.resourceVersion = resourceVersion;
 	}
 
 
@@ -100,7 +105,7 @@ public class SynsetGenerator {
 			// *** Generating Monolingual ExternalRef**//
 			MonolingualExternalRef mer = new MonolingualExternalRef();
 			mer.setExternalReference(Integer.toString(gnSynset.getId()));
-			mer.setExternalSystem(EXTERNAL_SYSTEM);
+			mer.setExternalSystem(resourceVersion + "_" + SYNSET);
 			LinkedList<MonolingualExternalRef> mers = new LinkedList<MonolingualExternalRef>();
 			mers.add(mer);
 			lmfSynset.setMonolingualExternalRefs(mers);

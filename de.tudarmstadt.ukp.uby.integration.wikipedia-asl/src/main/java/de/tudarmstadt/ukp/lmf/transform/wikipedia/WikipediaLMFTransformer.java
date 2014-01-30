@@ -70,6 +70,8 @@ import de.tudarmstadt.ukp.wikipedia.parser.mediawiki.MediaWikiParserFactory;
 */
 public abstract class WikipediaLMFTransformer extends LMFDBTransformer {
 
+	public final static String ARTICLE_TITLE = "articleTitle";
+	
 	protected final Wikipedia wiki;			     // JWPL Wikipedia object
 	protected final Iterator<Page> pageIterator; // Page iterator
 	protected int currentEntryNr;			 // Number of the entries(pages) that were already transformed
@@ -77,15 +79,19 @@ public abstract class WikipediaLMFTransformer extends LMFDBTransformer {
 	protected final MediaWikiParser mediaWikiParser; // Parser needed for parsing of Wikipedia pages
 	protected final String dtd_version;
 	protected final boolean createEquivalents; //Decision if Translation Equivalents should be generated. This takes a lot more time!!
-	protected String externalSystem; //Description of external system
+	protected String resourceVersion; //Description of external system
 	
 	/**
 	 * @param dbConfig
 	 * @param wiki
+	 * @param resourceVersion Version of the resource
+	 * @param dtd Version of the dtd
+	 * @param createEquivalents
 	 * @throws WikiApiException
 	 * @throws FileNotFoundException
 	 */
-	public WikipediaLMFTransformer(DBConfig dbConfig, Wikipedia wiki, String dtd, boolean createEquivalents) throws WikiApiException, FileNotFoundException {
+	public WikipediaLMFTransformer(DBConfig dbConfig, Wikipedia wiki, String resourceVersion,
+			String dtd, boolean createEquivalents) throws WikiApiException, FileNotFoundException {
 		super(dbConfig);
 		this.wiki = wiki;
 		this.pageIterator = new PageIterator(wiki, true, 7000);
@@ -97,7 +103,7 @@ public abstract class WikipediaLMFTransformer extends LMFDBTransformer {
 		pf.setTemplateParserClass(FlushTemplates.class);
 		mediaWikiParser = pf.createParser();
 		dtd_version = dtd;
-		this.externalSystem = getExternalSystem();
+		this.resourceVersion = resourceVersion;
 	}
 
 	protected abstract String getHiddenCategoryName();
@@ -176,7 +182,7 @@ public abstract class WikipediaLMFTransformer extends LMFDBTransformer {
 				sense.setId(getLmfId(Sense.class, String.valueOf(page.getPageId())));
 
 				MonolingualExternalRef monolingualExternalRef = new MonolingualExternalRef();
-				monolingualExternalRef.setExternalSystem(externalSystem);
+				monolingualExternalRef.setExternalSystem(resourceVersion + "_" + ARTICLE_TITLE);
 				monolingualExternalRef.setExternalReference(pageTitle);
 				List<MonolingualExternalRef> monolingualExternalRefs = new LinkedList<MonolingualExternalRef>();
 				monolingualExternalRefs.add(monolingualExternalRef);
@@ -286,7 +292,6 @@ public abstract class WikipediaLMFTransformer extends LMFDBTransformer {
 	}
 
 	protected abstract boolean isDiscussionPage(final String pageTitle);
-	protected abstract String getExternalSystem() throws WikiApiException;
 	
 	@Override
 	protected void finish() {}
