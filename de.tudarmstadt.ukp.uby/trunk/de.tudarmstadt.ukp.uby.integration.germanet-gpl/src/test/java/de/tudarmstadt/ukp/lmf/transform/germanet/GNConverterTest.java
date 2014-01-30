@@ -84,7 +84,7 @@ import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 
 		String dtd_version = "1_0";
 
-		gnConverter = new GNConverter(gnet, new LexicalResource(),dtd_version);
+		gnConverter = new GNConverter(gnet, new LexicalResource(),"GermaNet_7.0_deu", dtd_version);
 		gnConverter.toLMF();
 
 	}

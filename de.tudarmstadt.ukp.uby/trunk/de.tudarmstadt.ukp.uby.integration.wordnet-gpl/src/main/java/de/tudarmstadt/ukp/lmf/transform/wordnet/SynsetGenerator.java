@@ -61,7 +61,7 @@ import de.tudarmstadt.ukp.lmf.transform.wordnet.util.WNConvUtil;
  */
 public class SynsetGenerator {
 
-	public final static String EXTERNAL_SYSTEM = "WordNet_3.0_eng_synsetOffset";
+	public final static String SYNSET_OFFSET = "synsetOffset";
 
 	private final Dictionary wordnet; // WordNet Dictionary
 
@@ -77,6 +77,8 @@ public class SynsetGenerator {
 
 	// Mappings between lexemes and associated example sentences (extracted from WordNet's glosses)
 	private final Map<Word, List<String>> examples = new HashMap<Word, List<String>>();
+	
+	private final String resourceVersion;
 
 	private boolean initialized = false;
 
@@ -93,12 +95,14 @@ public class SynsetGenerator {
 	 * This method constructs a {@link SynsetGenerator} based on the consumed parameters
 	 * @param wordnet initialized {@link Dictionary}-instance, used for accessing information encoded in WordNet's files
 	 * @param lexemeMappingFile the file containing manually entered mappings of example senteneces to lexemes
+	 * @param resourceVersion Version of the resource
 	 * @return SynsetGenerator
 	 */
 	@SuppressWarnings("unchecked")
-	public SynsetGenerator(Dictionary wordnet, File lexemeMappingFile) {
+	public SynsetGenerator(Dictionary wordnet, File lexemeMappingFile, String resourceVersion) {
 		this.wordnet = wordnet;
 		this.lexemeMappingXML = lexemeMappingFile;
+		this.resourceVersion = resourceVersion;
 		boolean readFile = true;
 		SAXReader reader = new SAXReader();
 		try {
@@ -204,7 +208,7 @@ public class SynsetGenerator {
 				// *** Creating MonolingualExternalRef ***//
 				MonolingualExternalRef monolingualExternalRef = new MonolingualExternalRef();
 				// Generating MonolingualExternalRef ID
-				monolingualExternalRef.setExternalSystem(EXTERNAL_SYSTEM);
+				monolingualExternalRef.setExternalSystem(resourceVersion + "_" + SYNSET_OFFSET);
 				StringBuffer sb = new StringBuffer(16);
 				sb.append(wnSynset.getPOS());
 				sb.append(" ");

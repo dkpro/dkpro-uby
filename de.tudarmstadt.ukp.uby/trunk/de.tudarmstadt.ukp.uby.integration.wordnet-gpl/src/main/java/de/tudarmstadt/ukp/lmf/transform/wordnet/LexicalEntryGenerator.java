@@ -98,10 +98,11 @@ public class LexicalEntryGenerator {
 	 * @param extWordnet an instance of initialized WordNet-{@link Dictionary} used for accessing WordNet's information
 	 * @param synsetGenerator an instance of {@link SynsetGenerator} used for generating {@link Synset}-instances
 	 * @param subcategorizationFrameExtractor an instance of {@link SubcategorizationFrameExtractor} used for generating {@link SubcategorizationFrame}-instances
+	 * @param Version of the resource
 	 * @see {@link LexicalEntry}
 	 */
 	public LexicalEntryGenerator(Dictionary extWordnet, SynsetGenerator synsetGenerator,
-			SubcategorizationFrameExtractor subcategorizationFrameExtractor){
+			SubcategorizationFrameExtractor subcategorizationFrameExtractor, String resourceVersion){
 		this.subcategorizationFrameExtractor = subcategorizationFrameExtractor;
 		if(!initialized){
 			this.extWordnet = extWordnet;
@@ -111,7 +112,7 @@ public class LexicalEntryGenerator {
 
 			IndexSenseReader isr = new IndexSenseReader();
 			isr.initialize();
-			senseGenerator = new SenseGenerator(synsetGenerator, isr);
+			senseGenerator = new SenseGenerator(synsetGenerator, isr, resourceVersion);
 			createLexicalEntries();
 			initialized = true;
 		}

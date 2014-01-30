@@ -71,7 +71,7 @@ import de.tuebingen.uni.sfs.germanet.api.LexUnit;
 		if(gnet == null) {
             TestSuite.setUpClass();
         }
-		senseGenerator= new SenseGenerator(gnet);
+		senseGenerator= new SenseGenerator(gnet,"GermaNet_7.0_deu");
 	}
 
 	/**

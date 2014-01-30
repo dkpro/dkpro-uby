@@ -48,8 +48,9 @@ import de.tuebingen.uni.sfs.germanet.api.Synset;
  *
  */
 public class SenseGenerator {
-	public final static String EXTERNAL_SYSTEM = "GermaNet_7.0_deu_lexicalUnit";
+	public final static String LEXICAL_UNIT = "lexicalUnit";
 	
+	private final String resourceVersion;
 	private final SynsetGenerator synsetGenerator; // SynsetGenerator
 	private final SemanticClassLabelExtractor semanticClassLabelExtractor; // for extraction of semantic class labels
 	private final Map<LexUnit, Sense> luSenseMappings = new HashMap<LexUnit, Sense>();
@@ -58,14 +59,16 @@ public class SenseGenerator {
 	/**
 	 * Constructs a {@link SenseGenerator} for the consumed {@link GermaNet} instance
 	 * @param gnet GermaNet instance used for obtaining GermaNet's information
+	 * @resourceVersion Version of the resource
 	 */
-	public SenseGenerator(GermaNet gnet){
-		SynsetGenerator synsetGenerator = new SynsetGenerator(gnet);
+	public SenseGenerator(GermaNet gnet, String resourceVersion){
+		SynsetGenerator synsetGenerator = new SynsetGenerator(gnet, resourceVersion);
 		synsetGenerator.initialize();
 		this.synsetGenerator= synsetGenerator;
 		this.semanticClassLabelExtractor = new SemanticClassLabelExtractor(gnet);
 		this.senseExampleGenerator = new SenseExampleGenerator();
-		}
+		this.resourceVersion = resourceVersion;
+	}
 
 	/**
 	 * This method consumes a group of LexUnits and creates list of {@link Sense}-instances
@@ -109,7 +112,7 @@ public class SenseGenerator {
 			// *** Generating Monolingual ExternalRef**//
 			MonolingualExternalRef mer = new MonolingualExternalRef();
 			mer.setExternalReference(Integer.toString(lu.getId()));
-			mer.setExternalSystem(EXTERNAL_SYSTEM);
+			mer.setExternalSystem(resourceVersion + "_" + LEXICAL_UNIT);
 			LinkedList<MonolingualExternalRef> mers = new LinkedList<MonolingualExternalRef>();
 			mers.add(mer);
 			sense.setMonolingualExternalRefs(mers);

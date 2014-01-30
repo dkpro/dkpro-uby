@@ -83,13 +83,14 @@ import de.tudarmstadt.ukp.lmf.transform.wordnet.util.IndexSenseReader;
 	 */
 	@Test
 	public final void testGenerateSensesSetOfWordLexicalEntry() throws JWNLException {
-		SynsetGenerator synsetGenerator = new SynsetGenerator(wordNet, new File(UBY_HOME +"/WordNet/cache/ExampleSentenceLexemeMapping.xml"));
+		SynsetGenerator synsetGenerator = new SynsetGenerator(wordNet, 
+				new File(UBY_HOME +"/WordNet/cache/ExampleSentenceLexemeMapping.xml"), "WordNet_3.0_eng");
 		synsetGenerator.initialize();
 
 		IndexSenseReader isr = new IndexSenseReader();
 		isr.initialize();
 
-		SenseGenerator senseGenerator = new SenseGenerator(synsetGenerator, isr);
+		SenseGenerator senseGenerator = new SenseGenerator(synsetGenerator, isr,"WordNet_3.0_eng");
 		String lexicalEntryId = "testLexicalEntry";
 		LexicalEntry lexicalEntry = new LexicalEntry(lexicalEntryId);
 

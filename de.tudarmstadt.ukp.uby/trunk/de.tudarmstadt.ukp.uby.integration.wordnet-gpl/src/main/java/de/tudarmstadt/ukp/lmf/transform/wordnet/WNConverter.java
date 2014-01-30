@@ -49,7 +49,8 @@ public class WNConverter {
 	private InputStream subcatStream; // subcat mapping file
 	private File exMapping; // the file containing manually entered mappings of the lexemes and example sentences
 	private final String dtd_version;
-
+	private final String resourceVersion;
+	
 	private final Logger logger = Logger.getLogger(WNConverter.class.getName());
 
 
@@ -57,14 +58,17 @@ public class WNConverter {
 	 * Constructs a {@link WNConverter} based on the consumed parameters
 	 * @param wordNet initialized WordNet's {@link Dictionary} object
 	 * @param lexicalResource initialized object of  {@link LexicalResource}, which will be filled with WordNet's data
+	 * @param resourceVersion Version of this resource
 	 * @param dtd_version specifies the version of the .dtd which will be written to lexicalResource
 	 * @param exMappingPath path of the file containing manually entered mappings of lexemes and example sentences
 	 */
-	public WNConverter(Dictionary wordNet, LexicalResource lexicalResource, String dtd, String exMappingPath)
-	{
+	public WNConverter(Dictionary wordNet, LexicalResource lexicalResource, String resourceVersion, 
+			String dtd, String exMappingPath) {
+		
 		this.extWordnet = wordNet;
 		this.lexicalResource = lexicalResource;
 		this.dtd_version = dtd;
+		this.resourceVersion = resourceVersion;
 
 		try {
 			this.subcatStream = getClass().getClassLoader().getResource("WordNetSubcatMappings/wnFrameMapping.txt").openStream();
@@ -114,7 +118,7 @@ public class WNConverter {
 
 		// *** Creating Synsets *** //
 		logger.log(Level.INFO, "Generating Synsets...");
-		SynsetGenerator synsetGenerator = new SynsetGenerator(extWordnet, exMapping);
+		SynsetGenerator synsetGenerator = new SynsetGenerator(extWordnet, exMapping, resourceVersion);
 		synsetGenerator.initialize();
 		// Setting Synsets
 		lexicon.setSynsets(synsetGenerator.getSynsets());
@@ -122,7 +126,8 @@ public class WNConverter {
 
 		// *** Creating LexicalEntries *** //
 		logger.log(Level.INFO, "Generating LexicalEntries...");
-		LexicalEntryGenerator lexicalEntryGenerator = new LexicalEntryGenerator(extWordnet, synsetGenerator, subcategorizationFrameExtractor);
+		LexicalEntryGenerator lexicalEntryGenerator = new LexicalEntryGenerator(extWordnet, 
+				synsetGenerator, subcategorizationFrameExtractor, resourceVersion);
 		lexicon.setLexicalEntries(lexicalEntryGenerator.getLexicalEntries());
 		logger.log(Level.INFO, "Generating LexicalEntries done");
 

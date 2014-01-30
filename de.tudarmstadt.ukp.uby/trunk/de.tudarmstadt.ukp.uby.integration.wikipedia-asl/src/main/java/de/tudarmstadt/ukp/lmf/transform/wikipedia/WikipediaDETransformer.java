@@ -36,8 +36,9 @@ import de.tudarmstadt.ukp.wikipedia.api.exception.WikiApiException;
 public class WikipediaDETransformer extends WikipediaLMFTransformer {
 
 	public WikipediaDETransformer(final DBConfig dbConfig,
-			final Wikipedia wiki, final String dtd,boolean createEquivalents) throws WikiApiException, FileNotFoundException {
-		super(dbConfig, wiki, dtd,createEquivalents);
+			final Wikipedia wiki, String resourceVersion, final String dtd, 
+			boolean createEquivalents) throws WikiApiException, FileNotFoundException {
+		super(dbConfig, wiki, resourceVersion, dtd,createEquivalents);
 	}
 
 	@Override
@@ -48,12 +49,6 @@ public class WikipediaDETransformer extends WikipediaLMFTransformer {
 	@Override
 	protected String getResourceAlias() {
 		return "WikiDE";
-	}
-	
-	@Override
-	protected String getExternalSystem() throws WikiApiException {
-		MetaData meta = wiki.getMetaData();
-		return "Wikipedia_" + meta.getVersion() + "2009-06-18_deu_articleTitle";
 	}
 
 	@Override

@@ -38,12 +38,16 @@ public class OWConverter {
 	public String GlobalLanguageLMF; //OW Language to be converted
 	public OmegaWiki  omegawiki; // Dictionary
 	private LexicalResource lexicalResource;  // Top-level class of LMF
+	private final String resourceVersion;
 	private final String dtd_version;
-	public OWConverter(LexicalResource lexicalResource, int language, String dtd) throws ClassNotFoundException, SQLException
-	{
+	
+	public OWConverter(LexicalResource lexicalResource, int language, String resourceVersion,
+			String dtd) throws ClassNotFoundException, SQLException {
+		
 		super();
 		this.lexicalResource = lexicalResource;
-		dtd_version = dtd;
+		this.resourceVersion = resourceVersion;
+		this.dtd_version = dtd;
 		this.GlobalLanguage=language;
 		this.GlobalLanguageLMF= OmegaWikiLMFMap.mapLanguage(language);
 //		if(language == OWLanguage.English)
@@ -108,7 +112,7 @@ public class OWConverter {
 
 		// *** Creating Synsets *** //
 		System.out.print("Generating Synsets...");
-		SynsetGenerator synsetGenerator = new SynsetGenerator(omegawiki,GlobalLanguage);
+		SynsetGenerator synsetGenerator = new SynsetGenerator(omegawiki,GlobalLanguage,resourceVersion);
 		synsetGenerator.initialize();
 		// Setting Synsets
 		lexicon.setSynsets(synsetGenerator.getSynsets());
@@ -116,7 +120,8 @@ public class OWConverter {
 
 		// *** Creating LexicalEntries *** //
 		System.out.print("Generating LexicalEntries...");
-		LexicalEntryGenerator lexicalEntryGenerator = new LexicalEntryGenerator(omegawiki, synsetGenerator,lexicon);
+		LexicalEntryGenerator lexicalEntryGenerator = new LexicalEntryGenerator(omegawiki, synsetGenerator,
+				lexicon, resourceVersion);
 		lexicon.setLexicalEntries(lexicalEntryGenerator.getLexicalEntries());
 		System.out.println("done");
 

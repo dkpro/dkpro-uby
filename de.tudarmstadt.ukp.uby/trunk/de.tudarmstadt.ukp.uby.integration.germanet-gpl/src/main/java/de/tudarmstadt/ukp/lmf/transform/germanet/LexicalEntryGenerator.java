@@ -81,11 +81,12 @@ public class LexicalEntryGenerator {
 	 * Constructs an instance of {@link LexicalEntryGenerator}, which provides methods for creating <br>
 	 * LexicalEntries out of GermaNet's files
 	 * @param converter an instance of {@link GNConverter} associated with this generator
+	 * @param resourceVersion Version of the resource
 	 */
-	public LexicalEntryGenerator(GNConverter converter){
+	public LexicalEntryGenerator(GNConverter converter, String resourceVersion){
 		this.converter = converter;
 		if(senseGenerator == null) {
-            senseGenerator = new SenseGenerator(converter.getGnet());
+            senseGenerator = new SenseGenerator(converter.getGnet(), resourceVersion);
         }
 	}
 

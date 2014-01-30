@@ -18,6 +18,7 @@
  */
 package de.tudarmstadt.ukp.lmf.transform.framenet;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,17 +47,22 @@ public class FNConverter {
 
 	private final LexicalResource lexicalResource;
 
+	private final String resourceVersion;
+	
 	private final Logger logger = Logger.getLogger(FNConverter.class.getName());
 
 	/**
 	 * Constructs a {@link FNConverter} based on the consumed parameters
 	 * @param frameNet initialized {@link FrameNet} object
+	 * @param Version of this resource
 	 * @param lexicalResource initialized object of  {@link LexicalResource}, which will be filled with FrameNet's data
 	 * @param dtd_version specifies the version of the .dtd which will be written to lexicalResource
 	 */
-	public FNConverter(FrameNet frameNet, LexicalResource lexicalResource, String dtd_version){
+	public FNConverter(FrameNet frameNet, LexicalResource lexicalResource, 
+			String resourceVersion, String dtd_version){
 		this.fn = frameNet;
 		this.lexicalResource = lexicalResource;
+		this.resourceVersion = resourceVersion;
 		this.dtd_version = dtd_version;
 	}
 
@@ -86,7 +92,7 @@ public class FNConverter {
 
 		// *** Creating SemanticPredicates *** //
 		logger.log(Level.INFO, "Generating SemanticPredicates...");
-		SemanticPredicateGenerator semanticPredicateGenerator = new SemanticPredicateGenerator(fn);
+		SemanticPredicateGenerator semanticPredicateGenerator = new SemanticPredicateGenerator(fn, resourceVersion);
 		List<SemanticPredicate> semanticPredicates = new ArrayList<SemanticPredicate>();
 		semanticPredicates.addAll(semanticPredicateGenerator.getSemanticPredicates());
 		lexicon.setSemanticPredicates(semanticPredicates);
@@ -94,7 +100,8 @@ public class FNConverter {
 
 		// *** Creating LexicalEntries *** //
 		logger.log(Level.INFO, "Generating LexicalEntries...");
-		LexicalEntryGenerator lexicalEntryGenerator = new LexicalEntryGenerator(fn, semanticPredicateGenerator);
+		LexicalEntryGenerator lexicalEntryGenerator = new LexicalEntryGenerator(fn, 
+				semanticPredicateGenerator, resourceVersion);
 		lexicon.setLexicalEntries(lexicalEntryGenerator.getLexicalEntries());
 		logger.log(Level.INFO, "Generating LexicalEntries done");
 	}

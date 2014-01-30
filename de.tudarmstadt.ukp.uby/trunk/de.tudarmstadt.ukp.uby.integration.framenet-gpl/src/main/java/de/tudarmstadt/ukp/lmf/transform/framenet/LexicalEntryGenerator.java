@@ -67,10 +67,10 @@ import de.tudarmstadt.ukp.lmf.model.semantics.SenseExample;
  *
  */
 public class LexicalEntryGenerator {
-	public static final String EXTERNAL_SYSTEM_LEXICAL_UNIT = "FrameNet_1.5_eng_lexicalUnit";
-	public static final String EXTERNAL_SYSTEM_SEMANTIC_TYPE = "FrameNet_1.5_eng_semanticType";
+	public static final String LEXICAL_UNIT = "lexicalUnit";
+	public static final String SEMANTIC_TYPE = "semanticType";
 	
-	
+	private final String resourceVersion;
 	private final SemanticPredicateGenerator semanticPredicateGenerator;
 	private int lexicalEntryNumber; // Running number used for creating IDs of LexicalEntries
 	private int senseNumber; // Running number used for creating IDs of Senses
@@ -112,12 +112,15 @@ public class LexicalEntryGenerator {
 	 * LexicalEntries out of FrameNet's files
 	 * @param fn instance of {@link FrameNet} class, used for obtaining needed informations for generating LexicalEntries
 	 * @param semanticPredicateGenerator instance of {@link SemanticPredicateGenerator} used for creating SemanticPredicates
+	 * @param resourceVersion Version of the resource
 	 * @see {@link LexicalEntry}
 	 * @see {@link SemanticPredicate}
 	 */
-	public LexicalEntryGenerator(FrameNet fn, SemanticPredicateGenerator semanticPredicateGenerator){
+	public LexicalEntryGenerator(FrameNet fn, SemanticPredicateGenerator semanticPredicateGenerator,
+			String resourceVersion){
 		this.fn = fn;
 		this.semanticPredicateGenerator = semanticPredicateGenerator;
+		this.resourceVersion = resourceVersion;
 //		ac = new AnnotationCorpus15(fn, logger);
 		fnhome = System.getenv("UBY_HOME")+"/FrameNet/fndata-1.5";
 		System.err.println("LUS group to");
@@ -205,7 +208,7 @@ public class LexicalEntryGenerator {
 
 			// setting MonolingualExternalRef
 			MonolingualExternalRef monolingualExternalRef = new MonolingualExternalRef();
-			monolingualExternalRef.setExternalSystem(EXTERNAL_SYSTEM_LEXICAL_UNIT);
+			monolingualExternalRef.setExternalSystem(resourceVersion + "_" + LEXICAL_UNIT);
 			monolingualExternalRef.setExternalReference(lu.getId());
 			List<MonolingualExternalRef> monolingualExternalRefs = new ArrayList<MonolingualExternalRef>();
 			monolingualExternalRefs.add(monolingualExternalRef);
@@ -300,7 +303,7 @@ public class LexicalEntryGenerator {
 							List<MonolingualExternalRef> merefs = new LinkedList<MonolingualExternalRef>();
 							MonolingualExternalRef meref = new MonolingualExternalRef();
 							meref.setExternalReference(s);
-							meref.setExternalSystem(EXTERNAL_SYSTEM_SEMANTIC_TYPE);
+							meref.setExternalSystem(resourceVersion + "_" + SEMANTIC_TYPE);
 							merefs.add(meref);
 							semanticLabel.setMonolingualExternalRefs(monolingualExternalRefs);
 							List<SemanticLabel> semanticLabels = sense.getSemanticLabels();

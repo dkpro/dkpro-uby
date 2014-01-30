@@ -68,18 +68,21 @@ public class GNConverter {
 
 	private final Logger logger = Logger.getLogger(GNConverter.class.getName());
 
+	private final String resourceVersion;
+	
 	/**
 	 * Constructs a {@link GNConverter} based on the consumed parameters
 	 * @param germaNet initialized {@link GermaNet} object
 	 * @param lexicalResource initialized object of  {@link LexicalResource}, which will be filled with GermaNet's data
+	 * @param resourceVersion Version of this resource
 	 * @param dtd_version specifies the version of the .dtd which will be written to lexicalResource
 	 */
-	public GNConverter(GermaNet germaNet, LexicalResource lexicalResource, String dtd_version)
+	public GNConverter(GermaNet germaNet, LexicalResource lexicalResource, String resourceVersion, String dtd_version)
 	{
 		this.gnet = germaNet;
 		this.lexicalResource = lexicalResource;
 		this.dtd_version = dtd_version;
-
+		this.resourceVersion = resourceVersion;
 		try {
 			this.subcatStream = getClass().getClassLoader().getResource("GermaNetSubcatMappings/gnFrameMapping.txt").openStream();
 			subcategorizationFrameExtractor = new SubcategorizationFrameExtractor(subcatStream);
@@ -89,7 +92,7 @@ public class GNConverter {
 			System.exit(1);
 		}
 
-		this.synsetGenerator = new SynsetGenerator(this.gnet);
+		this.synsetGenerator = new SynsetGenerator(this.gnet, resourceVersion);
 	}
 
 	/**
@@ -119,7 +122,7 @@ public class GNConverter {
 		// *** Creating LexicalEntries *** //
 		logger.log(Level.INFO, "Generating LexicalEntries...");
 		this.groupLUs();
-		LexicalEntryGenerator leGen = new LexicalEntryGenerator(this);
+		LexicalEntryGenerator leGen = new LexicalEntryGenerator(this, resourceVersion);
 		List<LexicalEntry> lexicalEntries = new LinkedList<LexicalEntry>();
 		// Create a LexicalEntry for each luGroup
 		for (HashSet<LexUnit> luGroup : luGroups) {

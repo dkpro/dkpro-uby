@@ -69,7 +69,7 @@ private static SynsetGenerator synsetGenerator;
 		if(gnet == null) {
             TestSuite.setUpClass();
         }
-		synsetGenerator= new SynsetGenerator(gnet);
+		synsetGenerator= new SynsetGenerator(gnet,"GermaNet_7.0_deu");
 	}
 
 	/**

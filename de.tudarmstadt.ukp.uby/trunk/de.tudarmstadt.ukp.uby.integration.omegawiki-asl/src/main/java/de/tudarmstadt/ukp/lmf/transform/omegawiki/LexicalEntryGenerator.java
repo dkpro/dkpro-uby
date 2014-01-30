@@ -75,6 +75,7 @@ public class LexicalEntryGenerator {
 
 	private  SenseGenerator senseGenerator; // SenseGenerator
 
+	private final String resourceVersion;
 
 	/**
 	 * Constructs a LexicalEntryGenerator
@@ -82,13 +83,15 @@ public class LexicalEntryGenerator {
 	 * @param omegawiki
 	 * @param synsetGenerator
 	 * @param lexicon
+	 * @param resourceVersion Version of the resource
 	 * @throws OmegaWikiException
 	 * @throws UnsupportedEncodingException
 	 */
-	public LexicalEntryGenerator(OmegaWiki omegawiki, SynsetGenerator synsetGenerator, Lexicon lexicon) throws UnsupportedEncodingException, OmegaWikiException {
+	public LexicalEntryGenerator(OmegaWiki omegawiki, SynsetGenerator synsetGenerator, 
+			Lexicon lexicon, String resourceVersion) throws UnsupportedEncodingException, OmegaWikiException {
 		this.omegawiki = omegawiki;
 		this.lexicon=lexicon;
-
+		this.resourceVersion = resourceVersion;
 		if(!initialized){
 			this.GlobalLanguage=synsetGenerator.getGlobalLanguage();
 			this.GlobalLanguageLMF=synsetGenerator.getGlobalLanguageLMF();
@@ -130,7 +133,7 @@ public class LexicalEntryGenerator {
 			posMappings.put("exclaiming pronoun", EPartOfSpeech.pronoun);
 			posMappings.put("Determinativpronomen", EPartOfSpeech.pronoun);
 
-			senseGenerator = new SenseGenerator(synsetGenerator);
+			senseGenerator = new SenseGenerator(synsetGenerator,resourceVersion);
 
 			createLexicalEntries();
 			initialized = true;
