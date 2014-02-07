@@ -212,7 +212,7 @@ public class VerbNetWordNetAlignment extends SenseAlignment
 
 				if (wordNetItem.length() != 0) {
 					//if the line has alignment with not null wordnet
-					List<Sense>senses = ubySource.getSensesByOriginalReference("VerbNet", verbnetItem);
+					List<Sense>senses = ubySource.getSensesByOriginalReference("VerbNet_3.2_eng_sense", verbnetItem);
 					//System.out.println(verbnetItem+" -- # sense: "+senses.size());
 
 					//current sense in verb net
@@ -238,7 +238,7 @@ public class VerbNetWordNetAlignment extends SenseAlignment
 							// format
 							System.out.println(count);
 							String refString="[POS: verb] ";
-							List<Sense> wnSenses = ubyDest.getSensesByOriginalReference("WordNet", refString+wordnet+"::");
+							List<Sense> wnSenses = ubyDest.getSensesByOriginalReference("WordNet_3.0_eng_senseKey", refString+wordnet+"::");
 							//we should check wnSense has just only one item! if not Stop and write the error out!
 
 							if (wnSenses.size()!=0 && currentVerbNetSense!=null){
