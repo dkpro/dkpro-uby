@@ -124,7 +124,7 @@ public class FramenetWordnetAlignment extends SenseAlignment {
 				+ "ON (Sense.synsetId=MonolingualExternalRef.synsetId "
 				+ "AND Sense.lexicalEntryId=LexicalEntry.lexicalEntryId "
 				+ "AND FormRepresentation_Lemma.lemmaId=LexicalEntry.lemmaId) "
-				+ "WHERE MonolingualExternalRef.externalSystem=\"WordNet 3.0 part of speech and synset offset\"";
+				+ "WHERE MonolingualExternalRef.externalSystem=\"WordNet_3.0_eng_synsetOffset\"";
 		try {
 			saUtils.createTempTable(declareFieldsWN, sqlInsertDataWN, 0);
 			saUtils.createTempTable(declareFieldsFN, sqlInsertDataFN, 1);

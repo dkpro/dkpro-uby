@@ -43,6 +43,7 @@ import de.tudarmstadt.ukp.lmf.exceptions.UbyInvalidArgumentException;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
+import de.tudarmstadt.ukp.lmf.model.enums.ELabelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
 
@@ -91,7 +92,7 @@ public class VerbNetFrameNetSenseAlignment
 				String vnClass = items[2];
 				int added = 0;
 				// get FrameNet senses by given luId
-				List<Sense> senses=ubySource.getSensesByOriginalReference("FrameNet", luId);
+				List<Sense> senses=ubySource.getSensesByOriginalReference("FrameNet_1.5_eng_lexicalUnit", luId);
 				if (senses.size() > 0){
 					for (Sense fns: senses){
 						// get potential vn targets (defined by lemma and pos, and VN-class)
@@ -102,7 +103,7 @@ public class VerbNetFrameNetSenseAlignment
 								for (Sense vns: vnSenses){
 									String senseId = vns.getId();
 									// filter by VN-class
-									List<SemanticLabel> labels = ubySource.getSemanticLabelsbySenseIdbyType(senseId, "verbnetClass");
+									List<SemanticLabel> labels = ubySource.getSemanticLabelsbySenseIdbyType(senseId, ELabelTypeSemantics.verbnetClass.toString());
 									for (SemanticLabel l: labels){
 										String[] labelItems = l.getLabel().split("-");
 										StringBuffer parsedLabel = new StringBuffer();
