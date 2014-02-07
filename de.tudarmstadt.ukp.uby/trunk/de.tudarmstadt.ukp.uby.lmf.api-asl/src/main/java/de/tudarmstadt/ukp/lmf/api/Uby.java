@@ -583,8 +583,13 @@ public class Uby
 	 *
 	 * @param externalSys the {@link String} representing the name of external system
 	 * such as:
-	 * WordNet, VerbNet, FrameNet, Wiktionary, 
-	 * Wikipedia, OW
+	 * FrameNet_1.5_eng_lexicalUnit
+	 * VerbNet_3.1_eng_sense
+	 * OmegaWiki_<version>_<language>_synTrans
+	 * WordNet_3.0_eng_senseKey
+	 * Wiktionary_<version>_<language>_sense
+	 * Wikipedia_<version>_<language>_articleTitle
+	 * GermaNet_7.0_deu_lexicalUnit
 	 *
 	 * @param externalRef the reference string from external system,
 	 * such as:
