@@ -83,6 +83,8 @@ public class VerbNetWordNetAlignment extends SenseAlignment
 		while (rs.next())
 		{
 			wn.put(rs.getString(1), rs.getString(2));
+			System.out.println(rs.getString(1)+" "+rs.getString(2));
+
 		}
 		System.out.println("Second filled");
 		System.out.println(getAlignmentFileLocation());
@@ -144,7 +146,9 @@ public class VerbNetWordNetAlignment extends SenseAlignment
 								Sense destSense = ubyDest.getSenseById(wnid);
 								addSourceSense(sourceSense);
 								addDestSense(destSense);
-								addMetaData(metaDataId, confidence);
+								if (metaDataId != null && confidence != null) {
+									addMetaData(metaDataId, confidence);
+								}
 							}
 							/*statement.execute("insert into SenseAxis(senseAxisId,senseAxisType,senseOneId,senseTwoId,synsetOneId,synsetTwoId,lexicalResourceID) VALUES (" +
 								 	"'"+"VN_WN_alignment_"+count+++"'"+","+
