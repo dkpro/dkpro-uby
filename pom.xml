@@ -231,10 +231,10 @@
 				<scope>test</scope>
 			</dependency>
 			<dependency>
-				<groupId>de.tuebingen.uni.sfs</groupId>
-				<artifactId>de.tuebingen.uni.sfs.germanet.api</artifactId>
-				<version>7.0.1</version>
-				<type>jar</type>
+    			<groupId>de.tuebingen.uni.sfs.germanet</groupId>
+    			<artifactId>germanetapi</artifactId>
+    			<version>8.0</version>
+ 				<type>jar</type>
 				<scope>compile</scope>
 			</dependency>
 			<dependency>
