@@ -35,6 +35,7 @@ import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis;
 import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
 import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 import de.tudarmstadt.ukp.lmf.transform.wordnet.util.WNConvUtil;
+import de.tuebingen.uni.sfs.germanet.api.EwnRel;
 import de.tuebingen.uni.sfs.germanet.api.GermaNet;
 import de.tuebingen.uni.sfs.germanet.api.IliRecord;
 import de.tuebingen.uni.sfs.germanet.api.LexUnit;
@@ -99,7 +100,7 @@ public class InterlingualIndexConverter {
 
 		for(IliRecord iliRecord : iliRecords){
 
-			String relation = iliRecord.getEwnRelation();
+			EwnRel relation = iliRecord.getEwnRelation();
 
 			if(relation.equals("synonym")){
 
