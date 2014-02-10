@@ -248,7 +248,9 @@ public class VerbNetWordNetAlignment extends SenseAlignment
 							if (wnSenses.size()!=0 && currentVerbNetSense!=null){
 								addSourceSense(currentVerbNetSense);
 								addDestSense(wnSenses.get(0));
-								addMetaData(metaDataId, confidence);
+								if (metaDataId != null && confidence != null) {
+									addMetaData(metaDataId, confidence);
+								}
 								count++;
 							}else{
 								System.out.println(wordnet + " "+verb);
