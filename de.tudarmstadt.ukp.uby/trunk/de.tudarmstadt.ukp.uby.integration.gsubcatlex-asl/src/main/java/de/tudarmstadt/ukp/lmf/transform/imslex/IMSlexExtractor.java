@@ -49,6 +49,7 @@ import de.tudarmstadt.ukp.lmf.model.enums.EVerbForm;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
 import de.tudarmstadt.ukp.lmf.model.morphology.FormRepresentation;
 import de.tudarmstadt.ukp.lmf.model.morphology.Lemma;
+import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
 import de.tudarmstadt.ukp.lmf.model.semantics.PredicativeRepresentation;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticArgument;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
@@ -67,6 +68,7 @@ import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticBehaviour;
  */
 public class IMSlexExtractor {
 
+	public static final String SENSE = "sense";
 	public Lexicon lexicon = new Lexicon();
 	
 	private List<SynSemCorrespondence> synSemCorrespondences = new LinkedList<SynSemCorrespondence>();
@@ -86,6 +88,9 @@ public class IMSlexExtractor {
 	private static int semanticPredicateNumber = 0; 
 	private static int semanticArgumentNumber = 0; 
 	private static int synSemCorrespondenceNumber = 0; 
+	
+	private final String resourceVersion;
+
 	
 	// Mapping between lemmas and their corresponding IMSlex senses
 	private static HashMap<String, HashSet<IMSlexSense>> verbLemmaIMSlexSenseMappings = new HashMap<String, HashSet<IMSlexSense>>();
@@ -116,10 +121,11 @@ public class IMSlexExtractor {
 	 * @return IMSlexExtractor
 	 * @throws IOException 
 	 */
-	public IMSlexExtractor(File preprocessedLexicon, String resourceName) throws IOException {
+	public IMSlexExtractor(File preprocessedLexicon, String resourceName, String resourceVersion) throws IOException {
 
 		this.lexiconInputFile = preprocessedLexicon;
 		this.resourceName = resourceName;
+		this.resourceVersion = resourceVersion;
 		parsePreprocessedIMSlex();
 		convertIMSlex();
 	}
@@ -412,6 +418,14 @@ public class IMSlexExtractor {
 				sense.setId("IMSLexSubcat_Sense_".concat(Integer.toString(senseNumber)));
 				sense.setIndex(senseNumber);
 				senseNumber++;
+				
+				MonolingualExternalRef monolingualExternalRef = new MonolingualExternalRef();
+				monolingualExternalRef.setExternalSystem(resourceVersion + "_" + SENSE);
+				monolingualExternalRef.setExternalReference(imsLexSense.lemma);
+				List<MonolingualExternalRef> monolingualExternalRefs = new LinkedList<MonolingualExternalRef>();
+				monolingualExternalRefs.add(monolingualExternalRef);
+				sense.setMonolingualExternalRefs(monolingualExternalRefs);
+
 				
 				if (!imsLexSense.classInformation.equals("null")) {
 					List<SemanticLabel> semanticLabels = new ArrayList<SemanticLabel>();

@@ -46,7 +46,7 @@ public class IMSlexConverter {
 	{
 		super();
 		this.lexicalResource = lexicalResource;
-		dtd_version = dtd;
+		this.dtd_version = dtd;
 	}
 	
 	/**
