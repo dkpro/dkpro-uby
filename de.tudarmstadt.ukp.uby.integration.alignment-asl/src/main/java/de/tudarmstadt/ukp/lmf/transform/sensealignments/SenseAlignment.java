@@ -266,6 +266,10 @@ abstract public class SenseAlignment
 	}
 	/**
 	 * convert the alignment to LMF format
+	 * @param idPrefix
+	 * @param crosslingual
+	 * @param dtdVersion
+	 * @param UBY_HOME
 	 * @throws LMFWriterException
 	 * @throws TransformerException
 	 * @throws IOException
@@ -276,15 +280,16 @@ abstract public class SenseAlignment
 	}
 
 	/**
-	 *
+	 * 
 	 * @param idPrefix
 	 * @param crosslingual
 	 * @param usingSynsetAxis
+	 * @param dtdVersion
+	 * @param UBY_HOME
 	 * @throws LMFWriterException
 	 * @throws IOException
 	 * @throws TransformerException
 	 */
-
 	public void toLMF(String idPrefix, boolean crosslingual, boolean usingSynsetAxis,String dtdVersion,String UBY_HOME) throws LMFWriterException, IOException, TransformerException
 	{
 		LMFXmlWriter xmlWriter = new LMFXmlWriter(UBY_HOME+"/target/"+idPrefix+".xml", UBY_HOME+"/resources/dtd/DTD_unifiedModel_"+dtdVersion+".dtd");
