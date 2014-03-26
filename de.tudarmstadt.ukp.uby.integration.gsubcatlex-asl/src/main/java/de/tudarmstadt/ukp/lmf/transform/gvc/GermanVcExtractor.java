@@ -22,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
@@ -31,6 +32,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
@@ -61,6 +64,7 @@ import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrame;
 import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrameSet;
 import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticArgument;
 import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticBehaviour;
+
 /**
  * This class extracts information from a preprocessed version of a subset of IMSlex and fills in the corresponding LMF classes
  * @author Eckle-Kohler
@@ -75,6 +79,9 @@ public class GermanVcExtractor {
 	
 	private File verbInputFile; // The File containing the Input lexicon
 	private String resourceName; // name of the LMF lexicon, i.e. "IMSlexSubset"
+	
+	private final Logger logger = Logger.getLogger(GermanVcExtractor.class.getName());
+
 
 	// running numbers for IDs
 	private static int lexicalEntryNumber = 0; 
@@ -102,6 +109,8 @@ public class GermanVcExtractor {
 	// Mapping between GermanVcSense and SemanticPredicate
 	private static HashMap<GermanVcSense, SemanticPredicate> senseSemPredicateMap  = new HashMap<GermanVcSense, SemanticPredicate>();
 
+	private static HashMap<String, String> verbClassMap  = new HashMap<String, String>();
+	
 	private static List<GermanVcSense> listOfGermanVcSenses = new LinkedList <GermanVcSense>();
 
 	/**
@@ -113,6 +122,8 @@ public class GermanVcExtractor {
 	 */
 	public GermanVcExtractor(File gvcInput, String resourceName) throws IOException {
 
+		getVerbClassMap();
+		
 		this.verbInputFile = gvcInput;
 		this.resourceName = resourceName;
 		parseGermanVcInput();
@@ -317,7 +328,7 @@ public class GermanVcExtractor {
 				
 				List<SemanticLabel> semanticLabels = new ArrayList<SemanticLabel>();
 				SemanticLabel semanticLabel = new SemanticLabel();
-				semanticLabel.setLabel(gvcSense.classInformation);
+				semanticLabel.setLabel(verbClassMap.get(gvcSense.classInformation));
 				semanticLabel.setType(ELabelTypeSemantics.syntacticAlternationClass);
 				semanticLabels.add(semanticLabel);
 				sense.setSemanticLabels(semanticLabels);
@@ -364,6 +375,26 @@ public class GermanVcExtractor {
 		System.out.println(semanticArgumentNumber+" SemanticArguments");
 }
 	
+	private void getVerbClassMap() {
+		InputStream classMapping;
+		try {
+			classMapping = getClass().getClassLoader().getResource("ClassMappings/verbClassMapping").openStream();
+			BufferedReader input = new BufferedReader(new InputStreamReader(classMapping));		
+			String line;
+			while((line = input.readLine())!=null){	
+				String temp[] = line.split("\t");
+				String oldClass = temp[1];
+				String newClass = temp[2];
+				System.out.println(oldClass +"\t" +newClass);
+				verbClassMap.put(oldClass, newClass);
+			}
+			input.close();		
+		} catch (IOException e) {
+			logger.log(Level.SEVERE, "GermanVcExtractor: unable to load class mapping file. Aborting all operations");
+			System.exit(1);
+		}
+	}
+
 	/**
 	 * This method creates (purely syntactic) subcategorization frames
 	 * @param gvcSense a GVC sense
