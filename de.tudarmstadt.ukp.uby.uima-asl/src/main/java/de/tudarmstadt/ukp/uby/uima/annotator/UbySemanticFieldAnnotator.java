@@ -39,14 +39,14 @@ import de.tudarmstadt.ukp.uby.resource.UbySemanticFieldResource;
 				"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Lemma",
 				"de.tudarmstadt.ukp.dkpro.core.lexmorph.type.POS"},
 		outputs = {
-				"de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.NamedEntity"})
+				"de.tudarmstadt.ukp.dkpro.core.api.semantics.type.SemanticField"})
 
 /**
  * 
  * This Analysis Engine annotates English or German
  * common nouns, main verbs and adjectives with semantic field information 
  * from WordNet or GermaNet.
- * The annotation is stored in the NamedEntity annotation type
+ * The annotation is stored in the SemanticField annotation type
  *     
  * @author Judith Eckle-Kohler
  * 
