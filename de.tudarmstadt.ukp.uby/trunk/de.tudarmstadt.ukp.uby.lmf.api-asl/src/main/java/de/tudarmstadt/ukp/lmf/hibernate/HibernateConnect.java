@@ -115,10 +115,15 @@ public class HibernateConnect {
         p.setProperty("hibernate.connection.password", password);
         
         // connection url
-        if (db_vendor.equals("mysql")) {
-        	p.setProperty("hibernate.connection.url", "jdbc:"+db_vendor+"://" +jdbc_url+"?characterEncoding=UTF-8&useUnicode=true");
-        } else if (db_vendor.equals("h2")){
-        	p.setProperty("hibernate.connection.url", "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1");
+        if (!jdbc_url.startsWith("jdbc:")) {
+	        if (db_vendor.equals("mysql")) {
+	        	p.setProperty("hibernate.connection.url", "jdbc:"+db_vendor+"://" +jdbc_url+"?characterEncoding=UTF-8&useUnicode=true");
+	        } else if (db_vendor.equals("h2")){
+	        	p.setProperty("hibernate.connection.url", "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1");
+	        }
+        }
+        else {
+        	p.setProperty("hibernate.connection.url", jdbc_url);
         }
 
 
