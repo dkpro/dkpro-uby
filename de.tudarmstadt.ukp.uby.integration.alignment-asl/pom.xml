@@ -14,6 +14,12 @@
 	</license>
   </licenses>  
   <dependencies>
+  <dependency>
+	<groupId>com.google.guava</groupId>
+	<artifactId>guava</artifactId>
+	<version>r09</version>
+</dependency>
+            
 		<dependency>
 			<groupId>de.tudarmstadt.ukp.uby</groupId>
 			<artifactId>de.tudarmstadt.ukp.uby.lmf.model-asl</artifactId>
@@ -38,5 +44,89 @@
 			<groupId>edu.mit.jwi</groupId>
 			<artifactId>edu.mit.jwi</artifactId>
 		</dependency>
+		    <dependency>
+    	<groupId>mysql</groupId>
+    	<artifactId>mysql-connector-java</artifactId>
+    	<version>5.1.18</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+     <dependency>
+    	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+    	<artifactId>de.tudarmstadt.ukp.dkpro.core.tokit-asl</artifactId>
+    	<version>1.2.0</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+   
+    <dependency>
+    	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+    	<artifactId>de.tudarmstadt.ukp.dkpro.core.util</artifactId>
+    	<version>1.2.0</version>
+    	<type>jar.lastUpdated</type>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+    	<artifactId>de.tudarmstadt.ukp.dkpro.core.stanfordnlp-gpl</artifactId>
+    	<version>1.2.0</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+    	<artifactId>de.tudarmstadt.ukp.dkpro.core.stopwordremover-asl</artifactId>
+    	<version>1.2.0</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+
+    <dependency>
+    	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+    	<artifactId>de.tudarmstadt.ukp.dkpro.core.treetagger-asl</artifactId>
+    	<version>1.2.0</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+    	<artifactId>de.tudarmstadt.ukp.dkpro.core.treetagger-models-en</artifactId>
+    	<version>2010111500</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+    	<artifactId>de.tudarmstadt.ukp.dkpro.core.treetagger-bin</artifactId>
+    	<version>2010111900</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+    	<artifactId>de.tudarmstadt.ukp.dkpro.core.treetagger.poslemma</artifactId>
+    	<version>1.0.6.1</version>
+    	<type>jar.lastUpdated</type>
+    	<scope>compile</scope>
+    </dependency>
+  
+   
+    
+    
+
+
+
+    <dependency>
+    	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+    	<artifactId>de.tudarmstadt.ukp.dkpro.core.treetagger-models-de</artifactId>
+    	<version>2011042900</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+    	<artifactId>de.tudarmstadt.ukp.dkpro.core.opennlp-model-tagger-en-maxent</artifactId>
+    	<version>20120616.0</version>
+    </dependency>
 	</dependencies> 
 </project>
