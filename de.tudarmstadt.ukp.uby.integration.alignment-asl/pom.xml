@@ -27,6 +27,12 @@
 		<dependency>
 			<groupId>de.tudarmstadt.ukp.uby</groupId>
 			<artifactId>de.tudarmstadt.ukp.uby.persistence.transform-asl</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-core</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
           <groupId>commons-io</groupId>
@@ -54,29 +60,34 @@
      <dependency>
     	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
     	<artifactId>de.tudarmstadt.ukp.dkpro.core.tokit-asl</artifactId>
-    	<version>1.2.0</version>
+    	<version>1.6.0</version>
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
-   
-    <dependency>
+        <dependency>
     	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-    	<artifactId>de.tudarmstadt.ukp.dkpro.core.util</artifactId>
-    	<version>1.2.0</version>
-    	<type>jar.lastUpdated</type>
+    	<artifactId>de.tudarmstadt.ukp.dkpro.core.io.text-asl</artifactId>
+    	<version>1.6.0</version>
+    	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
     <dependency>
     	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
     	<artifactId>de.tudarmstadt.ukp.dkpro.core.stanfordnlp-gpl</artifactId>
-    	<version>1.2.0</version>
+    	<version>1.6.0</version>
     	<type>jar</type>
     	<scope>compile</scope>
+    	<exclusions>
+    		<exclusion>
+    			<artifactId>spring-core</artifactId>
+    			<groupId>org.springframework</groupId>
+    		</exclusion>
+    	</exclusions>
     </dependency>
     <dependency>
     	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
     	<artifactId>de.tudarmstadt.ukp.dkpro.core.stopwordremover-asl</artifactId>
-    	<version>1.2.0</version>
+    	<version>1.6.0</version>
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
@@ -84,7 +95,7 @@
     <dependency>
     	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
     	<artifactId>de.tudarmstadt.ukp.dkpro.core.treetagger-asl</artifactId>
-    	<version>1.2.0</version>
+    	<version>1.6.0</version>
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
@@ -102,31 +113,21 @@
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
-    <dependency>
-    	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-    	<artifactId>de.tudarmstadt.ukp.dkpro.core.treetagger.poslemma</artifactId>
-    	<version>1.0.6.1</version>
-    	<type>jar.lastUpdated</type>
-    	<scope>compile</scope>
-    </dependency>
-  
-   
-    
-    
-
-
-
-    <dependency>
-    	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-    	<artifactId>de.tudarmstadt.ukp.dkpro.core.treetagger-models-de</artifactId>
-    	<version>2011042900</version>
-    	<type>jar</type>
-    	<scope>compile</scope>
-    </dependency>
-    <dependency>
+      <dependency>
     	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
     	<artifactId>de.tudarmstadt.ukp.dkpro.core.opennlp-model-tagger-en-maxent</artifactId>
     	<version>20120616.0</version>
     </dependency>
 	</dependencies> 
+	<dependencyManagement>
+	<dependencies> 
+	    <dependency>
+    	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+    	<artifactId>de.tudarmstadt.ukp.dkpro.core.treetagger-models-de</artifactId>
+    	<type>pom</type>
+    	<scope>import</scope>
+      </dependency>
+    </dependencies> 
+    	</dependencyManagement>
+
 </project>
