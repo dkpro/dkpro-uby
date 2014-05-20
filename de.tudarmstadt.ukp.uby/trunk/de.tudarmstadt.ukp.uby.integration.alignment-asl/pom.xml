@@ -91,7 +91,13 @@
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
-
+   <dependency>
+    	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+    	<artifactId>de.tudarmstadt.ukp.dkpro.core.opennlp-asl</artifactId>
+    	<version>1.6.0</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
     <dependency>
     	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
     	<artifactId>de.tudarmstadt.ukp.dkpro.core.treetagger-asl</artifactId>
@@ -109,16 +115,21 @@
     <dependency>
     	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
     	<artifactId>de.tudarmstadt.ukp.dkpro.core.treetagger-bin</artifactId>
-    	<version>2010111900</version>
+    	
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
-      <dependency>
-    	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-    	<artifactId>de.tudarmstadt.ukp.dkpro.core.opennlp-model-tagger-en-maxent</artifactId>
-    	<version>20120616.0</version>
-    </dependency>
+		<dependency>
+  			<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+  			<artifactId>de.tudarmstadt.ukp.dkpro.core.treetagger-model-de</artifactId>	
+  			<type>jar</type>
+  			<scope>compile</scope>
+  		</dependency>
 	</dependencies> 
-
+  <dependencyManagement>
+  	<dependencies>
+  
+  	</dependencies>
+  </dependencyManagement> 
 
 </project>

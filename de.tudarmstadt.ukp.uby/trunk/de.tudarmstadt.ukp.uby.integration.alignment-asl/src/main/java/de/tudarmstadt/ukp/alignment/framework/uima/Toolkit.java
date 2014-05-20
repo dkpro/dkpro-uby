@@ -20,6 +20,7 @@ import org.apache.uima.collection.CollectionReaderDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
+import de.tudarmstadt.ukp.dkpro.core.opennlp.OpenNlpSegmenter;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordLemmatizer;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordSegmenter;
@@ -170,7 +171,7 @@ public class Toolkit
 			 CollectionReaderDescription cr = createReaderDescription(
 			         StringReader.class  ,
 			         StringReader.PARAM_CONTENT, input,
-			         StringReader.PARAM_LANGUAGE, "en"
+			         StringReader.PARAM_LANGUAGE, "de"
 			         );
 
 			AnalysisEngineDescription cc = createEngineDescription(StringWriter.class);
@@ -297,10 +298,9 @@ public class Toolkit
 		}
 		AnalysisEngineDescription seg;
 		try {
-			seg = createEngineDescription(StanfordSegmenter.class);
+			seg = createEngineDescription(OpenNlpSegmenter.class);
 				AnalysisEngineDescription sw = createEngineDescription(StopWordRemover.class,
 					StopWordRemover.PARAM_STOP_WORD_LIST_FILE_NAMES, new String[]{"/home/matuschek/UBY_HOME/resources/snowball_german_stopwords.txt"}
-
 				);
 			AnalysisEngineDescription pos = createEngineDescription(TreeTaggerPosLemmaTT4J.class,
 					TreeTaggerPosLemmaTT4J.PARAM_LANGUAGE,"de");

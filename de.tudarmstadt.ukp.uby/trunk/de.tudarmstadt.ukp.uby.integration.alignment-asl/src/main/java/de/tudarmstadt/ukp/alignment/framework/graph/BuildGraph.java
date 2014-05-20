@@ -68,11 +68,11 @@ public class BuildGraph
 			boolean synset = true;
 			boolean usePos = true;
 			BuildGraph bg = new BuildGraph("uby_release_1_0","root","fortuna");
-		//	bg.builtInitialGraphFromDb("ow_en_synset_new_framework",Prefixes.OW_EN_prefix,synset);
-	//		bg.createGlossFile(Prefixes.OW_EN_prefix,synset);
-			bg.LemmatizePOStagGlossFile(Prefixes.OW_DE_prefix, ELanguageIdentifier.GERMAN);
-			//bg.fillIndexTablesForOneResource(Prefixes.OW_EN_prefix, lemmaPosSensesLSR1, lemmaIdWrittenFormLSR1, synset, usePos);
-//			bg.createMonosemousLinks(Prefixes.OW_EN_prefix, 3, usePos);
+	//		bg.builtInitialGraphFromDb("ow_de_synset_new_framework",Prefixes.OW_DE_prefix,synset);
+	//		bg.createGlossFile(Prefixes.OW_DE_prefix,synset);
+		//	bg.LemmatizePOStagGlossFile(Prefixes.OW_DE_prefix, ELanguageIdentifier.GERMAN);
+			bg.fillIndexTablesForOneResource(Prefixes.OW_DE_prefix, lemmaPosSensesLSR1, lemmaIdWrittenFormLSR1, synset, usePos);
+			bg.createMonosemousLinks(Prefixes.OW_DE_prefix, 50, usePos);
 
 
 			//createLexicalFieldsGN();
@@ -109,7 +109,7 @@ public class BuildGraph
 
 
 		PrintStream p;
-		outstream = new FileOutputStream("target/graphs/"+output+".txt");
+		outstream = new FileOutputStream("target/"+output+".txt");
 		p = new PrintStream( outstream );
 		StringBuilder sb = new StringBuilder();
 		Statement statement = connection.createStatement();
@@ -168,7 +168,7 @@ public class BuildGraph
 		String prefix_string = prefixTable.get(prefix);
 			FileOutputStream outstream;
 		PrintStream p;
-		outstream = new FileOutputStream("target/glossfiles/"+prefix_string+"_glosses.txt");
+		outstream = new FileOutputStream("target/"+prefix_string+"_glosses.txt");
 		p = new PrintStream( outstream );
 		Statement statement = connection.createStatement();
 		ResultSet rs;
@@ -224,7 +224,7 @@ public class BuildGraph
 		// Connect print stream to the output stream
 		p = new PrintStream( outstream );
 		p_freq = new PrintStream(outstream_freq);
-		 FileReader in = new FileReader("target/"+prefix_string+"_glosses");
+		 FileReader in = new FileReader("target/"+prefix_string+"_glosses.txt");
 		 BufferedReader input =  new BufferedReader(in);
 		 String line;
 		 StringBuilder sb = new StringBuilder();
@@ -264,6 +264,8 @@ public class BuildGraph
 		}
 		resultline = resultline.replaceAll("tabulator#\\S*\\s", "\t");
 		resultline = resultline.replaceAll("endofline#\\S*\\s", LF);
+		resultline = resultline.replaceAll("TABULATOR#\\S*\\s", "\t");
+		resultline = resultline.replaceAll("ENDOFLINE#\\S*\\s", LF);
 		p.print(resultline);
 		 p.flush();
 		 p.close();
@@ -287,7 +289,7 @@ public class BuildGraph
 			String prefix_string  = prefixTable.get(prefix);
 			if(lexemeFreqInGlosses == null) {
 				lexemeFreqInGlosses = new HashMap<String, Integer>();
-				 FileReader in = new FileReader("target/"+prefix_string+"_lexeme_freq");
+				 FileReader in = new FileReader("target/"+prefix_string+"_lexeme_freq.txt");
 				 BufferedReader input =  new BufferedReader(in);
 				 String line;
 				 while((line =input.readLine())!=null)
@@ -372,20 +374,23 @@ public class BuildGraph
 			int max_id = 0;
 			FileOutputStream outstream;
 			PrintStream p;
-			 FileReader in = new FileReader("target/"+prefix_string+"_glosses_POS_tagged");
+			 FileReader in = new FileReader("target/"+prefix_string+"_glosses_POS_tagged.txt");
 			 BufferedReader input =  new BufferedReader(in);
-				outstream = new FileOutputStream("target/"+prefix_string+"_monoLinks_"+phi+"_"+(usePos ? "Pos": "noPos"));
+				outstream = new FileOutputStream("target/"+prefix_string+"_monoLinks_"+phi+"_"+(usePos ? "Pos": "noPos")+".txt");
 				p = new PrintStream( outstream );
 			 String line;
 			 while((line =input.readLine())!=null)
 			 {
 				 String id1 = line.split("\t")[0];
+				 if((line.split("\t")).length<2) {
+					continue;
+				}
 				 String[] lexemes = line.split("\t")[1].split(" ");
 				 for(String lexeme:lexemes)
 				 {
 	//				 System.out.println(lexeme);
 	//				 System.out.println(lexemeFreqInGlosses.size());
-					 if(lexemeFreqInGlosses.get(lexeme) == null || lexemeFreqInGlosses.get(lexeme)<phi)
+					 if(lexemeFreqInGlosses.get(lexeme) == null || lexemeFreqInGlosses.get(lexeme)>phi)
 					 {
 						 continue;
 					 }
@@ -444,7 +449,7 @@ public class BuildGraph
 
 	public static void mergeTwoEdgeLists(String infile1,String infile2, String outfile, String edgeCount) throws ClassNotFoundException,  IOException
 	{
-
+		StringBuilder sb = new StringBuilder();
 		/*Take care of having it undirected*/
 		FileReader in = new FileReader(infile1);
 		BufferedReader input =  new BufferedReader(in);
@@ -453,7 +458,8 @@ public class BuildGraph
 			outstream = new FileOutputStream(outfile);
 			p = new PrintStream( outstream );
 
-
+		int maxId = 0;
+		int size = 0;
 		 String line;
 
 		int i = 0;
@@ -463,14 +469,15 @@ public class BuildGraph
 		 {
 			 if(line.startsWith("p"))
 			 {
-//				 String[] ids = line.split(" ");
-//				 nodes_count+= Integer.parseInt(ids[2]);
-//				 arcs_count+=Integer.parseInt(ids[3]);
+				 String[] info = line.split(" ");
+				 maxId = Integer.parseInt(info[2]);
+				 size = Integer.parseInt(info[3]);
+
 
 			}
 			 else
 			 {
-				 p.println(line);
+
 			 }
 			 if(i++ % 1000 ==0) {
 			System.out.println("Lines processed "+i);
@@ -485,13 +492,16 @@ public class BuildGraph
 			 {
 				 if(line.contains("p"))
 				 {
-					 //			 String[] ids = line.split(" ");
-					 	//			 nodes_count+= Integer.parseInt(ids[2]);
-					 //		 arcs_count+=Integer.parseInt(ids[3]);
+					 String[] info = line.split(" ");
+					 int max = Integer.parseInt(info[2]);
+					 if(max>maxId) {
+						maxId = max;
+					}
+					 size = size+ Integer.parseInt(info[3]);
 				}
 				 else
 				 {
-					 p.println(line);
+					 sb.append(line+LF);
 				 }
 				if(i++ % 1000 ==0) {
 				System.out.println("Lines processed "+i);
@@ -499,7 +509,8 @@ public class BuildGraph
 
 
 			 }
-			// p.println("p sp "+nodes_count+" "+arcs_count);
+			 p.println("p sp "+maxId+" "+size);
+			 p.print(sb.toString());
 		 //System.out.println("p sp "+nodes_count+" "+arcs_count);
 	}
 
