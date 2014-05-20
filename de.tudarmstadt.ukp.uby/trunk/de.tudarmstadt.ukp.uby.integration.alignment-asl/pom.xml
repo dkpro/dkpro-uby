@@ -105,30 +105,23 @@
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
-    <dependency>
-    	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-    	<artifactId>de.tudarmstadt.ukp.dkpro.core.treetagger-models-en</artifactId>
-    	<version>2010111500</version>
-    	<type>jar</type>
-    	<scope>compile</scope>
-    </dependency>
-    <dependency>
-    	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-    	<artifactId>de.tudarmstadt.ukp.dkpro.core.treetagger-bin</artifactId>
-    	
-    	<type>jar</type>
-    	<scope>compile</scope>
-    </dependency>
-		<dependency>
-  			<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-  			<artifactId>de.tudarmstadt.ukp.dkpro.core.treetagger-model-de</artifactId>	
-  			<type>jar</type>
-  			<scope>compile</scope>
-  		</dependency>
+
 	</dependencies> 
   <dependencyManagement>
   	<dependencies>
-  
+     
+		<dependency>
+  			<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+  			<artifactId>de.tudarmstadt.ukp.dkpro.core.treetagger-model-de</artifactId>	
+  			<type>pom</type>
+  			<scope>import</scope>
+  		</dependency>
+  		    <dependency>
+    	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+    	<artifactId>de.tudarmstadt.ukp.dkpro.core.treetagger-bin</artifactId>	
+    	<type>pom</type>
+    	<scope>import</scope>
+ 	</dependency>
   	</dependencies>
   </dependencyManagement> 
 

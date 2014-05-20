@@ -164,7 +164,7 @@ public class Toolkit
 
 
 
-	@SuppressWarnings("restriction")
+
 	public static String[] process(String input,PosGetter getter,AnalysisEngineDescription... aeds) {
 		try {
 
