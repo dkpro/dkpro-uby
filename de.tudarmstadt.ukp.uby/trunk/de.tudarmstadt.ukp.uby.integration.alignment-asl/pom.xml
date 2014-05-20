@@ -57,24 +57,25 @@
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
+    
      <dependency>
     	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
     	<artifactId>de.tudarmstadt.ukp.dkpro.core.tokit-asl</artifactId>
-    	<version>1.6.0</version>
+    	
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
         <dependency>
     	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
     	<artifactId>de.tudarmstadt.ukp.dkpro.core.io.text-asl</artifactId>
-    	<version>1.6.0</version>
+    
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
     <dependency>
     	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
     	<artifactId>de.tudarmstadt.ukp.dkpro.core.stanfordnlp-gpl</artifactId>
-    	<version>1.6.0</version>
+
     	<type>jar</type>
     	<scope>compile</scope>
     	<exclusions>
@@ -87,35 +88,45 @@
     <dependency>
     	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
     	<artifactId>de.tudarmstadt.ukp.dkpro.core.stopwordremover-asl</artifactId>
-    	<version>1.6.0</version>
+    
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
    <dependency>
     	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
     	<artifactId>de.tudarmstadt.ukp.dkpro.core.opennlp-asl</artifactId>
-    	<version>1.6.0</version>
+   
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
     <dependency>
     	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
     	<artifactId>de.tudarmstadt.ukp.dkpro.core.treetagger-asl</artifactId>
-    	<version>1.6.0</version>
-    	<type>jar</type>
-    	<scope>compile</scope>
-    </dependency>
+   
 
+    </dependency>
+    <dependency>
+    	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+    	<artifactId>de.tudarmstadt.ukp.dkpro.core.treetagger-bin</artifactId>
+ 
+
+    </dependency>
+    	<dependency>
+  			<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+  			<artifactId>de.tudarmstadt.ukp.dkpro.core.treetagger-model-de</artifactId>	
+
+  		</dependency>
 	</dependencies> 
   <dependencyManagement>
   	<dependencies>
      
-		<dependency>
-  			<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-  			<artifactId>de.tudarmstadt.ukp.dkpro.core.treetagger-model-de</artifactId>	
-  			<type>pom</type>
+	    <dependency>
+    	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+    	<artifactId>de.tudarmstadt.ukp.dkpro.core.treetagger-asl</artifactId>
+    	<version>1.6.0</version>
+		<type>pom</type>
   			<scope>import</scope>
-  		</dependency>
+    </dependency>
 
   	</dependencies>
   </dependencyManagement> 
