@@ -116,12 +116,7 @@
   			<type>pom</type>
   			<scope>import</scope>
   		</dependency>
-  		    <dependency>
-    	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-    	<artifactId>de.tudarmstadt.ukp.dkpro.core.treetagger-bin</artifactId>	
-    	<type>pom</type>
-    	<scope>import</scope>
- 	</dependency>
+
   	</dependencies>
   </dependencyManagement> 
 
