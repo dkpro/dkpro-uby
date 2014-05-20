@@ -68,11 +68,11 @@ public class BuildGraph
 			boolean synset = true;
 			boolean usePos = true;
 			BuildGraph bg = new BuildGraph("uby_release_1_0","root","fortuna");
-			//bg.builtInitialGraphFromDb("ow_en_synset_new_framework",Prefixes.OW_EN_prefix,synset);
-			//bg.createGlossFile(Prefixes.OW_EN_prefix,synset);
-			//bg.LemmatizePOStagGlossFile(Prefixes.OW_EN_prefix, ELanguageIdentifier.ENGLISH);
-			bg.fillIndexTablesForOneResource(Prefixes.OW_EN_prefix, lemmaPosSensesLSR1, lemmaIdWrittenFormLSR1, synset, usePos);
-			bg.createMonosemousLinks(Prefixes.OW_EN_prefix, 3, usePos);
+		//	bg.builtInitialGraphFromDb("ow_en_synset_new_framework",Prefixes.OW_EN_prefix,synset);
+	//		bg.createGlossFile(Prefixes.OW_EN_prefix,synset);
+			bg.LemmatizePOStagGlossFile(Prefixes.OW_DE_prefix, ELanguageIdentifier.GERMAN);
+			//bg.fillIndexTablesForOneResource(Prefixes.OW_EN_prefix, lemmaPosSensesLSR1, lemmaIdWrittenFormLSR1, synset, usePos);
+//			bg.createMonosemousLinks(Prefixes.OW_EN_prefix, 3, usePos);
 
 
 			//createLexicalFieldsGN();
@@ -109,7 +109,7 @@ public class BuildGraph
 
 
 		PrintStream p;
-		outstream = new FileOutputStream("target/"+output);
+		outstream = new FileOutputStream("target/graphs/"+output+".txt");
 		p = new PrintStream( outstream );
 		StringBuilder sb = new StringBuilder();
 		Statement statement = connection.createStatement();
@@ -168,7 +168,7 @@ public class BuildGraph
 		String prefix_string = prefixTable.get(prefix);
 			FileOutputStream outstream;
 		PrintStream p;
-		outstream = new FileOutputStream("target/"+prefix_string+"_glosses");
+		outstream = new FileOutputStream("target/glossfiles/"+prefix_string+"_glosses.txt");
 		p = new PrintStream( outstream );
 		Statement statement = connection.createStatement();
 		ResultSet rs;
@@ -219,8 +219,8 @@ public class BuildGraph
 		PrintStream p_freq;
 		try
 		{
-		outstream = new FileOutputStream("target/"+prefix_string+"_glosses_POS_tagged");
-		outstream_freq = new FileOutputStream("target/"+prefix_string+"_lexeme_freq");
+		outstream = new FileOutputStream("target/"+prefix_string+"_glosses_POS_tagged.txt");
+		outstream_freq = new FileOutputStream("target/"+prefix_string+"_lexeme_freq.txt");
 		// Connect print stream to the output stream
 		p = new PrintStream( outstream );
 		p_freq = new PrintStream(outstream_freq);
@@ -262,8 +262,8 @@ public class BuildGraph
 			}
 			//System.out.println(s);
 		}
-		 resultline = resultline.replaceAll("TABULATOR#\\S*\\s", "\t");
-		resultline = resultline.replaceAll("ENDOFLINE#\\S*\\s", LF);
+		resultline = resultline.replaceAll("tabulator#\\S*\\s", "\t");
+		resultline = resultline.replaceAll("endofline#\\S*\\s", LF);
 		p.print(resultline);
 		 p.flush();
 		 p.close();

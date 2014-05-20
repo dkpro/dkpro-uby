@@ -1,8 +1,10 @@
 package de.tudarmstadt.ukp.alignment.framework.uima;
 
-import static org.uimafit.factory.AnalysisEngineFactory.createPrimitiveDescription;
-import static org.uimafit.factory.CollectionReaderFactory.createCollectionReader;
-import static org.uimafit.pipeline.SimplePipeline.runPipeline;
+//import static org.uimafit.factory.AnalysisEngineFactory.createPrimitiveDescription;
+//import static org.uimafit.factory.CollectionReaderFactory.createCollectionReader;
+import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
+import static org.apache.uima.fit.factory.CollectionReaderFactory.createReaderDescription;
+import static org.apache.uima.fit.pipeline.SimplePipeline.runPipeline;
 
 import java.io.IOException;
 import java.util.BitSet;
@@ -12,11 +14,14 @@ import java.util.Vector;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.collection.CollectionReader;
-import org.apache.uima.jcas.JCas;
+import org.apache.uima.cas.CAS;
+import org.apache.uima.cas.text.AnnotationFS;
+import org.apache.uima.collection.CollectionReaderDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
+import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordLemmatizer;
+import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
 import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordSegmenter;
 import de.tudarmstadt.ukp.dkpro.core.stopwordremover.StopWordRemover;
 import de.tudarmstadt.ukp.dkpro.core.treetagger.TreeTaggerPosLemmaTT4J;
@@ -162,8 +167,13 @@ public class Toolkit
 	public static String[] process(String input,PosGetter getter,AnalysisEngineDescription... aeds) {
 		try {
 
-			CollectionReader cr = createCollectionReader(StringReader.class,StringReader.PARAM_CONTENT, input);
-			AnalysisEngineDescription cc = createPrimitiveDescription(StringWriter.class);
+			 CollectionReaderDescription cr = createReaderDescription(
+			         StringReader.class  ,
+			         StringReader.PARAM_CONTENT, input,
+			         StringReader.PARAM_LANGUAGE, "en"
+			         );
+
+			AnalysisEngineDescription cc = createEngineDescription(StringWriter.class);
 			StringWriter.getter=getter;
 			AnalysisEngineDescription[] aeds2 = new AnalysisEngineDescription[aeds.length+1];
 			for(int i=0;i<aeds.length;i++) {
@@ -176,8 +186,8 @@ public class Toolkit
 			e.printStackTrace();
 		} catch (UIMAException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+	} catch (IOException e) {
+		e.printStackTrace();
 		}
 		return null;
 	}
@@ -287,13 +297,13 @@ public class Toolkit
 		}
 		AnalysisEngineDescription seg;
 		try {
-			seg = createPrimitiveDescription(StanfordSegmenter.class);
-	AnalysisEngineDescription sw = createPrimitiveDescription(StopWordRemover.class,
+			seg = createEngineDescription(StanfordSegmenter.class);
+				AnalysisEngineDescription sw = createEngineDescription(StopWordRemover.class,
 					StopWordRemover.PARAM_STOP_WORD_LIST_FILE_NAMES, new String[]{"/home/matuschek/UBY_HOME/resources/snowball_german_stopwords.txt"}
 
 				);
-			AnalysisEngineDescription pos = createPrimitiveDescription(TreeTaggerPosLemmaTT4J.class,
-					TreeTaggerPosLemmaTT4J.PARAM_LANGUAGE_CODE,"de");
+			AnalysisEngineDescription pos = createEngineDescription(TreeTaggerPosLemmaTT4J.class,
+					TreeTaggerPosLemmaTT4J.PARAM_LANGUAGE,"de");
 			String[] result;
 
 			result = process(text, new PosGetter(), seg,sw,pos);
@@ -312,32 +322,46 @@ public class Toolkit
 		if (text=="" || text==null) {
 			return null;
 		}
-		AnalysisEngineDescription seg;
+
 		try {
-			seg = createPrimitiveDescription(StanfordSegmenter.class);
-//			AnalysisEngineDescription pos = createPrimitiveDescription(
-//					StanfordPosTagger.class,
-//					StanfordPosTagger.PARAM_MODEL_PATH,"/home/matuschek/Stanford/stanford-postagger-full-2012-11-11/models/english-bidirectional-distsim.tagger");
-	AnalysisEngineDescription sw = createPrimitiveDescription(StopWordRemover.class,
-					StopWordRemover.PARAM_STOP_WORD_LIST_FILE_NAMES, new String[]{"/home/matuschek/UBY_HOME/resources/snowball_english_stopwords.txt"}
-				);
-			AnalysisEngineDescription pos = createPrimitiveDescription(TreeTaggerPosLemmaTT4J.class,
-					TreeTaggerPosLemmaTT4J.PARAM_LANGUAGE_CODE,"en");
-			String[] result;
 
-			result = process(text, new PosGetter(), seg,sw,pos);
+			 CollectionReaderDescription cr = createReaderDescription(
+			         StringReader.class  ,
+			         StringReader.PARAM_CONTENT, text,
+			         StringReader.PARAM_LANGUAGE, "en"
+			         );
 
-			return result;
+			      AnalysisEngineDescription     seg = createEngineDescription(StanfordSegmenter.class, StanfordSegmenter.PARAM_LANGUAGE,"en");
+			      AnalysisEngineDescription     lemma = createEngineDescription(StanfordLemmatizer.class);
+					AnalysisEngineDescription pos = createEngineDescription(StanfordPosTagger.class	);
+					HashSet<String> swords = new HashSet<String>();
+					 swords.add("/home/matuschek/UBY_HOME/resources/snowball_english_stopwords.txt");
+			AnalysisEngineDescription sw = createEngineDescription(StopWordRemover.class,
+				StopWordRemover.PARAM_STOP_WORD_LIST_FILE_NAMES,  swords
+					//StopWordRemover.PARAM_STOP_WORD_LIST_FILE_NAMES, new String[]{"/home/matuschek/UBY_HOME/resources/snowball_english_stopwords.txt"}
+						);
+//					AnalysisEngineDescription pos = createEngineDescription(TreeTaggerPosLemmaTT4J.class,
+//							TreeTaggerPosLemmaTT4J.PARAM_LANGUAGE,"en");
+
+
+			      StringWriter.getter=new PosGetter();
+			      AnalysisEngineDescription cc = createEngineDescription(StringWriter.class);
+//			    AnalysisEngineDescription tagger = createEngineDescription(OpenNlpPosTagger.class);
+			      runPipeline(cr, seg,sw, lemma,  pos,  cc);
+			     String[] result = (String[]) StringWriter.mContent;
+			     return result;
+
 		}
-		catch (ResourceInitializationException e) {
+		catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		return null;
 	}
 
 
 
-	static class PosGetter {
+	public static class PosGetter {
 
 
 /*		public Object retrieveData_old2(JCas cas) {
@@ -354,12 +378,17 @@ public class Toolkit
 			}
 			return ret;
 		}*/
-		public Object retrieveData(JCas cas) {
+		public Object retrieveData(CAS cas) {
 			Vector<String> rets= new Vector<String>();
-			System.out.println(cas.getAnnotationIndex(Token.type).size());
+		//	System.out.println(cas.getAnnotationIndex(Token.type).size());
 
-			for(org.apache.uima.jcas.tcas.Annotation annot : cas.getAnnotationIndex(Token.type)) {
-
+			for(AnnotationFS annot : cas.getAnnotationIndex()) {
+				if(!Token.class.toString().contains(annot.getType().getName())) {
+//					System.out.println(annot.getType().getName());
+//					System.out.println(Token.class);
+//					System.out.println("No Token");
+					continue;
+				}
 
 				String tok=annot.getCoveredText();
 
