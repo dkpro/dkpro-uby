@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import com.google.common.base.CharMatcher;
-
 import de.tudarmstadt.ukp.alignment.framework.Prefixes;
 import de.tudarmstadt.ukp.alignment.framework.uima.Toolkit;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
@@ -65,15 +63,33 @@ public class BuildGraph
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException
 		{
+
+			/* GLOBAL SETTINGS */
 			boolean synset = true;
 			boolean usePos = true;
 			BuildGraph bg = new BuildGraph("uby_release_1_0","root","fortuna");
-	//		bg.builtInitialGraphFromDb("ow_de_synset_new_framework",Prefixes.OW_DE_prefix,synset);
-	//		bg.createGlossFile(Prefixes.OW_DE_prefix,synset);
-		//	bg.LemmatizePOStagGlossFile(Prefixes.OW_DE_prefix, ELanguageIdentifier.GERMAN);
-			bg.fillIndexTablesForOneResource(Prefixes.OW_DE_prefix, lemmaPosSensesLSR1, lemmaIdWrittenFormLSR1, synset, usePos);
-			bg.createMonosemousLinks(Prefixes.OW_DE_prefix, 50, usePos);
+			final int prefix = Prefixes.OW_DE_prefix;
+			final String prefix_string = prefixTable.get(prefix);
+			final int monoLinkThreshold = 50;
 
+
+
+			bg.builtInitialGraphFromDb(prefix_string+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_relationgraph.txt",
+					prefix,synset);
+			bg.createGlossFile(prefix_string+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_glosses.txt",
+					prefix,synset);
+			bg.LemmatizePOStagGlossFile(prefix_string+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_glosses.txt",
+					prefix_string+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_glosses_tagged.txt",
+					prefix_string+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_lexeme_frequencies.txt" ,
+					prefix, ELanguageIdentifier.GERMAN);
+			bg.fillIndexTablesForOneResource(prefix_string+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_lexeme_frequencies.txt",
+					prefix, lemmaPosSensesLSR1, lemmaIdWrittenFormLSR1, synset, usePos);
+			bg.createMonosemousLinks(prefix_string+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_glosses_tagged.txt",
+					prefix_string+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_monosemousLinks"+"_"+"monoLinkThreshold"+"_"+".txt",
+					Prefixes.OW_DE_prefix, monoLinkThreshold, usePos);
+			bg.mergeTwoGraphs(prefix_string+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_relationgraph.txt" ,
+					prefix_string+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_monosemousLinks"+"_"+"monoLinkThreshold"+"_"+".txt",
+					prefix_string+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_relationMLgraph.txt"+"_"+monoLinkThreshold);
 
 			//createLexicalFieldsGN();
 			//lemmaIdWrittenFromLSR1= new HashMap<String, String>();
@@ -109,7 +125,7 @@ public class BuildGraph
 
 
 		PrintStream p;
-		outstream = new FileOutputStream("target/"+output+".txt");
+		outstream = new FileOutputStream("target/"+output);
 		p = new PrintStream( outstream );
 		StringBuilder sb = new StringBuilder();
 		Statement statement = connection.createStatement();
@@ -162,13 +178,13 @@ public class BuildGraph
 	}
 
 
-	public void createGlossFile(int prefix, boolean synset) throws ClassNotFoundException, SQLException, IOException
+	public void createGlossFile(String output,int prefix, boolean synset) throws ClassNotFoundException, SQLException, IOException
 	{
 
 		String prefix_string = prefixTable.get(prefix);
 			FileOutputStream outstream;
 		PrintStream p;
-		outstream = new FileOutputStream("target/"+prefix_string+"_glosses.txt");
+		outstream = new FileOutputStream("target/"+output);
 		p = new PrintStream( outstream );
 		Statement statement = connection.createStatement();
 		ResultSet rs;
@@ -205,13 +221,13 @@ public class BuildGraph
 	}
 
 
-	public void LemmatizePOStagGlossFile(int prefix, String lang)
+	public void LemmatizePOStagGlossFile(String input, String output1,String output2, int prefix, String lang)
 	{
 		if(lexemeFreqInGlosses == null) {
 			lexemeFreqInGlosses = new HashMap<String, Integer>();
 		}
 		String prefix_string = prefixTable.get(prefix);
-		CharMatcher d = CharMatcher.JAVA_LETTER_OR_DIGIT.or(CharMatcher.WHITESPACE).or(CharMatcher.anyOf("-_äöüÄÜÖ"));
+		//CharMatcher d = CharMatcher.JAVA_LETTER_OR_DIGIT.or(CharMatcher.WHITESPACE).or(CharMatcher.anyOf("-_äöüÄÜÖ"));
 		int i = 0;
 		FileOutputStream outstream;
 		FileOutputStream outstream_freq;
@@ -219,16 +235,16 @@ public class BuildGraph
 		PrintStream p_freq;
 		try
 		{
-		outstream = new FileOutputStream("target/"+prefix_string+"_glosses_POS_tagged.txt");
-		outstream_freq = new FileOutputStream("target/"+prefix_string+"_lexeme_freq.txt");
+		outstream = new FileOutputStream("target/"+output1);
+		outstream_freq = new FileOutputStream("target/"+output2);
 		// Connect print stream to the output stream
 		p = new PrintStream( outstream );
 		p_freq = new PrintStream(outstream_freq);
-		 FileReader in = new FileReader("target/"+prefix_string+"_glosses.txt");
-		 BufferedReader input =  new BufferedReader(in);
+		 FileReader in = new FileReader("target/"+input);
+		 BufferedReader input_reader =  new BufferedReader(in);
 		 String line;
 		 StringBuilder sb = new StringBuilder();
-		 while((line =input.readLine())!=null)
+		 while((line =input_reader.readLine())!=null)
 		 {
 
 			sb.append(line.replace("\t","TABULATOR ")+" ENDOFLINE ");
@@ -284,15 +300,15 @@ public class BuildGraph
 	}
 
 
-	public void fillIndexTablesForOneResource(int prefix, HashMap<String,HashSet<String>> lemmaPosSenses,HashMap<String,String> lemmaIdWrittenForm, boolean synset, boolean usePos) throws ClassNotFoundException, SQLException, IOException
+	public void fillIndexTablesForOneResource(String input,int prefix, HashMap<String,HashSet<String>> lemmaPosSenses,HashMap<String,String> lemmaIdWrittenForm, boolean synset, boolean usePos) throws ClassNotFoundException, SQLException, IOException
 		{
 			String prefix_string  = prefixTable.get(prefix);
 			if(lexemeFreqInGlosses == null) {
 				lexemeFreqInGlosses = new HashMap<String, Integer>();
-				 FileReader in = new FileReader("target/"+prefix_string+"_lexeme_freq.txt");
-				 BufferedReader input =  new BufferedReader(in);
+				 FileReader in = new FileReader("target/"+input);
+				 BufferedReader input_reader =  new BufferedReader(in);
 				 String line;
-				 while((line =input.readLine())!=null)
+				 while((line =input_reader.readLine())!=null)
 				 {
 
 					 String lexeme = line.split("\t")[0];
@@ -311,7 +327,7 @@ public class BuildGraph
 				lemmaIdWrittenForm.put(lemmaId,writtenForm);
 			}
 			rs =	statement.executeQuery("select distinct lemmaId,partOfSpeech, "+ (synset ? "synsetId" : "senseId") +" from LexicalEntry join Sense where LexicalEntry.lexicalEntryId like '"+prefix_string+"%' and LexicalEntry.lexicalEntryId = Sense.lexicalEntryId");
-			int c = 0;
+
 			while(rs.next())
 			{
 				String lemmaId = rs.getString(1);
@@ -365,21 +381,19 @@ public class BuildGraph
 		}
 
 
-	public void createMonosemousLinks(int prefix, int phi, boolean usePos) throws ClassNotFoundException, SQLException, IOException
+	public void createMonosemousLinks(String input, String output,int prefix, int phi, boolean usePos) throws ClassNotFoundException, SQLException, IOException
 		{
-			String prefix_string = prefixTable.get(prefix);
-
 			StringBuilder sb = new StringBuilder();
 			int count = 0;
 			int max_id = 0;
 			FileOutputStream outstream;
 			PrintStream p;
-			 FileReader in = new FileReader("target/"+prefix_string+"_glosses_POS_tagged.txt");
-			 BufferedReader input =  new BufferedReader(in);
-				outstream = new FileOutputStream("target/"+prefix_string+"_monoLinks_"+phi+"_"+(usePos ? "Pos": "noPos")+".txt");
+			 FileReader in = new FileReader("target/"+input);
+			 BufferedReader input_reader =  new BufferedReader(in);
+				outstream = new FileOutputStream("target/"+output);
 				p = new PrintStream( outstream );
 			 String line;
-			 while((line =input.readLine())!=null)
+			 while((line =input_reader.readLine())!=null)
 			 {
 				 String id1 = line.split("\t")[0];
 				 if((line.split("\t")).length<2) {
@@ -447,15 +461,15 @@ public class BuildGraph
 		}
 
 
-	public static void mergeTwoEdgeLists(String infile1,String infile2, String outfile, String edgeCount) throws ClassNotFoundException,  IOException
+	public void mergeTwoGraphs(String infile1,String infile2, String outfile ) throws ClassNotFoundException,  IOException
 	{
 		StringBuilder sb = new StringBuilder();
 		/*Take care of having it undirected*/
-		FileReader in = new FileReader(infile1);
+		FileReader in = new FileReader("target/"+infile1);
 		BufferedReader input =  new BufferedReader(in);
 			FileOutputStream outstream;
 			PrintStream p;
-			outstream = new FileOutputStream(outfile);
+			outstream = new FileOutputStream("target/"+outfile);
 			p = new PrintStream( outstream );
 
 		int maxId = 0;
@@ -477,7 +491,7 @@ public class BuildGraph
 			}
 			 else
 			 {
-
+				 sb.append(line+LF);
 			 }
 			 if(i++ % 1000 ==0) {
 			System.out.println("Lines processed "+i);
@@ -486,7 +500,7 @@ public class BuildGraph
 
 		 }
 		 //p.println("p sp "+nodes_count+" "+arcs_count);
-			in = new FileReader(infile2);
+			in = new FileReader("target/"+infile2);
 			input =  new BufferedReader(in);
 			 while((line =input.readLine())!=null)
 			 {
