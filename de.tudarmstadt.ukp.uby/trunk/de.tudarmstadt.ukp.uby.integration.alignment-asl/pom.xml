@@ -14,11 +14,7 @@
 	</license>
   </licenses>  
   <dependencies>
-  <dependency>
-	<groupId>com.google.guava</groupId>
-	<artifactId>guava</artifactId>
-	<version>r09</version>
-</dependency>
+
             
 		<dependency>
 			<groupId>de.tudarmstadt.ukp.uby</groupId>
@@ -53,7 +49,7 @@
 		    <dependency>
     	<groupId>mysql</groupId>
     	<artifactId>mysql-connector-java</artifactId>
-    	<version>5.1.18</version>
+    	<version>5.1.30</version>
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
@@ -74,19 +70,6 @@
     </dependency>
     <dependency>
     	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-    	<artifactId>de.tudarmstadt.ukp.dkpro.core.stanfordnlp-gpl</artifactId>
-
-    	<type>jar</type>
-    	<scope>compile</scope>
-    	<exclusions>
-    		<exclusion>
-    			<artifactId>spring-core</artifactId>
-    			<groupId>org.springframework</groupId>
-    		</exclusion>
-    	</exclusions>
-    </dependency>
-    <dependency>
-    	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
     	<artifactId>de.tudarmstadt.ukp.dkpro.core.stopwordremover-asl</artifactId>
     
     	<type>jar</type>
@@ -101,33 +84,12 @@
     </dependency>
     <dependency>
     	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-    	<artifactId>de.tudarmstadt.ukp.dkpro.core.treetagger-asl</artifactId>
-   
-
+    	<artifactId>de.tudarmstadt.ukp.dkpro.core.languagetool-asl</artifactId>
     </dependency>
-    <dependency>
-    	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-    	<artifactId>de.tudarmstadt.ukp.dkpro.core.treetagger-bin</artifactId>
- 
 
-    </dependency>
-    	<dependency>
-  			<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-  			<artifactId>de.tudarmstadt.ukp.dkpro.core.treetagger-model-de</artifactId>	
-
-  		</dependency>
 	</dependencies> 
   <dependencyManagement>
-  	<dependencies>
-     
-	    <dependency>
-    	<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-    	<artifactId>de.tudarmstadt.ukp.dkpro.core.treetagger-asl</artifactId>
-    	<version>1.6.0</version>
-		<type>pom</type>
-  			<scope>import</scope>
-    </dependency>
-
+  	<dependencies>     
   	</dependencies>
   </dependencyManagement> 
 
