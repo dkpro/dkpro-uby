@@ -24,8 +24,8 @@ public class JointGraphBuilder
 
 			/*RESOURCE 1*/
 
-			boolean synset = true;
-			boolean usePos = true;
+			boolean synset1 = true;
+			boolean usePos1 = true;
 			//OneGraphBuilder bg_1 = new OneGraphBuilder("uby_lite_0_4_0","root","fortuna");
 			OneGraphBuilder bg_1 = new OneGraphBuilder("uby_release_1_0","root","fortuna");
 			final int prefix1 = Global.WN_prefix;
@@ -34,33 +34,33 @@ public class JointGraphBuilder
 
 
 
-			bg_1.builtRelationGraphFromDb(prefix_string1+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_relationgraph.txt",
-					prefix1,synset);
-			bg_1.createGlossFile(prefix_string1+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_glosses.txt",
-					prefix1,synset);
-
-		bg_1.lemmatizePOStagGlossFileInChunks(prefix_string1+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_glosses.txt",
-					prefix_string1+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_glosses_tagged.txt",
-					prefix_string1+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_lexeme_frequencies.txt" ,
-					prefix1, language,1000);
-
-			bg_1.fillIndexTables(prefix_string1+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_lexeme_frequencies.txt",
+//			bg_1.builtRelationGraphFromDb(prefix_string1+"_"+(synset1?"synset":"sense")+"_"+"_relationgraph.txt",
+//					prefix1,synset1);
+//			bg_1.createGlossFile(prefix_string1+"_"+(synset1?"synset":"sense")+"_glosses.txt",
+//					prefix1,synset1);
+//
+//		bg_1.lemmatizePOStagGlossFileInChunks(prefix_string1+"_"+(synset1?"synset":"sense")+"_glosses.txt",
+//					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+"_glosses_tagged.txt",
+//					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+"_lexeme_frequencies.txt" ,
+//					prefix1, language,1000);
+//
+			bg_1.fillIndexTables(prefix_string1+"_"+(synset1?"synset":"sense")+"_lexeme_frequencies.txt",
 					prefix1,
-					synset, usePos);
+					synset1, usePos1);
 
-			bg_1.createMonosemousLinks(prefix_string1+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_glosses_tagged.txt",
-					prefix_string1+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_monosemousLinks"+"_"+monoLinkThreshold1+".txt",
-					prefix1, monoLinkThreshold1, usePos);
-			Global.mergeTwoGraphs(prefix_string1+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_relationgraph.txt" ,
-					prefix_string1+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_monosemousLinks"+"_"+monoLinkThreshold1+".txt",
-					prefix_string1+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold1+".txt");
+//			bg_1.createMonosemousLinks(prefix_string1+"_"+(synset1?"synset":"sense")+"_glosses_tagged.txt",
+//					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_monosemousLinks"+"_"+monoLinkThreshold1+".txt",
+//					prefix1, monoLinkThreshold1, usePos1);
+//			Global.mergeTwoGraphs(prefix_string1+"_"+(synset1?"synset":"sense")+"_relationgraph.txt" ,
+//					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_monosemousLinks"+"_"+monoLinkThreshold1+".txt",
+//					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold1+".txt");
 
 
 
 
 			/*RESOURCE 2*/
-			synset = true;
-			usePos = true;
+			boolean synset2 = true;
+			boolean usePos2 = false;
 			OneGraphBuilder bg_2 = new OneGraphBuilder("uby_release_1_0","root","fortuna");
 
 			final int prefix2 = Global.OW_EN_prefix;
@@ -69,35 +69,65 @@ public class JointGraphBuilder
 
 
 
-			bg_2.builtRelationGraphFromDb(prefix_string2+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_relationgraph.txt",
-					prefix2,synset);
-
-			bg_2.createGlossFile(prefix_string2+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_glosses.txt",
-					prefix2,synset);
-
-//			bg_2.lemmatizePOStagGlossFile(prefix_string2+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_glosses.txt",
-//					prefix_string2+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_glosses_tagged.txt",
-//					prefix_string2+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_lexeme_frequencies.txt" ,
+//			bg_2.builtRelationGraphFromDb(prefix_string2+"_"+(synset2?"synset":"sense")+"_relationgraph.txt",
+//					prefix2,synset2);
+//
+//			bg_2.createGlossFile(prefix_string2+"_"+(synset2?"synset":"sense")+"_glosses.txt",
+//					prefix2,synset2);
+//
+//			bg_2.lemmatizePOStagGlossFile(prefix_string2+"_"+(synset2?"synset":"sense")+"_glosses.txt",
+//					prefix_string2+"_"+(synset2?"synset":"sense")+"_"+"_glosses_tagged.txt",
+//					prefix_string2+"_"+(synset2?"synset":"sense")+"_"+"_lexeme_frequencies.txt" ,
 //					prefix2,language);
-
-			bg_2.lemmatizePOStagGlossFileInChunks(prefix_string2+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_glosses.txt",
-			prefix_string2+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_glosses_tagged.txt",
-			prefix_string2+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_lexeme_frequencies.txt" ,
-			prefix2,language,1000);
-
-
-			bg_2.fillIndexTables(prefix_string2+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_lexeme_frequencies.txt",
+//
+//			bg_2.lemmatizePOStagGlossFileInChunks(prefix_string2+"_"+(synset2?"synset":"sense")+"_glosses.txt",
+//			prefix_string2+"_"+(synset2?"synset":"sense")+"_glosses_tagged.txt",
+//			prefix_string2+"_"+(synset2?"synset":"sense")+"_lexeme_frequencies.txt" ,
+//			prefix2,language,5000);
+//
+//
+			bg_2.fillIndexTables(prefix_string2+"_"+(synset2?"synset":"sense")+"_lexeme_frequencies.txt",
 					prefix2,
-					synset, usePos);
+					synset2, usePos2);
 
-			bg_2.createMonosemousLinks(prefix_string2+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_glosses_tagged.txt",
-					prefix_string2+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_monosemousLinks"+"_"+monoLinkThreshold2+".txt",
+//			bg_2.createMonosemousLinks(prefix_string2+"_"+(synset2?"synset":"sense")+"_glosses_tagged.txt",
+//					prefix_string2+"_"+(synset2?"synset":"sense")+"_"+(usePos2 ? "Pos":"noPos")+"_monosemousLinks"+"_"+monoLinkThreshold2+".txt",
+//					prefix2, monoLinkThreshold2, usePos2);
+//
+//			Global.mergeTwoGraphs(prefix_string2+"_"+(synset2?"synset":"sense")+"_relationgraph.txt" ,
+//					prefix_string2+"_"+(synset2?"synset":"sense")+"_"+(usePos2 ? "Pos":"noPos")+"_monosemousLinks"+"_"+monoLinkThreshold2+".txt",
+//					prefix_string2+"_"+(synset2?"synset":"sense")+"_"+(usePos2 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold2+".txt");
 
-					prefix2, monoLinkThreshold2, usePos);
 
-			Global.mergeTwoGraphs(prefix_string2+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_relationgraph.txt" ,
-					prefix_string2+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_monosemousLinks"+"_"+monoLinkThreshold2+".txt",
-					prefix_string2+"_"+(synset?"synset":"sense")+"_"+(usePos ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold2+".txt");
+			/*Merge the two graphs*/
+
+//			Global.mergeTwoGraphs(
+//					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold1+".txt",
+//					prefix_string2+"_"+(synset2?"synset":"sense")+"_"+(usePos2 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold2+".txt",
+//					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold1+".txt"
+//					+"_MERGED_"+
+//					prefix_string2+"_"+(synset2?"synset":"sense")+"_"+(usePos2 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold2+".txt"
+//					);
+
+			/*Create trivial alignments between the two LSRs*/
+			/*Index tables must be filled at this point*/
+
+
+
+			//createTrivialAlignments(bg_1, bg_2, "target/"+prefix_string1+"_"+prefix_string2+"_trivial_"+(usePosForSecond ? "Pos": "noPos"), usePosForSecond);
+
+			/*Merge the joint graphs and trivial alignments*/
+
+			Global.mergeTwoGraphs(
+					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold1+".txt"
+					+"_MERGED_"+
+					prefix_string2+"_"+(synset2?"synset":"sense")+"_"+(usePos2 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold2+".txt",
+					prefix_string1+"_"+prefix_string2+"_trivial_"+(usePos2 ? "Pos": "noPos"),
+					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold1+".txt"
+					+"_MERGED_"+
+					prefix_string2+"_"+(synset2?"synset":"sense")+"_"+(usePos2 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold2+".txt"
+					+"_trivial"
+					);
 
 
 			//createLexicalFieldsGN();
@@ -143,14 +173,14 @@ public class JointGraphBuilder
 	 *
 	 */
 
-	public void createTrivialAlignments(OneGraphBuilder gb1, OneGraphBuilder gb2, String output, boolean usePosForSecond) throws ClassNotFoundException, SQLException, IOException
+	public static void createTrivialAlignments(OneGraphBuilder gb1, OneGraphBuilder gb2, String output, boolean usePosForSecond) throws ClassNotFoundException, SQLException, IOException
 		{
 		StringBuilder sb = new StringBuilder();
 		int count = 0;
 		int maxId = 0;
 		FileOutputStream outstream;
 		PrintStream p;
-		outstream = new FileOutputStream("target/"+output);
+		outstream = new FileOutputStream(output);
 		p = new PrintStream( outstream );
 		for(String lemmaPos: gb1.lemmaPosSenses.keySet())
 		{
@@ -177,17 +207,26 @@ public class JointGraphBuilder
 				else
 				{
 					String lemma = lemmaPos.split("#")[0];
-//					if(lemmaPosSensesLSR2.get(lemma)!= null && lemmaPosSensesLSR2.get(lemma).size()==1)
-//					{
-//						String id2= lemmaPosSensesLSR2.get(lemma).iterator().next();
-//						p.println("a "+id1+" "+id2+" 1");
-//						p.println("a "+id2+" "+id1+" 1");
-//						count+=2;
-//					}
+					if((gb2.lemmaPosSenses.get(lemma)!= null && gb2.lemmaPosSenses.get(lemma).size()==1))
+					{
+						String id2= gb2.lemmaPosSenses.get(lemma).iterator().next();
+						int id2_int = Integer.parseInt(id2);
+						if(id1_int > maxId) {
+							maxId = id1_int;
+						}
+						if(id2_int > maxId) {
+							maxId = id2_int;
+						}
+						sb.append("a "+id1+" "+id2+" 1"+Global.LF); //edges are unweighted
+						sb.append("a "+id2+" "+id1+" 1"+Global.LF);
+						count+=2;
+						count+=2;
+					}
 				}
 			}
 		}
-		// p.println("p sp "+0+" "+count);
+		 p.println("p sp "+maxId+" "+count);
+		 p.print(sb.toString());
 	}
 
 
