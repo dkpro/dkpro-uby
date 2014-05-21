@@ -20,12 +20,10 @@ import org.apache.uima.collection.CollectionReaderDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
+import de.tudarmstadt.ukp.dkpro.core.languagetool.LanguageToolLemmatizer;
+import de.tudarmstadt.ukp.dkpro.core.opennlp.OpenNlpPosTagger;
 import de.tudarmstadt.ukp.dkpro.core.opennlp.OpenNlpSegmenter;
-import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordLemmatizer;
-import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordPosTagger;
-import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordSegmenter;
 import de.tudarmstadt.ukp.dkpro.core.stopwordremover.StopWordRemover;
-import de.tudarmstadt.ukp.dkpro.core.treetagger.TreeTaggerPosLemmaTT4J;
 
 
 
@@ -302,11 +300,20 @@ public class Toolkit
 				AnalysisEngineDescription sw = createEngineDescription(StopWordRemover.class,
 					StopWordRemover.PARAM_STOP_WORD_LIST_FILE_NAMES, new String[]{"/home/matuschek/UBY_HOME/resources/snowball_german_stopwords.txt"}
 				);
-			AnalysisEngineDescription pos = createEngineDescription(TreeTaggerPosLemmaTT4J.class,
-					TreeTaggerPosLemmaTT4J.PARAM_LANGUAGE,"de");
+
+				AnalysisEngineDescription pos = createEngineDescription(OpenNlpPosTagger.class,
+						OpenNlpPosTagger.PARAM_LANGUAGE,"de"
+						);
+				AnalysisEngineDescription lem = createEngineDescription(LanguageToolLemmatizer.class
+
+						//LanguageToolLemmatizer.PARAM_LANGUAGE,"de"
+						);
+
+//			AnalysisEngineDescription pos = createEngineDescription(TreeTaggerPosLemmaTT4J.class,
+//					TreeTaggerPosLemmaTT4J.PARAM_LANGUAGE,"de");
 			String[] result;
 
-			result = process(text, new PosGetter(), seg,sw,pos);
+			result = process(text, new PosGetter(), seg,sw,lem,pos);
 
 			return result;
 		}
@@ -331,9 +338,15 @@ public class Toolkit
 			         StringReader.PARAM_LANGUAGE, "en"
 			         );
 
-			      AnalysisEngineDescription     seg = createEngineDescription(StanfordSegmenter.class, StanfordSegmenter.PARAM_LANGUAGE,"en");
-			      AnalysisEngineDescription     lemma = createEngineDescription(StanfordLemmatizer.class);
-					AnalysisEngineDescription pos = createEngineDescription(StanfordPosTagger.class	);
+			 AnalysisEngineDescription  seg = createEngineDescription(OpenNlpSegmenter.class);
+			    //  AnalysisEngineDescription     seg = createEngineDescription(StanfordSegmenter.class, StanfordSegmenter.PARAM_LANGUAGE,"en");
+			      //AnalysisEngineDescription     lemma = createEngineDescription(StanfordLemmatizer.class);
+			  	AnalysisEngineDescription lemma = createEngineDescription(LanguageToolLemmatizer.class
+
+						//LanguageToolLemmatizer.PARAM_LANGUAGE,"de"
+						);
+			//		AnalysisEngineDescription pos = createEngineDescription(StanfordPosTagger.class	);
+			  	AnalysisEngineDescription pos = createEngineDescription(OpenNlpPosTagger.class	);
 					HashSet<String> swords = new HashSet<String>();
 					 swords.add("/home/matuschek/UBY_HOME/resources/snowball_english_stopwords.txt");
 			AnalysisEngineDescription sw = createEngineDescription(StopWordRemover.class,
