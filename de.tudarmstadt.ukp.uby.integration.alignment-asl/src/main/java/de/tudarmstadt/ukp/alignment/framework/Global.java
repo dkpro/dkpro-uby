@@ -12,33 +12,42 @@ import java.util.Set;
 
 public class Global
 {
-	public static final int WN_prefix =  10;
-	public static final int WKT_EN_prefix =  11;
-	public static final int WP_EN_prefix =  12;
-	public static final int OW_EN_prefix =  13;
-	public static final int FN_prefix =  14;
-	public static final int VN_prefix =  15;
+	public static final int WN_Synset_prefix =  10;
+	public static final int WN_Sense_prefix =  11;
+	public static final int WKT_EN_prefix =  12;
+	public static final int OW_EN_Synset_prefix =  13;
+	public static final int OW_EN_Sense_prefix =  14;
+	public static final int WP_EN_prefix =  15;
+	public static final int FN_prefix =  16;
+	public static final int VN_prefix =  17;
 
-	public static final int WKT_DE_prefix =  16;
-	public static final int WP_DE_prefix =  17;
-	public static final int OW_DE_prefix =  18;
-	public static final int GN_prefix =  19;
-	public static final int IMS_prefix =  20;
+	public static final int WKT_DE_prefix =  18;
+	public static final int WP_DE_prefix =  19;
+	public static final int OW_DE_Synset_prefix =  20;
+	public static final int OW_DE_Sense_prefix =  21;
+	public static final int GN_Synset_prefix =  22;
+	public static final int GN_Sense_prefix =  23;
+	public static final int IMS_prefix =  24;
+
 	public static  HashMap<Integer, String> prefixTable = new HashMap<Integer, String>();
 	public static final String LF = System.getProperty("line.separator");
 	public static void init()
 	{
-		prefixTable.put(Global.GN_prefix, "GN");
-		prefixTable.put(Global.WN_prefix, "WN");
-		prefixTable.put(Global.WKT_EN_prefix, "WktEn");
-		prefixTable.put(Global.WKT_DE_prefix, "WktDe");
-		prefixTable.put(Global.WP_EN_prefix, "WikiEn");
-		prefixTable.put(Global.WP_DE_prefix, "WikiDe");
-		prefixTable.put(Global.OW_EN_prefix, "OW_en");
-		prefixTable.put(Global.OW_DE_prefix, "OW_de");
-		prefixTable.put(Global.FN_prefix, "FN");
-		prefixTable.put(Global.VN_prefix, "VN");
-		prefixTable.put(Global.IMS_prefix, "IMS");
+		prefixTable.put(Global.GN_Synset_prefix, "GN_Synset_");
+		prefixTable.put(Global.GN_Sense_prefix, "GN_Sense_");
+		prefixTable.put(Global.WN_Synset_prefix, "WN_Synset_");
+		prefixTable.put(Global.WN_Sense_prefix, "WN_Sense_");
+		prefixTable.put(Global.WKT_EN_prefix, "WktEn_Sense_");
+		prefixTable.put(Global.WKT_DE_prefix, "WktDe_Sense_");
+		prefixTable.put(Global.WP_EN_prefix, "WikiEn_sense_");
+		prefixTable.put(Global.WP_DE_prefix, "WikiDe_sense_");
+		prefixTable.put(Global.OW_EN_Synset_prefix, "OW_en_Synset_");
+		prefixTable.put(Global.OW_EN_Sense_prefix, "OW_en_Sense_");
+		prefixTable.put(Global.OW_DE_Synset_prefix, "OW_de_Synset_");
+		prefixTable.put(Global.OW_DE_Sense_prefix, "OW_de_Sense_");
+		prefixTable.put(Global.FN_prefix, "FN_Sense_");
+		prefixTable.put(Global.VN_prefix, "VN_Sense_");
+		prefixTable.put(Global.IMS_prefix, "IMSLexSubcat_Sense_");
 	}
 
 	public static void mergeTwoGraphs(String infile1,String infile2, String outfile ) throws ClassNotFoundException,  IOException
