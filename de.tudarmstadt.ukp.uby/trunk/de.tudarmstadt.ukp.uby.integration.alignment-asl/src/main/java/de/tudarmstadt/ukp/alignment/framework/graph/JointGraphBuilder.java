@@ -28,7 +28,7 @@ public class JointGraphBuilder
 			boolean usePos1 = true;
 			//OneGraphBuilder bg_1 = new OneGraphBuilder("uby_lite_0_4_0","root","fortuna");
 			OneGraphBuilder bg_1 = new OneGraphBuilder("uby_release_1_0","root","fortuna");
-			final int prefix1 = Global.WN_prefix;
+			final int prefix1 = Global.WN_Synset_prefix;
 			final String prefix_string1 = Global.prefixTable.get(prefix1);
 			final int monoLinkThreshold1 = 1000;
 
@@ -60,10 +60,10 @@ public class JointGraphBuilder
 
 			/*RESOURCE 2*/
 			boolean synset2 = true;
-			boolean usePos2 = false;
+			boolean usePos2 = true;
 			OneGraphBuilder bg_2 = new OneGraphBuilder("uby_release_1_0","root","fortuna");
 
-			final int prefix2 = Global.OW_EN_prefix;
+			final int prefix2 = Global.OW_EN_Synset_prefix;
 			final String prefix_string2 = Global.prefixTable.get(prefix2);
 			final int monoLinkThreshold2 = 500;
 
@@ -101,32 +101,32 @@ public class JointGraphBuilder
 
 			/*Merge the two graphs*/
 
-//			Global.mergeTwoGraphs(
-//					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold1+".txt",
-//					prefix_string2+"_"+(synset2?"synset":"sense")+"_"+(usePos2 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold2+".txt",
-//					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold1+".txt"
-//					+"_MERGED_"+
-//					prefix_string2+"_"+(synset2?"synset":"sense")+"_"+(usePos2 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold2+".txt"
-//					);
+			Global.mergeTwoGraphs(
+					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold1+".txt",
+					prefix_string2+"_"+(synset2?"synset":"sense")+"_"+(usePos2 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold2+".txt",
+					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold1
+					+"_MERGED_"+
+					prefix_string2+"_"+(synset2?"synset":"sense")+"_"+(usePos2 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold2+".txt"
+					);
 
 			/*Create trivial alignments between the two LSRs*/
 			/*Index tables must be filled at this point*/
 
 
 
-			//createTrivialAlignments(bg_1, bg_2, "target/"+prefix_string1+"_"+prefix_string2+"_trivial_"+(usePosForSecond ? "Pos": "noPos"), usePosForSecond);
+			createTrivialAlignments(bg_1, bg_2, "target/"+prefix_string1+"_"+prefix_string2+"_trivial_"+(usePos2 ? "Pos": "noPos")+".txt", usePos2);
 
 			/*Merge the joint graphs and trivial alignments*/
 
 			Global.mergeTwoGraphs(
-					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold1+".txt"
+					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold1
 					+"_MERGED_"+
 					prefix_string2+"_"+(synset2?"synset":"sense")+"_"+(usePos2 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold2+".txt",
-					prefix_string1+"_"+prefix_string2+"_trivial_"+(usePos2 ? "Pos": "noPos"),
-					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold1+".txt"
+					prefix_string1+"_"+prefix_string2+"_trivial_"+(usePos2 ? "Pos": "noPos")+".txt",
+					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold1
 					+"_MERGED_"+
-					prefix_string2+"_"+(synset2?"synset":"sense")+"_"+(usePos2 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold2+".txt"
-					+"_trivial"
+					prefix_string2+"_"+(synset2?"synset":"sense")+"_"+(usePos2 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold2+
+					"_trivial.txt"
 					);
 
 
