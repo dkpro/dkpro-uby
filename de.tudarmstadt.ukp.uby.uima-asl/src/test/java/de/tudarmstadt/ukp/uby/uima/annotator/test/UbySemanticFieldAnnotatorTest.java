@@ -58,6 +58,7 @@ import de.tudarmstadt.ukp.uby.uima.annotator.UbySemanticFieldAnnotator;
  */
 public class UbySemanticFieldAnnotatorTest
 {
+	@Ignore
 	@Test
 	public void testUbySemanticFieldAnnotatorOnInMemDb()
 		throws Exception
@@ -72,11 +73,11 @@ public class UbySemanticFieldAnnotatorTest
   
         
         // botnet: Wiktionary domain=question (just for the test case) -> question: WordNet semantic field = communication
-        runAnnotatorTestOnInMemDb("en", "Botnets question most questions .", 
+        /* runAnnotatorTestOnInMemDb("en", "Botnets question most questions .", 
                 new String[] { "botnet", "question", "most", "question", "." }, 
                 new String[] { "NN", "V", "NOT_RELEVANT", "NN", "$." }, 
                 semanticFields);
-       
+       */
         
 	}
 
@@ -112,25 +113,33 @@ public class UbySemanticFieldAnnotatorTest
 
 	}
 
- 	 
+	/**
+	 * This is the test case that uses an embedded DB
+	 * use of in-memory DB is commented out
+	 *
+	 */	 
     private void runAnnotatorTestOnInMemDb(String language, String testDocument,
             String[] documentLemmas, String[] documentPosTags, String[] documentUbySemanticFields)
         throws UIMAException, FileNotFoundException, DocumentException, UbyInvalidArgumentException
     {
-	 	DBConfig dbConfig = new DBConfig("not_important","org.h2.Driver","h2","root","pass",false);
+	 	/* DBConfig dbConfig = new DBConfig("not_important","org.h2.Driver","h2","root","pass",false);
 		
 		LMFDBUtils.createTables(dbConfig);
 		
 		XMLToDBTransformer transformer;
 		transformer = new XMLToDBTransformer(dbConfig);
 		transformer.transform(new File("src/test/resources/UbyTestLexicon.xml"),"UbyTest");
+		*/
 		 
 		AnalysisEngineDescription processor = createEngineDescription(
 
 				createEngineDescription(UbySemanticFieldAnnotator.class,
 						UbySemanticFieldAnnotator.PARAM_UBY_SEMANTIC_FIELD_RESOURCE, 
 							createExternalResourceDescription(UbySemanticFieldResource.class,
-									UbySemanticFieldResource.PARAM_URL, "not_important",
+									//UbySemanticFieldResource.PARAM_URL, "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1",
+									// http://www.h2database.com/html/features.html#embedded_databases
+									//UbySemanticFieldResource.PARAM_URL, "jdbc:h2:file:/home/user-ukp/workspace/UBY_HOME/h2Experiments/h2db",
+									UbySemanticFieldResource.PARAM_URL, "jdbc:h2:file:/home/user-ukp/workspace/UBY_HOME/h2Experiments/h2wordnet",
 									UbySemanticFieldResource.PARAM_DRIVER, "org.h2.Driver",
 									UbySemanticFieldResource.PARAM_DRIVER_NAME, "h2",
 									UbySemanticFieldResource.PARAM_USERNAME, "root",
