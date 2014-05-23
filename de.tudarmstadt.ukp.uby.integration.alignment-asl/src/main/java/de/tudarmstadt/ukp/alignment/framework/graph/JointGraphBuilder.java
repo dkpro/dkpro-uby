@@ -26,34 +26,26 @@ public class JointGraphBuilder
 
 			boolean synset1 = true;
 			boolean usePos1 = true;
-			//OneGraphBuilder bg_1 = new OneGraphBuilder("uby_lite_0_4_0","root","fortuna");
-			OneGraphBuilder bg_1 = new OneGraphBuilder("uby_release_1_0","root","fortuna");
 			final int prefix1 = Global.WN_Synset_prefix;
 			final String prefix_string1 = Global.prefixTable.get(prefix1);
+			//OneGraphBuilder bg_1 = new OneGraphBuilder("uby_lite_0_4_0","root","fortuna");
+			OneResourceBuilder bg_1 = new OneResourceBuilder("uby_release_1_0","root","fortuna", prefix1,language,synset1,usePos1);
 			final int monoLinkThreshold1 = 1000;
+			final int chunksize1 = 2000;
 
+			bg_1.builtRelationGraphFromDb();
 
+			bg_1.createGlossFile();
 
-//			bg_1.builtRelationGraphFromDb(prefix_string1+"_"+(synset1?"synset":"sense")+"_"+"_relationgraph.txt",
-//					prefix1,synset1);
-//			bg_1.createGlossFile(prefix_string1+"_"+(synset1?"synset":"sense")+"_glosses.txt",
-//					prefix1,synset1);
-//
-//		bg_1.lemmatizePOStagGlossFileInChunks(prefix_string1+"_"+(synset1?"synset":"sense")+"_glosses.txt",
-//					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+"_glosses_tagged.txt",
-//					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+"_lexeme_frequencies.txt" ,
-//					prefix1, language,1000);
-//
-			bg_1.fillIndexTables(prefix_string1+"_"+(synset1?"synset":"sense")+"_lexeme_frequencies.txt",
-					prefix1,
-					synset1, usePos1);
+			bg_1.lemmatizePOStagGlossFileInChunks(chunksize1);
 
-//			bg_1.createMonosemousLinks(prefix_string1+"_"+(synset1?"synset":"sense")+"_glosses_tagged.txt",
-//					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_monosemousLinks"+"_"+monoLinkThreshold1+".txt",
-//					prefix1, monoLinkThreshold1, usePos1);
-//			Global.mergeTwoGraphs(prefix_string1+"_"+(synset1?"synset":"sense")+"_relationgraph.txt" ,
-//					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_monosemousLinks"+"_"+monoLinkThreshold1+".txt",
-//					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold1+".txt");
+			bg_1.fillIndexTables();
+
+			bg_1.createMonosemousLinks(monoLinkThreshold1);
+
+			Global.mergeTwoGraphs(prefix_string1+"_"+(synset1?"synset":"sense")+"_relationgraph.txt" ,
+					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_monosemousLinks"+"_"+monoLinkThreshold1+".txt",
+					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold1+".txt");
 
 
 
@@ -61,11 +53,21 @@ public class JointGraphBuilder
 			/*RESOURCE 2*/
 			boolean synset2 = true;
 			boolean usePos2 = true;
-			OneGraphBuilder bg_2 = new OneGraphBuilder("uby_release_1_0","root","fortuna");
-
 			final int prefix2 = Global.OW_EN_Synset_prefix;
 			final String prefix_string2 = Global.prefixTable.get(prefix2);
 			final int monoLinkThreshold2 = 500;
+			final int chunksize2 = 1000;
+			OneResourceBuilder bg_2 = new OneResourceBuilder("uby_release_1_0","root","fortuna",prefix2,language,synset2,usePos2);
+
+			bg_2.builtRelationGraphFromDb();
+
+			bg_2.createGlossFile();
+
+			bg_2.lemmatizePOStagGlossFileInChunks(chunksize2);
+
+			bg_2.fillIndexTables();
+
+			bg_2.createMonosemousLinks(monoLinkThreshold2);
 
 
 
@@ -86,9 +88,9 @@ public class JointGraphBuilder
 //			prefix2,language,5000);
 //
 //
-			bg_2.fillIndexTables(prefix_string2+"_"+(synset2?"synset":"sense")+"_lexeme_frequencies.txt",
-					prefix2,
-					synset2, usePos2);
+//			bg_2.fillIndexTables(prefix_string2+"_"+(synset2?"synset":"sense")+"_lexeme_frequencies.txt",
+//					prefix2,
+//					synset2, usePos2);
 
 //			bg_2.createMonosemousLinks(prefix_string2+"_"+(synset2?"synset":"sense")+"_glosses_tagged.txt",
 //					prefix_string2+"_"+(synset2?"synset":"sense")+"_"+(usePos2 ? "Pos":"noPos")+"_monosemousLinks"+"_"+monoLinkThreshold2+".txt",
@@ -114,7 +116,7 @@ public class JointGraphBuilder
 
 
 
-			createTrivialAlignments(bg_1, bg_2, "target/"+prefix_string1+"_"+prefix_string2+"_trivial_"+(usePos2 ? "Pos": "noPos")+".txt", usePos2);
+			createTrivialAlignments(bg_1, bg_2);
 
 			/*Merge the joint graphs and trivial alignments*/
 
@@ -128,31 +130,6 @@ public class JointGraphBuilder
 					prefix_string2+"_"+(synset2?"synset":"sense")+"_"+(usePos2 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold2+
 					"_trivial.txt"
 					);
-
-
-			//createLexicalFieldsGN();
-			//lemmaIdWrittenFromLSR1= new HashMap<String, String>();
-	//		lemmaIdWrittenFromLSR2= new HashMap<String, String>();
-	//		lemmaPosSensesLSR1=  new HashMap<String, HashSet<Integer>>();
-	//		lemmaPosSensesLSR2=  new HashMap<String, HashSet<Integer>>();
-	//		senseIdWGlossFromLSR1 = new HashMap<Integer, String>();
-	//		senseIdWGlossFromLSR2 = new HashMap<Integer, String>();
-			//fillIndexTableForOneResource("uby_wiktionary_de","WiktionaryDE", Offsets.GN_offset+Offsets.WKT_DE_offset+Offsets.WP_DE_offset,1,true);
-			//fillIndexTableForOneResource("uby_release_1_0","OmegaWikiDE", Offsets.GN_offset+Offsets.WKT_DE_offset+Offsets.WP_DE_offset+Offsets.OW_DE_offset,2,true);
-
-			//fillIndexTableForOneResource("uby_wiktionary_de","WiktionaryDE",Offsets.WKT_DE_offset,1,true);
-	//		fillIndexTableForOneResource("uby_release_1_0","WordNet",Offsets.WN_offset,1,true);
-	//		fillIndexTableForOneResource("uby_release_1_0","WiktionaryEN",Offsets.WN_offset+Offsets.WP_offset+Offsets.WKT_offset,1,true);
-	//		fillIndexTableForOneResource("uby_release_1_0","OmegaWikiEN",Offsets.WN_offset+Offsets.WP_offset+Offsets.OW_offset+Offsets.WKT_offset,2,false);
-
-
-		//	fillIndexTableForOneResource("uby_lite_0_4_0","IMSLex",Offsets.WN_offset+Offsets.WP_offset,1,true);
-			//fillIndexTableForOneResource("uby_release_1_0","FrameNet",Offsets.WN_offset+Offsets.WP_offset,1,true);
-	//		fillGlossTableForOneResource("GermaNet", Offsets.GN_offset+Offsets.WKT_DE_offset+Offsets.WP_DE_offset,1);
-	//		fillGlossTableForOneResource("WiktionaryDE", Offsets.WKT_DE_offset,2);
-	//		CreateSimilarityFileLemmaList("target/WebCAGe-2.0_lemmas.tsv","gn_wkt_ids","gn_wkt_glosses","gn_wkt_overlap", true);
-
-
 
 		}
 
@@ -173,14 +150,14 @@ public class JointGraphBuilder
 	 *
 	 */
 
-	public static void createTrivialAlignments(OneGraphBuilder gb1, OneGraphBuilder gb2, String output, boolean usePosForSecond) throws ClassNotFoundException, SQLException, IOException
+	public static void createTrivialAlignments(OneResourceBuilder gb1, OneResourceBuilder gb2) throws ClassNotFoundException, SQLException, IOException
 		{
 		StringBuilder sb = new StringBuilder();
 		int count = 0;
 		int maxId = 0;
 		FileOutputStream outstream;
 		PrintStream p;
-		outstream = new FileOutputStream(output);
+		outstream = new FileOutputStream( "target/"+gb1.prefix_string+"_"+gb2.prefix_string+"_trivial_"+(gb2.pos ? "Pos": "noPos")+".txt");
 		p = new PrintStream( outstream );
 		for(String lemmaPos: gb1.lemmaPosSenses.keySet())
 		{
@@ -188,7 +165,7 @@ public class JointGraphBuilder
 			{
 				String id1= gb1.lemmaPosSenses.get(lemmaPos).iterator().next();
 				int id1_int = Integer.parseInt(id1);
-				if(usePosForSecond) {
+				if(gb2.pos) {
 					if(gb2.lemmaPosSenses.get(lemmaPos)!= null && gb2.lemmaPosSenses.get(lemmaPos).size()==1)
 					{
 						String id2= gb2.lemmaPosSenses.get(lemmaPos).iterator().next();
