@@ -67,7 +67,6 @@ public class UbySemanticFieldResource
 	@ConfigurationParameter(name = PARAM_DRIVER, mandatory = true)
 	private String databaseDriver;
 	
-	//vendor name of the accessed database, e.g. mysql, hsqldb
 	public static final String PARAM_DRIVER_NAME = "databaseDriverName"; //name of database driver (this parameter is called "vendor" in DBConfig), e.g. mysql, h2
 	@ConfigurationParameter(name = PARAM_DRIVER_NAME, mandatory = true)
 	private String databaseDriverName;
@@ -93,8 +92,7 @@ public class UbySemanticFieldResource
         }
 
         try {
- 			DBConfig dbConfig = new DBConfig(ubyDatabaseUrl,databaseDriver,databaseDriverName,ubyUsername,ubyPassword,false);
- 			
+ 			DBConfig dbConfig = new DBConfig(ubyDatabaseUrl,databaseDriver,databaseDriverName,ubyUsername,ubyPassword,false); 			
 			uby = new Uby(dbConfig);
 			
         }
