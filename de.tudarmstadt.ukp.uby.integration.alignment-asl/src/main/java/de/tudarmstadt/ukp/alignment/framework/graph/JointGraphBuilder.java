@@ -20,28 +20,34 @@ public class JointGraphBuilder
 			/* GLOBAL SETTINGS */
 
 			Global.init();
-			final String language = ELanguageIdentifier.ENGLISH;
+			final String language = ELanguageIdentifier.GERMAN;
 
 			/*RESOURCE 1*/
 
 			boolean synset1 = true;
 			boolean usePos1 = true;
-			final int prefix1 = Global.WN_Synset_prefix;
+			final int prefix1 = Global.GN_Synset_prefix;
 			final String prefix_string1 = Global.prefixTable.get(prefix1);
-			//OneGraphBuilder bg_1 = new OneGraphBuilder("uby_lite_0_4_0","root","fortuna");
-			OneResourceBuilder bg_1 = new OneResourceBuilder("uby_release_1_0","root","fortuna", prefix1,language,synset1,usePos1);
+			OneResourceBuilder bg_1 = new OneResourceBuilder("uby_lite_0_4_0","root","fortuna", prefix1,language,synset1,usePos1);
+	//		OneResourceBuilder bg_1 = new OneResourceBuilder("uby_release_1_0","root","fortuna", prefix1,language,synset1,usePos1);
 			final int monoLinkThreshold1 = 1000;
 			final int chunksize1 = 2000;
 
-			bg_1.builtRelationGraphFromDb();
-
-			bg_1.createGlossFile();
+			bg_1.createGlossFile(true);
 
 			bg_1.lemmatizePOStagGlossFileInChunks(chunksize1);
 
-			bg_1.fillIndexTables();
+	//		bg_1.fillIndexTables();
 
-			bg_1.createMonosemousLinks(monoLinkThreshold1);
+		//	bg_1.builtRelationGraphFromDb(true);
+
+			System.exit(0);
+
+
+			//bg_1.createMonosemousLinks(monoLinkThreshold1);
+
+
+
 
 			Global.mergeTwoGraphs(prefix_string1+"_"+(synset1?"synset":"sense")+"_relationgraph.txt" ,
 					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_monosemousLinks"+"_"+monoLinkThreshold1+".txt",
@@ -59,9 +65,9 @@ public class JointGraphBuilder
 			final int chunksize2 = 1000;
 			OneResourceBuilder bg_2 = new OneResourceBuilder("uby_release_1_0","root","fortuna",prefix2,language,synset2,usePos2);
 
-			bg_2.builtRelationGraphFromDb();
+			bg_2.builtRelationGraphFromDb(false);
 
-			bg_2.createGlossFile();
+			bg_2.createGlossFile(false);
 
 			bg_2.lemmatizePOStagGlossFileInChunks(chunksize2);
 

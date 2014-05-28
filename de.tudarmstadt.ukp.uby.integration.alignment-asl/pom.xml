@@ -45,7 +45,17 @@
 		<dependency>
 			<groupId>edu.mit.jwi</groupId>
 			<artifactId>edu.mit.jwi</artifactId>
+			
 		</dependency>
+		
+			    <dependency>
+    	<groupId>weka</groupId>
+    	<artifactId>weka</artifactId>
+    	<version>3.7.5</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+		
 		    <dependency>
     	<groupId>mysql</groupId>
     	<artifactId>mysql-connector-java</artifactId>

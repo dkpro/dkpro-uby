@@ -23,6 +23,7 @@ public class OneResourceBuilder
 
 
 	public HashMap<String,HashSet<String>> lemmaPosSenses;
+	public HashMap<String,HashSet<String>> senseIdLemma;
 	public HashMap<String,String> lemmaIdWrittenForm;
 	public HashMap<String,Integer> lexemeFreqInGlosses;
 	public HashMap<String,Integer> lemmaFreqInGlosses;
@@ -38,7 +39,7 @@ public class OneResourceBuilder
 	public OneResourceBuilder(String dbname, String user, String pass, int prefix, String language, boolean synset, boolean pos)
 	{
 
-
+		senseIdLemma = new HashMap<String, HashSet<String>>();
 		lemmaIdWrittenForm = new HashMap<String, String>();
 		lemmaPosSenses = new HashMap<String, HashSet<String>>();
 		lexemeFreqInGlosses = new HashMap<String, Integer>();
@@ -68,14 +69,16 @@ public class OneResourceBuilder
 	}
 
 
+	/**
+	 * param filterByGloss only considers relation targets that are contained within the gloss, or the first paragraph. This option mostly contains Wikipedia
+	 * as described in the paper.
 
-
-
-	public void builtRelationGraphFromDb() throws ClassNotFoundException, SQLException, IOException
+	 */
+	public void builtRelationGraphFromDb(boolean filterByGloss) throws ClassNotFoundException, SQLException, IOException
 	{
 		FileOutputStream outstream;
 		PrintStream p;
-		outstream = new FileOutputStream("target/"+prefix_string+"_"+(synset?"synset":"sense")+"_"+"_relationgraph.txt");
+		outstream = new FileOutputStream("target/"+prefix_string+"_"+(synset?"synset":"sense")+"_relationgraph"+(filterByGloss?"_filtered":"")+".txt");
 		p = new PrintStream( outstream );
 		StringBuilder sb = new StringBuilder();
 		Statement statement = connection.createStatement();
@@ -85,7 +88,14 @@ public class OneResourceBuilder
 			rs =	statement.executeQuery("SELECT synsetId,target FROM SynsetRelation where synsetId like '"+prefix_string+"%'");
 		}
 		else {
-			rs =	statement.executeQuery("SELECT senseId,target FROM SenseRelation where senseId like '"+prefix_string+"%'");
+			if(prefix == Global.FN_prefix)
+			{
+				rs =	statement.executeQuery("SELECT distinct pr1.senseId, pr2.senseId FROM PredicativeRepresentation pr1  join PredicativeRepresentation pr2 where pr1.predicate = pr2.predicate and  pr1.senseId like 'FN%' and pr2.senseId like 'FN%' and pr1.senseId != pr2.senseId");
+			}
+			else
+			{
+				rs =	statement.executeQuery("SELECT senseId,target FROM SenseRelation where senseId like '"+prefix_string+"%'");
+			}
 		}
 		int max_id = 0;
 		int count = 0;
@@ -107,17 +117,47 @@ public class OneResourceBuilder
 				id1 = prefix+id1.split("ense_")[1];
 				id2 = prefix+id2.split("ense_")[1];
 			}
-			int id1_num = Integer.parseInt(id1);
-			int id2_num = Integer.parseInt(id2);
-			if(id1_num > max_id) {
-				max_id = id1_num;
+			//HashSet<String> lemmas1 = senseIdLemma.get(id1);
+			HashSet<String> lemmas2 = senseIdLemma.get(id2);
+			String gloss1 = senseIdGlossPos.get(id1);
+			if(gloss1 == null) {
+				gloss1 = "";
 			}
-			if(id2_num > max_id) {
-				max_id = id2_num;
+			String[] gloss_array1 = gloss1.split(" ");
+
+			//String[] gloss2 = senseIdGlossPos.get(id2).split(" ");
+			for(String s : gloss_array1)
+			{
+				if(lemmas2.contains(s) || !filterByGloss )
+				{
+
+					int id1_num = Integer.parseInt(id1);
+					int id2_num = Integer.parseInt(id2);
+					if(id1_num > max_id) {
+						max_id = id1_num;
+					}
+					if(id2_num > max_id) {
+						max_id = id2_num;
+					}
+
+					sb.append("a "+id1_num+" "+id2_num+" 1\n");
+					count+=1;
+					if(prefix != Global.FN_prefix)
+					{
+						sb.append("a "+id2_num+" "+id1_num+" 1\n");
+						count+=1;
+					}
+
+					break;
+
+					//System.out.println(senseIdGlossPos.get(id1));
+//					for(String l : lemmas2) {
+//						System.out.println(l);
+//					}
+				}
+
 			}
-			sb.append("a "+id1_num+" "+id2_num+" 1\n");
-			sb.append("a "+id2_num+" "+id1_num+" 1\n");
-			count+=2;
+
 		}
 
 		String header = "p sp "+max_id+" "+count;
@@ -131,10 +171,11 @@ public class OneResourceBuilder
 	}
 
 
-	public void createGlossFile() throws ClassNotFoundException, SQLException, IOException
+	public void createGlossFile(boolean createLexicalFieldIfEmpty) throws ClassNotFoundException, SQLException, IOException
 	{
 		FileOutputStream outstream;
 		FileOutputStream outstream_freq;
+		HashSet<String> coveredSenses = new HashSet<String>();
 		PrintStream p;
 		PrintStream p_freq;
 		outstream = new FileOutputStream("target/"+prefix_string+"_"+(synset?"synset":"sense")+"_glosses.txt");
@@ -170,6 +211,7 @@ public class OneResourceBuilder
 				String gloss =  CLEANUP.matcher(rs.getString(2)).replaceAll(" ");
 				gloss = gloss.replace("\n", "").replace("\r", "").replace("\t", " ").trim();
 				p.println(id+"\t"+gloss);
+				coveredSenses.add(id);
 				 String[] result=gloss.split(" ");
 				 for(String s : result) {
 						if(!lemmaFreqInGlosses.containsKey(s))
@@ -183,6 +225,44 @@ public class OneResourceBuilder
 				}
 			}
 		}
+		if(createLexicalFieldIfEmpty)
+		{
+			HashMap<String,HashSet<String>> idMap = new HashMap<String, HashSet<String>>();
+			rs =	statement.executeQuery("SELECT SenseRelation.senseId, writtenForm FROM SenseRelation join Sense join LexicalEntry join FormRepresentation_Lemma where Sense.lexicalEntryId = LexicalEntry.lexicalEntryId and SenseRelation.target =Sense.senseId and Sense.senseID like '"+prefix_string+"%' and FormRepresentation_Lemma.lemmaId = LexicalEntry.lemmaId and (relName like 'hyperynym' or relName like 'hyponym' or relName like 'synonym')");
+			while(rs.next())
+			{
+				String id1 = rs.getString(1);
+				if(!idMap.containsKey(id1)) {
+					idMap.put(id1,new HashSet<String>());
+				}
+				HashSet<String> temp = idMap.get(id1);
+				temp.add(rs.getString(2));
+			}
+			for(String s : idMap.keySet())
+			{
+				String lf = "";
+				for(String l : idMap.get(s))
+				{
+					lf+=l+" ";
+				}
+				lf.trim();
+				lf =  CLEANUP.matcher(lf).replaceAll(" ");
+				lf = lf.replace("\n", "").replace("\r", "").replace("\t", " ").trim();
+				p.println(s+"\t"+lf);
+				 String[] result=lf.split(" ");
+				 for(String r : result) {
+						if(!lemmaFreqInGlosses.containsKey(r))
+						{
+							lemmaFreqInGlosses.put(r, 0);
+						}
+						int freq = lemmaFreqInGlosses.get(r);
+						lemmaFreqInGlosses.put(r, freq+1);
+
+					//System.out.println(s);
+				}
+			}
+		}
+
 		 for(String lemma : lemmaFreqInGlosses.keySet())
 		 {
 			 p_freq.println(lemma+"\t"+lemmaFreqInGlosses.get(lemma));
@@ -237,7 +317,7 @@ public class OneResourceBuilder
 			 lemmatizePOStagGlossFile(prefix+"temp_"+i, prefix+"temp_tagged_"+i,prefix+"temp_freq_"+i, prefix, language);
 			 File f = new File("target/"+prefix+"temp_"+i);
 			 f.delete();
-			 outstream = new FileOutputStream("target/"+prefix_string+"_"+(synset?"synset":"sense")+"_"+"_glosses_tagged.txt");
+			 outstream = new FileOutputStream("target/"+prefix_string+"_"+(synset?"synset":"sense")+"_glosses_tagged.txt");
 			 outstream_freq = new FileOutputStream("target/"+prefix_string+"_"+(synset?"synset":"sense")+"_lexeme_frequencies.txt");
 			 p = new PrintStream(outstream);
 			 p_freq = new PrintStream(outstream_freq);
@@ -492,6 +572,13 @@ public class OneResourceBuilder
 				{
 					key =lemma.toLowerCase();
 				}
+				if(!senseIdLemma.containsKey(senseId))
+				{
+					senseIdLemma.put(senseId, new HashSet<String>());
+				}
+				senseIdLemma.get(senseId).add(key);
+
+
 				if(!lemmaPosSenses.containsKey(key))
 				{
 					lemmaPosSenses.put(key, new HashSet<String>());
