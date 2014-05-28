@@ -146,7 +146,7 @@ public class Global
 		set2.retainAll(set1);
 		return set2.size();
 	}
-	public static void mapAlignmentToUby(OneResourceBuilder gb1, OneResourceBuilder gb2, int depth, boolean allowMultiple, boolean alignSingle, boolean backoff, boolean extRef)
+	public static void mapAlignmentToUby(OneResourceBuilder gb1, OneResourceBuilder gb2, String alignmentfile, boolean extRef)
 	{
 
 		int i = 0;
@@ -154,10 +154,10 @@ public class Global
 		PrintStream p;
 		try
 		{
-		String alignment_file= gb1.prefix_string+"_"+gb2.prefix_string+"_alignment_"+(gb2.pos ? "Pos": "noPos")+"_"+depth+"_"+(allowMultiple? "1toN"  :"1to1")+(alignSingle ? "_alignSingle":"")+(backoff ? "_backoff":"");
-		outstream = new FileOutputStream("target/"+alignment_file+"_"+(extRef? "extRef": "UbyID"));
+		String alignment_file= alignmentfile;
+		outstream = new FileOutputStream(alignment_file.replace(".txt", "")+"_"+(extRef? "extRef": "UbyID")+".txt");
 		p = new PrintStream( outstream );
-		 FileReader in = new FileReader("target/"+alignment_file);
+		 FileReader in = new FileReader(alignment_file);
 		 BufferedReader input_reader =  new BufferedReader(in);
 		 String line;
 		 StringBuilder sb = new StringBuilder();
@@ -184,6 +184,11 @@ public class Global
 		 }
 		 while((line =input_reader.readLine())!=null)
 		 {
+			if(line.startsWith("f"))
+			{
+				p.println(line);
+				continue;
+			}
 			String[] temp = line.split("\t");
 			String id1 = temp[0];
 			String id2 = temp[1];
@@ -210,12 +215,103 @@ public class Global
 		}
 		//CONTINUE HERE
 		/*TODO: Conform to newly defined standard*/
-		/*TODO: Parameter: UBYId or extRef?
+		/*
 		 *
-		 * Uby sollte jetzt easy nur über die Id zu machen sein, ohne externe Ressourcen, Indexe, etc...
-		 *
-		 * Man könnte in "Global" sogar eine separate Methofde "mapIDtoUby" machen, Jawohl!!!
-		 *
+		 * */
+		/*TODO: Create actual SenseAxis instances? NO! Use import class in UBY!*/
+
+	}
+
+	public static void processExtRefGoldstandardFile(OneResourceBuilder gb1, OneResourceBuilder gb2, String alignmentfile, boolean graph)
+	{
+		/*TODO Has to be adapted to new standard - this is a propietary solution fo now*/
+
+		int i = 0;
+		FileOutputStream outstream;
+		PrintStream p;
+		try
+		{
+		String alignment_file= alignmentfile;
+		outstream = new FileOutputStream(alignment_file.replace(".txt", "")+"_"+(graph? "graph": "UbyID")+".txt");
+		p = new PrintStream( outstream );
+		 FileReader in = new FileReader(alignment_file);
+		 BufferedReader input_reader =  new BufferedReader(in);
+		 String line;
+		 StringBuilder sb = new StringBuilder();
+		 HashMap<String,String> extRefs1 = new HashMap<String, String>();
+		 HashMap<String,String> extRefs2 = new HashMap<String, String>();
+		 Statement statement= gb1.connection.createStatement();
+		 ResultSet rs = statement.executeQuery("SELECT externalReference, "+(gb1.synset? "synsetId" : "senseId")+" FROM MonolingualExternalRef where "+(gb1.synset? "synsetId" : "senseId")+" like '"+gb1.prefix_string+"%' ");
+			 while(rs.next())
+			 {
+				 extRefs1.put(rs.getString(1),rs.getString(2));
+			 }
+			 statement.close();
+			 statement= gb2.connection.createStatement();
+			 rs = statement.executeQuery("SELECT externalReference, "+(gb2.synset? "synsetId" : "senseId")+" FROM MonolingualExternalRef where "+(gb2.synset? "synsetId" : "senseId")+" like '"+gb2.prefix_string+"%' ");
+			 while(rs.next())
+			 {
+				 extRefs2.put(rs.getString(1),rs.getString(2));
+			 }
+			 statement.close();
+			 rs.close();
+
+		 while((line =input_reader.readLine())!=null)
+		 {
+			if(line.startsWith("f"))
+			{
+				p.println(line);
+				continue;
+			}
+			line = line.replace("\"","");
+			line = line.replace(":","\t");
+			String[] temp = line.split("\t");
+			String id1 = temp[0];
+			if (id1.endsWith("#n"))
+			{
+				id1 = "[POS: noun] "+id1.split("#")[0];
+			}
+			else if (id1.endsWith("#v"))
+			{
+				id1 = "[POS: verb] "+id1.split("#")[0];
+			}
+			else if (id1.endsWith("#a"))
+			{
+				id1 = "[POS: adjective] "+id1.split("#")[0];
+			}
+			else if (id1.endsWith("#r"))
+			{
+				id1 = "[POS: adverb] "+id1.split("#")[0];
+			}
+
+			String id2 = temp[1];
+			String conf = temp[2];
+			String uby_id1 = extRefs1.get(id1);//Global.prefixTableLong.get(Integer.parseInt(id1.substring(0, 2)))+id1.substring(2);
+			String uby_id2 = extRefs2.get(id2);//Global.prefixTableLong.get(Integer.parseInt(id2.substring(0, 2)))+id2.substring(2);
+			if(uby_id1==null || uby_id2 == null) {
+				continue;
+			}
+			if(graph)
+			{
+				p.println(gb1.prefix+uby_id1.split(Global.prefixTableLong.get(gb1.prefix))[1] + "\t" +gb2.prefix+uby_id2.split(Global.prefixTableLong.get(gb2.prefix))[1]+"\t"+conf);
+			}
+			else
+			{
+				p.println(uby_id1+"\t"+uby_id2+"\t"+conf);
+			}
+
+			System.out.println("lines processed "+i++);
+		 }
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+
+
+		}
+		//CONTINUE HERE
+		/*TODO: Conform to newly defined standard*/
+		/*
 		 *
 		 * */
 		/*TODO: Create actual SenseAxis instances? NO! Use import class in UBY!*/

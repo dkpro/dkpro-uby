@@ -49,7 +49,7 @@ public class GlossSimilarityCalculator
 
 //			bg_1.lemmatizePOStagGlossFileInChunks(chunksize1);
 
-			bg_1.fillIndexTables();
+//			bg_1.fillIndexTables();
 
 
 			/*RESOURCE 2*/
@@ -65,7 +65,7 @@ public class GlossSimilarityCalculator
 
 		//	bg_2.lemmatizePOStagGlossFileInChunks(chunksize2);
 
-			bg_2.fillIndexTables();
+	//		bg_2.fillIndexTables();
 
 	//		CandidateExtractor.createCandidateFileFull(bg_1, bg_2);
 
@@ -77,9 +77,12 @@ public class GlossSimilarityCalculator
 
 		//	calculateSimilarityForCandidates(bg_1, bg_2,useTaggedGloss, tfidf);
 
-			boolean onlyGreaterZero = false;
+			boolean onlyGreaterZero = true;
 
-			createAlignmentFromSimilarityFileUnsupervised(bg_1, bg_2,useTaggedGloss, tfidf, onlyGreaterZero);
+//			createAlignmentFromSimilarityFileUnsupervised(bg_1, bg_2,useTaggedGloss, tfidf, onlyGreaterZero);
+			boolean extRef = true;
+	//		Global.mapAlignmentToUby(bg_1,bg_2,"target/"+bg_1.prefix_string+"_"+bg_2.prefix_string+"_alignment_similarity_"+(bg_2.pos ? "Pos": "noPos")+(tfidf ? "_tfidf": "")+(onlyGreaterZero ? "_nonZero"  :"")+".txt", extRef);
+
 		}
 
 
@@ -253,7 +256,7 @@ public class GlossSimilarityCalculator
 				Double similarity =0.0;
 				String line = "";
 				String line2 = "";
-				FileOutputStream outstream_alignment = new FileOutputStream("target/"+gb1.prefix_string+"_"+gb2.prefix_string+"_alignment_similiarity_"+(gb2.pos ? "Pos": "noPos")+""+(tfidf? "tfidf"  :"")+(onlyGreaterZero ? "_nonZero":""));
+				FileOutputStream outstream_alignment = new FileOutputStream("target/"+gb1.prefix_string+"_"+gb2.prefix_string+"_alignment_similarity_"+(gb2.pos ? "Pos": "noPos")+""+(tfidf? "_tfidf"  :"")+(onlyGreaterZero ? "_nonZero":"")+".txt");
 				PrintStream p_align = new PrintStream( outstream_alignment );
 
 				int i =0;

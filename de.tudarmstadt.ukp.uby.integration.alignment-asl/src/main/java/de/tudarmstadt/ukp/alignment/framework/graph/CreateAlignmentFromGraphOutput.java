@@ -44,13 +44,15 @@ public class CreateAlignmentFromGraphOutput
 		int depth = 5; // Manually set; exhaustive search can be triggered by depth >20
 		boolean allowMultiple = true;
 		boolean alignSingle = false;
-		boolean backoff=false;
-		String backoff_file = "";
+
+		boolean backoff=true;
+		String backoff_file = "WN_OW_en_alignment_similarity_Pos_tfidf_nonZero.txt";
+
 		createAlignment(bg_1,bg_2,monoLinkThreshold1,monoLinkThreshold2, depth, allowMultiple,alignSingle, backoff, backoff_file);
 
 		boolean extRef = true;
 
-		Global.mapAlignmentToUby(bg_1,bg_2,depth, allowMultiple,alignSingle, backoff, extRef);
+		//Global.mapAlignmentToUby(bg_1,bg_2,bg_1.prefix_string+"_"+bg_2.prefix_string+"_alignment_"+(bg_2.pos ? "Pos": "noPos")+"_"+depth+"_"+(allowMultiple? "1toN"  :"1to1")+(alignSingle ? "_alignSingle":"")+(backoff ? "_backoff":""), extRef);
 		}
 
 		catch(Exception e)
@@ -125,7 +127,7 @@ public class CreateAlignmentFromGraphOutput
 
 
 		candidates  = new HashMap<String, HashSet<String>>();
-		FileOutputStream outstream = new FileOutputStream("target/"+gb1.prefix_string+"_"+gb2.prefix_string+"_alignment_dwsa_"+(gb2.pos ? "Pos": "noPos")+"_"+depth+"_"+(allowMultiple? "1toN"  :"1to1")+(alignSingle ? "_alignSingle":"")+(backoff ? "_backoff":""));
+		FileOutputStream outstream = new FileOutputStream("target/"+gb1.prefix_string+"_"+gb2.prefix_string+"_alignment_dwsa_"+(gb2.pos ? "Pos": "noPos")+"_"+depth+"_"+(allowMultiple? "1toN"  :"1to1")+(alignSingle ? "_alignSingle":"")+(backoff ? "_backoff":"")+".txt");
 		PrintStream p = new PrintStream( outstream );
 		for(String s : alignment_results.keySet())
 		{
@@ -168,46 +170,53 @@ public class CreateAlignmentFromGraphOutput
 
 
 
-					if(backoff) //Einfach adden???
+					if(backoff) //Einfach adden
 					{
 						in = new FileReader("target/"+backoff_file) ;
 						input =  new BufferedReader(in);
 						while((line = input.readLine())!=null)
 						{
+							if(line.startsWith("f")) {
+								continue;
+							}
 							String id_1 = line.split("\t")[0];
 							String id_2 = line.split("\t")[1];
-							if(!backoff_alignments.containsKey(id_1))
-							{
-								backoff_alignments.put(id_1, new HashSet<String>());
-							}
-							backoff_alignments.get(id_1).add(id_2);
-						}
+							String conf = line.split("\t")[2];
 
-						for(String key : backoff_alignments.keySet())
-						{
-
-							if(candidates.containsKey(key)) {
+							if(candidates.containsKey(id_1)) {
 								System.out.println("Already aligned!!");
 								continue;
 
 							}
-							candidates.put(key, new HashSet<String>());
-							for(String value : backoff_alignments.get(key))
-							{
-								String id_2 = value;
-
-//								if(!confidence)
-								{
-									//p.println(key+" "+value);
-								}
-//								else
-								{
-									p.println(key+" "+value+" "+"SIM");
-								}
+							p.println(id_1+"\t"+id_2+"\t"+conf);
 
 
-							}
+//							if(!backoff_alignments.containsKey(id_1))
+//							{
+//								backoff_alignments.put(id_1, new HashSet<String>());
+//							}
+//							backoff_alignments.get(id_1).add(id_2+"#"+conf);
 						}
+
+//						for(String key : backoff_alignments.keySet())
+//						{
+//
+//							if(candidates.containsKey(key)) {
+//								System.out.println("Already aligned!!");
+//								continue;
+//
+//							}
+//							candidates.put(key, new HashSet<String>());
+//							for(String value : backoff_alignments.get(key))
+//							{
+//
+//
+//									p.println(key+" "+value+" "+"SIM");
+//
+//
+//
+//							}
+//						}
 					}
 					}
 		catch(Exception e)
