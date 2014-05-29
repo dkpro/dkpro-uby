@@ -22,7 +22,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
-import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -300,23 +299,6 @@ public class UbyTest
 		assertEquals(semanticLabel.getLabel(), "verb.communication");
 		semanticLabels = uby.getSemanticLabelsbySenseIdbyType("WN_Sense_2", "verbnetClass");
 		assertEquals(semanticLabels.size(), 0);
-	}
-
-	@Test
-    public void testGetWNSensebyExtRef(){
-        try {
-            @SuppressWarnings("deprecation")
-            List<Sense> senses = uby.getWNSensebyExtRef("bird's-eye%5:00:00:wide:00", "adjective");
-        }
-        catch (ClassNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
 	}
 
 	@Test
