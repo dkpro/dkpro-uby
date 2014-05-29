@@ -39,6 +39,7 @@ import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
+import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
 import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis;
@@ -94,7 +95,7 @@ public class Uby
 		cfg = HibernateConnect.getConfiguration(dbConfig);
 		ServiceRegistryBuilder serviceRegistryBuilder = new ServiceRegistryBuilder()
 					.applySettings(cfg.getProperties());
-		sessionFactory = cfg.buildSessionFactory(serviceRegistryBuilder.buildServiceRegistry());		
+		sessionFactory = cfg.buildSessionFactory(serviceRegistryBuilder.buildServiceRegistry());
 		openSession();
 	}
 
@@ -284,8 +285,8 @@ public class Uby
     public List<LexicalEntry> getLexicalEntries(String word, Lexicon lexicon)
     {
         return getLexicalEntries(word, null, lexicon);
-    }	
-	
+    }
+
 	/**
 	 * Fetches a {@link List} of {@link LexicalEntry} instances which written representation is the specified word.
 	 *
@@ -349,8 +350,8 @@ public class Uby
     public Iterator<LexicalEntry> getLexicalEntryIterator(Lexicon lexicon)
     {
         return getLexicalEntryIterator(null, lexicon);
-    }	
-	
+    }
+
 	/**
 	 * Returns an {@link Iterator} over {@link LexicalEntry} instances which written representation is the specified word.
 	 *
@@ -390,7 +391,7 @@ public class Uby
 	 * Returns an {@link Iterator} over {@link SenseAxis} instances
 	 *
 	 * Optionally sense axes can be filtered by a {@link Lexicon}.
-	 *	 
+	 *
 	 * @param lexicon If not null, filters sense axes by the specified lexicon. Note that the Lexicon instance has to be
 	 * obtained beforehand.
 	 *
@@ -406,8 +407,8 @@ public class Uby
 		return senseAxisIterator;
 	}
 
-	
-	
+
+
 	/**
 	 * This methods allows retrieving a {@link LexicalEntry} instance by its exact
 	 * identifier.
@@ -472,7 +473,7 @@ public class Uby
 					Restrictions.sqlRestriction("writtenForm like '" +lemma +"%'"),
 					Restrictions.eq( "writtenForm", lemma )
 			));
-		
+
 		@SuppressWarnings("unchecked")
 		List<LexicalEntry> result = criteria.list();
 		if(result == null) {
@@ -481,7 +482,7 @@ public class Uby
 		return result;
 	}
 
-	
+
 	/**
 	 * Returns a {@link List} of all {@link Lexicon} instances contained in the database accessed by this
 	 * {@link Uby} instance.
@@ -514,7 +515,7 @@ public class Uby
 	 * @see Lexicon#getLanguageIdentifier()
 	 *
 	 */
-	
+
 	//TODO LanguageIdentifier is now a String
 	public List<Lexicon> getLexiconsByLanguage(String lang)
 	{
@@ -596,13 +597,13 @@ public class Uby
 	 * <list>
 	 * 		<li>WordNet: "[POS: noun] house%1:15:00::" - POS and sense key
 	 * 			Returns a list of one sense</li>
-	 * 		<li>VerbNet: "retire_withdraw-82-3" 
+	 * 		<li>VerbNet: "retire_withdraw-82-3"
 	 * 	        Several UBY senses can have the same original sense ID</li>
 	 *      <li>FrameNet: "2676" - lexical unit ID</li>
-	 *      <li>Wiktionary: "16:0:1" - sense key</li>      
-	 *      <li>Wikipedia: "House" - article title</li>      
+	 *      <li>Wiktionary: "16:0:1" - sense key</li>
+	 *      <li>Wikipedia: "House" - article title</li>
 	 *      <li>OW: "303002" - OW SynTrans Id </li>
-	 *           
+	 *
 	 * </list>
 	 *
 	 * @return a {@link List} of all senses filtered by the given arguments or an empty list if
@@ -624,6 +625,38 @@ public class Uby
 		}
 		return result;
 	}
+
+	/**
+     * Returns the {@link Sense} instance contained in the database accessed by this
+     * {@link Uby} instance. The returned senses are filtered by the given
+     * name of the external system, external reference and lexicon.
+     * @return a {@link List} of all senses filtered by the given arguments or an empty list
+     * if one of the given arguments is null or the accessed database does not contain any
+     * senses matching both constraints.
+	 **/
+	public List<Sense> getSensesByOriginalReference(String externalSys, String externalRef, Lexicon lexicon){
+	    Criteria criteria = session.createCriteria(Sense.class);
+
+        criteria = criteria.createCriteria("monolingualExternalRefs").add(
+                Restrictions.sqlRestriction("externalSystem = '"
+                        + externalSys + "' and externalReference ='"+ externalRef + "'"));
+
+        @SuppressWarnings("unchecked")
+        List<Sense> result = criteria.list();
+
+        if(result == null) {
+            result = new ArrayList<Sense>(0);
+        }
+
+        List<Sense> temp = new ArrayList<Sense>(result);
+        for(Sense s: temp){
+            if(!s.getLexicalEntry().getLexicon().getName().equals(lexicon.getName())){
+                result.remove(s);
+            }
+        }
+
+        return result;
+    }
 
 	/**
 	 * Returns a {@link List} of all {@link SenseAxis} instances contained in the database
@@ -690,7 +723,7 @@ public class Uby
 			return new ArrayList<SenseAxis>(0);
 		}
 	}
-	
+
 
 	/**
 	 * Consumes two {@link Sense} instances and returns true if and only if the
@@ -807,8 +840,8 @@ public class Uby
 		}
 		return ret;
 	}
-	
-	
+
+
 	/**
 	 * @deprecated use {@link #wordNetSenses(String, String)} or
 	 * {@link #wordNetSense(String, String)} instead
@@ -860,7 +893,7 @@ public class Uby
 	 */
 	@Deprecated
 	public List<Sense>getSensesByWNSynsetId(String POS, String SynsetOffset) throws ClassNotFoundException, SQLException{
-	
+
 		String refId="[POS: noun] ";
 		if (POS.equals("a")){
 			refId=refId.replaceAll("noun", "adjective");
@@ -869,10 +902,10 @@ public class Uby
 		}else if (POS.equals("v")){
 			refId=refId.replaceAll("noun", "verb");
 		}
-	
+
 		refId=refId+SynsetOffset;
-	
-	
+
+
 		Criteria criteria=session.createCriteria(Sense.class);
 		criteria=criteria.createCriteria("monolingualExternalRefs").add(Restrictions.sqlRestriction("externalReference='"+refId.trim()+"'"));
 		@SuppressWarnings("unchecked")
@@ -892,7 +925,7 @@ public class Uby
 	 * <p>
 	 * This method returns an empty list if the database accessed by this {@link Uby} instance does not contain
 	 * senses derived from the specified WordNet synset.
-	 * 
+	 *
 	 * @deprecated use {@link #wordNetSense(String, String)} and {@link #wordNetSense(String, String)}
 	 * instead
 	 */
@@ -900,7 +933,7 @@ public class Uby
 	public List<Sense>getSensesByWNSynsetId(String wnSynsetId) {
 		String[]temp=wnSynsetId.split("-");
 		String refId="[POS: noun] ";
-	
+
 		if (temp[1].equals("a")){
 			refId=refId.replaceAll("noun", "adjective");
 		}else if (temp[1].equals("r")){
@@ -908,7 +941,7 @@ public class Uby
 		}else if (temp[1].equals("v")){
 			refId=refId.replaceAll("noun", "verb");
 		}
-	
+
 		refId=refId+temp[0];
 		Criteria criteria=session.createCriteria(Sense.class);
 		criteria=criteria.createCriteria("synset").createCriteria("monolingualExternalRefs").add(Restrictions.sqlRestriction("externalReference='"+refId.trim()+"'"));
@@ -930,26 +963,26 @@ public class Uby
 	 * <li>"adverb"</li>
 	 * <li>"adjective"</li>
 	 * </list>
-	 * 
+	 *
 	 * @param offset string representation of the WordNets synset offset i.e. "14469014"
 	 *
 	 * @return senses derived from the WordNets synset, described by the consumed arguments
 	 * <p>
 	 * This method returns an empty list if the database accessed by this {@link Uby} instance does not contain
 	 * the specified sense.
-	 * 
+	 *
 	 * @throws UbyInvalidArgumentException if the specified part of speech is not valid or
 	 * one of consumed arguments is null
-	 * 
+	 *
 	 * @since 0.2.0
 	 */
 	@Deprecated
 	public List<Sense> wordNetSenses(String partOfSpeech, String offset) throws UbyInvalidArgumentException {
-		
+
 		if(partOfSpeech == null) {
             throw new UbyInvalidArgumentException("partOfSpeech is null");
         }
-		
+
 		if(offset == null) {
             throw new UbyInvalidArgumentException("offset is null");
         }
@@ -986,7 +1019,7 @@ public class Uby
 		List<Sense> result = criteria.list();
 		return result;
 	}
-	
+
 	/**
 	 * Consumes a sense key (in WordNet terminology) and a part-of-speech. Returns
 	 * a {@link Sense} instance which is derived from the WordNets sense, identified by
@@ -1000,7 +1033,7 @@ public class Uby
 	 * <li>"adverb"</li>
 	 * <li>"adjective"</li>
 	 * </list>
-	 * 
+	 *
 	 * @param senseKey string representation of the WordNets identifier of a sense
 	 * i.e. "enter%2:33:00::"
 	 *
@@ -1008,19 +1041,19 @@ public class Uby
 	 * <p>
 	 * This method returns null if the database accessed by this {@link Uby} instance does not contain
 	 * the specified sense.
-	 * 
+	 *
 	 * @throws UbyInvalidArgumentException if the specified part of speech is not valid or
 	 * one of the consumed arguments is null
-	 * 
+	 *
 	 * @since 0.2.0
 	 */
 	@Deprecated
 	public Sense wordNetSense(String partOfSpeech, String senseKey) throws UbyInvalidArgumentException {
-		
+
 		if(partOfSpeech == null) {
             throw new UbyInvalidArgumentException("partOfSpeech is null");
         }
-		
+
 		if(senseKey == null) {
             throw new UbyInvalidArgumentException("senseKey is null");
         }
@@ -1058,7 +1091,7 @@ public class Uby
 		Sense result = (Sense) criteria.uniqueResult();
 		return result;
 	}
-	
+
 	// OmegaWiki
 
 	/**
@@ -1070,17 +1103,17 @@ public class Uby
 	 * senses are not ordered by frequency, the otherwise unused index field is
 	 * used to store the original SynTransId, hence making the additional join
 	 * with {@link MonolingualExternalRef} unnecessary.
-	 * 
+	 *
 	 * @param synTransId
 	 *            a {@link String} representation of a unique identifier of
 	 *            OmegaWikis SynTrans
-	 * 
+	 *
 	 * @return list of all senses derived from specified OmegaWikis SynTrans.
 	 *         <br>
 	 *         This method returns an empty list if a SynTrans with specified
 	 *         identifier does not exist or the database accessed by this
 	 *         {@link Uby} instance does not contain a OmegaWiki {@link Lexicon}.
-	 * 
+	 *
 	 */
 	@Deprecated
 	public List<Sense> getSensesByOWSynTransId(String synTransId) {
