@@ -45,7 +45,9 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
 /**
  * This class creates a DOM from LMF and writes it to XML
+ * @deprecated This class is currently not used. It will most likely be removed in future releases. 
  */
+@Deprecated
 public class LMFXmlWriterDOM {
 	
 	/*
