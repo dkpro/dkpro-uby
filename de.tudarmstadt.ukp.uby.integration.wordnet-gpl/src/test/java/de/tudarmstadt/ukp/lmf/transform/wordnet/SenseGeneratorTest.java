@@ -86,9 +86,10 @@ import de.tudarmstadt.ukp.lmf.transform.wordnet.util.IndexSenseReader;
 		SynsetGenerator synsetGenerator = new SynsetGenerator(wordNet, 
 				new File(UBY_HOME +"/WordNet/cache/ExampleSentenceLexemeMapping.xml"), "WordNet_3.0_eng");
 		synsetGenerator.initialize();
+		String UBY_HOME = System.getenv("UBY_HOME");
 
 		IndexSenseReader isr = new IndexSenseReader();
-		isr.initialize();
+		isr.initialize(new File(UBY_HOME+"/WordNet/wordnet3/dict/index.sense"));
 
 		SenseGenerator senseGenerator = new SenseGenerator(synsetGenerator, isr,"WordNet_3.0_eng");
 		String lexicalEntryId = "testLexicalEntry";

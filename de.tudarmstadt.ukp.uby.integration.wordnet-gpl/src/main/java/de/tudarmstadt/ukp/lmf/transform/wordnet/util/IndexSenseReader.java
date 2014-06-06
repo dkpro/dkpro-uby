@@ -47,11 +47,8 @@ public class IndexSenseReader {
 	/**
 	 * Initializes this instance of {@link IndexSenseReader} by parsing the index.sense file
 	 */
-	public void initialize(){
-
-		String UBY_HOME = System.getenv("UBY_HOME");
-
-		indexSense = new File(UBY_HOME+"/WordNet/wordnet3/dict/index.sense");
+	public void initialize(final File indexSenseFile) {
+		indexSense = indexSenseFile;
 
 		senseKeySenseNumberMpg = new HashMap<String, String>();
 

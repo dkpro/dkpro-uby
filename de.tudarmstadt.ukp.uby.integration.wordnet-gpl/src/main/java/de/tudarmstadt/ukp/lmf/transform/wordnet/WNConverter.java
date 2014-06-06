@@ -43,6 +43,7 @@ import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 public class WNConverter {
 
 	private final Dictionary extWordnet; // extWordNet Dictionary
+	protected File dictionaryPath;
 
 	private final LexicalResource lexicalResource;
 
@@ -56,15 +57,16 @@ public class WNConverter {
 
 	/**
 	 * Constructs a {@link WNConverter} based on the consumed parameters
+	 * @param dictionaryPath the path of the WordNet dictionary files
 	 * @param wordNet initialized WordNet's {@link Dictionary} object
 	 * @param lexicalResource initialized object of  {@link LexicalResource}, which will be filled with WordNet's data
 	 * @param resourceVersion Version of this resource
 	 * @param dtd_version specifies the version of the .dtd which will be written to lexicalResource
 	 * @param exMappingPath path of the file containing manually entered mappings of lexemes and example sentences
 	 */
-	public WNConverter(Dictionary wordNet, LexicalResource lexicalResource, String resourceVersion, 
+	public WNConverter(File dictionaryPath, Dictionary wordNet, LexicalResource lexicalResource, String resourceVersion, 
 			String dtd, String exMappingPath) {
-		
+		this.dictionaryPath = dictionaryPath;
 		this.extWordnet = wordNet;
 		this.lexicalResource = lexicalResource;
 		this.dtd_version = dtd;
@@ -126,7 +128,7 @@ public class WNConverter {
 
 		// *** Creating LexicalEntries *** //
 		logger.log(Level.INFO, "Generating LexicalEntries...");
-		LexicalEntryGenerator lexicalEntryGenerator = new LexicalEntryGenerator(extWordnet, 
+		LexicalEntryGenerator lexicalEntryGenerator = new LexicalEntryGenerator(dictionaryPath, extWordnet, 
 				synsetGenerator, subcategorizationFrameExtractor, resourceVersion);
 		lexicon.setLexicalEntries(lexicalEntryGenerator.getLexicalEntries());
 		logger.log(Level.INFO, "Generating LexicalEntries done");

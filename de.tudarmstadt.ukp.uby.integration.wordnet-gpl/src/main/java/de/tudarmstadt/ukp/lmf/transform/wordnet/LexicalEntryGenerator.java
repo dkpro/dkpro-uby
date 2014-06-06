@@ -18,6 +18,7 @@
  */
 package de.tudarmstadt.ukp.lmf.transform.wordnet;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -105,7 +106,7 @@ public class LexicalEntryGenerator {
 	 * @param Version of the resource
 	 * @see {@link LexicalEntry}
 	 */
-	public LexicalEntryGenerator(Dictionary extWordnet, SynsetGenerator synsetGenerator,
+	public LexicalEntryGenerator(File dictionaryPath, Dictionary extWordnet, SynsetGenerator synsetGenerator,
 			SubcategorizationFrameExtractor subcategorizationFrameExtractor, String resourceVersion){
 		this.subcategorizationFrameExtractor = subcategorizationFrameExtractor;
 		lexemeToGroupMappings = new TreeMap<Word, Set<Word>>(new Comparator<Word>() {
@@ -122,7 +123,7 @@ public class LexicalEntryGenerator {
 			groupLexemes();
 
 			IndexSenseReader isr = new IndexSenseReader();
-			isr.initialize();
+			isr.initialize(new File(dictionaryPath, "index.sense"));
 			senseGenerator = new SenseGenerator(synsetGenerator, isr, resourceVersion);
 			createLexicalEntries();
 			initialized = true;
