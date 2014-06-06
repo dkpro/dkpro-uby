@@ -136,7 +136,7 @@ separableParticle 	http://www.isocat.org/datcat/DC-3546
     index  CDATA #IMPLIED
     synset               IDREF #IMPLIED
     incorporatedSemArg IDREF #IMPLIED 
-    transparentMeaning (yes|no) #IMPLIED>
+    transparentMeaning (true|false) #IMPLIED>
 <!--
 index 	http://www.isocat.org/datcat/DC-233
 synset	http://www.isocat.org/datcat/DC-4613 	
