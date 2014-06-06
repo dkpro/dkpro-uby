@@ -19,13 +19,16 @@
 package de.tudarmstadt.ukp.lmf.transform.wordnet;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -61,11 +64,11 @@ public class LexicalEntryGenerator {
 	 */
 	private Map<Set<Word>, LexicalEntry> lexemeGroupLexicalEntryMaping;
 
-	private final Map<POS,Map<String, Set<Word>>> posLemmaLexemeGroup = new HashMap<POS, Map<String, Set<Word>>>();
+	private final Map<POS,Map<String, Set<Word>>> posLemmaLexemeGroup = new LinkedHashMap<POS, Map<String, Set<Word>>>();
 
-	private final Set<Set<Word>> lexemeGroups = new HashSet<Set<Word>>();
+	private final Set<Set<Word>> lexemeGroups = new LinkedHashSet<Set<Word>>();
 
-	private final Map<Word, Set<Word>> lexemeToGroupMappings = new HashMap<Word, Set<Word>> ();
+	private final Map<Word, Set<Word>> lexemeToGroupMappings;
 
 	private Dictionary extWordnet;
 
@@ -89,12 +92,13 @@ public class LexicalEntryGenerator {
 	 * Key of the map is SyntacticBehaviour's string representation without ID
 	 * value is the corresponding SyntacticBehavour
 	 */
-	private final Map<String, SyntacticBehaviour> syntBeh = new HashMap<String, SyntacticBehaviour>();
+	private final Map<String, SyntacticBehaviour> syntBeh = new TreeMap<String, SyntacticBehaviour>();
 
 	private final Logger logger = Logger.getLogger(WNConverter.class.getName());
 
 	/**
 	 * Constructs a {@link LexicalEntryGenerator} used for generating LexicalEntries
+	 * @param dictionaryPath the path of the WordNet dictionary files
 	 * @param extWordnet an instance of initialized WordNet-{@link Dictionary} used for accessing WordNet's information
 	 * @param synsetGenerator an instance of {@link SynsetGenerator} used for generating {@link Synset}-instances
 	 * @param subcategorizationFrameExtractor an instance of {@link SubcategorizationFrameExtractor} used for generating {@link SubcategorizationFrame}-instances
@@ -104,6 +108,13 @@ public class LexicalEntryGenerator {
 	public LexicalEntryGenerator(Dictionary extWordnet, SynsetGenerator synsetGenerator,
 			SubcategorizationFrameExtractor subcategorizationFrameExtractor, String resourceVersion){
 		this.subcategorizationFrameExtractor = subcategorizationFrameExtractor;
+		lexemeToGroupMappings = new TreeMap<Word, Set<Word>>(new Comparator<Word>() {
+			@Override
+			public int compare(Word o1, Word o2) {
+				return o1.getSenseKey().compareTo(o2.getSenseKey());
+			}
+		});
+		
 		if(!initialized){
 			this.extWordnet = extWordnet;
 			lexicalEntryNumber = 0;
@@ -124,11 +135,11 @@ public class LexicalEntryGenerator {
 	private void groupLexemes() {
 		byte percentage = 0;
 		logger.log(Level.INFO, " grouping lexemes...");
-		lexemeGroupLexicalEntryMaping= new HashMap<Set<Word>, LexicalEntry>();
+		lexemeGroupLexicalEntryMaping= new LinkedHashMap<Set<Word>, LexicalEntry>();
 		Iterator<Synset> synsetIter = null; // synset iterator
 		for(POS pos : POS.getAllPOS()){ // Iterate over all POSes
 			logger.log(Level.INFO, percentage+"%");
-			Map<String, Set<Word>>lemmaLexemeGroup = new HashMap<String, Set<Word>>();
+			Map<String, Set<Word>>lemmaLexemeGroup = new TreeMap<String, Set<Word>>();
 			try {
 				synsetIter = extWordnet.getSynsetIterator(pos);
 			} catch (JWNLException e) {
@@ -143,7 +154,12 @@ public class LexicalEntryGenerator {
 					String lemma = lexeme.getLemma(); // lemma's lexeme
 
 					if((lexemeGroup = lemmaLexemeGroup.get(lemma)) == null){
-						lexemeGroup = new HashSet<Word>();
+						lexemeGroup = new TreeSet<Word>(new Comparator<Word>() {
+							@Override
+							public int compare(Word o1, Word o2) {
+								return o1.getSenseKey().compareTo(o2.getSenseKey());
+							}
+						});
 						lemmaLexemeGroup.put(lemma, lexemeGroup);
 					}
 					lexemeGroup.add(lexeme);
@@ -196,7 +212,7 @@ public class LexicalEntryGenerator {
 		lexicalEntry.setId(createID());
 
 		// codes of subcat frames
-		List<HashMap<String, Word>> subcatCodes = new LinkedList<HashMap<String,Word>>();
+		List<Map<String, Word>> subcatCodes = new LinkedList<Map<String, Word>>();
 
 		boolean posSet = false; // True when POS is set to the LexicalEntry
 
@@ -217,7 +233,7 @@ public class LexicalEntryGenerator {
 				// Extracting the verb frame
 				String[] frames = lexeme.getSynset().getVerbFrames();
 				for(String frame : frames){
-					HashMap<String, Word> codeLexeme = new HashMap<String, Word>();
+					Map<String, Word> codeLexeme = new TreeMap<String, Word>();
 					codeLexeme.put(frame, lexeme);
 					subcatCodes.add(codeLexeme); // the codes will be processed later
 				}
@@ -227,7 +243,7 @@ public class LexicalEntryGenerator {
 			if(lePOS.equals(EPartOfSpeech.adjective) && (synMarker = lexeme.getSenseKeyWithAdjClass()).contains("(")){
 				int start = synMarker.indexOf("(");
 				String adjFrameCode = synMarker.substring(start+1, synMarker.indexOf(")"));
-				HashMap<String, Word> codeLexeme = new HashMap<String, Word>();
+				Map<String, Word> codeLexeme = new TreeMap<String, Word>();
 				codeLexeme.put(adjFrameCode, lexeme); // the codes will be processed later
 				subcatCodes.add(codeLexeme);
 			}
@@ -248,7 +264,7 @@ public class LexicalEntryGenerator {
 
 		//*** Creating SyntacticBehaviours***//
 		if(!subcatCodes.isEmpty()){
-			Set<SyntacticBehaviour> syntacticBehaviours = new HashSet<SyntacticBehaviour>();
+			Set<SyntacticBehaviour> syntacticBehaviours = new TreeSet<SyntacticBehaviour>();
 			for(Map<String, Word> mapping : subcatCodes){
 				// create a SyntacticBehaviour for every subcat code
 				SyntacticBehaviour syntacticBehaviour = new SyntacticBehaviour();

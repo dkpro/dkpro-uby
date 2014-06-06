@@ -31,9 +31,8 @@ import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
  *
  */
 public class VNConverter {	
-	
-	
-	public LexicalResource lexicalResource;  
+		
+	protected LexicalResource lexicalResource;
 	private final String dtd_version;
 	
 	public VNConverter(LexicalResource lexicalResource, String dtd)
@@ -61,6 +60,14 @@ public class VNConverter {
 		LinkedList<Lexicon> lexicons = new LinkedList<Lexicon>();
 		lexicons.add(verbNetExtractor.lexicon); // Setting the lexicon (extracted from VerbNet)
 		lexicalResource.setLexicons(lexicons);		
+	}
+	
+	/**
+	 * Returns the {@link LexicalResource} object, which contains the results of the conversion
+	 * @return an instance of LexicalResource, which contains the results of the conversion
+	 */
+	public LexicalResource getLexicalResource() {
+		return lexicalResource;
 	}
 
 }

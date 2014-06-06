@@ -19,11 +19,12 @@
 package de.tudarmstadt.ukp.lmf.transform.germanet;
 
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -58,7 +59,7 @@ public class GNConverter {
 	/*
 	 * Groups of LexUnits with equal lemma and part of speech
 	 */
-	private HashSet<HashSet<LexUnit>> luGroups;
+	private Set<Set<LexUnit>> luGroups;
 
 	private SubcategorizationFrameExtractor subcategorizationFrameExtractor;
 
@@ -125,7 +126,7 @@ public class GNConverter {
 		LexicalEntryGenerator leGen = new LexicalEntryGenerator(this, resourceVersion);
 		List<LexicalEntry> lexicalEntries = new LinkedList<LexicalEntry>();
 		// Create a LexicalEntry for each luGroup
-		for (HashSet<LexUnit> luGroup : luGroups) {
+		for (Set<LexUnit> luGroup : luGroups) {
             lexicalEntries.add(leGen.createLexicalEntry(luGroup));
         }
 		// Setting RelatedForms of LexicalEntries
@@ -186,22 +187,23 @@ public class GNConverter {
 	 */
 	private void groupLUs() {
 		if (luGroups == null) {
-            luGroups = new HashSet<HashSet<LexUnit>>();
+            luGroups = new LinkedHashSet<Set<LexUnit>>();
         }
-		for(WordCategory pos : WordCategory.values()){
+		for (WordCategory pos : WordCategory.values()) {
 			List<LexUnit> lus = gnet.getLexUnits(pos);
-			HashMap<String, HashSet<LexUnit>> orthFormLUGroupMappings = new HashMap<String, HashSet<LexUnit>>();
+			Map<String, Set<LexUnit>> orthFormLUGroupMappings = 
+					new TreeMap<String, Set<LexUnit>>();
 			for (LexUnit lu : lus) {
 				String orthForm = lu.getOrthForm();
-				HashSet<LexUnit> luGroup = orthFormLUGroupMappings.get(orthForm);
+				Set<LexUnit> luGroup = orthFormLUGroupMappings.get(orthForm);
 				if(luGroup == null) {
-                    luGroup = new HashSet<LexUnit>();
-                }
+                    luGroup = new LinkedHashSet<LexUnit>();
+					orthFormLUGroupMappings.put(orthForm, luGroup);
+				}
 				luGroup.add(lu);
-				orthFormLUGroupMappings.put(orthForm, luGroup);
+			}
+			luGroups.addAll(orthFormLUGroupMappings.values());
 		}
-		luGroups.addAll(orthFormLUGroupMappings.values());
-	}
 	}
 
 	/**
@@ -211,8 +213,8 @@ public class GNConverter {
 	 *  a Set of LexUnits with equal lemma and WordCategory should be returned
 	 * @return a set of LexUnits with equal lemma and WordCategory to consumed lexUnit
 	 */
-	protected HashSet<LexUnit> getLUGroup(LexUnit lexUnit){
-		for(HashSet<LexUnit> luGroup : luGroups) {
+	protected Set<LexUnit> getLUGroup(LexUnit lexUnit){
+		for (Set<LexUnit> luGroup : luGroups) {
             if(luGroup.contains(lexUnit)) {
                 return luGroup;
             }

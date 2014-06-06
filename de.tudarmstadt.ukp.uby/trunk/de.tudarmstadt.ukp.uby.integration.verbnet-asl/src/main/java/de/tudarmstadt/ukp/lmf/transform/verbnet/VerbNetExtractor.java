@@ -23,11 +23,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import de.tudarmstadt.ukp.lmf.model.core.Definition;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
@@ -39,9 +42,9 @@ import de.tudarmstadt.ukp.lmf.model.enums.EComplementizer;
 import de.tudarmstadt.ukp.lmf.model.enums.EDeterminer;
 import de.tudarmstadt.ukp.lmf.model.enums.EExampleType;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalFunction;
+import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalNumber;
 import de.tudarmstadt.ukp.lmf.model.enums.ELabelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
-import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalNumber;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
 import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticCategory;
 import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticProperty;
@@ -92,19 +95,19 @@ public class VerbNetExtractor {
 	private final String resourceVersion;
 
 	// Mapping between verb lemmas and their' corresponding sense definitions in VerbNet
-	private static HashMap<String, HashSet<VerbNetSense>> LemmaVerbNetSenseMappings = new HashMap<String, HashSet<VerbNetSense>>();
+	private static Map<String, Set<VerbNetSense>> LemmaVerbNetSenseMappings = new TreeMap<String, Set<VerbNetSense>>();
 	// Mapping between LMF-Code of purely syntactic SC-Frame and SubcategorizationFrame
-	private static HashMap<String, SubcategorizationFrame> synargsSubcatFrameMap  = new HashMap<String, SubcategorizationFrame>();
+	private static Map<String, SubcategorizationFrame> synargsSubcatFrameMap  = new TreeMap<String, SubcategorizationFrame>();
 	// Mapping between LMF-Code of syntactic/semantic (including thematic roles) SC-Frame and SynSemCorrespondence
-	private static HashMap<List<String>, SynSemCorrespondence> predsynsemargsSynSemCorrMap  = new HashMap<List<String>, SynSemCorrespondence>();
+	private static Map<List<String>, SynSemCorrespondence> predsynsemargsSynSemCorrMap  = new LinkedHashMap<List<String>, SynSemCorrespondence>();
 	// Mapping between className and SubcategorizationFrameSet
-	private static HashMap<String, SubcategorizationFrameSet> classSubcatFrameSetMap  = new HashMap<String, SubcategorizationFrameSet>();
+	private static Map<String, SubcategorizationFrameSet> classSubcatFrameSetMap  = new TreeMap<String, SubcategorizationFrameSet>();
 	// Mapping between className and set of SubcategorizationFrames
-	private static HashMap<String, HashSet<SubcategorizationFrame>> classSCframeElementsMap  = new HashMap<String, HashSet<SubcategorizationFrame>>();
+	private static Map<String, Set<SubcategorizationFrame>> classSCframeElementsMap  = new TreeMap<String, Set<SubcategorizationFrame>>();
 	// Mapping between LMF-Code of semantic predicate and SemanticPredicate
-	private static HashMap<String, SemanticPredicate> predSemPredicateMap  = new HashMap<String, SemanticPredicate>();
+	private static Map<String, SemanticPredicate> predSemPredicateMap  = new TreeMap<String, SemanticPredicate>();
 	// Mapping between VerbNetSense and SubcategorizationFrameSet
-	private static HashMap<VerbNetSense, SubcategorizationFrameSet> senseSubcatFrameSetMap  = new HashMap<VerbNetSense, SubcategorizationFrameSet>();
+	private static Map<VerbNetSense, SubcategorizationFrameSet> senseSubcatFrameSetMap  = new LinkedHashMap<VerbNetSense, SubcategorizationFrameSet>();
 
 	private static List<VerbNetSense> listOfVerbNetSenses = new LinkedList <VerbNetSense>();
 
@@ -138,7 +141,7 @@ public class VerbNetExtractor {
 			String line;
 			String[] parts;
 			List<String> synSemArgs = new LinkedList <String>();
-			HashSet<VerbNetSense> vnSenses = new HashSet<VerbNetSense>(); // Processed VerbNet senses
+			Set<VerbNetSense> vnSenses = new LinkedHashSet<VerbNetSense>(); // Processed VerbNet senses
 
 			while ((line = input.readLine()) != null) {
 				parts = line.split("#");
@@ -150,7 +153,7 @@ public class VerbNetExtractor {
 					vnSenses.add(verbNetSense);
 					LemmaVerbNetSenseMappings.put(verbNetSense.lemma,vnSenses);
 				} else {
-					HashSet<VerbNetSense> newSense = new HashSet<VerbNetSense>();
+					Set<VerbNetSense> newSense = new LinkedHashSet<VerbNetSense>();
 					newSense.add(verbNetSense);
 					LemmaVerbNetSenseMappings.put(verbNetSense.lemma,newSense);
 				}
@@ -171,7 +174,7 @@ public class VerbNetExtractor {
 	 */
 	private List<String> getSelRestr(String arguments, String roleSet) {
 		List<String> newArgs = new LinkedList <String>();
-		HashMap<String, String> RoleRestrMap  = new HashMap<String, String>();
+		Map<String, String> RoleRestrMap  = new LinkedHashMap<String, String>();
 
 		String [] roles = roleSet.split("%");
 		for(String role : roles){
@@ -287,24 +290,24 @@ public class VerbNetExtractor {
 				senseSubcatFrameSetMap.put(vnSense, subcategorizationFrameSet);
 				
 				if (classSCframeElementsMap.get(classInfo[0]) == null) {
-					HashSet<SubcategorizationFrame> scFrames = new HashSet<SubcategorizationFrame>();
+					Set<SubcategorizationFrame> scFrames = new LinkedHashSet<SubcategorizationFrame>();
 					scFrames.add(synargsSubcatFrameMap.get(vnSense.synArgs));
 					
 					classSCframeElementsMap.put(classInfo[0], scFrames);
 				} else {
-					HashSet<SubcategorizationFrame> scFrames = classSCframeElementsMap.get(classInfo[0]);
+					Set<SubcategorizationFrame> scFrames = classSCframeElementsMap.get(classInfo[0]);
 					scFrames.add(synargsSubcatFrameMap.get(vnSense.synArgs));
 					classSCframeElementsMap.put(classInfo[0], scFrames);
 				}
 			} else {
 				senseSubcatFrameSetMap.put(vnSense, classSubcatFrameSetMap.get(classInfo[0]));
 				if (classSCframeElementsMap.get(classInfo[0]) == null) {
-					HashSet<SubcategorizationFrame> scFrames = new HashSet<SubcategorizationFrame>();
+					Set<SubcategorizationFrame> scFrames = new LinkedHashSet<SubcategorizationFrame>();
 					scFrames.add(synargsSubcatFrameMap.get(vnSense.synArgs));
 					
 					classSCframeElementsMap.put(classInfo[0], scFrames);
 				} else {
-					HashSet<SubcategorizationFrame> scFrames = classSCframeElementsMap.get(classInfo[0]);
+					Set<SubcategorizationFrame> scFrames = classSCframeElementsMap.get(classInfo[0]);
 					scFrames.add(synargsSubcatFrameMap.get(vnSense.synArgs));
 					classSCframeElementsMap.put(classInfo[0], scFrames);
 				}

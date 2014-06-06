@@ -18,7 +18,6 @@
  */
 package de.tudarmstadt.ukp.lmf.transform.framenet;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
