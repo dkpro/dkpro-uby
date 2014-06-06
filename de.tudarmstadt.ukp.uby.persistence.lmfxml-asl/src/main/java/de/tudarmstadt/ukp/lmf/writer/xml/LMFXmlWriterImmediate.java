@@ -46,7 +46,9 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
 /**
  * This class writes a LMF class to XML Output Stream
+ * @deprecated This class is currently not used. It will most likely be removed in future releases.
  */
+@Deprecated
 public class LMFXmlWriterImmediate {
 	
 	/*
