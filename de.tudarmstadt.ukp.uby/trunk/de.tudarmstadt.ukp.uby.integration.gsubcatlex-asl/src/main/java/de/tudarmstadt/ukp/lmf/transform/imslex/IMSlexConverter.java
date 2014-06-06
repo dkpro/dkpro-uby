@@ -24,9 +24,7 @@ import java.util.LinkedList;
 import de.tudarmstadt.ukp.lmf.model.core.GlobalInformation;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
-	
 
-	
 /**
  * This class converts a preprocessed version of IMSlex - Subcategorization Frames (SCF)
  *  (see PhD thesis of Judith Eckle-Kohler, 1999) to Uby-LMF.
@@ -35,11 +33,9 @@ import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
  * @author Judith Eckle-Kohler
  *
  */
-
 public class IMSlexConverter {	
-	
-	
-	public LexicalResource lexicalResource; 
+
+	protected LexicalResource lexicalResource; 
 	private final String dtd_version;
 	
 	public IMSlexConverter(LexicalResource lexicalResource, String dtd)
@@ -70,4 +66,12 @@ public class IMSlexConverter {
 		lexicalResource.setLexicons(lexicons);		
 	}
 
+	/**
+	 * Returns the {@link LexicalResource} object, which contains the results of the conversion
+	 * @return an instance of LexicalResource, which contains the results of the conversion
+	 */
+	public LexicalResource getLexicalResource() {
+		return lexicalResource;
+	}
+	
 }

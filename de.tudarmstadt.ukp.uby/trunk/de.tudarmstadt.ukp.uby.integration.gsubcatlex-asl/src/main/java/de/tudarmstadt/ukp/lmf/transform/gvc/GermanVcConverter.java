@@ -37,8 +37,7 @@ import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 
 public class GermanVcConverter {	
 	
-	
-	public LexicalResource lexicalResource; 
+	protected LexicalResource lexicalResource; 
 	private final String dtd_version;
 	
 	public GermanVcConverter(LexicalResource lexicalResource, String dtd)
@@ -66,6 +65,14 @@ public class GermanVcConverter {
 		LinkedList<Lexicon> lexicons = new LinkedList<Lexicon>();
 		lexicons.add(germanVcExtractor.lexicon); // Setting lexicon (extracted from the IMSlex subset)
 		lexicalResource.setLexicons(lexicons);		
+	}
+
+	/**
+	 * Returns the {@link LexicalResource} object, which contains the results of the conversion
+	 * @return an instance of LexicalResource, which contains the results of the conversion
+	 */
+	public LexicalResource getLexicalResource() {
+		return lexicalResource;
 	}
 
 }
