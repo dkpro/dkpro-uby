@@ -17,6 +17,7 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.transform.imslex;
 
+import java.awt.event.InputMethodListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,11 +26,14 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
@@ -61,6 +65,7 @@ import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrame;
 import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrameSet;
 import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticArgument;
 import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticBehaviour;
+
 /**
  * This class extracts information from a preprocessed version of IMSLex - Subcategorization Frames and fills in the corresponding LMF classes
  * @author Eckle-Kohler
@@ -93,27 +98,27 @@ public class IMSlexExtractor {
 
 	
 	// Mapping between lemmas and their corresponding IMSlex senses
-	private static HashMap<String, HashSet<IMSlexSense>> verbLemmaIMSlexSenseMappings = new HashMap<String, HashSet<IMSlexSense>>();
-	private static HashMap<String, HashSet<IMSlexSense>> adjLemmaIMSlexSenseMappings = new HashMap<String, HashSet<IMSlexSense>>();
-	private static HashMap<String, HashSet<IMSlexSense>> nounLemmaIMSlexSenseMappings = new HashMap<String, HashSet<IMSlexSense>>();	
+	private static Map<String, Set<IMSlexSense>> verbLemmaIMSlexSenseMappings = new TreeMap<String, Set<IMSlexSense>>();
+	private static Map<String, Set<IMSlexSense>> adjLemmaIMSlexSenseMappings = new TreeMap<String, Set<IMSlexSense>>();
+	private static Map<String, Set<IMSlexSense>> nounLemmaIMSlexSenseMappings = new TreeMap<String, Set<IMSlexSense>>();	
 	// Mapping between syntactic/semantic arguments (containing sem. role information) and purely syntactic arguments
-	private static HashMap<String, String> synSemArgSynArgMapping  = new HashMap<String, String>();	
+	private static Map<String, String> synSemArgSynArgMapping  = new TreeMap<String, String>();	
 	// Mapping between LMF-Code of purely syntactic SC-Frame and SubcategorizationFrame
-	private static HashMap<String, SubcategorizationFrame> synargsSubcatFrameMap  = new HashMap<String, SubcategorizationFrame>();	
+	private static Map<String, SubcategorizationFrame> synargsSubcatFrameMap  = new TreeMap<String, SubcategorizationFrame>();	
 	// Mapping between className and SubcategorizationFrameSet
-	private static HashMap<String, SubcategorizationFrameSet> classSubcatFrameSetMap  = new HashMap<String, SubcategorizationFrameSet>();
+	private static Map<String, SubcategorizationFrameSet> classSubcatFrameSetMap  = new TreeMap<String, SubcategorizationFrameSet>();
 	// Mapping between className and set of SubcategorizationFrames
-	private static HashMap<String, HashSet<SubcategorizationFrame>> classSCframeElementsMap  = new HashMap<String, HashSet<SubcategorizationFrame>>();	
+	private static Map<String, Set<SubcategorizationFrame>> classSCframeElementsMap  = new TreeMap<String, Set<SubcategorizationFrame>>();	
 	// Mapping between IMSlexSense and SubcategorizationFrameSet
-	private static HashMap<IMSlexSense, SubcategorizationFrameSet> senseSubcatFrameSetMap  = new HashMap<IMSlexSense, SubcategorizationFrameSet>();
+	private static Map<IMSlexSense, SubcategorizationFrameSet> senseSubcatFrameSetMap;
 	// Mapping between IMSlexSense and SemanticPredicate
-	private static HashMap<IMSlexSense, SemanticPredicate> senseSemPredicateMap  = new HashMap<IMSlexSense, SemanticPredicate>();
+	private static Map<IMSlexSense, SemanticPredicate> senseSemPredicateMap;
 
 	// Mapping between IMSlex syntactic information and semantic class information
-	private static HashMap<String, String> syntaxSemClassMap  = new HashMap<String, String>();
+	private static Map<String, String> syntaxSemClassMap  = new TreeMap<String, String>();
 	
 	private static List<IMSlexSense> listOfIMSlexSenses = new LinkedList <IMSlexSense>();
-
+	
 	/**
 	 * Constructs a IMSlexExtractor
 	 * @param preprocessedLexicon path of the File containing the preprocessed version of IMSlex
@@ -122,6 +127,16 @@ public class IMSlexExtractor {
 	 * @throws IOException 
 	 */
 	public IMSlexExtractor(File preprocessedLexicon, String resourceName, String resourceVersion) throws IOException {
+		Comparator<IMSlexSense> comparator = new Comparator<IMSlexSense>() {
+			@Override
+			public int compare(IMSlexSense o1, IMSlexSense o2) {
+				String key1 = o1.lemma + o1.pos + o1.hashCode();
+				String key2 = o2.lemma + o2.pos + o2.hashCode();
+				return key1.compareTo(key2);
+			}
+		};
+		senseSubcatFrameSetMap  = new TreeMap<IMSlexSense, SubcategorizationFrameSet>(comparator);
+		senseSemPredicateMap  = new TreeMap<IMSlexSense, SemanticPredicate>(comparator);
 
 		this.lexiconInputFile = preprocessedLexicon;
 		this.resourceName = resourceName;
@@ -143,7 +158,7 @@ public class IMSlexExtractor {
 		try {
 			String line;
 			String[] parts;
-			HashSet<IMSlexSense> imsLexSenses = new HashSet<IMSlexSense>(); // senses that have already been processed for one lemma
+			Set<IMSlexSense> imsLexSenses = new LinkedHashSet<IMSlexSense>(); // senses that have already been processed for one lemma
 
 			while ((line = input.readLine()) != null) {
 				parts = line.split("%");
@@ -190,7 +205,7 @@ public class IMSlexExtractor {
 						imsLexSenses.add(imsLexSense);
 						verbLemmaIMSlexSenseMappings.put(imsLexSense.lemma,imsLexSenses);
 					} else {
-						HashSet<IMSlexSense> newSense = new HashSet<IMSlexSense>();
+						Set<IMSlexSense> newSense = new LinkedHashSet<IMSlexSense>();
 						newSense.add(imsLexSense);
 						verbLemmaIMSlexSenseMappings.put(imsLexSense.lemma,newSense);
 					}
@@ -200,7 +215,7 @@ public class IMSlexExtractor {
 						imsLexSenses.add(imsLexSense);
 						adjLemmaIMSlexSenseMappings.put(imsLexSense.lemma,imsLexSenses);
 					} else {
-						HashSet<IMSlexSense> newSense = new HashSet<IMSlexSense>();
+						Set<IMSlexSense> newSense = new LinkedHashSet<IMSlexSense>();
 						newSense.add(imsLexSense);
 						adjLemmaIMSlexSenseMappings.put(imsLexSense.lemma,newSense);
 					}
@@ -210,7 +225,7 @@ public class IMSlexExtractor {
 						imsLexSenses.add(imsLexSense);
 						nounLemmaIMSlexSenseMappings.put(imsLexSense.lemma,imsLexSenses);
 					} else {
-						HashSet<IMSlexSense> newSense = new HashSet<IMSlexSense>();
+						Set<IMSlexSense> newSense = new LinkedHashSet<IMSlexSense>();
 						newSense.add(imsLexSense);
 						nounLemmaIMSlexSenseMappings.put(imsLexSense.lemma,newSense);
 					}
@@ -283,24 +298,24 @@ public class IMSlexExtractor {
 					senseSubcatFrameSetMap.put(imsLexSense, subcategorizationFrameSet);
 					
 					if (classSCframeElementsMap.get(imsLexSense.classInformation) == null) {
-						HashSet<SubcategorizationFrame> scFrames = new HashSet<SubcategorizationFrame>();
+						Set<SubcategorizationFrame> scFrames = new LinkedHashSet<SubcategorizationFrame>();
 						scFrames.add(synargsSubcatFrameMap.get(synSemArgSynArgMapping.get(imsLexSense.synArgs)));
 						
 						classSCframeElementsMap.put(imsLexSense.classInformation, scFrames);
 					} else {
-						HashSet<SubcategorizationFrame> scFrames = classSCframeElementsMap.get(imsLexSense.classInformation);
+						Set<SubcategorizationFrame> scFrames = classSCframeElementsMap.get(imsLexSense.classInformation);
 						scFrames.add(synargsSubcatFrameMap.get(synSemArgSynArgMapping.get(imsLexSense.synArgs)));
 						classSCframeElementsMap.put(imsLexSense.classInformation, scFrames);
 					}
 				} else {
 					senseSubcatFrameSetMap.put(imsLexSense, classSubcatFrameSetMap.get(imsLexSense.classInformation));
 					if (classSCframeElementsMap.get(imsLexSense.classInformation) == null) {
-						HashSet<SubcategorizationFrame> scFrames = new HashSet<SubcategorizationFrame>();
+						Set<SubcategorizationFrame> scFrames = new LinkedHashSet<SubcategorizationFrame>();
 						scFrames.add(synargsSubcatFrameMap.get(synSemArgSynArgMapping.get(imsLexSense.synArgs)));
 						
 						classSCframeElementsMap.put(imsLexSense.classInformation, scFrames);
 					} else {
-						HashSet<SubcategorizationFrame> scFrames = classSCframeElementsMap.get(imsLexSense.classInformation);
+						Set<SubcategorizationFrame> scFrames = classSCframeElementsMap.get(imsLexSense.classInformation);
 						scFrames.add(synargsSubcatFrameMap.get(synSemArgSynArgMapping.get(imsLexSense.synArgs)));
 						classSCframeElementsMap.put(imsLexSense.classInformation, scFrames);
 					}
