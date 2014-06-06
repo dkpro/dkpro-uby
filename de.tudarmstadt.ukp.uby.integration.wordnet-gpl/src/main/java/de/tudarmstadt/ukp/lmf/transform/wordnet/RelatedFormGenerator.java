@@ -20,10 +20,10 @@ package de.tudarmstadt.ukp.lmf.transform.wordnet;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -52,7 +52,7 @@ public class RelatedFormGenerator {
 	 * Used for RelatedForms only
 	 * The Mappings for different POS are as follows {NOUN, VERB, ADJECTIVE, ADVERB}
 	 */
-	private final static Map<String, ERelTypeMorphology[]> pointerTypeRelTypeMappings = new HashMap<String, ERelTypeMorphology[]>();
+	private final static Map<String, ERelTypeMorphology[]> pointerTypeRelTypeMappings = new TreeMap<String, ERelTypeMorphology[]>();
 
 	private final Logger logger = Logger.getLogger(WNConverter.class.getName());
 
@@ -76,7 +76,7 @@ public class RelatedFormGenerator {
 		Map<Set<Word>, LexicalEntry> mappings = lexicalEntryGenerator.getLexemeGroupLexicalEntryMaping();
 		// Iterate over all lexemeGroups and update the RelatedForms of corresponding LexicalEntries
 		for(Set<Word> lexemeGroup : mappings.keySet()){
-			Set<RelatedForm> relatedForms = new HashSet<RelatedForm>();
+			Set<RelatedForm> relatedForms = new LinkedHashSet<RelatedForm>();
 			// Iterate over every Lexeme and check for possible RelatedForms
 			for(Word lexeme : lexemeGroup) {
                 for(Pointer pointer : lexeme.getPointers()) {

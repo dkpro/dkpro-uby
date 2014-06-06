@@ -20,12 +20,13 @@ package de.tudarmstadt.ukp.lmf.transform.framenet;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -64,13 +65,13 @@ public class SemanticPredicateGenerator {
 	public static final String SEMANTIC_TYPE = "semanticType";
 	
 	//Mappings between SemanticPredicates and corresponding Frames
-	private final Map<Frame, SemanticPredicate> frameSemanticPredicateMappings = new HashMap<Frame, SemanticPredicate>();
+	private final Map<Frame, SemanticPredicate> frameSemanticPredicateMappings = new LinkedHashMap<Frame, SemanticPredicate>();
 
 	private int semanticPredicateNumber = 0; // Used for creating IDs
 	private int semanticArgumentNumber = 0; // Used for creating IDs
 
 	// Mappings between FrameElement-names and SemanticArguments in order to prevent duplication of SemanticArgumens
-	private final Map<String, SemanticArgument> feSemArgMapping = new HashMap<String, SemanticArgument>();
+	private final Map<String, SemanticArgument> feSemArgMapping = new TreeMap<String, SemanticArgument>();
 
 	// list of incorporated SemanticSArguments
 //	private List<SemanticArgument> incorporatedSemArgs = new ArrayList<SemanticArgument>();
@@ -474,7 +475,7 @@ public class SemanticPredicateGenerator {
 	 * This method initializes the names of frame-relations, as described in FrameNet's files
 	 */
 	private void initializeFrameRelations(){
-		frameRelations = new HashSet<String>();
+		frameRelations = new LinkedHashSet<String>();
 		frameRelations.add("Inheritance");
 		frameRelations.add("Subframe");
 		frameRelations.add("Using");

@@ -20,11 +20,12 @@ package de.tudarmstadt.ukp.lmf.transform.wordnet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,7 +67,7 @@ public class SenseGenerator {
 	private int lmfSenseNumber;
 
 	// Mappings between lexemes and associated Senses
-	private final Map<Word, Sense> lexemeSenseMappings = new HashMap<Word, Sense>();
+	private final Map<Word, Sense> lexemeSenseMappings;
 
 	private final String resourceVersion;
 	
@@ -85,6 +86,13 @@ public class SenseGenerator {
 		this.synsetGenerator = synsetGenerator;
 		this.isr = isr;
 		this.resourceVersion = resourceVersion;
+		
+		lexemeSenseMappings = new TreeMap<Word, Sense>(new Comparator<Word>() {
+			@Override
+			public int compare(Word o1, Word o2) {
+				return o1.getSenseKey().compareTo(o2.getSenseKey());
+			}
+		});
 	}
 
 	/**

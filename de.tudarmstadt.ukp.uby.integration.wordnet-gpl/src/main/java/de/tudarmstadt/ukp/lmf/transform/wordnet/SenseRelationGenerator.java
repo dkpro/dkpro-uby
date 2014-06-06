@@ -18,10 +18,10 @@
  */
 package de.tudarmstadt.ukp.lmf.transform.wordnet;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import net.sf.extjwnl.data.POS;
 import net.sf.extjwnl.data.Pointer;
@@ -70,8 +70,8 @@ public class SenseRelationGenerator {
 	 */
 	private void initializePointerMappings() {
 		// The Mappings for different POS are as follows {NOUN, VERB, ADJECTIVE, ADVERB}
-		pointerTypeRelNameMappings = new HashMap<String, String[]>();
-		pointerTypeRelTypeMappings = new HashMap<String, ERelTypeSemantics[]>();
+		pointerTypeRelNameMappings = new TreeMap<String, String[]>();
+		pointerTypeRelTypeMappings = new TreeMap<String, ERelTypeSemantics[]>();
 
 		// Adding mappings
 

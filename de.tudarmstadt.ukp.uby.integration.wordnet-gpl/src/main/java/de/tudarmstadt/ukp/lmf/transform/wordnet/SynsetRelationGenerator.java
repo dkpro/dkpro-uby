@@ -18,13 +18,13 @@
  */
 package de.tudarmstadt.ukp.lmf.transform.wordnet;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import net.sf.extjwnl.data.POS;
 import net.sf.extjwnl.data.Pointer;
@@ -68,7 +68,7 @@ public class SynsetRelationGenerator {
 
 	private Set<String> ignoredPointerKeys; // A set of ignored pointer keys, used for error-detection purposes
 
-	private final Map<String, ELabelTypeSemantics> domainOfRegisterMappings = new HashMap<String,ELabelTypeSemantics>(); // <domainOfRelationKey, register>
+	private final Map<String, ELabelTypeSemantics> domainOfRegisterMappings = new TreeMap<String,ELabelTypeSemantics>(); // <domainOfRelationKey, register>
 
 	// String representations of relation names that are not part of ERelNameSemantics
 
@@ -259,8 +259,8 @@ public class SynsetRelationGenerator {
 	 */
 	private void initializePointerMappings() {
 		// The Mappings for different POS are as follows {NOUN, VERB, ADJECTIVE, ADVERB}
-		pointerTypeRelNameMappings = new HashMap<String, String[]>();
-		pointerTypeRelTypeMappings = new HashMap<String, ERelTypeSemantics[]>();
+		pointerTypeRelNameMappings = new TreeMap<String, String[]>();
+		pointerTypeRelTypeMappings = new TreeMap<String, ERelTypeSemantics[]>();
 
 		// Adding mappings
 
@@ -419,7 +419,7 @@ public class SynsetRelationGenerator {
           {null, null, ERelTypeSemantics.association, null});
 
 		// Set the ignored keys
-		ignoredPointerKeys = new HashSet<String>();
+		ignoredPointerKeys = new TreeSet<String>();
 		ignoredPointerKeys.add("!");
 		ignoredPointerKeys.add("+");
 		ignoredPointerKeys.add("<");

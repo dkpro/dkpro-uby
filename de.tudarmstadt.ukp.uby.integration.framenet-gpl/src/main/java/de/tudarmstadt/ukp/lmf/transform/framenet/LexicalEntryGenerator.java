@@ -20,12 +20,13 @@ package de.tudarmstadt.ukp.lmf.transform.framenet;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -85,19 +86,19 @@ public class LexicalEntryGenerator {
 	 * Groups of LexicalUnits with equal lemma,
 	 * divided by PartOfSpeech
 	 */
-	private Map<PartOfSpeech, HashMap<String, HashSet<LexicalUnit>>> mappings;
+	private Map<PartOfSpeech, Map<String, Set<LexicalUnit>>> mappings;
 
 	// Mapping between luGroups and corresponding LexicalEntries
-	private final Map<Set<LexicalUnit>, LexicalEntry> groupLEMappings = new HashMap<Set<LexicalUnit>, LexicalEntry>();
+	private final Map<Set<LexicalUnit>, LexicalEntry> groupLEMappings = new LinkedHashMap<Set<LexicalUnit>, LexicalEntry>();
 
 	// Mappings used for creating targetLexicalEntry attribute in Component class
-	private final Map<PartOfSpeech, Map<String, List<Component>>> components = new HashMap<PartOfSpeech, Map<String,List<Component>>>(); // all Components
+	private final Map<PartOfSpeech, Map<String, List<Component>>> components = new LinkedHashMap<PartOfSpeech, Map<String,List<Component>>>(); // all Components
 
 	/*
 	 *  This mapping contains all "dummy" LexicalEntries,
 	 *  that are created in order to set the targetLexicalEntry attribute in Component class
 	 */
-	private final Map<PartOfSpeech, Map<String, LexicalEntry>> dummyLEs = new HashMap<PartOfSpeech, Map<String, LexicalEntry>>();
+	private final Map<PartOfSpeech, Map<String, LexicalEntry>> dummyLEs = new LinkedHashMap<PartOfSpeech, Map<String, LexicalEntry>>();
 
 	// used for extracting annotations
 	private AnnotationCorpus ac;
@@ -128,8 +129,8 @@ public class LexicalEntryGenerator {
 		System.err.println("LUS grouped");
 		// Initialize help-mappings
 		for(PartOfSpeech pos : PartOfSpeech.values()){
-			dummyLEs.put(pos, new HashMap<String, LexicalEntry>());
-			components.put(pos, new HashMap<String, List<Component>>());
+			dummyLEs.put(pos, new TreeMap<String, LexicalEntry>());
+			components.put(pos, new TreeMap<String, List<Component>>());
 		}
 		System.err.println("help mappings initialized");
 		createLexicalEntries();
@@ -145,7 +146,7 @@ public class LexicalEntryGenerator {
 	 */
 	private void createLexicalEntries(){
 		for(PartOfSpeech pos : mappings.keySet()) {
-            for(HashSet<LexicalUnit> luGroup : mappings.get(pos).values()){
+            for (Set<LexicalUnit> luGroup : mappings.get(pos).values()){
 				LexicalEntry lexicalEntry = createLexicaltEntry(luGroup);
 				groupLEMappings.put(luGroup, lexicalEntry);
 				lexicalEntries.add(lexicalEntry);
@@ -160,7 +161,7 @@ public class LexicalEntryGenerator {
 	 * @return generated LexicalEntry based on consumed luGroup
 	 * @see {@link LexicalUnit}
 	 */
-	public LexicalEntry createLexicaltEntry(HashSet<LexicalUnit> luGroup){
+	public LexicalEntry createLexicaltEntry(Set<LexicalUnit> luGroup){
 		LexicalEntry lexicalEntry = new LexicalEntry();
 		lexicalEntry.setId(createID());
 		PartOfSpeech pos=null;
@@ -263,7 +264,7 @@ public class LexicalEntryGenerator {
 					}
  				}
 				// MAPPING LU'S SEMTYPE TO SENSE NEW
-				HashSet<String> semTypes = alu.getSemTypes();
+				Set<String> semTypes = alu.getSemTypes();
 				for (String s: semTypes){
 					SemanticType t = null;
 					try {
@@ -520,15 +521,15 @@ public class LexicalEntryGenerator {
 	 * This method groups all LexicalUnits by lemma and part of speech
 	 */
 	private void groupLUs() {
-		mappings = new HashMap<PartOfSpeech, HashMap<String, HashSet<LexicalUnit>>>();
+		mappings = new LinkedHashMap<PartOfSpeech, Map<String, Set<LexicalUnit>>>();
 		PartOfSpeech[] poses = PartOfSpeech.values();
 
 		for(PartOfSpeech pos : poses) {
-            mappings.put(pos, new HashMap<String, HashSet<LexicalUnit>>());
+            mappings.put(pos, new TreeMap<String, Set<LexicalUnit>>());
         }
 
 		for(LexicalUnit lu : fn.getLexicalUnits()){
-			HashMap<String, HashSet<LexicalUnit>> lemmaLUMappings = mappings.get(lu.getPartOfSpeech());
+			Map<String, Set<LexicalUnit>> lemmaLUMappings = mappings.get(lu.getPartOfSpeech());
 			String lemma = lu.getLexemeString(); // lu's lemma
 
 
@@ -548,9 +549,9 @@ public class LexicalEntryGenerator {
 				}
             }
 
-			HashSet<LexicalUnit> luGroup = lemmaLUMappings.get(lemma);
+			Set<LexicalUnit> luGroup = lemmaLUMappings.get(lemma);
 			if(luGroup == null) {
-                luGroup = new HashSet<LexicalUnit>();
+                luGroup = new LinkedHashSet<LexicalUnit>();
             }
 			luGroup.add(lu);
 			lemmaLUMappings.put(lemma, luGroup);

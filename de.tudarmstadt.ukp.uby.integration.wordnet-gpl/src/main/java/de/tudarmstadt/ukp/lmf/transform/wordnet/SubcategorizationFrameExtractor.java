@@ -23,11 +23,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -64,12 +64,12 @@ public class SubcategorizationFrameExtractor {
 	private InputStream subcatStream; // stream of the file containing subcategorization mappings
 	private int subcatFrameNumber = 0;
 	private int syntacticArgumentNumber = 0; // Running number for creating ID's of SyntacticArguments
-	private final Map<String, SubcategorizationFrame> codeFrameMappings  = new HashMap<String, SubcategorizationFrame>();
-	private final Map<String, SemanticPredicate> codePredMappings  = new HashMap<String, SemanticPredicate>();
+	private final Map<String, SubcategorizationFrame> codeFrameMappings  = new TreeMap<String, SubcategorizationFrame>();
+	private final Map<String, SemanticPredicate> codePredMappings  = new TreeMap<String, SemanticPredicate>();
 
-	private final Map<String, String> codeSynSemArgMapping  = new HashMap<String, String>();
-	private final Map<String, String> synSemArgSynArgMapping  = new HashMap<String, String>();
-	private final Map<String, SubcategorizationFrame> synArgSubcatFrameMapping  = new HashMap<String, SubcategorizationFrame>();
+	private final Map<String, String> codeSynSemArgMapping  = new TreeMap<String, String>();
+	private final Map<String, String> synSemArgSynArgMapping  = new TreeMap<String, String>();
+	private final Map<String, SubcategorizationFrame> synArgSubcatFrameMapping  = new TreeMap<String, SubcategorizationFrame>();
 
 	// list of all processed SemanticPredicates
 	private final List<SemanticPredicate> semanticPredicates = new LinkedList<SemanticPredicate>();
@@ -78,7 +78,7 @@ public class SubcategorizationFrameExtractor {
 	private final List<SynSemCorrespondence> synSemCorrespondences = new LinkedList<SynSemCorrespondence>();
 	private int synSemCorrespondenceNumber = 0; // Running number for creating IDs
 
-	private final Map<String, SynSemCorrespondence> synsemargsSynSemCorrMap  = new HashMap<String, SynSemCorrespondence>();
+	private final Map<String, SynSemCorrespondence> synsemargsSynSemCorrMap  = new TreeMap<String, SynSemCorrespondence>();
 
 	private final Logger logger = Logger.getLogger(WNConverter.class.getName());
 
