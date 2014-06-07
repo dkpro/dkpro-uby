@@ -627,6 +627,32 @@ public class Uby
 	}
 
 	/**
+	 * Returns the {@link Synset} instance contained in the database accessed by this
+	 * {@link Uby} instance. 
+	 * 
+	 * @param externalSys the {@link String} representing the name of external system
+	 * such as:
+	 * OmegaWiki_2010-01-03_eng_definedMeaning
+	 * WordNet_3.0_eng_synsetOffset
+	 * GermaNet_7.0_deu_synset
+	 *
+	 * @param externalRef the Synset ID used in the external system,
+	 *
+	 * @returns the {@link Synset} specified by the given arguments 
+	 */
+	public Synset getSynsetByOriginalReference(String externalSys, String externalRef){
+		Criteria criteria = session.createCriteria(Synset.class);
+
+		criteria = criteria.createCriteria("monolingualExternalRefs").add(
+				Restrictions.sqlRestriction("externalSystem = '"
+						+ externalSys + "' and externalReference ='"+ externalRef + "'"));
+		
+		return (Synset) criteria.uniqueResult();
+
+	}
+
+	
+	/**
      * Returns the {@link Sense} instance contained in the database accessed by this
      * {@link Uby} instance. The returned senses are filtered by the given
      * name of the external system, external reference and lexicon.
