@@ -213,6 +213,11 @@ public class UbyTest
 			i++;
 		}
 		assertEquals(i,6);
+		
+		Synset extSynset = uby.getSynsetByOriginalReference("WordNet 3.0 part of speech and synset offset", "[POS: verb] 867409");
+		assertEquals(extSynset.getId(), "WN_Synset_86301");
+
+				
 	}
 
 	@Test
