@@ -20,26 +20,56 @@ public class JointGraphBuilder
 			/* GLOBAL SETTINGS */
 
 			Global.init();
-			final String language = ELanguageIdentifier.GERMAN;
-
+			String language = ELanguageIdentifier.GERMAN;
 			/*RESOURCE 1*/
 
-			boolean synset1 = true;
+			boolean synset1 = false;
 			boolean usePos1 = true;
-			final int prefix1 = Global.GN_Synset_prefix;
-			final String prefix_string1 = Global.prefixTable.get(prefix1);
-			OneResourceBuilder bg_1 = new OneResourceBuilder("uby_lite_0_4_0","root","fortuna", prefix1,language,synset1,usePos1);
-	//		OneResourceBuilder bg_1 = new OneResourceBuilder("uby_release_1_0","root","fortuna", prefix1,language,synset1,usePos1);
+
+			 int prefix1 = Global.WKT_DE_prefix;
+			 String prefix_string1 = Global.prefixTable.get(prefix1);
+	//		OneResourceBuilder bg_1 = new OneResourceBuilder("uby_lite_0_4_0","root","fortuna", prefix1,language,synset1,usePos1);
+			OneResourceBuilder bg_1 = new OneResourceBuilder("uby_release_1_0","root","fortuna", prefix1,language,synset1,usePos1);
 			final int monoLinkThreshold1 = 1000;
 			final int chunksize1 = 2000;
-
-			bg_1.createGlossFile(true);
-
+			bg_1.createGlossFile(false);
+		//	bg_1.typeTokenRatio();
 			bg_1.lemmatizePOStagGlossFileInChunks(chunksize1);
+			bg_1.fillIndexTables();
+			bg_1.builtRelationGraphFromDb(false);
 
-	//		bg_1.fillIndexTables();
+			prefix1 = Global.WP_DE_prefix;
+			prefix_string1 = Global.prefixTable.get(prefix1);
+	//		OneResourceBuilder bg_1 = new OneResourceBuilder("uby_lite_0_4_0","root","fortuna", prefix1,language,synset1,usePos1);
+			bg_1 = new OneResourceBuilder("uby_release_1_0","root","fortuna", prefix1,language,synset1,usePos1);
+			bg_1.createGlossFile(false);
+		//	bg_1.typeTokenRatio();
+			bg_1.lemmatizePOStagGlossFileInChunks(chunksize1);
+			bg_1.fillIndexTables();
+			bg_1.builtRelationGraphFromDb(false);
 
-		//	bg_1.builtRelationGraphFromDb(true);
+			 language = ELanguageIdentifier.ENGLISH;
+			prefix1 = Global.WKT_EN_prefix;
+			prefix_string1 = Global.prefixTable.get(prefix1);
+	//		OneResourceBuilder bg_1 = new OneResourceBuilder("uby_lite_0_4_0","root","fortuna", prefix1,language,synset1,usePos1);
+			bg_1 = new OneResourceBuilder("uby_release_1_0","root","fortuna", prefix1,language,synset1,usePos1);
+			bg_1.createGlossFile(false);
+		//	bg_1.typeTokenRatio();
+			bg_1.lemmatizePOStagGlossFileInChunks(chunksize1);
+			bg_1.fillIndexTables();
+			bg_1.builtRelationGraphFromDb(false);
+
+
+			 language = ELanguageIdentifier.ENGLISH;
+				prefix1 = Global.WP_EN_prefix;
+				prefix_string1 = Global.prefixTable.get(prefix1);
+		//		OneResourceBuilder bg_1 = new OneResourceBuilder("uby_lite_0_4_0","root","fortuna", prefix1,language,synset1,usePos1);
+				bg_1 = new OneResourceBuilder("uby_release_1_0","root","fortuna", prefix1,language,synset1,usePos1);
+				bg_1.createGlossFile(false);
+			//	bg_1.typeTokenRatio();
+				bg_1.lemmatizePOStagGlossFileInChunks(chunksize1);
+				bg_1.fillIndexTables();
+				bg_1.builtRelationGraphFromDb(false);
 
 			System.exit(0);
 

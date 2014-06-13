@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 import de.tudarmstadt.ukp.alignment.framework.Global;
@@ -26,7 +28,7 @@ public class OneResourceBuilder
 	public HashMap<String,HashSet<String>> senseIdLemma;
 	public HashMap<String,String> lemmaIdWrittenForm;
 	public HashMap<String,Integer> lexemeFreqInGlosses;
-	public HashMap<String,Integer> lemmaFreqInGlosses;
+	public TreeMap<String,Integer> lemmaFreqInGlosses;
 	public HashMap<String, String> senseIdGloss;
 	public HashMap<String,String> senseIdGlossPos;
 	public Connection connection;
@@ -43,7 +45,7 @@ public class OneResourceBuilder
 		lemmaIdWrittenForm = new HashMap<String, String>();
 		lemmaPosSenses = new HashMap<String, HashSet<String>>();
 		lexemeFreqInGlosses = new HashMap<String, Integer>();
-		lemmaFreqInGlosses = new HashMap<String, Integer>();
+		lemmaFreqInGlosses = new TreeMap<String, Integer>();
 		HashMap<Integer,String> senseIdGloss = new HashMap<Integer, String>();
 		HashMap<Integer,String> senseIdGlossPos = new HashMap<Integer, String>();
 
@@ -168,6 +170,76 @@ public class OneResourceBuilder
 		rs.close();
 		statement.close();
 
+	}
+
+	public void typeTokenRatio() throws ClassNotFoundException, SQLException, IOException
+	{
+		double token_count = 0;
+		FileOutputStream outstream;
+		int count = 0;
+		TreeSet<String> coveredSenses = new TreeSet<String>();
+		PrintStream p;
+		outstream = new FileOutputStream("target/"+prefix_string+"_"+(synset?"synset":"sense")+"_ttr.txt");
+
+		p = new PrintStream( outstream );
+//		outstream_freq = new FileOutputStream("target/"+prefix_string+"_"+(synset?"synset":"sense")+"_lemma_frequencies.txt");
+//		p_freq = new PrintStream( outstream_freq );
+		Statement statement = connection.createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY, java.sql.ResultSet.CONCUR_READ_ONLY);
+		statement.setFetchSize(Integer.MIN_VALUE);
+		ResultSet rs;
+		final Pattern CLEANUP = Pattern.compile("[^A-Za-z0-9äöüÄÖÜß]+");
+		if(synset)
+		{
+			rs = statement.executeQuery("SELECT synsetId, writtenText FROM Definition join TextRepresentation_Definition where synsetId like '"+prefix_string+"%' and Definition.definitionId = TextRepresentation_Definition.definitionId and length(writtenText)>0");
+		}
+		else
+		{
+			rs =	statement.executeQuery("SELECT senseId, writtenText FROM Definition join TextRepresentation_Definition where senseId like '"+prefix_string+"%' and Definition.definitionId = TextRepresentation_Definition.definitionId and length(writtenText)>0");
+		}
+		System.out.println("Reached");
+		while(rs.next())
+		{
+			if(rs.getString(2)!=null) {
+				String id = rs.getString(1);
+
+				if(synset)
+				{
+					id = prefix+id.split("ynset_")[1];
+
+				}
+				else
+				{
+					id = prefix+id.split("ense_")[1];
+				}
+				count++;
+				if(count % 1000 == 0) {
+					System.out.println(count);
+				}
+				String gloss =  CLEANUP.matcher(rs.getString(2)).replaceAll(" ");
+				gloss = gloss.replace("\n", "").replace("\r", "").replace("\t", " ").trim();
+
+				coveredSenses.add(id);
+				String[] result=gloss.split(" ");
+				 for(String s : result) {
+					 token_count++;
+						if(!lemmaFreqInGlosses.containsKey(s))
+						{
+							lemmaFreqInGlosses.put(s, 0);
+						}
+						int freq = lemmaFreqInGlosses.get(s);
+						lemmaFreqInGlosses.put(s, freq+1);
+
+					//System.out.println(s);
+				}
+			}
+		}
+		p.println("Tokens: "+token_count);
+		p.println("Types: "+lemmaFreqInGlosses.keySet().size());
+		p.println("Ratio: "+(lemmaFreqInGlosses.keySet().size()/token_count ));
+
+		rs.close();
+		statement.close();
+		p.close();
 	}
 
 
@@ -455,7 +527,7 @@ public class OneResourceBuilder
 
 
 			if(lemmaFreqInGlosses.size()==0) {
-				lemmaFreqInGlosses = new HashMap<String, Integer>();
+				lemmaFreqInGlosses = new TreeMap<String, Integer>();
 				 FileReader in = new FileReader("target/"+prefix_string+"_"+(synset?"synset":"sense")+"_lemma_frequencies.txt");
 				 BufferedReader input_reader =  new BufferedReader(in);
 				 String line;
