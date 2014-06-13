@@ -1,0 +1,15 @@
+<?xml version="1.0"?><!DOCTYPE hibernate-mapping PUBLIC
+ "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>  
+<class name="de.tudarmstadt.ukp.lmf.model.meta.MetaData" table="MetaData" node="MetaData" dynamic-insert="true">
+    <id name="id" column="metaDataId" node="@id" type="string"/>
+    
+    <property name="creationDate" column="creationDate" node="@creationDate" type="timestamp"/>
+	<property name="creationTool" column="creationTool" node="@creationTool" type="string" />
+	<property name="version" column="version" node="@version" type="string" /> 
+	<property name="creationProcess" column="creationProcess" node="@creationProcess" type="string" /> 
+	<property name="automatic" column="automatic" node="@automatic" type="boolean" />
+</class>
+
+</hibernate-mapping>
