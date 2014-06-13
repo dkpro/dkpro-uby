@@ -1,0 +1,1050 @@
+#!/usr/bin/perl -w
+###########################################################################
+# Copyright 2013
+# Ubiquitous Knowledge Processing (UKP) Lab
+# Technische Universität Darmstadt
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#******************************************************************************
+#
+# vn2converterInput
+#
+#
+# input: 2 Files:
+#   Inspector Output: vn/Inspector -n -h -z <verbnet-3.2 directory> -V wrexyzsq > verbnet-wrexyzsq
+#   Inspector Output: vn/Inspector -n -h -z <verbnet-3.2 directory> -V ctuqw > verbnet-ctuqw
+#   
+# output: 
+#   console output (information about inconsistencies in VerbNet, i.e. different number of syntactic and semantic arguments)
+#   2 result files: 
+#     - verbNetConverterInput (required as input for Java conversion tool)
+#       1 line = 1 VerbNet Sense, format:
+#       verb#WordNetSense#example#argumentList#semanticPredicate#verbClass#semanticRoles#syntacticArgumentList
+#     - verbNetSynFrames (this is an additional list of SCFs, which is not required for conversion to LMF)
+#
+###########################################################################
+#
+# creation date: 2011-08-17
+# modified (v2.0): 2013-12-09
+# author: Judith Eckle-Kohler
+#     
+###########################################################################
+
+
+&print_usage if $#ARGV < 0;
+
+$verb_file = shift(@ARGV);
+$class_file = shift(@ARGV);
+
+$result_file = "verbNetConverterInput";
+$scf_file = "verbNetSynFrames";
+
+undef %super_map; # mapping of VerbNet class to its parent class
+undef %role_map; # mapping of VerbNet class to list of thematic roles
+undef %verb_map; # mappping of verb, WordNet sense, VerbNet frame to VerbNet class
+undef %arg_map;
+undef %frame_map;
+undef %comp_map;
+undef %synres_map;
+
+$synres_map{"<+be_sc_ing>"}  = "syntacticProperty=subjectControl"; 
+$synres_map{"<-definite>"}  = "determiner=indefinite"; 
+$synres_map{"<+genitive>"}  = "case=genitive";  
+$synres_map{"<+np_omit_ing>"}  = "syntacticProperty=subjectControl"; 
+$synres_map{"<+oc_ing>"}  = "syntacticProperty=objectControl";  
+$synres_map{"<+oc_to_inf>"}  = "syntacticProperty=objectControl"; 
+$synres_map{"<+plural>"}  = "number=plural";  
+$synres_map{"<+pos_ing>"}  = "determiner=possessive"; 
+$synres_map{"<+poss_ing>"}  = "determiner=possessive";  
+$synres_map{"<+possing>"}  = "determiner=possessive";  
+$synres_map{"<+refl>"}  = "complement=reflexive"; 
+$synres_map{"<+rs_to_inf>"}  = "syntacticProperty=raising";
+$synres_map{"<+sc_ing>"}  = "syntacticProperty=subjectControl";  
+$synres_map{"<+sc_to_inf>"}  = "syntacticProperty=subjectControl";  
+$synres_map{"<+that_comp&-tensed_that>"}  = "verbForm=bareInfinitive";
+$synres_map{"<+to_inf_rs>"}  = "syntacticProperty=raising";
+
+$arg_map{"PP"} = "grammaticalFunction=complement,syntacticCategory=prepositionalPhrase"; 
+$arg_map{"P"} = "grammaticalFunction=complement,syntacticCategory=prepositionalPhrase"; 
+$arg_map{"NP"} = "grammaticalFunction=complement,syntacticCategory=nounPhrase"; # if np=patient: s/comp/directObject/
+$arg_map{"S_INF"} = "grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=toInfinitive"; 
+$arg_map{"S_ING"} = "grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=ingForm"; 
+$arg_map{"S-Quote"} = "grammaticalFunction=complement,syntacticCategory=declarativeClause"; 
+$arg_map{"S"} = "grammaticalFunction=complement,syntacticCategory=subordinateClause"; 
+$arg_map{"ADVP"} = "grammaticalFunction=complement,syntacticCategory=adverbPhrase"; 
+$arg_map{"ADV"} = "grammaticalFunction=complement,syntacticCategory=adverbPhrase"; 
+$arg_map{"ADJ"} = "grammaticalFunction=complement,syntacticCategory=adjectivePhrase"; 
+
+$comp_map{"that"} = "complementizer=thatType"; 
+$comp_map{"what"} = "complementizer=whType"; 
+$comp_map{"when"} = "complementizer=whType"; 
+$comp_map{"why"} = "complementizer=whType"; 
+$comp_map{"how"} = "complementizer=whType"; 
+$comp_map{"whether"} = "complementizer=yesNoType"; 
+$comp_map{"whether/if"} = "complementizer=yesNoType"; 
+
+# frames with non-NP subject
+$frame_map{"It//V (it)//([+be])//V//"} = 
+    "grammaticalFunction=subject,syntacticCategory=expletive,lexeme=it";
+$frame_map{"It//V//NP.theme (it)//([+be])//V//%Theme//"} = 
+    "grammaticalFunction=subject,syntacticCategory=expletive,lexeme=it:grammaticalFunction=complement,syntacticCategory=nounPhrase";
+$frame_map{"It//V//PP.experiencer//that//S (it)//V//{to}//%Experiencer//%Cause//<+that_comp>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=expletive,lexeme=it:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=to:grammaticalFunction=complement,syntacticCategory=subordinateClause,complementizer=thatType";
+$frame_map{"It//V//PP.theme (it[+be])//V//{with}//%Theme//"} = 
+    "grammaticalFunction=subject,syntacticCategory=expletive,lexeme=it:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=with";
+$frame_map{"It//V//that//S (it)//V//%Cause//<+that_comp>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=expletive,lexeme=it:grammaticalFunction=complement,syntacticCategory=subordinateClause,complementizer=thatType";
+$frame_map{"It//V//that//S (it)//V//%Theme//<+that_comp>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=expletive,lexeme=it:grammaticalFunction=complement,syntacticCategory=subordinateClause,complementizer=thatType";
+
+$frame_map{"P-ING-SC %Agent//V//{to}//%Destination//<+sc_ing>//"} = 
+    "syntacticProperty=subjectControl:grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=ingForm,preposition=to";
+
+$frame_map{"That//S.cause//V %Cause//<+that_comp>//V//"} = 
+    "grammaticalFunction=subject,syntacticCategory=subordinateClause,complementizer=thatType";
+
+#####################################
+
+# frames with object raising
+# this VerbNet frame seems to be wrong: (no possessive in the VP in the example)
+
+#VF-PAIR: VERB: admire (wn=admire%2:37:00) FRAME: [NP V NP S_ING // POSSING]
+#EXAMPLE: I loved him writing novels.
+#SYNTAX: %Experiencer V %Stimulus <+poss_ing> 
+
+$frame_map{"NP//V//NP//S_ING %Experiencer//V//%Stimulus//<+poss_ing>//"} = 
+    "syntacticProperty=objectRaising:grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=ingForm";
+
+
+#####################################
+
+# other frames new in version 3.2
+
+#FRAME: [NP V NP PP.source S_ING // NP-P-POSSING; on-PP]
+#EXAMPLE: They based their plan on his seizing the base.
+#SYNTAX: %Agent V %Theme {on} %Source <+poss_ing>
+$frame_map{"NP//V//NP//PP.source//whether//S %Agent//V//%Theme//{on}//%Source//<+wh_comp>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=ingForm,preposition=on:determiner=possessive";
+
+#FRAME: [NP V NP PP.source S // NP-P-NP-ING; on-PP]
+#EXAMPLE: They based their plans on him getting in on time.
+#SYNTAX: %Agent V %Theme {on} %Source <+acc_ing>
+$frame_map{"NP//V//NP//PP.source//S %Agent//V//%Theme//{on}//%Source//<+acc_ing>//"} = 
+    "syntacticProperty=objectRaising:grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=on:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=ingForm";
+
+#FRAME: [NP V NP PP.source whether S // NP-P-WH-S; on-PP]
+#EXAMPLE: They based their decision on whether he happened to come or not.
+#SYNTAX: %Agent V %Theme {on} %Source <+wh_comp> 
+$frame_map{"NP//V//NP//PP.source//whether//S %Agent//V//%Theme//{on}//%Source//<+wh_comp>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=subordinateClause,complementizer=whType,preposition=on";
+
+#################
+
+#FRAME: [NP V PP.co-agent PP.topic whether/if S // PP-P-WH-S; with-PP about-PP]
+#EXAMPLE: I battled with him about whether he should kill the peasants.
+#SYNTAX: %Agent V {with} %Co-Agent {about} %Topic <+wh_comp> 
+$frame_map{"NP//V//PP.co-agent//PP.topic//whether/if//S %Agent//V//{with}//%Co-Agent//{about}//%Topic//<+wh_comp>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=with:grammaticalFunction=complement,syntacticCategory=subordinateClause,complementizer=whType,preposition=about";
+
+#FRAME: [NP V PP.co-agent PP.topic what S_INF // PP-P-WHAT-TO-INF; with-PP about-PP]
+#EXAMPLE: I battled with him about what to do.
+#SYNTAX: %Agent V {with} %Co-Agent {about} %Topic <+what_inf> 
+$frame_map{"NP//V//PP.co-agent//PP.topic//what//S_INF %Agent//V//{with}//%Co-Agent//{about}//%Topic//<+what_inf>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=with:grammaticalFunction=complement,syntacticCategory=subordinateClause,complementizer=whType,preposition=about,verbForm=toInfinitive";
+
+#FRAME: [NP V PP.co-agent PP.topic whether S_INF // PP-P-WH-TO-INF; with-PP about-PP]
+#EXAMPLE: I battled with him about whether to go.
+#SYNTAX: %Agent V {with} %Co-Agent {about} %Topic <+wheth_inf> 
+$frame_map{"NP//V//PP.co-agent//PP.topic//whether//S_INF %Agent//V//{with}//%Co-Agent//{about}//%Topic//<+whet_inf>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=with:grammaticalFunction=complement,syntacticCategory=subordinateClause,complementizer=yesNoType,preposition=about,verbForm=toInfinitive";
+
+#FRAME: [NP V PP.topic NP S_ING // P-POSSING; about-PP]
+#EXAMPLE: They battled about his coming.
+#SYNTAX: %Agent <+plural> V {about} %Topic <+poss_ing> 
+$frame_map{"NP//V//PP.topic//NP//S_ING %Agent//<+plural>//V//{about}//%Topic//<+poss_ing>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase,number=plural:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=ingForm,preposition=about,determiner=possessive";
+
+##################
+
+#FRAME: [NP V for NP S_INF // FOR-TO-INF]
+#EXAMPLE: I begged for her to do it.
+#SYNTAX: %Agent V %Topic <-for_comp> 
+$frame_map{"NP//V//for//NP//S_INF %Agent//V//%Topic//<-for_comp>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=for:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=toInfinitive";
+
+###############
+
+#FRAME: [NP V PP.stimulus what S // P-WHAT-S; about-PP]
+#EXAMPLE: He doesn't care about what he should do.
+#SYNTAX: %Experiencer V {about} %Stimulus <+what_extract> 
+$frame_map{"NP//V//PP.stimulus//what//S %Experiencer//V//{about}//%Stimulus//<+what_extract>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=subordinateClause,complementizer=whType,preposition=about";
+
+#FRAME: [NP V PP.stimulus how/whether S // P-WH-S; about-PP]
+#EXAMPLE: He doesn't care about how/whether she comes.
+#SYNTAX: %Experiencer V {about} %Stimulus <+wh_comp> 
+$frame_map{"NP//V//PP.stimulus//how/whether//S %Experiencer//V//{about}//%Stimulus//<+wh_comp>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=subordinateClause,complementizer=whType,preposition=about";
+
+#FRAME: [NP V PP.source PP.theme whether/if S // PP-P-WH-S; from-PP about-PP]
+#EXAMPLE: I discovered from him about whether he should kill the peasants.
+#SYNTAX: %Agent V {from} %Source {about} %Theme <+wh_comp>
+$frame_map{"NP//V//PP.source//PP.theme//whether/if//S %Agent//V//{from}//%Source//{about}//%Theme//<+wh_comp>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=from:grammaticalFunction=complement,syntacticCategory=subordinateClause,complementizer=whType,preposition=about";
+ 
+#FRAME: [NP V PP.source PP.theme what S // PP-P-WHAT-S; from-PP about-PP]
+#EXAMPLE: I discovered from him about what he should do.
+#SYNTAX: %Agent V {from} %Source {about} %Theme <+what_extract> 
+$frame_map{"NP//V//PP.source//PP.theme//what//S %Agent//V//{from}//%Source//{about}//%Theme//<+what_extract>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=from:grammaticalFunction=complement,syntacticCategory=subordinateClause,complementizer=whType,preposition=about";
+
+#FRAME: [NP V PP.source PP.theme what S_INF // PP-P-WHAT-TO-INF; from-PP about-PP]
+#EXAMPLE: I learned from him about what to do.
+#SYNTAX: %Agent V {from} %Source {about} %Theme <+wh_inf>
+$frame_map{"NP//V//PP.source//PP.theme//what//S_INF//%Agent//V//{from}//%Source//{about}//%Theme//<+wh_inf>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=from:grammaticalFunction=complement,syntacticCategory=subordinateClause,complementizer=whType,preposition=about,verbForm=toInfinitive";
+
+#FRAME: [NP V PP.source PP.theme whether S_INF // PP-P-WH-TO-INF; from-PP about-PP]
+#EXAMPLE: I discovered from him about whether to go.
+#SYNTAX: %Agent V {from} %Source {about} %Theme <+wheth_inf> 
+$frame_map{"NP//V//PP.source//PP.theme//whether//S_INF//%Agent//V//{from}//%Source//{about}//%Theme//<+wheth_inf>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=from:grammaticalFunction=complement,syntacticCategory=subordinateClause,complementizer=yesNoType,preposition=about,verbForm=toInfinitive";
+
+#################
+
+#FRAME: [NP V PP.stimulus S_ING // P-POSSING; with-P]
+#EXAMPLE: You really have to empathize with their doing it.
+#SYNTAX: %Experiencer V {with} %Stimulus <+poss_ing>
+$frame_map{"NP//V//PP.stimulus//S_ING//%Experiencer//V//{with}//%Stimulus//<+poss_ing>//"} =
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=ingForm,preposition=with,determiner=possessive";
+
+#FRAME: [NP V PP.stimulus what S // P-WHAT-S; about-PP]
+#EXAMPLE: He doesn't care about what he should do.
+#SYNTAX: %Experiencer V {about} %Stimulus <+what_extract> 
+$frame_map{"NP//V//PP.stimulus//what//S//%Experiencer//V//{about}//%Stimulus//<+what_extract>//"} =
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=subordinateClause,complementizer=whType,preposition=about";
+
+#FRAME: [NP V NP PP.theme S_ING // NP-P-ING; from-PP]
+#EXAMPLE: The rules forbid us from smoking.
+#SYNTAX: %Agent V %Theme <+np_p_ing> 
+$frame_map{"NP//V//NP//PP.theme//S_ING//%Agent//V//%Theme//<+np_p_ing>//"} =
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=ingForm,preposition=from";
+
+#FRAME: [NP V PP.recipient whether S // PP-P-WH-S; of-PP about-PP]
+#EXAMPLE: He asked of her about whether he should kill the peasants.
+#SYNTAX: %Agent V {of} %Recipient {about} %Topic <+wh_comp> 
+$frame_map{"NP//V//PP.recipient//whether//S//%Agent//V//{of}//%Recipient//{about}//%Topic//<+wh_comp>//"} =
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=of:grammaticalFunction=complement,syntacticCategory=subordinateClause,complementizer=whType,preposition=about";
+
+#FRAME: [NP V PP.recipient PP.topic what S // PP-P-WHAT-S; of-PP about-PP]
+#EXAMPLE: He asked of her about what he should do.
+#SYNTAX: %Agent V {of} %Recipient {about} %Topic <+what_extract> 
+$frame_map{"NP//V//PP.recipient//PP.topic//what//S//%Agent//V//{of}//%Recipient//{about}//%Topic//<+what_extract>//"} =
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=of:grammaticalFunction=complement,syntacticCategory=subordinateClause,complementizer=whType,preposition=about";
+
+#FRAME: [NP V PP.recipient PP.topic what S_INF // PP-P-WHAT-TO-INF; of-PP about-PP]
+#EXAMPLE: He asked of her about what to do.
+#SYNTAX: %Agent V {of} %Recipient {about} %Topic <+what_inf> 
+$frame_map{"NP//V//PP.recipient//PP.topic//what//S_INF//%Agent//V//{of}//%Recipient//{about}//%Topic//<+what_inf>//"} =
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=of:grammaticalFunction=complement,syntacticCategory=subordinateClause,complementizer=whType,preposition=about,verbForm=toInfinitive";
+
+#FRAME: [NP V PP.recipient PP.topic whether S_INF // PP-P-WH-TO-INF; of-PP about-PP]
+#EXAMPLE: I asked of him about whether to go.
+#SYNTAX: %Agent V {of} %Recipient {about} %Topic <+wheth_inf> 
+$frame_map{"NP//V//PP.recipient//PP.topic//whether//S_INF//%Agent//V//{of}//%Recipient//{about}//%Topic//<+wheth_inf>//"} =
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=of:grammaticalFunction=complement,syntacticCategory=subordinateClause,complementizer=yesNoType,preposition=about,verbForm=toInfinitive";
+
+#FRAME: [NP V PP.theme NP S_ING // P-NP-ING; on-PP]
+#EXAMPLE: She relies on him coming back in time.
+#SYNTAX: %Agent V {on} %Theme <+np_ing> 
+$frame_map{"NP//V//PP.theme//NP//S_ING//%Agent//V//{on}//%Theme//<+np_ing>//"} =
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=on:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=ingForm";
+
+#FRAME: [NP V for NP S_INF // FOR-TO-INF]
+#EXAMPLE: I need for her to be happy.
+#SYNTAX: %Pivot V %Theme <+for_comp> 
+$frame_map{"NP//V//for//NP//S_INF//%Pivot//V//%Theme//<+for_comp>//"} =
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=for:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=toInfinitive";
+
+#FRAME: [NP V PP.goal what S_INF // P-WHAT-TO-INF; on-PP]
+#EXAMPLE: They settled on what to do.
+#SYNTAX: %Agent <+plural> V {on} %Goal <+what_inf> 
+$frame_map{"NP//V//PP.goal//what//S_INF//%Agent//<+plural>//V//{on}//%Goal//<+what_inf>//"} =
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase,number=plural:grammaticalFunction=complement,syntacticCategory=subordinateClause,complementizer=whType,preposition=on,verbForm=toInfinitive";
+
+#FRAME: [NP V NP S_ING // POSSING]
+#EXAMPLE: I needed his cooking.
+#SYNTAX: %Pivot V %Theme <+poss_ing> 
+$frame_map{"NP//V//NP//S_ING//%Pivot//V//%Theme//<+poss_ing>//"} =
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=ingForm,determiner=possessive";
+
+#FRAME: [NP V NP S_INF // NP-TO-INF]
+#EXAMPLE: I needed him to go.
+#SYNTAX: %Pivot V %Theme <+np_to_inf> 
+$frame_map{"NP//V//NP//S_INF//%Pivot//V//%Theme//<+np_to_inf>//"} =
+    "syntacticProperty=objectRaising:grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=toInfinitive";
+
+#FRAME: [NP V PP.source S_ING // P-ING-SC; of-P]
+#EXAMPLE: He backed out of going on the trip.
+#SYNTAX: %Agent V {of} %Source <+sc_ing>
+$frame_map{"NP//V//PP.source//S_ING//%Agent//V//{of}//%Source//<+sc_ing>//"} =
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=ingForm,preposition=of";
+
+#FRAME: [NP V PP.source S_ING // P-ING-SC; from-PP]
+#EXAMPLE: He backed away from going on the trip.
+#SYNTAX: %Agent V {from} %Source <+sc_ing> 
+$frame_map{"NP//V//PP.source//S_ING//%Agent//V//{from}//%Source//<+sc_ing>//"} =
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=ingForm,preposition=of";
+
+#####################################
+
+$frame_map{"PP.location//there//V//NP {{+loc}}//%Location//(there)//V//%Theme//"} = 
+    "grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,prepositionType=+loc,lexeme=there:grammaticalFunction=subject,syntacticCategory=nounPhrase";
+
+$frame_map{"PP.location//V//NP {{+loc}}//%Location//V//%Theme//"} = 
+    "grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,prepositionType=+loc:grammaticalFunction=subject,syntacticCategory=nounPhrase"; 
+
+$frame_map{"PP.location//V//NP {{+path}}//%Location//V//%Theme//"} = 
+    "grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,prepositionType=+path:grammaticalFunction=subject,syntacticCategory=nounPhrase"; 
+
+$frame_map{"There//V//NP//PP.location (there)//V//%Theme//{{+loc}}//%Location//"} = 
+    "grammaticalFunction=subject,syntacticCategory=expletive,lexeme=there:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,prepositionType=+loc";  
+
+$frame_map{"There//V//NP//PP (there)//V//%Theme//{{+path}}//%Location//"} = 
+    "grammaticalFunction=subject,syntacticCategory=expletive,lexeme=there:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,prepositionType=+path";
+
+$frame_map{"There//V//NP//PP (there)//V//%Theme//{{+loc}}//%Location//"} = 
+    "grammaticalFunction=subject,syntacticCategory=expletive,lexeme=there:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,prepositionType=+loc";
+
+$frame_map{"There//V//NP//PP (there)//V//%Theme//<-definite>//{{+loc}}//%Location//"} = 
+    "grammaticalFunction=subject,syntacticCategory=expletive,lexeme=there:grammaticalFunction=complement,syntacticCategory=nounPhrase,determiner=indefinite:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,prepositionType=+loc";
+
+$frame_map{"There//V//NP//PP (there)//V//%Theme//<-definite>//{{+path}}//%Location//"} = 
+    "grammaticalFunction=subject,syntacticCategory=expletive,lexeme=there:grammaticalFunction=complement,syntacticCategory=nounPhrase,determiner=indefinite:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,prepositionType=+path";
+
+$frame_map{"NP//V//NP//PP.source//////////////////////////PP.destination %Agent//V//%Theme//{{+src}}"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,prepositionType=+src";
+
+$frame_map{"NP.location//V//NP {{+loc}}//%Location//V//%Theme//"} = 
+    "grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,prepositionType=+loc:grammaticalFunction=subject,syntacticCategory=nounPhrase";
+
+$frame_map{"PP.location//V//NP {{+loc}}//%Location//V//%Theme//"} = 
+    "grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,prepositionType=+loc:grammaticalFunction=subject,syntacticCategory=nounPhrase";
+
+$frame_map{"PP.location//V//NP {{+path}}//%Location//V//%Theme//"} = 
+    "grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,prepositionType=+path:grammaticalFunction=subject,syntacticCategory=nounPhrase";
+
+$frame_map{"NP//V//way//PP %Agent//V//%NP//<+poss>//(way)//{{+dir}}//%Oblique//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase,determiner=possessive,lexeme=way:grammaticalFunction=adverbialComplement,syntacticCategory=prepositionalPhrase,prepositionType=+dir";
+
+#############################################################
+
+$frame_map{"There//V//NP (there)//V//%Theme//"} = 
+    "grammaticalFunction=subject,syntacticCategory=expletive,lexeme=there:grammaticalFunction=complement,syntacticCategory=nounPhrase";
+$frame_map{"There//V//NP (there)//V//%Theme//<-definite>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=expletive,lexeme=there:grammaticalFunction=complement,syntacticCategory=nounPhrase,determiner=indefinite";
+
+$frame_map{"There//V//PP//NP (there)//V//{from}//%Source//%Theme//"} = 
+    "grammaticalFunction=subject,syntacticCategory=expletive,lexeme=there:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=from:grammaticalFunction=complement,syntacticCategory=nounPhrase";
+
+$frame_map{"There//V//PP//NP (there)//V//{{+loc}}//%Location//%Theme//<-definite>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=expletive,lexeme=there:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,prepositionType=+loc:grammaticalFunction=complement,syntacticCategory=nounPhrase,determiner=indefinite";
+
+$frame_map{"There//V//PP//NP (there)//V//{{+path}}//%Location//%Theme//<-definite>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=expletive,lexeme=there:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,prepositionType=+path:grammaticalFunction=complement,syntacticCategory=nounPhrase,determiner=indefinite";
+
+$frame_map{"There//V//PP//NP (there)//V//{{+path}}//%Location//%Theme//"} = 
+    "grammaticalFunction=subject,syntacticCategory=expletive,lexeme=there:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,prepositionType=+path:grammaticalFunction=complement,syntacticCategory=nounPhrase";
+
+$frame_map{"There//V//PP//NP (there)//V//{{+path}}//%Location//[+concrete]//%Theme//<-definite>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=expletive,lexeme=there:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,prepositionType=+path:grammaticalFunction=complement,syntacticCategory=nounPhrase,determiner=indefinite";
+
+
+#  frames containing ADJ
+$frame_map{"NP//V//ADJ-Middle %Theme//V//ADV//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=adverbPhrase";
+#########################################
+$frame_map{"NP//V//NP//ADJ %Agent//V//%Theme//<+np_ppart>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=objectComplement,syntacticCategory=adjectivePhrase";
+# where at any rate we knew them safe from the horrible lightning storm 
+
+$frame_map{"NP//V//NP//ADJ %Agent//V//%Topic//<+np_ppart>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=objectComplement,syntacticCategory=adjectivePhrase";
+$frame_map{"NP//V//NP//ADJ %Experiencer//V//%Theme//<+np_ppart>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=objectComplement,syntacticCategory=adjectivePhrase";
+#######################################
+
+$frame_map{"NP//V//NP//to//be//ADJ %Agent//V//%Theme//(as)//%Predicate//<+small_clause>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=objectComplement,syntacticCategory=verbPhrase,verbForm=toInfinitive,preposition=as";
+
+$frame_map{"NP//V//NP//to//be//ADJ %Agent//V//%Theme//<+to_be>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=objectComplement,syntacticCategory=verbPhrase,verbForm=toInfinitive";
+
+$frame_map{"NP//V//NP//to//be//ADJ %Experiencer//V//%Theme//<+to_be>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=objectComplement,syntacticCategory=verbPhrase,verbForm=toInfinitive";
+
+$frame_map{"NP//V//NP//to//be//NP %Agent//V//%Theme//<+np_tobe>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=objectComplement,syntacticCategory=verbPhrase,verbForm=toInfinitive";
+$frame_map{"NP//V//NP//to//be//NP %Agent//V//%Theme//%Predicate//<+small_clause>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=objectComplement,syntacticCategory=verbPhrase,verbForm=toInfinitive";
+$frame_map{"NP//V//NP//to//be//NP %Agent//V//%Theme//<+to_be>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=objectComplement,syntacticCategory=verbPhrase,verbForm=toInfinitive";
+$frame_map{"NP//V//NP//to//be//NP %Agent//V//%Topic//<+to_be>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=objectComplement,syntacticCategory=verbPhrase,verbForm=toInfinitive";
+$frame_map{"NP//V//NP//to//be//NP %Cause//V//%Topic//<+to_be>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=objectComplement,syntacticCategory=verbPhrase,verbForm=toInfinitive";
+$frame_map{"NP//V//NP//to//be//NP %Experiencer//V//%Proposition//<+to_be>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=objectComplement,syntacticCategory=verbPhrase,verbForm=toInfinitive";
+
+
+# frames specifying particular lexemes (in parentheses)
+$frame_map{"NP.attribute//V %Attribute//(of)//%Patient//V//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase,determiner=possessive,lexeme=of";
+
+$frame_map{"NP.attribute//V//NP.extent %Attribute//(of)//%Patient//V//%Extent//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase,determiner=possessive,lexeme=of:grammaticalFunction=adverbialComplement,syntacticCategory=nounPhrase";
+
+$frame_map{"NP.attribute//V//NP.extent %Patient//('s)//%Attribute//V//%Extent//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase,determiner=possessive,lexeme='s:grammaticalFunction=adverbialComplement,syntacticCategory=nounPhrase";
+
+$frame_map{"NP.attribute//V %Patient//('s)//%Attribute//V//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase,determiner=possessive,lexeme='s";
+
+$frame_map{"NP.attribute//V//PP.extent %Attribute//(of)//%Patient//V//{by}//%Extent//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase,determiner=possessive,lexeme=of:grammaticalFunction=adverbialComplement,syntacticCategory=prepositionalPhrase,preposition=by";
+
+$frame_map{"NP.attribute//V//PP.extent %Patient//('s)//%Attribute//V//{by}//%Extent//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase,determiner=possessive,lexeme='s:grammaticalFunction=adverbialComplement,syntacticCategory=prepositionalPhrase,preposition=by";
+
+$frame_map{"NP.cause//V//NP %Cause//<+genitive>//('s)//%Oblique//V//%Experiencer//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase,determiner=possessive,lexeme='s:grammaticalFunction=complement,syntacticCategory=nounPhrase";
+
+$frame_map{"NP//V//NP %Agent//V//%Patient//<+genitive>//%Oblique//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=directObject,syntacticCategory=nounPhrase,determiner=possessive";
+$frame_map{"NP//V//NP.predicate %Agent//V//%Theme//<+genitive>//%Predicate//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=directObject,syntacticCategory=nounPhrase,determiner=possessive";
+
+#######################################################
+
+$frame_map{"NP//NP//V//ADVP-Middle//together %Patient//<+plural>//V//ADV//(together)//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase,number=plural:grammaticalFunction=complement,syntacticCategory=adverbPhrase,lexeme=together";
+$frame_map{"NP//NP//V//together %Patient//<+plural>//V//(together)//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase,number=plural:grammaticalFunction=complement,syntacticCategory=adverbPhrase,lexeme=together";
+
+$frame_map{"NP//V %Actor1//(and)//%Actor2//V//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase,number=plural";
+$frame_map{"NP//V// %Actor1//(and)//%Actor2//V//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase,number=plural";
+$frame_map{"NP//V//ADV-Middle %Patient//<+plural>//V//(apart)//ADV//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase,number=plural:grammaticalFunction=complement,syntacticCategory=adverbPhrase,lexeme=apart";
+
+$frame_map{"NP//V//ADV-Middle//together %Patient//<+plural>//V//ADV//(together)//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase,number=plural:grammaticalFunction=complement,syntacticCategory=adverbPhrase,lexeme=together";
+$frame_map{"NP//V//together//ADV-Middle %Patient//<+plural>//V//ADV//(together)//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase,number=plural:grammaticalFunction=complement,syntacticCategory=adverbPhrase,lexeme=together";
+
+$frame_map{"NP//V//ADVP-Middle %Patient//<+plural>//V//ADV//(together)//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase,number=plural:grammaticalFunction=complement,syntacticCategory=adverbPhrase,lexeme=together";
+
+$frame_map{"NP//V %Theme1//(and)//%Theme2//V//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase,number=plural";
+
+$frame_map{"NP//V//together//ADV-Middle %Patient//<+plural>//V//(together)//ADV//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase,number=plural:grammaticalFunction=complement,syntacticCategory=adverbPhrase,lexeme=together";
+
+$frame_map{"NP//V//together %Patient//<+plural>//V//(together)//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase,number=plural:grammaticalFunction=complement,syntacticCategory=adverbPhrase,lexeme=together";
+$frame_map{"NP//V//together %Theme//<+plural>//V//(together)//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase,number=plural:grammaticalFunction=complement,syntacticCategory=adverbPhrase,lexeme=together";
+
+$frame_map{"NP//V//V//together %Actor//<+plural>//V//(together)//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase,number=plural:grammaticalFunction=complement,syntacticCategory=adverbPhrase,lexeme=together";
+
+##################################################
+
+$frame_map{"NP//V %Agent//V//(away)//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=adverbPhrase,lexeme=away";
+
+$frame_map{"NP//V//apart %Patient//<+plural>//V//(apart)//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase,number=plural:grammaticalFunction=complement,syntacticCategory=adverbPhrase,lexeme=apart";
+
+$frame_map{"NP//V//down//NP %Agent//V//%Patient//(down)//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=directObject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=adverbPhrase,lexeme=down";
+$frame_map{"NP//V//NP//down %Agent//V//%Patient//(down)//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=directObject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=adverbPhrase,lexeme=down";
+$frame_map{"NP//V//NP//up %Agent//V//%Patient//(up)//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=directObject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=adverbPhrase,lexeme=up";
+$frame_map{"NP//V//up//NP %Agent//V//(up)//%Patient//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=adverbPhrase,lexeme=up:grammaticalFunction=directObject,syntacticCategory=nounPhrase";
+
+$frame_map{"NP//V//NP//apart %Agent//V//%Patient//<+plural>//(apart)//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=directObject,syntacticCategory=nounPhrase,number=plural:grammaticalFunction=complement,syntacticCategory=adverbPhrase,lexeme=apart";
+
+$frame_map{"NP//V//NP.attribute %Agent//V//%Theme//<+genitive>//('s)//%Attribute//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase,determiner=possessive,lexeme='s";
+
+$frame_map{"NP//V//NP//NP//together %Agent//V//%Patient//<+plural>//(together)//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=directObject,syntacticCategory=nounPhrase,number=plural:grammaticalFunction=complement,syntacticCategory=adverbPhrase,lexeme=together";
+$frame_map{"NP//V//NP//together %Agent//V//%Patient//<+plural>//(together)//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=directObject,syntacticCategory=nounPhrase,number=plural:grammaticalFunction=complement,syntacticCategory=adverbPhrase,lexeme=together";
+
+$frame_map{"NP//V//NP//together %Agent//V//%Theme//<+plural>//(together)//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=object,syntacticCategory=nounPhrase,number=plural:grammaticalFunction=complement,syntacticCategory=adverbPhrase,lexeme=together";
+$frame_map{"NP//V//NP//together %Agent//V//%Theme//(together)//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=object,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=adverbPhrase,lexeme=together";
+
+###########################################
+$frame_map{"NP//V//NP//PP.oblique %Agent//V//%Product//(as)//%Oblique//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=objectComplement,syntacticCategory=prepositionalPhrase,preposition=as";
+
+$frame_map{"NP//V//NP//PP.predicate %Agent//V//%Theme//(as)//%Predicate//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=objectComplement,syntacticCategory=prepositionalPhrase,preposition=as";
+
+$frame_map{"NP//V//NP//PP.predicate %Agent//V//%Theme//(as)//%Predicate//<-sentential>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=objectComplement,syntacticCategory=prepositionalPhrase,preposition=as";
+
+$frame_map{"NP//V//NP//S_ING %Agent//V//%Theme//(as)//%Predicate//<+oc_ing>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=objectComplement,syntacticCategory=verbPhrase,verbForm=ingForm,preposition=as";
+
+$frame_map{"NP//V//NP.theme//(PP) %Agent//V//%Theme//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase";
+
+$frame_map{"NP//V//NP//to//be//NP %Agent//V//%Theme//(to)//(be)//%Predicate//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=objectComplement,syntacticCategory=verbPhrase,verbForm=toInfinitive";
+
+$frame_map{"NP//V//NP//to//be//NP %Agent//V//%Theme//(to)//(be)//%Predicate//<-sentential>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=objectComplement,syntacticCategory=verbPhrase,verbForm=toInfinitive";
+######################################################
+
+$frame_map{"NP//V//NP//PP.destination-Conative %Agent//V//%Theme//(at)//%Destination//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=at";
+$frame_map{"NP//V//PP %Agent//V//(at)//%Destination//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=at";
+
+$frame_map{"NP//V//PP %Agent//V//(at)//%Patient//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=at";
+$frame_map{"NP//V//PP-Conative %Agent//V//(at)//%Source//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=at";
+$frame_map{"NP//V//PP//PP %Agent//V//(at)//%Destination//{with}//%Instrument//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=at:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=with";
+$frame_map{"NP//V//PP//PP %Agent//V//(at)//%Patient//{with}//%Instrument//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=at:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=with";
+
+$frame_map{"NP//V//out %Theme//V//(out)//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=adverbPhrase,lexeme=out";
+
+$frame_map{"NP//V//PP.predicate %Agent//V//(as)//%Predicate//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=subjectComplement,syntacticCategory=prepositionalPhrase,preposition=as";
+$frame_map{"NP//V//PP.predicate %Agent//V//(like)//%Predicate//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=subjectComplement,syntacticCategory=adverbPhrase,lexeme=like";
+#################################################################
+
+# frames containing "for, to be", inconsistent use of for_comp
+$frame_map{"NP//V//for//NP//S_INF %Agent//V//{for}//%Recipient//%Topic//<+for_comp>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=toInfinitive,preposition=for";
+
+$frame_map{"NP//V//for//NP//S_INF %Agent//V//%Proposition//<-for_comp>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=toInfinitive,preposition=for";
+$frame_map{"NP//V//for//NP//S_INF %Experiencer//V//%Theme//<+for_comp>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=toInfinitive,preposition=for";
+$frame_map{"NP//V//for//NP//S_INF %Theme1//V//%Theme2//<+for_comp>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=toInfinitive,preposition=for";
+
+
+# other frames:
+$frame_map{"NP//V//NP//S %Experiencer//V//%Stimulus//%Predicate//<+oc_bare_inf>//"} = 
+    "syntacticProperty=objectControl:grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=bareInfinitive";
+
+$frame_map{"NP-P-ING-OC %Agent//V//%Patient//{to}//%Destination//<+oc_ing>//"} = 
+    "syntacticProperty=objectControl:grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=directObject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=ingForm,preposition=to";
+
+$frame_map{"NP//V//NP-Dative//NP %Agent//V//%Recipient//%Topic//<-sentential>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase";
+
+$frame_map{"NP//V//PP.cause//how/whether//S %Experiencer//V//{about}//%Cause//<+wh_comp>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=subordinateClause,complementizer=whType,preposition=about";
+
+
+#inconsistent frame-syntax pairs
+$frame_map{"NP//V//that//S %Cause//V//%Beneficiary//%Theme//<+oc_to_inf>//"} = 
+    "syntacticProperty=objectControl:grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=toInfinitive";
+
+$frame_map{"NP//V//NP//PP.predicate %Agent//V//%Theme//<+np_p_ing>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=ingForm,preposition=from";
+
+$frame_map{"NP//V//NP//PP.theme//S_ING %Agent//V//%Theme//<+np_p_ing>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=ingForm,preposition=from";
+
+$frame_map{"NP//V//NP//PP.theme2//S %Agent//V//%Theme1//{on}//%Theme2//<+acc_ing>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=ingForm,preposition=on";
+
+$frame_map{"NP//V//that//S %Theme1//V//%Theme2//%Predicate//<+that_comp>//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=subordinateClause,complementizer=thatType";
+
+$frame_map{"NP//V//that//S//PP.theme %Agent//V//{from}//%Theme//<+that_comp>//%Source//"} = 
+    "grammaticalFunction=subject,syntacticCategory=nounPhrase:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=from:grammaticalFunction=complement,syntacticCategory=subordinateClause,complementizer=thatType";
+ 
+
+open(CLASS, "$class_file") || die "Couldn't open $class_file: $!";
+print "VerbNet classes ....\n";
+while (<CLASS>) {
+    undef $code;
+    chomp($_);
+    s/^\s+//og; # remove leading whitespace characters
+    ($code) = /(.+)$/o;
+    next if (!defined $code);
+    if ($code =~ /CLASS:/) {
+	undef $class;
+	if ($code =~ /SUBCLASS:/) {
+	    $level = "SUB";
+	    ($class) = ($code =~ /SUBCLASS:\s+([^\s]+)/o);
+	    ($super) = ($class =~ /([^\s]+)-[1-9]/o);
+	    $super_map{$class} = $super;
+	    $role_map{$class} = $role_map{$super};
+	    
+	    @roles = split(/%/,$role_map{$class}); 
+	    undef %new;
+	    foreach $sr (@roles) {
+		if ($sr =~ /\[/) {
+		    ($sr1) = ($sr =~ /([^\s]+)\s*\[.+\]/o);
+		    $sr1 =~ s/\s//g; # remove blanks
+		    $new{$sr1} = $sr; # map role-part to complete role		   
+		} elsif ($sr !~ /\[/) {
+		    $new{$sr} = $sr;		    
+		}
+	    };
+	    next;
+	} else { # CLASS
+	    $level = "MAIN";
+	    ($class) = ($code =~ /CLASS:\s+([^\s]+)/o);
+	    $super_map{$class} = "NULL";
+	    next;
+	}
+    } elsif ($code =~ /THEMROLE:/) {
+	undef $role;
+	($role) = ($code =~ /THEMROLE:\s+([A-Z][^\s].*)$/o);
+	$role =~ s/\s//g; # remove blanks
+	if ($level eq "MAIN") {
+	    if (!exists $role_map{$class}) {
+		$role_map{$class} = $role;
+	    } else {
+		$role_map{$class} = $role_map{$class} . "%" . $role;
+	    }
+	} elsif ($level eq "SUB") {	   	    
+	    if ($role =~ /\[/) { 
+ 		undef $role_part;
+		($role_part) = ($role =~ /([^\s]+)\s*\[.+\]/o);		
+		$role_part =~ s/\s//g; # remove blanks
+		if (exists $new{$role_part}) {
+		    $new{$role_part} = $role;
+		};
+	    } elsif ($role !~ /\[/) { # no selectional restrictions for subclass thematic role
+		if (exists $new{$role}) {
+		    $new{$role} = $role;
+		};
+	    }
+	    $new_roles = join("%",values(%new));
+	    $role_map{$class} = $new_roles;
+	} # end elsif ($level eq "SUB")
+    
+    } elsif (($code =~ /FRAME:/) && ($code =~ /\/\//)) {
+	($verb,$wnsense,$frame) = ($code =~ /VERB:\s(.+)\s(\(.+\))\sFRAME:\s*\[\s*(.+)\s\/\//o);
+	$verb =~ s/\s/_/; # Multiword units
+	$verb_key = $verb . $wnsense . $frame;
+	$verb_map{$verb_key} = $class;
+
+    } elsif (($code =~ /FRAME:/) && ($code !~ /\/\//)) {
+	($verb,$wnsense,$frame) = ($code =~ /VERB:\s(.+)\s(\(.+\))\sFRAME:\s*\[\s*(.+)\]/o);
+	$verb =~ s/\s/_/; # Multiword units
+	$verb_key = $verb . $wnsense . $frame;
+	$verb_map{$verb_key} = $class;
+    } else {
+	next;
+    }
+} # while
+# super_map, role_map and verb_map now defined!!
+
+undef $frame;
+undef @fargs;
+undef $syntax;
+undef @synargs;
+undef $verb;
+
+undef @arg;
+undef $wnsense;
+undef $ex;
+undef $sem;
+undef $pred;
+
+open(IN, "$verb_file") || die "Couldn't open $verb_file: $!";
+print "subcat frames \n";
+while (<IN>) {
+    undef $code;
+    chomp($_);
+    s/^\s+//og; # remove leading whitespace characters
+    ($code) = /(.+)$/o;
+    next if (!defined $code);
+
+    if (($code =~ /FRAME:/) && ($code =~ /\/\//)) {
+	if (defined $pred) { # this is not the first verb frame pair
+	    if (!exists $verb_map{$verb_key}) {
+		print "verb_map not defined for XXX $verb_key XXX\n";
+	    }
+	    $class_info = $verb_map{$verb_key} . "(" . $super_map{$verb_map{$verb_key}} . ")";
+	    $role_info = $role_map{$verb_map{$verb_key}};
+	    &print_result($verb,$wnsense,$ex,$lmf_semargs,$pred,$class_info,$role_info,$lmf_args);
+	    undef $pred;
+	}
+	undef $verb;
+	undef $frame;
+	undef $wnsense;
+	undef @fargs;
+	undef $orig_frame;
+
+	($orig_frame) = ($code =~ /VERB:\s.+\sFRAME:\s*\[\s*(.+)\s\/\//o);
+	($verb,$wnsense,$frame) = ($code =~ /VERB:\s(.+)\s(\(.+\))\sFRAME:\s*\[\s*(.+)\s\/\//o);
+
+	$verb =~ s/\s/_/; # Multiword units
+	if (!defined $frame) {
+	    print "frame not defined for $code\n";
+	    next;
+	};
+	$verb_key = $verb . $wnsense . $frame;
+    } elsif (($code =~ /FRAME:/) && ($code !~ /\/\//)) {
+	if (defined $pred) { # this is not the first verb frame pair
+	    $class_info = $verb_map{$verb_key} . "(" . $super_map{$verb_map{$verb_key}} . ")";
+	    $role_info = $role_map{$verb_map{$verb_key}};
+	    &print_result($verb,$wnsense,$ex,$lmf_semargs,$pred,$class_info,$role_info,$lmf_args);
+	    undef $pred;
+	}
+
+	undef $verb;
+	undef $frame;
+	undef $wnsense;
+	undef @fargs;
+	undef $orig_frame;
+
+	($orig_frame) = ($code =~ /VERB:\s.+\sFRAME:\s*\[\s*(.+)\]/o);
+
+	($verb,$wnsense,$frame) = ($code =~ /VERB:\s(.+)\s(\(.+\))\sFRAME:\s*\[\s*(.+)\]/o);
+	$verb =~ s/\s/_/; # Multiword units
+	if (!defined $frame) {
+	    print "frame not defined for $code\n";
+	    next;
+	};
+	$verb_key = $verb . $wnsense . $frame;
+    } elsif ($code =~ /EXAMPLE/) {
+	undef $ex;
+	($ex) = ($code =~ /EXAMPLE:\s(.+)/o);
+	next;
+    } elsif ($code =~ /SEMANTIC/) {
+	undef $sem;
+	($sem) = ($code =~ /SEMANTIC\sPRED:\s(.+)/o);
+	if (!defined $pred) {
+	    $pred = $sem;
+	} else {
+	    $pred = $pred . " AND " . $sem;
+	}
+    } elsif ($code =~ /SYNTAX/) {
+	undef $syntax;
+	undef @synargs;
+	undef @arg; # list of arguments, specified by LMF attribute-value pairs
+	undef @semarg; # list of arguments + roles, specified by LMF attribute-value pairs
+	undef $property; # LexemeProperty
+	undef $orig_syntax;
+
+	($orig_syntax) = ($code =~ /SYNTAX:\s*(.+)/o);
+	($syntax) = ($code =~ /SYNTAX:\s*(.+)/o);
+	# remove blanks in restrictions ({{...}}, {...}, <...>
+	if ($syntax =~ /path\s\&/) {
+	    ($part1,$semres,$part2) = ($syntax =~ /([^\{\}]*)(\{\{[^\}]+\}\})([^\{\}]*)/o);
+	    $semres =~ s/\s//g; # remove blanks
+	    $syntax = $part1.$semres.$part2;
+	};	
+	if (($syntax =~ /\{/) && ($syntax !~ /\{\{/) && ($syntax !~ /\{[^s\{]+.*\{/)) {
+	    ($part1,$semres,$part2) = ($syntax =~ /([^\{\}]*)(\{[^\{\}]+\})([^\{\}]*)/o);
+	    $semres =~ s/\s//g; # remove blanks
+	    $syntax = $part1.$semres.$part2;
+	};
+	if ($syntax =~ /</) {
+	    ($part1,$semres,$part2) = ($syntax =~ /([^<>]*)(<[^<>]+>)([^<>]*)/o);
+	    $semres =~ s/\s//g; # remove blanks
+	    $syntax = $part1.$semres.$part2;	
+	};
+	if (!defined $frame) {
+	    print "frame not defined for $syntax \n";
+	    next;
+	} elsif ($frame =~ /\s/) { # convert frame-string to list
+	    $frame =~ s/\s/\/\//g;
+	    @fargs = split(/\/\//,$frame);
+	} elsif ($frame !~ /\s/) { # convert frame-string to list
+	    @fargs = ($frame);
+	};
+	if ($syntax =~ /\s/) {  # convert syntax-string to list
+	    $syntax =~ s/\s/\/\//g;
+	    @synargs = split(/\/\//,$syntax);
+	} else {   # convert syntax-string to list
+	    @synargs = $syntax;
+	};
+	undef @semroles;
+	foreach $synarg (@synargs) {	
+	    if ($synarg =~ /\%/) {
+		$semrole = $synarg;
+		$semrole =~ s/\%//;
+		push(@semroles,$semrole);
+	    }
+	}
+	# manually defined mappings:
+	if (exists $frame_map{"$frame $syntax"}) {
+	    $lmf_args = ($frame_map{"$frame $syntax"});
+	    # attach semroles to args
+	    @arg = split(/:/,$lmf_args);
+	    @roles = @semroles;
+	    foreach $arg (@arg) {
+		if ($arg =~ /expletive/) {
+		    $semarg = "$arg";
+		    push(@semarg,$semarg);
+		    next;
+		} elsif ($arg =~ /adverbPhrase/) {
+		    $semarg = "$arg";
+		    push(@semarg,$semarg);
+		    next;
+		} elsif ($arg =~ /syntacticProperty/) {
+		    $semarg = "$arg";
+		    push(@semarg,$semarg);
+		    next;
+		} elsif (($arg =~ /adjectivePhrase/) && ($syntax =~ /\/\/ADJ\/\//)) {
+		    $semarg = "$arg";
+		    push(@semarg,$semarg);
+		    next;
+		} elsif ($arg =~ /objectComplement/) { # inconsistent in VerbNet: may have no role
+		    if ($#semroles == $#arg) {
+			$semrole = shift(@roles);
+			if (defined $semrole) {
+			    $semarg = "$arg" . ",role=" . "$semrole";
+			    push(@semarg,$semarg);
+			} else {
+			    $semarg = "$arg";
+			    push(@semarg,$semarg);
+			    print "MISSING ROLE $frame:$syntax: @semroles\n";
+			}
+		    }
+		} else {
+		    $semrole = shift(@roles);
+		    if (defined $semrole) {
+			$semarg = "$arg" . ",role=" . "$semrole";
+			push(@semarg,$semarg);
+		    } else {
+			$semarg = "$arg";
+			push(@semarg,$semarg);
+			print "MISSING ROLE $frame:$syntax: @semroles\n";
+		    }
+		}  		    
+	    }
+	    $lmf_semargs = join(":",@semarg);
+
+	} else { # frame_map not defined, decomposition of FRAME, SYNTAX
+	    # 1. step: mapping of @fargs for frames that contain S
+	    if ($frame =~ /S/) {
+		undef $index;
+		$index = 0; 
+		for ($i=0; $i <= ($#fargs); $i++ ) {
+		    undef $phrasetype;
+		    if ($fargs[$i] =~ /PP\.theme/) {
+
+# SYNTAX: %Agent V {from} %Theme <+that_comp> %Source 
+# causes error
+#VF-PAIR: VERB: rationalize (wn=rationalize%2:31:00) FRAME: [NP V that S PP.theme // PP-THAT-S; from-PP]
+#EXAMPLE: He deduced that she was a spy from miniature camera she had in her pen.
+#SYNTAX: %Agent V {from} %Theme <+that_comp> %Source 
+#SEMANTIC PRED: conclude(during(E), Agent, Theme, Source)
+
+			if (exists $comp_map{$fargs[$i+1]}) {
+			    next; # skip PP.theme or PP.topic followed by clause
+			} elsif ($fargs[$i+1] =~ /S/) {
+			    next; # skip PP.theme or PP.topic followed by clause
+			} else {
+			    ($phrasetype) = ($fargs[$i] =~ /([A-Z]+)/o);
+			}
+		    } elsif ($fargs[$i] =~ /PP\.topic/) {
+			if (exists $comp_map{$fargs[$i+1]}) {
+			    next; # skip PP.theme or PP.topic followed by clause
+			} elsif ($fargs[$i+1] =~ /S/) {
+			    next; # skip PP.theme or PP.topic followed by clause
+			} else {
+			    ($phrasetype) = ($fargs[$i] =~ /([A-Z]+)/o);
+			}
+		    } elsif ($fargs[$i] =~ /P/) {
+			($phrasetype) = ($fargs[$i] =~ /([A-Z]+)/o);
+		    } elsif ($fargs[$i] =~ /S/) {
+			$phrasetype = $fargs[$i];		  
+		    } elsif ($fargs[$i] =~ /A/) {
+			$phrasetype = ($fargs[$i] =~ /([A-Z]+)/o);		  
+		    } else {
+			next;
+		    }
+		    if (!defined $phrasetype) {
+			print "phrasetype not defined for $fargs[$i] \n";
+		    } else {
+			if (exists $arg_map{$phrasetype}) {
+			    $arg[$index] = $arg_map{$phrasetype};
+			    if ($fargs[$i] eq "S") { # check, if complementizer is listed
+				if (exists $comp_map{$fargs[$i-1]}) {
+				    $arg[$index] = "$arg[$index]," . "$comp_map{$fargs[$i-1]}";
+				}
+			    }
+			    $index = $index + 1;
+			};
+		    }
+		}
+	    } # for	
+	    # 2. step: mapping of @synargs, collect remaining information
+	    undef $index;
+	    $index = 0;
+	    for ($i=0; $i <= ($#synargs); $i++ ) {
+		if ($synargs[$i] =~ /V/) { 
+		    if (exists $arg[$index-1]) {
+			$arg[$index-1] =~ s/complement/subject/;
+		    } else {
+			print "arg $index not defined for $frame $syntax\n";
+		    } 
+		} elsif ($synargs[$i] =~ /\%/) {		    
+		    $synargs[$i] =~ s/\%//;		    
+		    if (!exists $arg[$index]) {
+			$arg[$index] = "grammaticalFunction=complement,syntacticCategory=nounPhrase";
+		    }
+		    $synargs[$i] =~ tr/[A-Z]/[a-z]/;
+		    if (($synargs[$i] =~ /patient/) && ($synargs[$i-1] !~ /\{/)) {
+			if ($index > 0) {
+			    $arg[$index] =~ s/complement/directObject/;
+			}
+		    }
+		    if ($synargs[$i-1] =~ /\{\{/) {
+			($lexType) = ($synargs[$i-1] =~ /\{\{(.+)\}\}/);
+			$arg[$index] = "$arg[$index]" . ",prepositionType=" . "$lexType" . "";
+			$arg[$index] =~ s/nounPhrase/prepositionalPhrase/;
+		    } elsif (($synargs[$i-1] =~ /\{/) && ($synargs[$i-1] !~ /\{\{/)) {
+			($lexeme) = ($synargs[$i-1] =~ /\{([^\{\}]+)\}/);
+			$lexeme =~ s/,/\//g;
+			$arg[$index] = "$arg[$index]" . ",preposition=" . "$lexeme";
+			$arg[$index] =~ s/nounPhrase/prepositionalPhrase/;
+		    }
+		    $index = $index + 1;
+		} elsif ($synargs[$i] =~ /</) {
+		    if (exists $synres_map{$synargs[$i]}) {
+			$synres  = $synres_map{$synargs[$i]};
+			if ($synres =~ /syntacticProperty/) {
+			    $property = $synres;
+			    if ($synargs[$i] =~ /oc_to_inf/) { # correct inconsistency S_ING and oc_to_inf
+				$arg[$index-1] =~ s/ingForm/toInfinitive/;
+			    }
+			} elsif ($synres =~ /reflexive/) {
+			    $arg[$index-1] =~ s/nounPhrase/reflexive/;
+			} else {
+			    $arg[$index-1] = "$arg[$index-1]" . ",$synres";
+			};
+		    }; 
+		} elsif ($synargs[$i] =~ /ADJ/) {
+		    $arg[$index] = $arg_map{$synargs[$i]};
+		    $index = $index + 1;
+		}
+	    }
+	    @roles = @semroles;
+	    foreach $arg (@arg) {
+		if ($arg =~ /expletive/) {
+		    $semarg = "$arg";
+		    push(@semarg,$semarg);
+		    next;
+		} elsif ($arg =~ /adverbPhrase/) {
+		    $semarg = "$arg";
+		    push(@semarg,$semarg);
+		    next;
+		} elsif ($arg =~ /syntacticProperty/) {
+		    $semarg = "$arg";
+		    push(@semarg,$semarg);
+		    next;
+		} elsif (($arg =~ /adjectivePhrase/) && ($syntax =~ /\/\/ADJ\/\//)) {
+		    $semarg = "$arg";
+		    push(@semarg,$semarg);
+		    next;
+		} elsif ($arg =~ /objectComplement/) {# inconsistent in VerbNet: may have no role
+		    if ($#semroles == $#arg) {
+			$semrole = shift(@roles);
+			if (defined $semrole) {
+			    $semarg = "$arg" . ",role=" . "$semrole";
+			    push(@semarg,$semarg);
+			} else {
+			    $semarg = "$arg";
+			    push(@semarg,$semarg);
+			    print "MISSING ROLE $frame:$syntax: @semroles\n";
+			}
+		    }
+		} else {
+		    $semrole = shift(@roles);
+		    if (defined $semrole) {
+			$semarg = "$arg" . ",role=" . "$semrole";			
+			push(@semarg,$semarg);
+		    } else {
+			$semarg = "$arg";
+			push(@semarg,$semarg);
+			print "MISSING ROLE $frame:$syntax: @semroles\n";
+		    }
+		}  		    
+	    }
+	    $lmf_args = join(":",@arg);
+	    $lmf_semargs = join(":",@semarg);
+	    if ($frame =~ /S/) {
+		if (defined $property) {
+		    $new_args = "$property:" . "$lmf_args";
+		    $lmf_args = $new_args;
+
+		    $new_semargs = "$property:" . "$lmf_semargs";
+		    $lmf_semargs = $new_semargs;		    
+		} 
+	    } else {
+		if (defined $property) {
+		    $new_args = "$property:" . "$lmf_args";
+		    $lmf_args = $new_args;
+
+		    $new_semargs = "$property:" . "$lmf_semargs";
+		    $lmf_semargs = $new_semargs;
+		} 
+	    }	    
+	}
+    }
+}#end while
+# print last verb frame pair:
+&print_result($verb,$wnsense,$ex,$lmf_semargs,$pred,$class_info,$role_info,$lmf_args);
+
+close(IN);
+close(CLASS);
+close(OUT);
+
+sub print_result {
+open(OUT, ">>$result_file") || die "Couldn't open $result_file: $!";
+print OUT "$_[0]#$_[1]#$_[2]#$_[3]#$_[4]#$_[5]#$_[6]#$_[7]\n";
+close(OUT);
+
+open(OUT, ">>$scf_file") || die "Couldn't open $scf_file: $!";
+print OUT "$_[7]\n";
+close(OUT);
+}
+
+sub print_usage {
+    print STDERR <<EOM;
+usage: vn2converterInput verbnet-wrexyzsq verbnet-ctuqw
+EOM
+    exit(1);
+}
+
+

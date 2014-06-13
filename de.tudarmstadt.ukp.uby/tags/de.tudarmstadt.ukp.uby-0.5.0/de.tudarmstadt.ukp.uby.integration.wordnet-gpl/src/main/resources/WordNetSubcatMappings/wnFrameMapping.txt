@@ -1,0 +1,53 @@
+#-------------------------------------------------------------------------------
+# Copyright 2013
+# Ubiquitous Knowledge Processing (UKP) Lab
+# Technische Universität Darmstadt
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#-------------------------------------------------------------------------------
+Something ----s%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=something
+Somebody ----s%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=somebody
+It is ----ing%grammaticalFunction=subject,syntacticCategory=expletive,lexeme=it
+Something is ----ing PP%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=something:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase
+Something ----s something Adjective/Noun%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=something:grammaticalFunction=complement,syntacticCategory=nounPhrase,semanticRole=something:grammaticalFunction=complement,syntacticCategory=adjectivePhrase_nounPhrase
+Something ----s Adjective/Noun%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=something:grammaticalFunction=complement,syntacticCategory=adjectivePhrase_nounPhrase
+Somebody ----s Adjective%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=adjectivePhrase
+Somebody ----s something%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=nounPhrase,semanticRole=something
+Somebody ----s somebody%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=nounPhrase,semanticRole=somebody
+Something ----s somebody%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=something:grammaticalFunction=complement,syntacticCategory=nounPhrase,semanticRole=somebody
+Something ----s something%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=something:grammaticalFunction=complement,syntacticCategory=nounPhrase,semanticRole=something
+Something ----s to somebody%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=something:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=to,semanticRole=somebody
+Somebody ----s on something%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=on,semanticRole=something
+Somebody ----s somebody something%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=nounPhrase,semanticRole=something
+Somebody ----s something to somebody%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=nounPhrase,semanticRole=something:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=to,semanticRole=somebody
+Somebody ----s something from somebody%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=nounPhrase,semanticRole=something:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=from,semanticRole=somebody
+Somebody ----s somebody with something%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=with,semanticRole=something
+Somebody ----s somebody of something%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=of,semanticRole=something
+Somebody ----s something on somebody%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=nounPhrase,semanticRole=something:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=on,semanticRole=somebody
+Somebody ----s somebody PP%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase
+Somebody ----s something PP%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=nounPhrase,semanticRole=something:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase
+Somebody ----s PP%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase
+Somebody's (body part) ----s%grammaticalFunction=subject,syntacticCategory=nounPhrase,determiner=possessive,semanticRole=bodyPart
+Somebody ----s somebody to INFINITIVE%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=toInfinitive
+Somebody ----s somebody INFINITIVE%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=bareInfinitive
+Somebody ----s that CLAUSE%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=subordinateClause,complementizer=thatType
+Somebody ----s to somebody%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=to,semanticRole=somebody
+Somebody ----s to INFINITIVE%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=toInfinitive
+Somebody ----s whether INFINITIVE%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=subordinateClause,complementizer=yesNoType,verbForm=bareInfinitive
+Somebody ----s somebody into V-ing something%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=ingForm,preposition=into
+Somebody ----s something with something%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=nounPhrase,semanticRole=something:grammaticalFunction=complement,syntacticCategory=prepositionalPhrase,preposition=with,semanticRole=something
+Somebody ----s INFINITIVE%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=bareInfinitive
+Somebody ----s VERB-ing%grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=somebody:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=ingForm
+It ----s that CLAUSE%grammaticalFunction=subject,syntacticCategory=expletive,lexeme=it:grammaticalFunction=complement,syntacticCategory=subordinateClause,complementizer=thatType
+Something ----s INFINITIVE %grammaticalFunction=subject,syntacticCategory=nounPhrase,semanticRole=something:grammaticalFunction=complement,syntacticCategory=verbPhrase,verbForm=bareInfinitive
