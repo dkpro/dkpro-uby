@@ -57,7 +57,7 @@ public class UbyResourceLocator extends Resource_ImplBase implements ExternalRes
 	private String ubyPassword;
 
 
-	private Object resource;
+	private Uby resource;
 
 	@SuppressWarnings("rawtypes")
 	@Override
@@ -78,7 +78,8 @@ public class UbyResourceLocator extends Resource_ImplBase implements ExternalRes
 		return true;
 	}
 
-	public Object getResource() {
+	@Override
+    public Uby getResource() {
 		return resource;
 	}
 }
