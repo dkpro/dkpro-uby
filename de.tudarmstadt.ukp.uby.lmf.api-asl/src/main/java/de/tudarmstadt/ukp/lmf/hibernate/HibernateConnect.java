@@ -143,6 +143,9 @@ public class HibernateConnect {
         } else if (db_vendor.equals("h2")){
         	p.setProperty("hibernate.dialect","org.hibernate.dialect.H2Dialect");
         }
+        else {
+            p.setProperty("hibernate.dialect", db_vendor);
+        }
 
         // Enable Hibernate's automatic session context management
         p.setProperty("hibernate.current_session_context_class","thread");
