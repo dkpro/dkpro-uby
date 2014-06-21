@@ -35,26 +35,33 @@ import de.tudarmstadt.ukp.lmf.transform.DBConfig;
  * @author Judith Eckle-Kohler
  */
 public class UbyResourceLocator extends Resource_ImplBase implements ExternalResourceLocator {
-	public static final String PARAM_URL = "ubyDatabaseUrl";
+	public static final String PARAM_URL = "url";
 	@ConfigurationParameter(name = PARAM_URL, mandatory = true)
-	private String ubyDatabaseUrl;
+	private String url;
 
-	public static final String PARAM_DRIVER = "databaseDriver";
+	public static final String PARAM_DRIVER = "driver";
 	@ConfigurationParameter(name = PARAM_DRIVER, mandatory = true)
-	private String databaseDriver;
+	private String driver;
 	
-	//vendor name of the accessed database, e.g. mysql, hsqldb
-	public static final String PARAM_DRIVER_NAME = "databaseDriverName"; //name of database driver (this parameter is called "vendor" in DBConfig), e.g. mysql, h2
-	@ConfigurationParameter(name = PARAM_DRIVER_NAME, mandatory = true)
-	private String databaseDriverName;
+	/**
+     * Hibernate dialect name. For convenience and backwards-compatibility with previous Uby
+     * versions the short names {@code mysql} and {@code h2} are supported. Otherwise, this
+     * must be a full Hibernate dialect class name.
+     * 
+     * @see DBConfig#setDb_vendor(String)
+     * @see DBConfig#getDb_vendor()
+     */
+	public static final String PARAM_DIALECT = "dialect";
+	@ConfigurationParameter(name = PARAM_DIALECT, mandatory = true)
+	private String dialect;
 	
-	public static final String PARAM_USERNAME = "ubyUsername";
+	public static final String PARAM_USERNAME = "username";
 	@ConfigurationParameter(name = PARAM_USERNAME, mandatory = true)
-	private String ubyUsername;
+	private String username;
 	
-	public static final String PARAM_PASSWORD = "ubyPassword";
+	public static final String PARAM_PASSWORD = "password";
 	@ConfigurationParameter(name = PARAM_PASSWORD, mandatory = true)
-	private String ubyPassword;
+	private String password;
 
 
 	private Uby resource;
@@ -68,7 +75,7 @@ public class UbyResourceLocator extends Resource_ImplBase implements ExternalRes
 		}
 
 		try {
-			DBConfig dbConfig = new DBConfig(ubyDatabaseUrl,databaseDriver,databaseDriverName,ubyUsername,ubyPassword,false);
+			DBConfig dbConfig = new DBConfig(url,driver,dialect,username,password,false);
 
 			resource = new Uby(dbConfig);
 
