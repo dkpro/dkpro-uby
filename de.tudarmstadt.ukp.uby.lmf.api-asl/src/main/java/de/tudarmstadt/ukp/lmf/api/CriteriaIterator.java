@@ -32,7 +32,6 @@ import org.hibernate.criterion.DetachedCriteria;
  * 
  * @author Yevgen Chebotar
  * 
- *
  * @param <T> Class of the object that is iterated
  */
 @SuppressWarnings("unchecked")
@@ -72,8 +71,7 @@ public class CriteriaIterator<T>  implements Iterator<T> {
 	}
 	
 	/**
-	 * Fills the buffer with objects from the database
-	 * @return
+	 * Fills the buffer with objects from the database.
 	 */
 	private boolean fillBuffer(){
 		if(session != null && session.isOpen())
