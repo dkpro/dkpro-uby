@@ -27,15 +27,19 @@ import de.tudarmstadt.ukp.lmf.model.semantics.PredicateRelation;
 
 /**
  * This class offers universal methods for {@link FNConverter}
- * @author Zijad Maksuti, Silvana Hartmann
+ * 
+ * @author Zijad Maksuti
+ * @author Silvana Hartmann
  */
 public class FNUtils {
 
-	/**
-	 * This method removes the XSL-tags that are contained in FrameNet's files
-	 * @param aString String containing XSL-tags
-	 * @return String without XSL-tags
-	 */
+    /**
+     * This method removes the XSL-tags that are contained in FrameNet's files
+     * 
+     * @param aString
+     *            String containing XSL-tags
+     * @return String without XSL-tags
+     */
 	public static String filterTags(String aString){
 
 		aString = aString.replaceAll("&lt;!--", "");
@@ -64,12 +68,16 @@ public class FNUtils {
 		return result;
 	}
 
-	/**
-	 * This method consumes a part of speech, defined by <a href="http://www.cl.uni-heidelberg.de/trac/FrameNetAPI/wiki/0.4.2"> API used for parsing FrameNet's files</a>,
-	 * <br> and returns the associated part of speech defined in Uby-LMF
-	 * @param pos part of speech defined in {@link PartOfSpeech}
-	 * @return Uby's {@link EPartOfSpeech} that is associated with the consumed pos
-	 */
+    /**
+     * This method consumes a part of speech, defined by <a
+     * href="http://www.cl.uni-heidelberg.de/trac/FrameNetAPI/wiki/0.4.2"> API used for parsing
+     * FrameNet's files</a>, <br>
+     * and returns the associated part of speech defined in Uby-LMF
+     * 
+     * @param pos
+     *            part of speech defined in {@link PartOfSpeech}
+     * @return Uby's {@link EPartOfSpeech} that is associated with the consumed pos
+     */
 	public static EPartOfSpeech getPOS(PartOfSpeech pos){
 		switch (pos){
 			case Adjective : return EPartOfSpeech.adjective;
@@ -86,13 +94,15 @@ public class FNUtils {
 		}
 	}
 
-	/**
-	 * Consumes a core type,
-	 * defined in <a href="http://www.cl.uni-heidelberg.de/trac/FrameNetAPI/wiki/0.4.2"> API used for parsing FrameNet's files</a>
-	 * and returns the associated core type defined in Uby-LMF
-	 * @param coreType core type defined in {@link CoreType}
-	 * @return Uby's {@link ECoreType} that is associated with the consumed coreType
-	 */
+    /**
+     * Consumes a core type, defined in <a
+     * href="http://www.cl.uni-heidelberg.de/trac/FrameNetAPI/wiki/0.4.2"> API used for parsing
+     * FrameNet's files</a> and returns the associated core type defined in Uby-LMF
+     * 
+     * @param coreType
+     *            core type defined in {@link CoreType}
+     * @return Uby's {@link ECoreType} that is associated with the consumed coreType
+     */
 	public static ECoreType getCoreType(CoreType coreType){
 		switch(coreType){
 			case Core : return ECoreType.core;
@@ -103,16 +113,20 @@ public class FNUtils {
 		}
 	}
 
-	/**
-	 * Consumes a name of frame relation and relation's direction, as
-	 * defined in <a href="http://www.cl.uni-heidelberg.de/trac/FrameNetAPI/wiki/0.4.2"> API used for parsing FrameNet's files</a>
-	 * and returns the associated relation name of Uby's {@link PredicateRelation}
-	 * @param frameNetRelationName FrameNet's relation name
-	 * @param direction the direction of the relation
-	 * @return name of Uby's PredicateRelation, that corresponds to the consumed frameNetRelationName and the direction
-	 * @see {@link Frame}
-	 * @see {@link FrameNetRelationDirection}
-	 */
+    /**
+     * Consumes a name of frame relation and relation's direction, as defined in <a
+     * href="http://www.cl.uni-heidelberg.de/trac/FrameNetAPI/wiki/0.4.2"> API used for parsing
+     * FrameNet's files</a> and returns the associated relation name of Uby's
+     * {@link PredicateRelation}
+     * 
+     * @param frameNetRelationName
+     *            FrameNet's relation name
+     * @param direction
+     *            the direction of the relation
+     * @return name of Uby's PredicateRelation, that corresponds to the consumed
+     *         frameNetRelationName and the direction
+     * @see FrameNetRelationDirection
+     */
 	public static String getRelName(String frameNetRelationName, FrameNetRelationDirection direction){
 		if(frameNetRelationName.equals("Inheritance")) {
             if(direction.equals(FrameNetRelationDirection.UP)) {
