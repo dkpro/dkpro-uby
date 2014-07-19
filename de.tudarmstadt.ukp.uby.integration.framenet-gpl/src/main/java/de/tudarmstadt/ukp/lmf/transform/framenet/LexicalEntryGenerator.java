@@ -108,15 +108,19 @@ public class LexicalEntryGenerator {
 
 	private final Logger logger = Logger.getLogger(FNConverter.class.getName());
 
-	/**
-	 * Constructs an instance of LexicalEntryGenerator, which provides methods for creating <br>
-	 * LexicalEntries out of FrameNet's files
-	 * @param fn instance of {@link FrameNet} class, used for obtaining needed informations for generating LexicalEntries
-	 * @param semanticPredicateGenerator instance of {@link SemanticPredicateGenerator} used for creating SemanticPredicates
-	 * @param resourceVersion Version of the resource
-	 * @see {@link LexicalEntry}
-	 * @see {@link SemanticPredicate}
-	 */
+    /**
+     * Constructs an instance of LexicalEntryGenerator, which provides methods for creating
+     * {@link LexicalEntry LexicalEntries} out of FrameNet's files
+     * 
+     * @param fn
+     *            instance of {@link FrameNet} class, used for obtaining needed informations for
+     *            generating LexicalEntries
+     * @param semanticPredicateGenerator
+     *            instance of {@link SemanticPredicateGenerator} used for creating
+     *            {@link SemanticPredicate SemanticPredicates}
+     * @param resourceVersion
+     *            Version of the resource
+     */
 	public LexicalEntryGenerator(FrameNet fn, SemanticPredicateGenerator semanticPredicateGenerator,
 			String resourceVersion){
 		this.fn = fn;
@@ -139,11 +143,10 @@ public class LexicalEntryGenerator {
 		System.err.println("Compontents updated");
 	}
 
-	/**
-	 * This method iterates over all groups of LexicalEntries and <br>
-	 * creates a {@link LexicalEntry} for every group of Lexemes
-	 * @see {@link Lexeme}
-	 */
+    /**
+     * This method iterates over all groups of LexicalEntries and creates a {@link LexicalEntry} for
+     * every group of {@link Lexeme Lexemes}.
+     */
 	private void createLexicalEntries(){
 		for(PartOfSpeech pos : mappings.keySet()) {
             for (Set<LexicalUnit> luGroup : mappings.get(pos).values()){
@@ -154,13 +157,14 @@ public class LexicalEntryGenerator {
         }
 	}
 
-	/**
-	 * This method creates a {@link LexicalEntry} based on the
-	 * consumed group of LexicalUnits
-	 * @param luGroup a group LexicalUnits with equal lemma and part of speech
-	 * @return generated LexicalEntry based on consumed luGroup
-	 * @see {@link LexicalUnit}
-	 */
+    /**
+     * This method creates a {@link LexicalEntry} based on the consumed group of {@link LexicalUnit
+     * LexicalUnits}
+     * 
+     * @param luGroup
+     *            a group LexicalUnits with equal lemma and part of speech
+     * @return generated LexicalEntry based on consumed luGroup
+     */
 	public LexicalEntry createLexicaltEntry(Set<LexicalUnit> luGroup){
 		LexicalEntry lexicalEntry = new LexicalEntry();
 		lexicalEntry.setId(createID());
@@ -409,14 +413,14 @@ public class LexicalEntryGenerator {
 		return lexicalEntry;
 	}
 
-	/**
-	 * This method consumes a list of Lexemes and creates a {@link ListOfComponents}. <br>
-	 * The Components do NOT have the  targetLexicalEntry attribute set!
-	 * @param lexemes the list of Lexemes from which a ListOfComponents should be generated
-	 * @return ListOfComponents based on consumed lexemes
-	 * @see {@link Component}
-	 * @see {@link Lexeme}
-	 */
+    /**
+     * This method consumes a list of {@link Lexeme Lexemes} and creates a {@link ListOfComponents}.
+     * The {@link Component Components} do NOT have the targetLexicalEntry attribute set!
+     * 
+     * @param lexemes
+     *            the list of Lexemes from which a ListOfComponents should be generated
+     * @return ListOfComponents based on consumed lexemes
+     */
 	private ListOfComponents createListOfComponents(List<Lexeme> lexemes) {
 		ListOfComponents listOfComponents = new ListOfComponents();
 		List<Component> components = new LinkedList<Component>();
@@ -445,21 +449,21 @@ public class LexicalEntryGenerator {
 	}
 
 
-	/**
-	 * This method creates an ID for a {@link LexicalEntry}
-	 * @return ID for an instance of LexicalEntry
-	 */
+    /**
+     * This method creates an ID for a {@link LexicalEntry}
+     * 
+     * @return ID for an instance of LexicalEntry
+     */
 	private String createID() {
 		StringBuffer sb = new StringBuffer(32);
 		sb.append("FN_LexicalEntry_").append(lexicalEntryNumber++);
 		return sb.toString();
 	}
 
-	/**
-	 * This Method iterates over all created Components
-	 * and updates their targetLexicalEntry attribute
-	 * @see {@link Component}
-	 */
+    /**
+     * This method iterates over all created {@link Component Components} and updates their
+     * {@link Component#getTargetLexicalEntry() targetLexicalEntry} attribute
+     */
 	private void updateComponents() {
 		for(PartOfSpeech pos : components.keySet()) {
             for(String lemma : components.get(pos).keySet()) {
@@ -558,25 +562,29 @@ public class LexicalEntryGenerator {
 		}
 		}
 
-	/**
-	 * This method is called when an associated part of speech, defined in {@link EPartOfSpeech}, <br>
-	 * could not be found for part of speech defined in {@link PartOfSpeech}. <br>
-	 * It informs the user about the situation and terminates the running process
-	 * @param pos part of speech defined in {@link PartOfSpeech}, for which an associated part of speech in {@link EPartOfSpeech} could not be found
-	 *
-	 */
+    /**
+     * This method is called when an associated part of speech, defined in {@link EPartOfSpeech},
+     * could not be found for part of speech defined in {@link PartOfSpeech}.
+     * It informs the user about the situation and terminates the running process
+     * 
+     * @param pos
+     *            part of speech defined in {@link PartOfSpeech}, for which an associated part of
+     *            speech in {@link EPartOfSpeech} could not be found
+     */
 	private void posNotFound(PartOfSpeech pos){
 		StringBuffer sb = new StringBuffer(128);
-		sb.append("LexicalEntryGenerator: FNUtils returned null for PartOfSpeech: ").append(pos).append(" Aborting all operations.");
+        sb.append("LexicalEntryGenerator: FNUtils returned null for PartOfSpeech: ").append(pos)
+                .append(" Aborting all operations.");
 		logger.log(Level.SEVERE, sb.toString());
 		System.exit(1);
 	}
 
-	/**
-	 * Returns all LexicalEntries generated by this {@link LexicalEntryGenerator}
-	 * @return the lexicalEntries
-	 * @see {@link LexicalEntry}
-	 */
+    /**
+     * Returns all {@link LexicalEntry LexicalEntries} generated by this
+     * {@link LexicalEntryGenerator}.
+     * 
+     * @return the lexicalEntries
+     */
 	public List<LexicalEntry> getLexicalEntries() {
 		return lexicalEntries;
 	}

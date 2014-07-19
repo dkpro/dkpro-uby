@@ -32,12 +32,11 @@ import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
 
 /**
- *
- * Instance of this class converts
- * <a href="URL#https://framenet.icsi.berkeley.edu/fndrupal/">FrameNet 1.5</a>
- * to LMF-format
- * @author Zijad Maksuti, Silvana Hartmann
- *
+ * Instance of this class converts <a
+ * href="URL#https://framenet.icsi.berkeley.edu/fndrupal/">FrameNet 1.5</a> to LMF-format
+ * 
+ * @author Zijad Maksuti
+ * @author Silvana Hartmann
  */
 public class FNConverter {
 
@@ -50,13 +49,19 @@ public class FNConverter {
 	
 	private final Logger logger = Logger.getLogger(FNConverter.class.getName());
 
-	/**
-	 * Constructs a {@link FNConverter} based on the consumed parameters
-	 * @param frameNet initialized {@link FrameNet} object
-	 * @param Version of this resource
-	 * @param lexicalResource initialized object of  {@link LexicalResource}, which will be filled with FrameNet's data
-	 * @param dtd_version specifies the version of the .dtd which will be written to lexicalResource
-	 */
+    /**
+     * Constructs a {@link FNConverter} based on the consumed parameters
+     * 
+     * @param frameNet
+     *            initialized {@link FrameNet} object
+     * @param resourceVersion version
+     *            of this resource
+     * @param lexicalResource
+     *            initialized object of {@link LexicalResource}, which will be filled with
+     *            FrameNet's data
+     * @param dtd_version
+     *            specifies the version of the .dtd which will be written to lexicalResource
+     */
 	public FNConverter(FrameNet frameNet, LexicalResource lexicalResource, 
 			String resourceVersion, String dtd_version){
 		this.fn = frameNet;
@@ -65,10 +70,11 @@ public class FNConverter {
 		this.dtd_version = dtd_version;
 	}
 
-	/**
-	 * Converts the informations provided by the initialized {@link FrameNet} object to LMF-format. <br>
-	 * The result of the conversion can be obtained by calling {@link FNConverter#getLexicalResource()}
-	 */
+    /**
+     * Converts the informations provided by the initialized {@link FrameNet} object to LMF-format.
+     * The result of the conversion can be obtained by calling
+     * {@link FNConverter#getLexicalResource()}
+     */
 	public void toLMF() {
 
 		// Setting attributes of LexicalResource
@@ -106,10 +112,11 @@ public class FNConverter {
 	}
 
 
-	/**
-	 * Returns the {@link LexicalResource} object, which contains the results of the conversion
-	 * @return the lexicalResource
-	 */
+    /**
+     * Returns the {@link LexicalResource} object, which contains the results of the conversion
+     * 
+     * @return the lexicalResource
+     */
 	public LexicalResource getLexicalResource() {
 		return lexicalResource;
 	}
