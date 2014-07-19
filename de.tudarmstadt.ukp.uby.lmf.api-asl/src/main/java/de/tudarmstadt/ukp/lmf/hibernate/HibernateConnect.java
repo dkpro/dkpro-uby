@@ -26,6 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.hibernate.cfg.Configuration;
+import org.hibernate.dialect.H2Dialect;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
@@ -139,9 +140,10 @@ public class HibernateConnect {
 
         // SQL dialect
         if (db_vendor.equals("mysql")) {
-        	p.setProperty("hibernate.dialect","de.tudarmstadt.ukp.lmf.hibernate.CustomMySQLDialect");
-        } else if (db_vendor.equals("h2")){
-        	p.setProperty("hibernate.dialect","org.hibernate.dialect.H2Dialect");
+            p.setProperty("hibernate.dialect", CustomMySQLDialect.class.getName());
+        }
+        else if (db_vendor.equals("h2")) {
+            p.setProperty("hibernate.dialect", H2Dialect.class.getName());
         }
         else {
             p.setProperty("hibernate.dialect", db_vendor);
