@@ -36,62 +36,56 @@ import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 
 /**
- * This class represents an extension of the {@link Uby} class and offers additional
- * methods for quick searching of different UBY-LMF elements in a database
- * containing a {@link LexicalResource}.<p>
- * For performance reasons, the methods offered by this class do not return
- * fully initialized Uby-LMF class instances.
+ * This class represents an extension of the {@link Uby} class and offers additional methods for
+ * quick searching of different UBY-LMF elements in a database containing a {@link LexicalResource}.
+ * <p>
+ * For performance reasons, the methods offered by this class do not return fully initialized
+ * Uby-LMF class instances.
  * 
  * @since 0.1.0
  * 
  * @author Silvana Hartmann
  * @author Zijad Maksuti
- * 
- *
  */
 public class UbyQuickAPI extends Uby
 {
-	/**
-	 * Using this constructor, you have to call setDbConfig before using any
-	 * method.
-	 * 
-	 * @deprecated use {@link #UbyQuickAPI(DBConfig)} instead
-	 */
+    /**
+     * Using this constructor, you have to call setDbConfig before using any method.
+     * 
+     * @deprecated use {@link #UbyQuickAPI(DBConfig)} instead
+     */
 	@Deprecated
 	public UbyQuickAPI()
 	{
 		// TO-DO nothing
 	}
 
-	/**
-	 * Constructor for a {@link UbyQuickAPI} instance used for
-	 * searching of different elements in a database containing
-	 * UBY-LMF {@link LexicalResource}.
-	 *
-	 * The connection to the database is specified using a {@link DBConfig}
-	 * instance.
-	 *
-	 * @param dbConfig configuration of the database containing
-	 * UBY-LMF lexical resource.
-	 * @throws UbyInvalidArgumentException if the specified dbConfig is null
-	 * 
-	 * @since 0.1.0
-	 * 
-	 */
-	public UbyQuickAPI(DBConfig config) throws UbyInvalidArgumentException
+    /**
+     * Constructor for a {@link UbyQuickAPI} instance used for searching of different elements in a
+     * database containing UBY-LMF {@link LexicalResource}.
+     *
+     * The connection to the database is specified using a {@link DBConfig} instance.
+     *
+     * @param dbConfig
+     *            configuration of the database containing UBY-LMF lexical resource.
+     * @throws UbyInvalidArgumentException
+     *             if the specified dbConfig is null
+     * 
+     * @since 0.1.0
+     */
+	public UbyQuickAPI(DBConfig dbConfig) throws UbyInvalidArgumentException
 	{
-		super(config);
+		super(dbConfig);
 	}
 
-	/**
-	 *
-	 * @param config: database's configuration
-	 * @param useHibernate: false for direct access; true connect via Hibernate
-	 * @throws ClassNotFoundException
-	 * @throws SQLException
-	 * @throws FileNotFoundException
-	 * @{@link Deprecated} use {@link #UbyQuickAPI(DBConfig)} instead
-	 */
+    /**
+     *
+     * @param config
+     *            database's configuration
+     * @param useHibernate
+     *            false for direct access; true connect via Hibernate
+     * @deprecated use {@link #UbyQuickAPI(DBConfig)} instead
+     */
 	@Deprecated
 	public UbyQuickAPI(DBConfig config, boolean useHibernate,boolean useTempTables) throws ClassNotFoundException, SQLException, FileNotFoundException{
 		setDBConfig(config,useHibernate,useTempTables);
@@ -111,10 +105,7 @@ public class UbyQuickAPI extends Uby
 	}
 
 	/**
-	 *
-	 * @param sf
 	 * @deprecated use {@link #UbyQuickAPI(DBConfig)} instead
-	 * 
 	 */
 	@Deprecated
 	public UbyQuickAPI(SessionFactory sf){
@@ -122,17 +113,17 @@ public class UbyQuickAPI extends Uby
 		session=sessionFactory.openSession();
 	}
 
-	/**
-	 *
-	 * @param config: Database's Configuration
-	 * @param useHibernate: true if you want to connect to database via Hibernate; false for direct access
-	 * @throws ClassNotFoundException
-	 * @throws SQLException
-	 * @throws FileNotFoundException
-	 * @deprecated use {@link #UbyQuickAPI(DBConfig)} instead
-	 */
+    /**
+     * @param config
+     *            Database's Configuration
+     * @param useHibernate
+     *            true if you want to connect to database via Hibernate; false for direct access
+     * @deprecated use {@link #UbyQuickAPI(DBConfig)} instead
+     */
 	@Deprecated
-	public void setDBConfig(DBConfig config,boolean useHibernate,boolean useTemporaryTables) throws ClassNotFoundException, SQLException, FileNotFoundException{
+    public void setDBConfig(DBConfig config, boolean useHibernate, boolean useTemporaryTables)
+        throws ClassNotFoundException, SQLException, FileNotFoundException
+    {
 		this.dbConfig = config;
 		if(useHibernate){
 			setDbConfig(config);
@@ -347,7 +338,7 @@ public class UbyQuickAPI extends Uby
 	 * 
 	 * @since 0.2.0
 	 *
-	 * @see #getSensesAxis(List)
+	 * @see #getSenseAxes()
 	 * @see #lightSenseAxes(List)
 	 */
 	public List<SenseAxis> lightSenseAxesBySenseIDs(List<String> listSenseId) {
@@ -406,5 +397,4 @@ public class UbyQuickAPI extends Uby
 		}
 		return sense;
 	}
-
 }

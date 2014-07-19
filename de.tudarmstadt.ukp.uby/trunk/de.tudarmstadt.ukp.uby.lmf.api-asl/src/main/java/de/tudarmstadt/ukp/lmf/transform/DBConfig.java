@@ -17,15 +17,12 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.transform;
 
-
 /**
  * Instance of this class holds database configuration of UBY-LMF Database.
  *
  * @author Yevgen Chebotar
  * @author Zijad Maksuti
- *
  */
-
 public class DBConfig
 {
 
@@ -44,43 +41,39 @@ public class DBConfig
 	 */
 	//private boolean accessMode = true;
 
-	/**
-	 * This constructor does nothing to all attributes. If you use it, you have to
-	 * set values for all attributes by using setter-methods. Those attributes
-	 * should be set:<br>
-	 * <ul>
-	 * <li><b>host</b>: host of database</li>
-	 * <li><b>user</b>: User for accessing the database</li>
-	 * <li><b>password</b>: Password for accessing the database</li>
-	 * <li><b>url</b>: Host_to_the_database/database_name</li>
-	 * <li><b>showSQL</b>: default=false; set to true if you want to print all
-	 * sql queries.</li>
-	 * </ul>
-	 *
-	 */
+    /**
+     * This constructor does nothing to all attributes. If you use it, you have to set values for
+     * all attributes by using setter-methods. Those attributes should be set:<br>
+     * <ul>
+     * <li><b>host</b>: host of database</li>
+     * <li><b>user</b>: User for accessing the database</li>
+     * <li><b>password</b>: Password for accessing the database</li>
+     * <li><b>url</b>: Host_to_the_database/database_name</li>
+     * <li><b>showSQL</b>: default=false; set to true if you want to print all sql queries.</li>
+     * </ul>
+     */
 	public DBConfig()
 	{
 		// Nothing to do
 	}
 
-
-	/**
-	 * Creates a new configuration of UBY-LMF database based on the consumed parameters. <br><br>
-	 * 
-	 * @param url
-	 *            Host_to_the_database/database_name
-	 * @param jdbc_driver_class
-	 *            The jdbc driver class using to access database
-	 * @param db_vendor
-	 * 			  vendor name of the accessed database, e.g. mysql, hsqldb
-	 * 			  used in combination with the @param url to glue together the hibernate.connection.url
-	 * @param user
-	 * 			  User name used for accessing the database
-	 * @param password
-	 *            Password for accessing the database
-	 * @param showSQL
-	 *            If true all SQL queries are printed on the console
-	 */
+    /**
+     * Creates a new configuration of UBY-LMF database based on the consumed parameters.
+     * 
+     * @param url
+     *            Host_to_the_database/database_name
+     * @param jdbc_driver_class
+     *            The jdbc driver class using to access database
+     * @param db_vendor
+     *            vendor name of the accessed database, e.g. mysql, hsqldb used in combination with
+     *            the @param url to glue together the hibernate.connection.url
+     * @param user
+     *            User name used for accessing the database
+     * @param password
+     *            Password for accessing the database
+     * @param showSQL
+     *            If true all SQL queries are printed on the console
+     */
 	public DBConfig(String url, String jdbc_driver_class, String db_vendor,
 			String user, String password, 
 			boolean showSQL)
@@ -93,69 +86,68 @@ public class DBConfig
 		this.showSQL = showSQL;
 	}
 
-	/**
-	 * Returns the jdbc driver class used by this {@link DBConfig} instance to access the database.
-	 * 
-	 * @return the jdbc driver class assigned to this DBConfig or null if the driver class is not set
-	 */
+    /**
+     * Returns the jdbc driver class used by this {@link DBConfig} instance to access the database.
+     * 
+     * @return the jdbc driver class assigned to this DBConfig or null if the driver class is not
+     *         set
+     */
 	public String getJdbc_driver_class()
 	{
 		return jdbc_driver_class;
 	}
 
-	/**
-	 * Sets the jdbc driver class used by this {@link DBConfig} instance to access the database.
-	 * 
-	 * @param jdbcDriverClass the jdbc driver class to set
-	 */
+    /**
+     * Sets the jdbc driver class used by this {@link DBConfig} instance to access the database.
+     * 
+     * @param jdbcDriverClass
+     *            the jdbc driver class to set
+     */
 	public void setJdbc_driver_class(String jdbcDriverClass)
 	{
 		jdbc_driver_class = jdbcDriverClass;
 	}
 
-	/**
-	 * Returns the name the vendors name of the database accessed by this {@link DBConfig} instance.
-	 * 
-	 * @return the vendor of the accessed database or null if the name is not set
-	 */
+    /**
+     * Returns the name the vendors name of the database accessed by this {@link DBConfig} instance.
+     * 
+     * @return the vendor of the accessed database or null if the name is not set
+     */
 	public String getDb_vendor()
 	{
 		return db_vendor;
 	}
 
-	/**
-	 * Sets the the vendors name of the database accessed by this {@link DBConfig} instance.
-	 * 
-	 * @param dbVendor the vendor name of the accessed database to set
-	 */
+    /**
+     * Sets the the vendors name of the database accessed by this {@link DBConfig} instance.
+     * 
+     * @param dbVendor
+     *            the vendor name of the accessed database to set
+     */
 	public void setDb_vendor(String dbVendor)
 	{
 		db_vendor = dbVendor;
 	}
 
-	/**
-	 * Returns a {@link String} instance representing the user name
-	 * needed to access the database.
-	 * 
-	 * @return the user name needed to access the database or null if the
-	 * user name is not set
-	 * 
-	 * @see DBConfig
-	 */
+    /**
+     * Returns a {@link String} instance representing the user name needed to access the database.
+     * 
+     * @return the user name needed to access the database or null if the user name is not set
+     * 
+     * @see DBConfig
+     */
 	public String getUser()
 	{
 		return user;
 	}
 
-	/**
-	 * Returns the {@link String} instance representing the user name
-	 * needed to access the database.
-	 * 
-	 * @return the user name needed to access the database or null if the
-	 * user name is not set
-	 * 
-	 * @see DBConfig
-	 */
+    /**
+     * Returns the {@link String} instance representing the user name needed to access the database.
+     * 
+     * @return the user name needed to access the database or null if the user name is not set
+     * 
+     * @see DBConfig
+     */
 	public String getJdbc_url()
 	{
 		return jdbc_url;
@@ -166,96 +158,92 @@ public class DBConfig
 		jdbc_url = jdbcUrl;
 	}
 
-	/**
-	 * Sets the {@link String} instance representing the user name
-	 * needed to access the database.
-	 * 
-	 * @param user the user name to set
-	 * 
-	 * @see DBConfig
-	 */
+    /**
+     * Sets the {@link String} instance representing the user name needed to access the database.
+     * 
+     * @param user
+     *            the user name to set
+     * 
+     * @see DBConfig
+     */
 	public void setUser(String user)
 	{
 		this.user = user;
 	}
 
-	/**
-	 * Returns the {@link String} instance representing the password
-	 * needed to access the database.
-	 * 
-	 * @return the password needed to access the database or null
-	 * if the password is not set
-	 * 
-	 * @see DBConfig
-	 */
+    /**
+     * Returns the {@link String} instance representing the password needed to access the database.
+     * 
+     * @return the password needed to access the database or null if the password is not set
+     * 
+     * @see DBConfig
+     */
 	public String getPassword()
 	{
 		return password;
 	}
 
-	/**
-	 * Sets the {@link String} instance representing the password
-	 * needed to access the database.
-	 * 
-	 * @param password the password to set
-	 * 
-	 * @see DBConfig
-	 */
+    /**
+     * Sets the {@link String} instance representing the password needed to access the database.
+     * 
+     * @param password
+     *            the password to set
+     * 
+     * @see DBConfig
+     */
 	public void setPassword(String password)
 	{
 		this.password = password;
 	}
 
-	/**
-	 * Returns true if the SQL queries to the database, accessed using
-	 * this {@link DBConfig} instance, should be printed to the console.
-	 * 
-	 * @return true if the SQL queries should be printed to the 
-	 * console, false otherwise
-	 */
+    /**
+     * Returns true if the SQL queries to the database, accessed using this {@link DBConfig}
+     * instance, should be printed to the console.
+     * 
+     * @return true if the SQL queries should be printed to the console, false otherwise
+     */
 	public boolean isShowSQL()
 	{
 		return showSQL;
 	}
 
-	/**
-	 * 
-	 * Specifies if the SQL queries to the database, accessed using this
-	 * {@link DBConfig} instance, should be printed to the console.<p>
-	 * 
-	 * By default, the SQL queries to the database are printed to console.
-	 * 
-	 * @param showSQL set to true if the SQL queries should be printed to the 
-	 * console, set to false otherwise
-	 */
+    /**
+     * Specifies if the SQL queries to the database, accessed using this {@link DBConfig} instance,
+     * should be printed to the console.
+     * <p>
+     * 
+     * By default, the SQL queries to the database are printed to console.
+     * 
+     * @param showSQL
+     *            set to true if the SQL queries should be printed to the console, set to false
+     *            otherwise
+     */
 	public void setShowSQL(boolean showSQL)
 	{
 		this.showSQL = showSQL;
 	}
 
-	/**
-	 * Returns the {@link String} instance representing the name of the
-	 * accessed databases' host.
-	 * 
-	 * @return the name of the accessed databases' host or null if the name
-	 * is not set
-	 * 
-	 * @see DBConfig
-	 */
+    /**
+     * Returns the {@link String} instance representing the name of the accessed databases' host.
+     * 
+     * @return the name of the accessed databases' host or null if the name is not set
+     * 
+     * @see DBConfig
+     */
 	public String getHost() {
 		return host;
 	}
 
-	/**
-	 * Sets the {@link String} instance representing the name of the
-	 * accessed databases' host.
-	 * 
-	 * @param the name of the accessed databases' host to set
-	 * 
-	 * @see DBConfig
-	 */
-	public void setHost(String host) {
-		this.host = host;
-	}
-
+    /**
+     * Sets the {@link String} instance representing the name of the accessed databases' host.
+     * 
+     * @param host
+     *            the name of the accessed databases' host to set
+     * 
+     * @see DBConfig
+     */
+    public void setHost(String host)
+    {
+        this.host = host;
+    }
 }

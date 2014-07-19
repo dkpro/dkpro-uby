@@ -62,15 +62,12 @@ public class TemporaryTableUtils
 		mysql.executeUpdate(sqlInsertData);
 	}
 
-	/**
-	 *
-	 * @param mysql
-	 *            : database connection object
-	 * @return name of temp table. The Temp table will be created with all data
-	 *         from Lexical Entry joined to Sense,Lexicon,
-	 *         FormRepresentation_Lemma tables
-	 * @throws SQLException
-	 */
+    /**
+     * @param mysql
+     *            database connection object
+     * @return name of temp table. The Temp table will be created with all data from Lexical Entry
+     *         joined to Sense,Lexicon, FormRepresentation_Lemma tables
+     */
 	public static String table_LexicalEntry_Sense_Lemma(MySQLConnect mysql)
 		throws SQLException
 	{
@@ -110,14 +107,12 @@ public class TemporaryTableUtils
 	 * This part for getting Senses via original senseID or synsetID.
 	 * SenseAlignment converters have to use it to speed the performance up.
 	 */
-	/**
-	 *
-	 * @param mysql
-	 *            : database connection object
-	 * @return name of temp table. The Temp table will be created with all data
-	 *         from Sense joined to Synset and MonolingualExternalRef tables
-	 * @throws SQLException
-	 */
+    /**
+     * @param mysql
+     *            : database connection object
+     * @return name of temp table. The Temp table will be created with all data from Sense joined to
+     *         Synset and MonolingualExternalRef tables
+     */
 	public static String table_Sense_Synset_MonolingualExternalRef(
 			MySQLConnect mysql)
 		throws SQLException
@@ -135,13 +130,6 @@ public class TemporaryTableUtils
 		return "Sense_Synset_MonolingualExternalRef";
 	}
 
-	/**
-	 *
-	 * @param mysql
-	 * @return
-	 * @throws SQLException
-	 */
-
 	public static String table_Sense_MonolingualExternalRef(MySQLConnect mysql)
 		throws SQLException
 	{
@@ -157,13 +145,12 @@ public class TemporaryTableUtils
 		return "Sense_MonolingualExternalRef";
 	}
 
-	/**
-	 * TODO: DROP TEMPORARY TABLE
-	 *
-	 * @param temp_table
-	 *            : temporary table's name
-	 * @throws SQLException
-	 */
+    /**
+     * TODO: DROP TEMPORARY TABLE
+     *
+     * @param temp_table
+     *            : temporary table's name
+     */
 	public void destroyTempTable(String temp_table)
 		throws SQLException
 	{

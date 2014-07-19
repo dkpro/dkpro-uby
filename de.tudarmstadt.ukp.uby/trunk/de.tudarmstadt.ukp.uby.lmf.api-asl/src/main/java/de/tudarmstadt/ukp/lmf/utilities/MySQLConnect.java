@@ -32,13 +32,14 @@ public class MySQLConnect
 	private Statement statement;
 	private boolean useTemporaryTable;
 
-	/**
-	 *
-	 * @param dbconfig: database's configuration
-	 * @throws SQLException
-	 * @throws ClassNotFoundException
-	 */
-	public MySQLConnect(DBConfig dbconfig) throws SQLException, ClassNotFoundException{
+    /**
+     *
+     * @param dbconfig
+     *            database's configuration
+     */
+    public MySQLConnect(DBConfig dbconfig)
+        throws SQLException, ClassNotFoundException
+    {
 		dbConfig=dbconfig;
 		Class.forName(dbconfig.getJdbc_driver_class());
 		connection=DriverManager.getConnection("jdbc:"+dbconfig.getDb_vendor()+"://" +dbconfig.getJdbc_url()+
@@ -47,13 +48,16 @@ public class MySQLConnect
 		useTemporaryTable=false;
 	}
 
-	/**
-	 * @param dbconfig: database's configuration
-	 * @param useTemporaryTable: true if you want to use temporary tables to speed queries (like 10k or more queries) up
-	 * @throws SQLException
-	 * @throws ClassNotFoundException
-	 */
-	public MySQLConnect(DBConfig dbconfig,boolean useTemporaryTable) throws SQLException, ClassNotFoundException{
+    /**
+     * @param dbconfig
+     *            database's configuration
+     * @param useTemporaryTable
+     *            true if you want to use temporary tables to speed queries (like 10k or more
+     *            queries) up
+     */
+    public MySQLConnect(DBConfig dbconfig, boolean useTemporaryTable)
+        throws SQLException, ClassNotFoundException
+    {
 		dbConfig=dbconfig;
 		Class.forName(dbconfig.getJdbc_driver_class());
 		connection=DriverManager.getConnection("jdbc:"+dbconfig.getDb_vendor()+"://" +dbconfig.getJdbc_url()+
@@ -62,11 +66,12 @@ public class MySQLConnect
 		useTemporaryTable=false;
 	}
 
-	/**
-	 * @TODO: re-connect to database
-	 * @throws SQLException
-	 */
-	public void reConnect() throws SQLException{
+    /**
+     * TODO: re-connect to database
+     */
+    public void reConnect()
+        throws SQLException
+    {
 		String sql="Select 1";
 		try{
 			//test if the connection is whether alive
@@ -78,46 +83,51 @@ public class MySQLConnect
 		}
 	}
 
-	/**
-	 * @TODO: Disconnect to the database
-	 * @throws SQLException
-	 */
-	public void disconnect() throws SQLException{
+    /**
+     * TODO: Disconnect to the database
+     */
+    public void disconnect()
+        throws SQLException
+    {
 		connection.close();
 		statement.close();
 	}
 
-	/**
-	 *
-	 * @return true is Temporary table(s) is/are used
-	 */
-	public boolean isUseTemporaryTable(){
+    /**
+     * @return true is Temporary table(s) is/are used
+     */
+    public boolean isUseTemporaryTable()
+    {
 		return useTemporaryTable;
 	}
 
-	/**
-	 *
-	 * @param sql: SQL String query; just SELECT. Use executeUpdate for other purposes.
-	 * @return: Result set of query
-	 * @throws SQLException
-	 */
-	public ResultSet execute(String sql) throws SQLException{
+    /**
+     * @param sql
+     *            SQL String query; just SELECT. Use executeUpdate for other purposes.
+     * @return Result set of query
+     */
+    public ResultSet execute(String sql)
+        throws SQLException
+    {
 		ResultSet rs=statement.executeQuery(sql);
 		return rs;
 	}
 
-	/**
-	 *
-	 * @param sql:SQL String query: INSERT, DELETE, UPDATE queries
-	 * @throws SQLException
-	 */
-	public void executeUpdate(String sql) throws SQLException{
+    /**
+     * @param sql
+     *            SQL String query: INSERT, DELETE, UPDATE queries
+     */
+    public void executeUpdate(String sql)
+        throws SQLException
+    {
 		statement.executeUpdate(sql);
 	}
 
-	@Override
-	public void finalize(){
-		try{
+    // FIXME Finalize should never be used! There needs to be another way of handling connections!
+    @Override
+    public void finalize()
+    {
+        try {
 			statement.close();
 			connection.close();
 		}catch (Exception ex){
