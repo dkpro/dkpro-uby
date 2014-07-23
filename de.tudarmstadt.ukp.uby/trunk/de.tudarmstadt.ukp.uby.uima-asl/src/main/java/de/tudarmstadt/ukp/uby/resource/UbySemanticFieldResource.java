@@ -31,6 +31,7 @@ import org.apache.uima.resource.ResourceAccessException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
 
+import de.tudarmstadt.ukp.dkpro.core.api.parameter.ComponentParameters;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.dictionaryannotator.semantictagging.SemanticTagProvider;
 import de.tudarmstadt.ukp.lmf.api.Uby;
@@ -78,6 +79,11 @@ public class UbySemanticFieldResource
 	public static final String PARAM_PASSWORD = "ubyPassword";
 	@ConfigurationParameter(name = PARAM_PASSWORD, mandatory = true)
 	private String ubyPassword;
+	
+    public static final String PARAM_LANGUAGE = ComponentParameters.PARAM_LANGUAGE;
+    @ConfigurationParameter(name = PARAM_LANGUAGE, mandatory = false)
+    protected String language;
+
 	
 	private Uby uby;
 	private Lexicon wordnet;
