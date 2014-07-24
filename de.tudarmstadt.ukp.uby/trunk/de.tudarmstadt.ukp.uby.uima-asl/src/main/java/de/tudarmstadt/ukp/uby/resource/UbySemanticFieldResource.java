@@ -120,9 +120,13 @@ public class UbySemanticFieldResource
 			// the documentLanguage is specified as ISO 2-letter code (following the DKPro-Core convention)
 			if (token.getCAS().getDocumentLanguage().equals("en")) {
 				wordnet = uby.getLexiconByName("WordNet");
+			} else if (language.equals("en")) {
+				wordnet = uby.getLexiconByName("WordNet");
 			} else if (token.getCAS().getDocumentLanguage().equals("de")) {
 				wordnet = uby.getLexiconByName("GermaNet");
-			}			
+			} else if (language.equals("de")) {
+				wordnet = uby.getLexiconByName("GermaNet");
+			}
 					
 			// does the token have a POS which has relevant information in the lexicon?	
 			if (corePosToUbyPos(token.getPos().getType().getShortName()).length == 0) {
