@@ -33,7 +33,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.io.IOUtils;
-import de.tudarmstadt.ukp.lmf.exceptions.UbyInvalidArgumentException;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 
@@ -96,7 +95,7 @@ public class FramenetWordnetAlignment extends SenseAlignment {
 	 */
 	@Override
 	public void getAlignment()
-			throws de.tudarmstadt.ukp.lmf.exceptions.UbyInvalidArgumentException {
+			throws IllegalArgumentException {
 		List<String[]> data = null;
 		data = readAlignmentFile();
 		if (ubySource == null) {

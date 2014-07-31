@@ -31,7 +31,6 @@ import org.dom4j.DocumentException;
 import org.junit.Test;
 
 import de.tudarmstadt.ukp.lmf.api.Uby;
-import de.tudarmstadt.ukp.lmf.exceptions.UbyInvalidArgumentException;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
@@ -58,7 +57,7 @@ public class UbyTest
 
 	private final Uby uby;
 
-	public UbyTest() throws FileNotFoundException, DocumentException, UbyInvalidArgumentException{
+	public UbyTest() throws FileNotFoundException, DocumentException, IllegalArgumentException{
 
 		UbyTestDbProvider testDbProvider = new UbyTestDbProvider();
 		this.uby = testDbProvider.getUby();
@@ -66,7 +65,7 @@ public class UbyTest
 	}
 
 	@Test
-	public void testLexicons() throws UbyInvalidArgumentException{
+	public void testLexicons() throws IllegalArgumentException{
 		List<String> lexiconNames = uby.getLexiconNames();
 		assertTrue(lexiconNames.contains("FrameNet"));
 		assertTrue(lexiconNames.contains("VerbNet"));
@@ -91,7 +90,7 @@ public class UbyTest
 	}
 
 	@Test
-	public void testLexicalEntries() throws UbyInvalidArgumentException{
+	public void testLexicalEntries() throws IllegalArgumentException{
 		Lexicon lexicon = uby.getLexiconByName("FrameNet");
 		List<LexicalEntry> lexEntries = uby.getLexicalEntries("run", lexicon);
 		assertEquals(lexEntries.size(), 1);
@@ -131,7 +130,7 @@ public class UbyTest
 	}
 
 	@Test
-	public void testSenses() throws UbyInvalidArgumentException{
+	public void testSenses() throws IllegalArgumentException{
 
 		List<Lexicon> lexicons = uby.getLexicons();
 		for(Lexicon l : lexicons){
@@ -200,7 +199,7 @@ public class UbyTest
 	}
 
 	@Test
-	public void testSynsets() throws UbyInvalidArgumentException{
+	public void testSynsets() throws IllegalArgumentException{
 		Lexicon lexicon = uby.getLexiconByName("WordNet");
 		Iterator<Synset> synsetIterator = uby.getSynsetIterator(lexicon);
 
@@ -221,7 +220,7 @@ public class UbyTest
 	}
 
 	@Test
-	public void testSenseAxes() throws UbyInvalidArgumentException{
+	public void testSenseAxes() throws IllegalArgumentException{
 		List<SenseAxis> senseAxes = uby.getSenseAxes();
 		assertEquals(senseAxes.size(), 6);
 		Set<String> senseAxisIds =  new HashSet<String>();
@@ -257,7 +256,7 @@ public class UbyTest
 	}
 
 	@Test
-	public void testSemanticPredicates() throws UbyInvalidArgumentException{
+	public void testSemanticPredicates() throws IllegalArgumentException{
 		Lexicon lexicon = uby.getLexiconByName("FrameNet");
 		List<SemanticPredicate> semanticPredicates = uby.getSemanticPredicates(lexicon);
 		Iterator<SemanticPredicate> semanticPredicateIterator = uby.getSemanticPredicateIterator(lexicon);

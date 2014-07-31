@@ -29,7 +29,6 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
-import de.tudarmstadt.ukp.lmf.exceptions.UbyInvalidArgumentException;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
@@ -61,7 +60,7 @@ public class UbyStatistics extends Uby{
 	 *            
 	 * @see DBConfig
 	 */
-	public UbyStatistics(DBConfig dbConfig) throws UbyInvalidArgumentException {
+	public UbyStatistics(DBConfig dbConfig) throws IllegalArgumentException {
 		super(dbConfig);
 	}
 

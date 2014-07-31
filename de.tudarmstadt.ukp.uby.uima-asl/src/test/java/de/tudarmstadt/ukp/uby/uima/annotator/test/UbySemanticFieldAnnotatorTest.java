@@ -44,7 +44,6 @@ import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.api.semantics.type.SemanticField;
 import de.tudarmstadt.ukp.dkpro.core.testing.AssertAnnotations;
-import de.tudarmstadt.ukp.lmf.exceptions.UbyInvalidArgumentException;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 import de.tudarmstadt.ukp.lmf.transform.LMFDBUtils;
 import de.tudarmstadt.ukp.lmf.transform.XMLToDBTransformer;
@@ -120,7 +119,7 @@ public class UbySemanticFieldAnnotatorTest
 	 */	 
     private void runAnnotatorTestOnInMemDb(String language, String testDocument,
             String[] documentLemmas, String[] documentPosTags, String[] documentUbySemanticFields)
-        throws UIMAException, FileNotFoundException, DocumentException, UbyInvalidArgumentException
+        throws UIMAException, FileNotFoundException, DocumentException, IllegalArgumentException
     {
 	 	DBConfig dbConfig = new DBConfig("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1","org.h2.Driver","h2","root","pass",false);
 		

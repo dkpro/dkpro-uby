@@ -35,7 +35,6 @@ import de.tudarmstadt.ukp.dkpro.core.api.parameter.ComponentParameters;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.dictionaryannotator.semantictagging.SemanticTagProvider;
 import de.tudarmstadt.ukp.lmf.api.Uby;
-import de.tudarmstadt.ukp.lmf.exceptions.UbyInvalidArgumentException;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
@@ -102,7 +101,7 @@ public class UbySemanticFieldResource
 			uby = new Uby(dbConfig);
 			
         }
-        catch (UbyInvalidArgumentException e) {       	       	
+        catch (IllegalArgumentException e) {       	       	
             throw new ResourceInitializationException(e);
 		}
 

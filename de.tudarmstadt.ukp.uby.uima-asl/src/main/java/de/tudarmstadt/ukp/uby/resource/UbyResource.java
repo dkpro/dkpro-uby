@@ -40,7 +40,6 @@ import de.tudarmstadt.ukp.dkpro.core.api.resources.CompressionUtils;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.ModelProviderBase;
 import de.tudarmstadt.ukp.dkpro.core.api.resources.ResourceObjectProviderBase;
 import de.tudarmstadt.ukp.lmf.api.Uby;
-import de.tudarmstadt.ukp.lmf.exceptions.UbyInvalidArgumentException;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 
 /**
@@ -202,7 +201,7 @@ public class UbyResource extends Resource_ImplBase implements ExternalResourceLo
                 try {
                     return new Uby(dbConfig);
                 }
-                catch (UbyInvalidArgumentException e) {
+                catch (IllegalArgumentException e) {
                     throw new IOException(e);
                 }                
             }

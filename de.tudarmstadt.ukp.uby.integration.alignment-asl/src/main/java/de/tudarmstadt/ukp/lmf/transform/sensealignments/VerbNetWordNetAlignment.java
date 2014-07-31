@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import de.tudarmstadt.ukp.lmf.exceptions.UbyInvalidArgumentException;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 
 public class VerbNetWordNetAlignment extends SenseAlignment
@@ -55,7 +54,7 @@ public class VerbNetWordNetAlignment extends SenseAlignment
 
 	public void getAlignmentDirectSQL(String sourceUrl,String destUrl,
 			String dbDriver, String dbVendor, String user, String pass,
-			String UBY_HOME, boolean createLMFobjects) throws SQLException, ClassNotFoundException, IOException, UbyInvalidArgumentException
+			String UBY_HOME, boolean createLMFobjects) throws SQLException, ClassNotFoundException, IOException, IllegalArgumentException
 	{
 		Class.forName(dbDriver);
 		Connection connection = DriverManager.getConnection("jdbc:"+dbVendor+"://"+sourceUrl,user,pass);
