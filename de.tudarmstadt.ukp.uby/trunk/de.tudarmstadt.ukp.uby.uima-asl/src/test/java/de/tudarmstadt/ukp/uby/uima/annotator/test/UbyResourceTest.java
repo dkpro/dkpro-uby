@@ -39,7 +39,6 @@ import org.junit.Test;
 
 import de.tudarmstadt.ukp.dkpro.core.api.resources.ResourceObjectProviderBase;
 import de.tudarmstadt.ukp.lmf.api.Uby;
-import de.tudarmstadt.ukp.lmf.exceptions.UbyInvalidArgumentException;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 import de.tudarmstadt.ukp.lmf.transform.LMFDBUtils;
@@ -82,7 +81,7 @@ public class UbyResourceTest
 	 *
 	 */	 
     private void runAnnotatorTestOnInMemDb(String language)
-        throws UIMAException, FileNotFoundException, DocumentException, UbyInvalidArgumentException
+        throws UIMAException, FileNotFoundException, DocumentException, IllegalArgumentException
     {
 	 	DBConfig dbConfig = new DBConfig("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1","org.h2.Driver","h2","root","pass",false);
 		

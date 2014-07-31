@@ -39,7 +39,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import de.tudarmstadt.ukp.lmf.exceptions.UbyInvalidArgumentException;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
@@ -71,7 +70,7 @@ public class VerbNetFrameNetSenseAlignment
 	}
 
 	@Override
-	public void getAlignment() throws UbyInvalidArgumentException
+	public void getAlignment() throws IllegalArgumentException
 	{
 		BufferedReader reader = null;
 		try {

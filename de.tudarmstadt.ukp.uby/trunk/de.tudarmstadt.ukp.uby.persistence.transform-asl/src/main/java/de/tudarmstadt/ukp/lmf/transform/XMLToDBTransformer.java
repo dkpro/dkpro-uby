@@ -39,7 +39,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
-import de.tudarmstadt.ukp.lmf.exceptions.UbyInvalidArgumentException;
 import de.tudarmstadt.ukp.lmf.hibernate.HibernateConnect;
 import de.tudarmstadt.ukp.lmf.model.core.GlobalInformation;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
@@ -92,7 +91,7 @@ public class XMLToDBTransformer implements ElementHandler {
 	 * @throws DocumentException
 	 * @throws UbyInvalidArgumentException 
 	 */
-	public void transform(File xmlFile, String lexicalResourceName) throws DocumentException, UbyInvalidArgumentException{
+	public void transform(File xmlFile, String lexicalResourceName) throws DocumentException, IllegalArgumentException{
 		startTime = System.currentTimeMillis();
 
 		openSession();

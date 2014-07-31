@@ -23,7 +23,6 @@ import java.io.FileNotFoundException;
 import org.dom4j.DocumentException;
 
 import de.tudarmstadt.ukp.lmf.api.Uby;
-import de.tudarmstadt.ukp.lmf.exceptions.UbyInvalidArgumentException;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 import de.tudarmstadt.ukp.lmf.transform.LMFDBUtils;
 import de.tudarmstadt.ukp.lmf.transform.XMLToDBTransformer;
@@ -36,7 +35,7 @@ import de.tudarmstadt.ukp.lmf.transform.XMLToDBTransformer;
 public class UbyTestDbProvider {
 
 	private Uby uby;
-	public UbyTestDbProvider() throws FileNotFoundException, DocumentException, UbyInvalidArgumentException {
+	public UbyTestDbProvider() throws FileNotFoundException, DocumentException, IllegalArgumentException {
 			
 		this.uby = createDB();
 
@@ -46,7 +45,7 @@ public class UbyTestDbProvider {
 		return this.uby;
 	}
 	
-	private Uby createDB() throws DocumentException, UbyInvalidArgumentException, FileNotFoundException {
+	private Uby createDB() throws DocumentException, IllegalArgumentException, FileNotFoundException {
 		String uby_user = "root";
 		String uby_pass = "pass";
 

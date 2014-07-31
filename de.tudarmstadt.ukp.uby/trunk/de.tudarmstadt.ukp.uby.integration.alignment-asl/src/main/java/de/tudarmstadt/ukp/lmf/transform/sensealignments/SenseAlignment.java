@@ -33,7 +33,6 @@ import javax.xml.transform.TransformerException;
 import org.dom4j.DocumentException;
 
 import de.tudarmstadt.ukp.lmf.api.Uby;
-import de.tudarmstadt.ukp.lmf.exceptions.UbyInvalidArgumentException;
 import de.tudarmstadt.ukp.lmf.model.core.GlobalInformation;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
@@ -97,14 +96,14 @@ abstract public class SenseAlignment
 				pass, false);
 		try {
 			ubySource = new Uby(dbConfigSource);
-		} catch (UbyInvalidArgumentException e) {
+		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		}
 		if (!sourceUrl.equals(destUrl)){
 			DBConfig dbConfigDest = new DBConfig(destUrl,dbDriver,dbVendor, user, pass, false);
 			try {
 				ubyDest=new Uby(dbConfigDest);
-			} catch (UbyInvalidArgumentException e) {
+			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 			}
 		}else{
@@ -135,14 +134,14 @@ abstract public class SenseAlignment
 		DBConfig dbConfigSource = new DBConfig(sourceUrl,dbDriver,dbVendor, user, pass, false);
 		try {
 			ubySource = new Uby(dbConfigSource);
-		} catch (UbyInvalidArgumentException e) {
+		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		}
 		if (!sourceUrl.equals(destUrl)){
 			DBConfig dbConfigDest = new DBConfig(destUrl,dbDriver,dbVendor, user,pass, false);
 			try {
 				ubyDest = new Uby(dbConfigDest);
-			} catch (UbyInvalidArgumentException e) {
+			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 			}
 		}else{
@@ -210,7 +209,7 @@ abstract public class SenseAlignment
 	 * depending on each alignment file format.
 	 * @throws UbyInvalidArgumentException
 	 */
-	abstract public void getAlignment() throws UbyInvalidArgumentException;
+	abstract public void getAlignment() throws IllegalArgumentException;
 
 	
 	/**
@@ -354,7 +353,7 @@ abstract public class SenseAlignment
 
 	}
 
-	public static void toDB(DBConfig dbConfig, File xmlSource, String idPrefix) throws DocumentException, FileNotFoundException, UbyInvalidArgumentException{
+	public static void toDB(DBConfig dbConfig, File xmlSource, String idPrefix) throws DocumentException, FileNotFoundException, IllegalArgumentException{
 		XMLToDBTransformer xml2DB = new XMLToDBTransformer(dbConfig);
 		xml2DB.transform(xmlSource,"Uby_Alignments_"+idPrefix);
 	}

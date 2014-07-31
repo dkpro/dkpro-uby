@@ -28,7 +28,6 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import de.tudarmstadt.ukp.lmf.exceptions.UbyInvalidArgumentException;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
@@ -73,7 +72,7 @@ public class UbyQuickAPI extends Uby
      * 
      * @since 0.1.0
      */
-	public UbyQuickAPI(DBConfig dbConfig) throws UbyInvalidArgumentException
+	public UbyQuickAPI(DBConfig dbConfig) throws IllegalArgumentException
 	{
 		super(dbConfig);
 	}

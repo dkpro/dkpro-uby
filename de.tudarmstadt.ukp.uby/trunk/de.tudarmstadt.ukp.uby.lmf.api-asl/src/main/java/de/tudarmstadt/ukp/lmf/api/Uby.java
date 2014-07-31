@@ -33,7 +33,6 @@ import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.service.ServiceRegistryBuilder;
 
-import de.tudarmstadt.ukp.lmf.exceptions.UbyInvalidArgumentException;
 import de.tudarmstadt.ukp.lmf.hibernate.HibernateConnect;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
@@ -83,10 +82,10 @@ public class Uby
      * @throws UbyInvalidArgumentException
      *             if the specified dbConfig is null
      */
-	public Uby(DBConfig dbConfig) throws UbyInvalidArgumentException
+	public Uby(DBConfig dbConfig) throws IllegalArgumentException
 	{
 		if(dbConfig == null) {
-			throw new UbyInvalidArgumentException("database configuration is null");
+			throw new IllegalArgumentException("database configuration is null");
 		}
 		this.dbConfig = dbConfig;
 		cfg = HibernateConnect.getConfiguration(dbConfig);
@@ -250,13 +249,13 @@ public class Uby
      *             if no lexicon with the given name is found
      * @see Lexicon#getName()
      */
-	public Lexicon getLexiconByName(String name) throws UbyInvalidArgumentException
+	public Lexicon getLexiconByName(String name) throws IllegalArgumentException
 	{
 		Criteria criteria = session.createCriteria(Lexicon.class);
 		criteria = criteria.add(Restrictions.sqlRestriction("lexiconName = '"+name+"'"));
 		Lexicon result = (Lexicon) criteria.uniqueResult();
 		if (result==null) {
-			throw new UbyInvalidArgumentException("Database does not contain a lexicon called " +name);
+			throw new IllegalArgumentException("Database does not contain a lexicon called " +name);
 		}
 		return result;
 
@@ -407,7 +406,7 @@ public class Uby
      *             if a LexicalEntry with this identifier does not exist
      */
 	public LexicalEntry getLexicalEntryById(String lexicalEntryId)
-			throws UbyInvalidArgumentException {
+			throws IllegalArgumentException {
 		Criteria criteria = session.createCriteria(LexicalEntry.class).add(
 				Restrictions.sqlRestriction("lexicalEntryId = '" + lexicalEntryId + "'"));
 		LexicalEntry ret = null;
@@ -415,7 +414,7 @@ public class Uby
 			ret = (LexicalEntry) criteria.list().get(0);
 		}
 		if (ret == null) {
-			throw new UbyInvalidArgumentException(
+			throw new IllegalArgumentException(
 					"LexicalEntry with the ID " +lexicalEntryId +" does not exist");
 		}
 		return ret;
@@ -793,7 +792,7 @@ public class Uby
      *             if a sense with this identifier does not exist
      */
 	public Sense getSenseById(String senseId)
-			throws UbyInvalidArgumentException {
+			throws IllegalArgumentException {
 		Criteria criteria = session.createCriteria(Sense.class).add(
 				Restrictions.sqlRestriction("senseId = '" + senseId + "'"));
 		Sense ret = null;
@@ -801,7 +800,7 @@ public class Uby
 			ret = (Sense) criteria.list().get(0);
 		}
 		if (ret == null) {
-			throw new UbyInvalidArgumentException(
+			throw new IllegalArgumentException(
 					"Sense with this ID does not exist");
 		}
 		return ret;
@@ -816,14 +815,14 @@ public class Uby
      * @throws UbyInvalidArgumentException
      *             if a synset with this identifier does not exist
      */
-	public Synset getSynsetById(String synsetId) throws UbyInvalidArgumentException{
+	public Synset getSynsetById(String synsetId) throws IllegalArgumentException{
 		Criteria criteria= session.createCriteria(Synset.class).add(Restrictions.sqlRestriction("synsetId = '"+ synsetId+"'"));
 		Synset ret=null;
 		if (criteria.list()!=null && criteria.list().size()>0){
 			ret=(Synset)criteria.list().get(0);
 		}
 		if (ret==null) {
-			throw new UbyInvalidArgumentException(new Exception("Synset with the ID " +synsetId +" does not exist"));
+			throw new IllegalArgumentException(new Exception("Synset with the ID " +synsetId +" does not exist"));
 		}
 		return ret;
 	}
@@ -968,14 +967,14 @@ public class Uby
      * @since 0.2.0
      */
 	@Deprecated
-	public List<Sense> wordNetSenses(String partOfSpeech, String offset) throws UbyInvalidArgumentException {
+	public List<Sense> wordNetSenses(String partOfSpeech, String offset) throws IllegalArgumentException {
 
 		if(partOfSpeech == null) {
-            throw new UbyInvalidArgumentException("partOfSpeech is null");
+            throw new IllegalArgumentException("partOfSpeech is null");
         }
 
 		if(offset == null) {
-            throw new UbyInvalidArgumentException("offset is null");
+            throw new IllegalArgumentException("offset is null");
         }
 
 		String refId="[POS: noun] ";
@@ -986,7 +985,7 @@ public class Uby
 		}else if (partOfSpeech.equals("verb")){
 			refId=refId.replaceAll("noun", "verb");
 		}else if (!partOfSpeech.equals("noun")) {
-            throw new UbyInvalidArgumentException(
+            throw new IllegalArgumentException(
             		"\""+partOfSpeech+"\""+
             		" is not a valid part of speech. Only \"noun\", \"verb\", \"adverb\" or \"adjective\" are allowed"
             		);
@@ -1039,14 +1038,14 @@ public class Uby
      * @since 0.2.0
      */
 	@Deprecated
-	public Sense wordNetSense(String partOfSpeech, String senseKey) throws UbyInvalidArgumentException {
+	public Sense wordNetSense(String partOfSpeech, String senseKey) throws IllegalArgumentException {
 
 		if(partOfSpeech == null) {
-            throw new UbyInvalidArgumentException("partOfSpeech is null");
+            throw new IllegalArgumentException("partOfSpeech is null");
         }
 
 		if(senseKey == null) {
-            throw new UbyInvalidArgumentException("senseKey is null");
+            throw new IllegalArgumentException("senseKey is null");
         }
 
 		String refId="[POS: noun] ";
@@ -1058,7 +1057,7 @@ public class Uby
 			refId=refId.replaceAll("noun", "verb");
 		}
 		else if(!partOfSpeech.equals("noun")) {
-            throw new UbyInvalidArgumentException(
+            throw new IllegalArgumentException(
             		"\""+partOfSpeech+"\""+
             		" is not a valid part of speech. Only \"noun\", \"verb\", \"adverb\" or \"adjective\" are allowed"
             		);
