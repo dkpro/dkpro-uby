@@ -24,13 +24,13 @@ public class OneResourceBuilder
 {
 
 
-	public HashMap<String,HashSet<String>> lemmaPosSenses;
-	public HashMap<String,HashSet<String>> senseIdLemma;
-	public HashMap<String,String> lemmaIdWrittenForm;
-	public HashMap<String,Integer> lexemeFreqInGlosses;
+	public TreeMap<String,HashSet<String>> lemmaPosSenses;
+	public TreeMap<String,HashSet<String>> senseIdLemma;
+	public TreeMap<String,String> lemmaIdWrittenForm;
+	public TreeMap<String,Integer> lexemeFreqInGlosses;
 	public TreeMap<String,Integer> lemmaFreqInGlosses;
-	public HashMap<String, String> senseIdGloss;
-	public HashMap<String,String> senseIdGlossPos;
+	public TreeMap<String, String> senseIdGloss;
+	public TreeMap<String,String> senseIdGlossPos;
 	public Connection connection;
 	public int prefix;
 	public String prefix_string;
@@ -41,10 +41,10 @@ public class OneResourceBuilder
 	public OneResourceBuilder(String dbname, String user, String pass, int prefix, String language, boolean synset, boolean pos)
 	{
 
-		senseIdLemma = new HashMap<String, HashSet<String>>();
-		lemmaIdWrittenForm = new HashMap<String, String>();
-		lemmaPosSenses = new HashMap<String, HashSet<String>>();
-		lexemeFreqInGlosses = new HashMap<String, Integer>();
+		senseIdLemma = new TreeMap<String, HashSet<String>>();
+		lemmaIdWrittenForm = new TreeMap<String, String>();
+		lemmaPosSenses = new TreeMap<String, HashSet<String>>();
+		lexemeFreqInGlosses = new TreeMap<String, Integer>();
 		lemmaFreqInGlosses = new TreeMap<String, Integer>();
 		HashMap<Integer,String> senseIdGloss = new HashMap<Integer, String>();
 		HashMap<Integer,String> senseIdGlossPos = new HashMap<Integer, String>();
@@ -104,8 +104,11 @@ public class OneResourceBuilder
 
 		while(rs.next())
 		{
+
 			String id1 = rs.getString(1);
 			String id2 = rs.getString(2);
+	//		System.out.println(id1+" "+id2);
+			System.out.println(count+=1);
 			if(id2 == null) {
 				continue;
 			}
@@ -171,6 +174,100 @@ public class OneResourceBuilder
 		statement.close();
 
 	}
+
+	public void analyizeLemmaList(String input) throws ClassNotFoundException, SQLException, IOException
+	{
+
+		FileReader in = new FileReader("/home/matuschek/ClusterEvaluationTM/GermaNet/WebCAGe-2.0_lemmas.tsv");
+
+		double total_count =  0;
+		double n_count = 0 ;
+		double v_count = 0 ;
+		double a_count = 0 ;
+		double total_counts =  0;
+		double n_counts = 0 ;
+		double v_counts = 0 ;
+		double a_counts = 0 ;
+		double total_mono =  0;
+		double n_mono = 0 ;
+		double v_mono = 0 ;
+		double a_mono = 0 ;
+		 BufferedReader inp =  new BufferedReader(in);
+		 Statement statement = connection.createStatement();
+		 String line;
+		 String lemma ="";
+		 String pos ="";
+		 ResultSet rs;
+		 while((line =inp.readLine())!=null)
+		 {
+			 lemma = line.split("\t")[0];
+			 pos = line.split("\t")[1];
+				rs =	statement.executeQuery("select writtenForm,count(senseId) from LexicalEntry join FormRepresentation_Lemma  join Sense where Sense.lexicalEntryId = LexicalEntry.lexicalEntryId and FormRepresentation_Lemma.lemmaId= LexicalEntry.lemmaId and writtenForm = '"+lemma+"' and partOfSpeech like '"+pos+"%' and Sense.senseId like 'GN%' group by writtenForm");
+				while(rs.next())
+				{
+					total_count++;
+					String id1 = rs.getString(1);
+					int senses = rs.getInt(2);
+					if(senses==1) {
+						total_mono++;
+					}
+					total_counts+=senses;
+					if(pos.equals("n"))
+					{
+						n_count++;
+						n_counts+=senses;
+						if(senses==1) {
+							n_mono++;
+						}
+					}
+					else if(pos.equals("v"))
+					{
+						v_count++;
+						v_counts+=senses;
+						if(senses==1) {
+							v_mono++;
+						}
+					}
+					else if(pos.equals("a"))
+					{
+						a_count++;
+						a_counts+=senses;
+						if(senses==1) {
+							a_mono++;
+						}
+					}
+				}
+
+		 }
+		 System.out.println("Total:");
+		 System.out.println(total_count);
+		 System.out.println(total_counts);
+		 System.out.println(total_counts/total_count);
+		 System.out.println(total_mono);
+
+		 System.out.println("N:");
+		 System.out.println(n_count);
+		 System.out.println(n_counts);
+		 System.out.println(n_counts/n_count);
+		 System.out.println(n_mono);
+
+		 System.out.println("V:");
+		 System.out.println(v_count);
+		 System.out.println(v_counts);
+		 System.out.println(v_counts/v_count);
+		 System.out.println(v_mono);
+
+		 System.out.println("A:");
+		 System.out.println(a_count);
+		 System.out.println(a_counts);
+		 System.out.println(a_counts/a_count);
+		 System.out.println(a_mono);
+
+
+
+
+	}
+
 
 	public void typeTokenRatio() throws ClassNotFoundException, SQLException, IOException
 	{
@@ -255,7 +352,8 @@ public class OneResourceBuilder
 		p = new PrintStream( outstream );
 		outstream_freq = new FileOutputStream("target/"+prefix_string+"_"+(synset?"synset":"sense")+"_lemma_frequencies.txt");
 		p_freq = new PrintStream( outstream_freq );
-		Statement statement = connection.createStatement();
+		Statement statement = connection.createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY, java.sql.ResultSet.CONCUR_READ_ONLY);
+		statement.setFetchSize(Integer.MIN_VALUE);
 		ResultSet rs;
 		final Pattern CLEANUP = Pattern.compile("[^A-Za-z0-9äöüÄÖÜß]+");
 		if(synset)
@@ -405,7 +503,7 @@ public class OneResourceBuilder
 				  f.delete();
 				 in.close();
 			 }
-			lexemeFreqInGlosses = new HashMap<String, Integer>();
+			lexemeFreqInGlosses = new TreeMap<String, Integer>();
 			 for(int x =0 ; x<= i;x++)
 			 {
 				  f = new File("target/"+prefix+"temp_freq_"+x);
@@ -446,7 +544,7 @@ public class OneResourceBuilder
 	public void lemmatizePOStagGlossFile(String input, String output1,String output2, int prefix, String lang)
 	{
 		if(lexemeFreqInGlosses == null) {
-			lexemeFreqInGlosses = new HashMap<String, Integer>();
+			lexemeFreqInGlosses = new TreeMap<String, Integer>();
 		}
 
 		int i = 0;
@@ -526,60 +624,60 @@ public class OneResourceBuilder
 			String prefix_string  = Global.prefixTable.get(prefix);
 
 
-			if(lemmaFreqInGlosses.size()==0) {
-				lemmaFreqInGlosses = new TreeMap<String, Integer>();
-				 FileReader in = new FileReader("target/"+prefix_string+"_"+(synset?"synset":"sense")+"_lemma_frequencies.txt");
-				 BufferedReader input_reader =  new BufferedReader(in);
-				 String line;
-				 while((line =input_reader.readLine())!=null)
-				 {
-
-					 String lemma = line.split("\t")[0];
-					 int frequency = Integer.parseInt(line.split("\t")[1]);
-	//				 System.out.println(lexeme+" "+frequency);
-					 lemmaFreqInGlosses.put(lemma, frequency);
-				 }
-
-			}
-			System.out.println("Lemma frequencies filled for "+this.prefix_string);
-
-			if(lexemeFreqInGlosses.size()==0) {
-				lexemeFreqInGlosses = new HashMap<String, Integer>();
-				 FileReader in = new FileReader("target/"+prefix_string+"_"+(synset?"synset":"sense")+"_lexeme_frequencies.txt");
-				 BufferedReader input_reader =  new BufferedReader(in);
-				 String line;
-				 while((line =input_reader.readLine())!=null)
-				 {
-
-					 String lexeme = line.split("\t")[0];
-					 int frequency = Integer.parseInt(line.split("\t")[1]);
-	//				 System.out.println(lexeme+" "+frequency);
-					 lexemeFreqInGlosses.put(lexeme, frequency);
-				 }
-
-			}
+//			if(lemmaFreqInGlosses.size()==0) {
+//				lemmaFreqInGlosses = new TreeMap<String, Integer>();
+//				 FileReader in = new FileReader("target/"+prefix_string+"_"+(synset?"synset":"sense")+"_lemma_frequencies.txt");
+//				 BufferedReader input_reader =  new BufferedReader(in);
+//				 String line;
+//				 while((line =input_reader.readLine())!=null)
+//				 {
+//
+//					 String lemma = line.split("\t")[0];
+//					 int frequency = Integer.parseInt(line.split("\t")[1]);
+//	//				 System.out.println(lexeme+" "+frequency);
+//					 lemmaFreqInGlosses.put(lemma, frequency);
+//				 }
+//
+//			}
+//			System.out.println("Lemma frequencies filled for "+this.prefix_string);
+//
+//			if(lexemeFreqInGlosses.size()==0) {
+//				lexemeFreqInGlosses = new TreeMap<String, Integer>();
+//				 FileReader in = new FileReader("target/"+prefix_string+"_"+(synset?"synset":"sense")+"_lexeme_frequencies.txt");
+//				 BufferedReader input_reader =  new BufferedReader(in);
+//				 String line;
+//				 while((line =input_reader.readLine())!=null)
+//				 {
+//
+//					 String lexeme = line.split("\t")[0];
+//					 int frequency = Integer.parseInt(line.split("\t")[1]);
+//	//				 System.out.println(lexeme+" "+frequency);
+//					 lexemeFreqInGlosses.put(lexeme, frequency);
+//				 }
+//
+//			}
 			System.out.println("Lexeme frequencies filled for "+this.prefix_string);
-			if(senseIdGloss == null || senseIdGloss.size()==0) {
-				senseIdGloss = new HashMap<String, String>();
-				 FileReader in = new FileReader("target/"+prefix_string+"_"+(synset?"synset":"sense")+"_glosses.txt");
-				 BufferedReader input_reader =  new BufferedReader(in);
-				 String line;
-				 while((line =input_reader.readLine())!=null)
-				 {
-					 gloss_count++;
-					 String id = line.split("\t")[0];
-					 if(line.split("\t").length != 2) {
-						continue;
-					}
-					 String gloss = line.split("\t")[1];
-					 senseIdGloss.put(id,gloss);
-				 }
-
-			}
+//			if(senseIdGloss == null || senseIdGloss.size()==0) {
+//				senseIdGloss = new TreeMap<String, String>();
+//				 FileReader in = new FileReader("target/"+prefix_string+"_"+(synset?"synset":"sense")+"_glosses.txt");
+//				 BufferedReader input_reader =  new BufferedReader(in);
+//				 String line;
+//				 while((line =input_reader.readLine())!=null)
+//				 {
+//					 gloss_count++;
+//					 String id = line.split("\t")[0];
+//					 if(line.split("\t").length != 2) {
+//						continue;
+//					}
+//					 String gloss = line.split("\t")[1];
+//					 senseIdGloss.put(id,gloss);
+//				 }
+//
+//			}
 			System.out.println("Glosses filled for "+this.prefix_string);
 
 			if(senseIdGlossPos == null || senseIdGlossPos.size()==0) {
-				senseIdGlossPos = new HashMap<String, String>();
+				senseIdGlossPos = new TreeMap<String, String>();
 				 FileReader in = new FileReader("target/"+prefix_string+"_"+(synset?"synset":"sense")+"_glosses_tagged.txt");
 				 BufferedReader input_reader =  new BufferedReader(in);
 				 String line;
@@ -597,75 +695,76 @@ public class OneResourceBuilder
 			}
 			System.out.println("Tagged glosses filled for "+this.prefix_string);
 
-			Statement statement = connection.createStatement();
-			ResultSet rs =	statement.executeQuery("select distinct LexicalEntry.lemmaId,writtenForm from FormRepresentation_Lemma join LexicalEntry where LexicalEntry.lexicalEntryId like '"+prefix_string+"%' and LexicalEntry.lemmaId = FormRepresentation_Lemma.lemmaId");
-			while(rs.next())
-			{
-				String lemmaId = rs.getString(1);
-				String writtenForm = rs.getString(2);
+//			Statement statement = connection.createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY, java.sql.ResultSet.CONCUR_READ_ONLY);
+//			statement.setFetchSize(Integer.MIN_VALUE);
+//			ResultSet rs =	statement.executeQuery("select distinct LexicalEntry.lemmaId,writtenForm from FormRepresentation_Lemma join LexicalEntry where LexicalEntry.lexicalEntryId like '"+prefix_string+"%' and LexicalEntry.lemmaId = FormRepresentation_Lemma.lemmaId");
+//			while(rs.next())
+//			{
+//				String lemmaId = rs.getString(1);
+//				String writtenForm = rs.getString(2);
+//
+//				lemmaIdWrittenForm.put(lemmaId,writtenForm);
+//			}
+//			rs =	statement.executeQuery("select distinct lemmaId,partOfSpeech, "+ (synset ? "synsetId" : "senseId") +" from LexicalEntry join Sense where LexicalEntry.lexicalEntryId like '"+prefix_string+"%' and LexicalEntry.lexicalEntryId = Sense.lexicalEntryId");
 
-				lemmaIdWrittenForm.put(lemmaId,writtenForm);
-			}
-			rs =	statement.executeQuery("select distinct lemmaId,partOfSpeech, "+ (synset ? "synsetId" : "senseId") +" from LexicalEntry join Sense where LexicalEntry.lexicalEntryId like '"+prefix_string+"%' and LexicalEntry.lexicalEntryId = Sense.lexicalEntryId");
-
-			while(rs.next())
-			{
-				String lemmaId = rs.getString(1);
-				String lemma;
-				lemma = lemmaIdWrittenForm.get(lemmaId);
-				String POS = rs.getString(2);
-				String senseId = rs.getString(3);
-				if(synset)
-				{
-					senseId = prefix+senseId.split("ynset_")[1];
-
-				}
-				else
-				{
-					senseId = prefix+senseId.split("ense_")[1];
-				}
-				//System.out.println(lemma+" "+senseId);
-	//			System.out.println(senseId);
-
-				if(lemma == null) {
-					continue;
-				}
-				String key = "";
-				if(pos) {
-
-					if(POS == null ) {
-						key =lemma.toLowerCase()+"#"+"null";
-					}
-					else {
-						key =lemma.toLowerCase()+"#"+POS.replace("Common", "");
-					}
-				}
-				else
-				{
-					key =lemma.toLowerCase();
-				}
-				if(!senseIdLemma.containsKey(senseId))
-				{
-					senseIdLemma.put(senseId, new HashSet<String>());
-				}
-				senseIdLemma.get(senseId).add(key);
-
-
-				if(!lemmaPosSenses.containsKey(key))
-				{
-					lemmaPosSenses.put(key, new HashSet<String>());
-				}
-				lemmaPosSenses.get(key).add(senseId);
-
-
-			}
+//			while(rs.next())
+//			{
+//				String lemmaId = rs.getString(1);
+//				String lemma;
+//				lemma = lemmaIdWrittenForm.get(lemmaId);
+//				String POS = rs.getString(2);
+//				String senseId = rs.getString(3);
+//				if(synset)
+//				{
+//					senseId = prefix+senseId.split("ynset_")[1];
+//
+//				}
+//				else
+//				{
+//					senseId = prefix+senseId.split("ense_")[1];
+//				}
+//				//System.out.println(lemma+" "+senseId);
+//	//			System.out.println(senseId);
+//
+//				if(lemma == null) {
+//					continue;
+//				}
+//				String key = "";
+//				if(pos) {
+//
+//					if(POS == null ) {
+//						key =lemma.toLowerCase()+"#"+"null";
+//					}
+//					else {
+//						key =lemma.toLowerCase()+"#"+POS.replace("Common", "");
+//					}
+//				}
+//				else
+//				{
+//					key =lemma.toLowerCase();
+//				}
+//				if(!senseIdLemma.containsKey(senseId))
+//				{
+//					senseIdLemma.put(senseId, new HashSet<String>());
+//				}
+//				senseIdLemma.get(senseId).add(key);
+//
+//
+//				if(!lemmaPosSenses.containsKey(key))
+//				{
+//					lemmaPosSenses.put(key, new HashSet<String>());
+//				}
+//				lemmaPosSenses.get(key).add(senseId);
+//
+//
+//			}
 	//		for(String key : lemmaPosSenses.keySet())
 	//		{
 	//			System.out.println(key+" "+lemmaPosSenses.get(key).size());
 	//		}
-			rs.close();
-			statement.close();
-			System.out.println("Lexeme-sense map filled for "+this.prefix_string);
+//			rs.close();
+//			statement.close();
+//			System.out.println("Lexeme-sense map filled for "+this.prefix_string);
 		}
 
 
