@@ -4,6 +4,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.sql.SQLException;
+import java.util.Set;
 
 import de.tudarmstadt.ukp.alignment.framework.Global;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
@@ -23,41 +24,76 @@ public class JointGraphBuilder
 			String language = ELanguageIdentifier.GERMAN;
 			/*RESOURCE 1*/
 
-			boolean synset1 = false;
+			boolean synset1 = true;
 			boolean usePos1 = true;
 
-			 int prefix1 = Global.WKT_DE_prefix;
+			boolean synset2 = true;
+			boolean usePos2 = true;
+
+
+			 int prefix1 = Global.GN_Synset_prefix;
 			 String prefix_string1 = Global.prefixTable.get(prefix1);
-	//		OneResourceBuilder bg_1 = new OneResourceBuilder("uby_lite_0_4_0","root","fortuna", prefix1,language,synset1,usePos1);
-			OneResourceBuilder bg_1 = new OneResourceBuilder("uby_release_1_0","root","fortuna", prefix1,language,synset1,usePos1);
+			 int prefix2 = Global.GN_Synset_prefix;
+			 String prefix_string2 = Global.prefixTable.get(prefix2);
+		     OneResourceBuilder bg_1 = new OneResourceBuilder("uby_lite_0_4_0","root","fortuna", prefix2,language,synset1,usePos1);
+
+
+		//     OneResourceBuilder bg_1 = new OneResourceBuilder("uby_release_1_0","root","fortuna", prefix1,language,synset1,usePos1);
+		     OneResourceBuilder bg_2 = new OneResourceBuilder("uby_germanet7","root","fortuna", prefix1,language,synset1,usePos1);
+	//		 OneResourceBuilder bg_2 = new OneResourceBuilder("uby_release_1_0","root","fortuna", prefix2,language,synset2,usePos2);
+
+
 			final int monoLinkThreshold1 = 1000;
 			final int chunksize1 = 2000;
-			bg_1.createGlossFile(false);
-		//	bg_1.typeTokenRatio();
-			bg_1.lemmatizePOStagGlossFileInChunks(chunksize1);
-			bg_1.fillIndexTables();
-			bg_1.builtRelationGraphFromDb(false);
+//			bg_1.createGlossFile(false);
+			//bg_2.createGlossFile(false);
+
+			bg_1.analyizeLemmaList("");
+//			bg_1.typeTokenRatio();
+//			bg_2.typeTokenRatio();
+//			calculateLexicalGlossOverlap(bg_1, bg_2);
+			System.exit(1);
+			synset2 = true;
+			prefix2 = Global.WN_Synset_prefix;
+			prefix_string2 = Global.prefixTable.get(prefix2);
+			bg_2 = new OneResourceBuilder("uby_release_1_0","root","fortuna", prefix2,language,synset2,usePos2);
+			bg_2.typeTokenRatio();
+			calculateLexicalGlossOverlap(bg_1, bg_2);
+
+			synset2 = false;
+			prefix2 = Global.FN_prefix;
+			prefix_string2 = Global.prefixTable.get(prefix2);
+			bg_2 = new OneResourceBuilder("uby_release_1_0","root","fortuna", prefix2,language,synset2,usePos2);
+			bg_2.typeTokenRatio();
+			calculateLexicalGlossOverlap(bg_1, bg_2);
+
+			System.exit(1);
+		//	bg_1.lemmatizePOStagGlossFileInChunks(chunksize1);
+		//	bg_1.fillIndexTables();
+		//	bg_1.builtRelationGraphFromDb(false);
+
+		//
 
 			prefix1 = Global.WP_DE_prefix;
 			prefix_string1 = Global.prefixTable.get(prefix1);
 	//		OneResourceBuilder bg_1 = new OneResourceBuilder("uby_lite_0_4_0","root","fortuna", prefix1,language,synset1,usePos1);
-			bg_1 = new OneResourceBuilder("uby_release_1_0","root","fortuna", prefix1,language,synset1,usePos1);
-			bg_1.createGlossFile(false);
+	//		OneResourceBuilder 	bg_1 = new OneResourceBuilder("uby_release_1_0","root","fortuna", prefix1,language,synset1,usePos1);
+//			bg_1.createGlossFile(false);
 		//	bg_1.typeTokenRatio();
-			bg_1.lemmatizePOStagGlossFileInChunks(chunksize1);
-			bg_1.fillIndexTables();
-			bg_1.builtRelationGraphFromDb(false);
+//			bg_1.lemmatizePOStagGlossFileInChunks(chunksize1);
+//			bg_1.fillIndexTables();
+//			bg_1.builtRelationGraphFromDb(false);
 
-			 language = ELanguageIdentifier.ENGLISH;
-			prefix1 = Global.WKT_EN_prefix;
-			prefix_string1 = Global.prefixTable.get(prefix1);
-	//		OneResourceBuilder bg_1 = new OneResourceBuilder("uby_lite_0_4_0","root","fortuna", prefix1,language,synset1,usePos1);
-			bg_1 = new OneResourceBuilder("uby_release_1_0","root","fortuna", prefix1,language,synset1,usePos1);
-			bg_1.createGlossFile(false);
-		//	bg_1.typeTokenRatio();
-			bg_1.lemmatizePOStagGlossFileInChunks(chunksize1);
-			bg_1.fillIndexTables();
-			bg_1.builtRelationGraphFromDb(false);
+//			 	System.exit(0);language = ELanguageIdentifier.ENGLISH;
+//			prefix1 = Global.WKT_EN_prefix;
+//			prefix_string1 = Global.prefixTable.get(prefix1);
+//	//		OneResourceBuilder bg_1 = new OneResourceBuilder("uby_lite_0_4_0","root","fortuna", prefix1,language,synset1,usePos1);
+//			bg_1 = new OneResourceBuilder("uby_release_1_0","root","fortuna", prefix1,language,synset1,usePos1);
+//			bg_1.createGlossFile(false);
+//		//	bg_1.typeTokenRatio();
+//			bg_1.lemmatizePOStagGlossFileInChunks(chunksize1);
+//			bg_1.fillIndexTables();
+//			bg_1.builtRelationGraphFromDb(false);
 
 
 			 language = ELanguageIdentifier.ENGLISH;
@@ -69,9 +105,10 @@ public class JointGraphBuilder
 			//	bg_1.typeTokenRatio();
 				bg_1.lemmatizePOStagGlossFileInChunks(chunksize1);
 				bg_1.fillIndexTables();
-				bg_1.builtRelationGraphFromDb(false);
 
-			System.exit(0);
+				bg_1.builtRelationGraphFromDb(false);
+				System.exit(0);
+
 
 
 			//bg_1.createMonosemousLinks(monoLinkThreshold1);
@@ -87,13 +124,13 @@ public class JointGraphBuilder
 
 
 			/*RESOURCE 2*/
-			boolean synset2 = true;
-			boolean usePos2 = true;
-			final int prefix2 = Global.OW_EN_Synset_prefix;
-			final String prefix_string2 = Global.prefixTable.get(prefix2);
+//			boolean synset2 = true;
+//			boolean usePos2 = true;
+//			final int prefix2 = Global.OW_EN_Synset_prefix;
+//			final String prefix_string2 = Global.prefixTable.get(prefix2);
 			final int monoLinkThreshold2 = 500;
 			final int chunksize2 = 1000;
-			OneResourceBuilder bg_2 = new OneResourceBuilder("uby_release_1_0","root","fortuna",prefix2,language,synset2,usePos2);
+//			OneResourceBuilder bg_2 = new OneResourceBuilder("uby_release_1_0","root","fortuna",prefix2,language,synset2,usePos2);
 
 			bg_2.builtRelationGraphFromDb(false);
 
@@ -185,6 +222,25 @@ public class JointGraphBuilder
 	 *
 	 *
 	 */
+
+
+	public static void calculateLexicalGlossOverlap(OneResourceBuilder gb1, OneResourceBuilder gb2) throws ClassNotFoundException, SQLException, IOException
+	{
+		Set<String> lexemes1 = gb1.lemmaFreqInGlosses.keySet();
+		Set<String> lexemes2 = gb2.lemmaFreqInGlosses.keySet();
+
+		double size1 = lexemes1.size();
+		double size2 = lexemes2.size();
+		lexemes1.retainAll(lexemes2);
+		double overlap = lexemes1.size();
+		System.out.println(gb1.prefix_string+" "+size1);
+		System.out.println(gb2.prefix_string+" "+size2);
+		System.out.println("Common: "+" "+overlap);
+		System.out.println(gb1.prefix_string+" overlap "+(overlap/size1));
+		System.out.println(gb2.prefix_string+" overlap "+(overlap/size2));
+
+
+	}
 
 	public static void createTrivialAlignments(OneResourceBuilder gb1, OneResourceBuilder gb2) throws ClassNotFoundException, SQLException, IOException
 		{
