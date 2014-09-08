@@ -184,11 +184,11 @@ public class HibernateConnect
 		}
 
         // Do only update schema on changes e.g. validate | update | create | create-drop
-        //p.setProperty("hibernate.hbm2ddl.auto","update"); //JEK: removed this property because the database schema is not changed when querying Uby
- 
+        p.setProperty("hibernate.hbm2ddl.auto","update"); 
+        
         // JEK see http://stackoverflow.com/questions/3179765/how-to-turn-off-hbm2ddl
         //p.setProperty("hibernate.hbm2ddl.auto","validate");
-        p.setProperty("hibernate.hbm2ddl.auto","none");
+        // p.setProperty("hibernate.hbm2ddl.auto","none");
 
         return p;
     }
