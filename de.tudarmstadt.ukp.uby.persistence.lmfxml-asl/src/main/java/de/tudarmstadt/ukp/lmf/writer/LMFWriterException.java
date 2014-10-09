@@ -24,7 +24,9 @@ package de.tudarmstadt.ukp.lmf.writer;
  * 
  * @author Yevgen Chebotar
  * @since UBY 0.1.0
+ * @deprecated THIS CLASS WILL BE REMOVED SOON. USE MODULE persistence.transform INSTEAD!
  */
+@Deprecated
 public class LMFWriterException extends Exception {
 
 	private static final long serialVersionUID = 3656613135105045894L;

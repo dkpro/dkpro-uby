@@ -18,6 +18,8 @@
 
 package de.tudarmstadt.ukp.lmf.writer;
 
+/** @deprecated THIS CLASS WILL BE REMOVED SOON. USE MODULE persistence.transform INSTEAD! */
+@Deprecated
 public abstract class LMFWriter {
 	public abstract void writeElement(Object lmfObject) throws LMFWriterException;
 	public abstract void writeStartElement(Object lmfObject) throws LMFWriterException;	
