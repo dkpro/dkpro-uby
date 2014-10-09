@@ -46,30 +46,6 @@ public class SynsetGenerator {
 	private final String resourceVersion;
 	
 	private int GlobalLanguage;
-	public int getGlobalLanguage()
-	{
-		return GlobalLanguage;
-	}
-
-	public void setGlobalLanguage(int globalLanguage)
-	{
-		GlobalLanguage = globalLanguage;
-	}
-
-	public String getGlobalLanguageLMF()
-	{
-		return GlobalLanguageLMF;
-	}
-
-	public void setGlobalLanguageLMF(String globalLanguageLMF)
-	{
-		GlobalLanguageLMF = globalLanguageLMF;
-	}
-
-	public OmegaWiki getOmegawiki()
-	{
-		return omegawiki;
-	}
 
 	private String GlobalLanguageLMF;
 
@@ -95,22 +71,11 @@ public class SynsetGenerator {
 	 * @return SynsetGenerator
 	 */
 	public SynsetGenerator(OmegaWiki omegawiki, int language, String resourceVersion){
-	//	if(language==OWLanguage.English)
-		{
-			this.GlobalLanguage = language;
-			this.GlobalLanguageLMF = OmegaWikiLMFMap.mapLanguage(language);
-			this.resourceVersion = resourceVersion;
-		}
-//		else if(language==OWLanguage.German)
-//		{
-//			System.out.println("German");
-//			this.GlobalLanguage=OWLanguage.German;
-//			this.GlobalLanguageLMF= ELanguageIdentifier.ISO639_DEU;
-//		}
+		this.GlobalLanguage = language;
+		this.GlobalLanguageLMF = OmegaWikiLMFMap.mapLanguage(language);
+		this.resourceVersion = resourceVersion;
 		this.omegawiki = omegawiki;
 	}
-
-
 
 	/**
 	 * This method initializes the SynsetGenerator
@@ -121,8 +86,8 @@ public class SynsetGenerator {
 		if(!initialized){
 			//Iterate over all DefinedMeanings in the specified language
 			Iterator<DefinedMeaning> dmIter = null;
-			double overall = 0;
-			double current = 0;
+			int overall = 0;
+			int current = 0;
 			try {
 				dmIter = omegawiki.getAllDefinedMeanings(this.GlobalLanguage).iterator();
 				overall = omegawiki.getAllDefinedMeanings(this.GlobalLanguage).size();
@@ -132,8 +97,8 @@ public class SynsetGenerator {
 
 			while(dmIter.hasNext() ) {//&& i++<=100 ){
 				DefinedMeaning dm = dmIter.next();
-				if(current++ % 100 == 0) {
-					System.out.println((current) / overall+"");
+				if(current++ % 1000 == 0) {
+					System.out.println("Generating Synsets... " + ((current * 100) / overall) + "%");
 				}
 				Synset lmfSynset = new Synset();
 				lmfSynset.setId(getNewID());
@@ -168,7 +133,6 @@ public class SynsetGenerator {
 
 		initialized = true;
 		}
-
 	}
 
 	/**
@@ -180,8 +144,6 @@ public class SynsetGenerator {
 		Collections.sort(result);
 		return result;
 	}
-
-
 
 	/**
 	 * This method generates a Synset-ID
@@ -205,17 +167,6 @@ public class SynsetGenerator {
 		return OWSynsetLMFSynsetMappings.get(dm);
 	}
 
-
-
-	/**
-	 * @return the lMFSynsetOWSynsetMappings
-	 */
-	public HashMap<de.tudarmstadt.ukp.lmf.model.semantics.Synset, DefinedMeaning> getLMFSynsetOWSynsetMappings() {
-		return this.LMFSynsetOWSynsetMappings;
-	}
-
-
-
 	/**
 	 * @return the OWSynsetLMFSynsetMappings
 	 */
@@ -223,12 +174,21 @@ public class SynsetGenerator {
 		return OWSynsetLMFSynsetMappings;
 	}
 
+	public int getGlobalLanguage()
+	{
+		return GlobalLanguage;
+	}
 
-
+	public String getGlobalLanguageLMF()
+	{
+		return GlobalLanguageLMF;
+	}
+	
 	/**
 	 * @return the OmegaWiki
 	 */
 	public OmegaWiki getOmegaWiki() {
 		return omegawiki;
 	}
+
 }

@@ -62,27 +62,25 @@ public class OWConverter {
 //		}
 	}
 
-
-
 	public LexicalResource getLexicalResource()
 	{
 		return lexicalResource;
 	}
 
-	public void setLexicalResource(LexicalResource lexicalResource)
-	{
-		this.lexicalResource = lexicalResource;
-	}
+//	public void setLexicalResource(LexicalResource lexicalResource)
+//	{
+//		this.lexicalResource = lexicalResource;
+//	}
 
-	public  int getGloballanguage()
-	{
-		return this.GlobalLanguage;
-	}
-
-	public  String getGloballanguagelmf()
-	{
-		return GlobalLanguageLMF;
-	}
+//	public  int getGloballanguage()
+//	{
+//		return this.GlobalLanguage;
+//	}
+//
+//	public  String getGloballanguagelmf()
+//	{
+//		return GlobalLanguageLMF;
+//	}
 
 	/**
 	 * Converts OmegaWiki into LMF-Format
@@ -94,7 +92,6 @@ public class OWConverter {
 		// Setting attributes of LexicalResource
 		lexicalResource.setName("Uby_OmegaWiki"+GlobalLanguageLMF);
 		lexicalResource.setDtdVersion(dtd_version);
-
 
 		// *** Setting GlobalInformation *** //
 		GlobalInformation globalInformation = new GlobalInformation();
@@ -111,37 +108,38 @@ public class OWConverter {
 		lexicalResource.setLexicons(lexicons);
 
 		// *** Creating Synsets *** //
-		System.out.print("Generating Synsets...");
+		System.out.println("Generating Synsets...");
 		SynsetGenerator synsetGenerator = new SynsetGenerator(omegawiki,GlobalLanguage,resourceVersion);
 		synsetGenerator.initialize();
 		// Setting Synsets
 		lexicon.setSynsets(synsetGenerator.getSynsets());
-		System.out.println("done");
+		System.out.println("Generating Synsets... done");
 
 		// *** Creating LexicalEntries *** //
-		System.out.print("Generating LexicalEntries...");
+		System.out.println("Generating LexicalEntries...");
 		LexicalEntryGenerator lexicalEntryGenerator = new LexicalEntryGenerator(omegawiki, synsetGenerator,
 				lexicon, resourceVersion);
 		lexicon.setLexicalEntries(lexicalEntryGenerator.getLexicalEntries());
-		System.out.println("done");
+		System.out.println("Generating LexicalEntries... done");
 
 		// *** Creating SynsetRelations *** //
-		System.out.print("Generating SynsetRelations...");
+		System.out.println("Generating SynsetRelations...");
 		SynsetRelationGenerator synsetRelationGenerator = new SynsetRelationGenerator(synsetGenerator,lexicalEntryGenerator);
 		// Update the relations of previously extracted (and generated) Synsets
 		synsetRelationGenerator.updateSynsetRelations();
-		System.out.println("done");
+		System.out.println("Generating SynsetRelations... done");
 
 		// *** Creating SenseRelations *** //
-		System.out.print("Generating SenseRelations");
+		System.out.println("Generating SenseRelations...");
 		SenseRelationGenerator senseRelationGenerator = new SenseRelationGenerator(lexicalEntryGenerator, synsetGenerator);
 		senseRelationGenerator.updateSenseRelations();
-		System.out.println("done");
+		System.out.println("Generating SenseRelations... done");
 
 		// *** Creating Equivalents *** //
-		System.out.print("Generating Equivalents");
+		System.out.println("Generating Equivalents...");
 		EquivalentGenerator eqGenerator = new EquivalentGenerator(lexicalEntryGenerator, synsetGenerator, GlobalLanguage);
 		eqGenerator.updateEquivalents();
-		System.out.println("done");
+		System.out.println("Generating Equivalents... done");
 	}
+
 }

@@ -298,7 +298,7 @@ class SenseGenerator {
 						sl.setType(ELabelTypeSemantics.timePeriodOfUsage);
 					}
 					else  {
-						sl.setType(ELabelTypeSemantics.regionOfUsage);
+//						sl.setType(ELabelTypeSemantics.regionOfUsage);
 					}
 					//sl.setType("time");
 					sl.setLabel(value);
@@ -317,8 +317,13 @@ class SenseGenerator {
 			//set ID
 			sense.setId(getNewID());
 
-			if(sl!=null)
+			if (sl != null && sl.getType() != null)
 			{
+				String label = sl.getLabel();
+				if (label.length() > 255)
+					label = label.substring(0, 255);
+				sl.setLabel(label);
+				
 				sl.setParent(sense);
 				if(sense.getSemanticLabels()==null) {
 					sense.setSemanticLabels(new LinkedList<SemanticLabel>());
@@ -355,7 +360,8 @@ class SenseGenerator {
 			}
 
 			// setting index of the Sense (lexeme's SynTrans ID)
-			sense.setIndex(lexeme.getSyntransid());
+			sense.setIndex(lexicalEntry.getSenses().size() + 1);
+			lexicalEntry.getSenses().add(sense);
 
 			DefinedMeaning lexemesSynset = lexeme.getDefinedMeaning(); // Lexeme's DM
 

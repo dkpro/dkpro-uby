@@ -29,18 +29,7 @@ import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 public class OmegaWikiLMFMap {
 
 	private static HashMap<Integer, String> languageNames = new HashMap<Integer, String>();  // Language maps from Wiktionary to LMF
-	private static String langCode = "language_code.en";
-
-	/**
-	 * Load language codes from the given path
-	 * create language mappings from Wiktionary to LMF
-	 * @param path
-	 */
-
-
-
-
-
+//	private static String langCode = "language_code.en";
 
 	/**
 	 * Maps Wiktionary Language to LMF LanguageIdentifier
@@ -341,68 +330,5 @@ public class OmegaWikiLMFMap {
 		}
 		return languageNames.get(lang);
 	}
-
-
-
-	/**
-	 * Maps Wiktionary PartOfSpeech to LMF PartOfSpeech
-	 * @param pos
-	 */
-//	public static EPartOfSpeech mapPos(PartOfSpeech pos){
-//		if(pos.equals(PartOfSpeech.NOUN))
-//			return EPartOfSpeech.noun;
-//		else if(pos.equals(PartOfSpeech.VERB)){
-//			return EPartOfSpeech.verb;
-//		}else if (pos.equals(PartOfSpeech.ADJECTIVE)){
-//			return EPartOfSpeech.adjective;
-//		}else if(pos.equals(PartOfSpeech.ADVERB))
-//			return EPartOfSpeech.adverb;
-//		else if (pos.equals(PartOfSpeech.NUMBER))
-//			return EPartOfSpeech.numeral;
-//		else if (pos.equals(PartOfSpeech.INTERJECTION))
-//			return EPartOfSpeech.interjection;
-//		else if(pos.equals(PartOfSpeech.ANSWERING_PARTICLE))
-//			return EPartOfSpeech.answerParticle;
-//		else if(pos.equals(PartOfSpeech.AUXILIARY_VERB))
-//			return EPartOfSpeech.verbAuxiliary;
-//		else if(pos.equals(PartOfSpeech.COMPARATIVE_PARTICLE))
-//			return EPartOfSpeech.comparativeParticle;
-//		else if(pos.equals(PartOfSpeech.DETERMINER))
-//			return EPartOfSpeech.determiner;
-//		else if(pos.equals(PartOfSpeech.INTERROGATIVE_PRONOUN))
-//			return EPartOfSpeech.interrogativePronoun;
-//		else if(pos.equals(PartOfSpeech.NEGATIVE_PARTICLE))
-//			return EPartOfSpeech.negativeParticle;
-//		else if(pos.equals(PartOfSpeech.NUMERAL))
-//			return EPartOfSpeech.numeral;
-//		else if(pos.equals(PartOfSpeech.PROPER_NOUN))
-//			return EPartOfSpeech.nounProper;
-//		else if (pos.equals(PartOfSpeech.PREPOSITION))
-//			return EPartOfSpeech.preposition;
-//		else if (pos.equals(PartOfSpeech.PRONOUN))
-//			return EPartOfSpeech.pronoun;
-//		else if (pos.equals(PartOfSpeech.CONJUNCTION))
-//			return EPartOfSpeech.conjunction;
-//		else {
-//
-//			//System.out.println("CAN't map pos " + pos.name());
-//			return null;
-//		}
-//	}
-	/**
-	 * Maps Wiktionary Gender to LMF GrammaticalGender
-	 * @param gender
-	 */
-//	public static EGrammaticalGender mapGender(Gender gender){
-//		if(gender.equals(Gender.NEUTER))
-//			return EGrammaticalGender.neuter;
-//		else if(gender.equals(Gender.FEMININE))
-//			return EGrammaticalGender.feminine;
-//		else return null;
-//	}
-
-
-
-
 
 }
