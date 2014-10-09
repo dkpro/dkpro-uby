@@ -18,6 +18,7 @@
 package de.tudarmstadt.ukp.lmf.model.morphology;
 
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasLanguageIdentifier;
+import de.tudarmstadt.ukp.lmf.model.interfaces.IHasParentSpecificTable;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
@@ -29,7 +30,8 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
  * @author Zijad Maksuti
  *
  */
-public class FormRepresentation implements IHasLanguageIdentifier, Comparable<FormRepresentation>{
+public class FormRepresentation implements IHasLanguageIdentifier, 
+		IHasParentSpecificTable, Comparable<FormRepresentation>{
 	
 	// language identifier of this FormRepresentation
 	@VarType(type = EVarType.ATTRIBUTE)

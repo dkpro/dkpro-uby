@@ -18,6 +18,7 @@
 package de.tudarmstadt.ukp.lmf.model.core;
 
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasLanguageIdentifier;
+import de.tudarmstadt.ukp.lmf.model.interfaces.IHasParentSpecificTable;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 import de.tudarmstadt.ukp.lmf.model.semantics.SenseExample;
@@ -29,7 +30,8 @@ import de.tudarmstadt.ukp.lmf.model.semantics.SenseExample;
  * @author Zijad Maksuti
  * 
  */
-public class TextRepresentation implements IHasLanguageIdentifier, Comparable<TextRepresentation>{
+public class TextRepresentation implements IHasLanguageIdentifier, 
+		IHasParentSpecificTable, Comparable<TextRepresentation>{
 
 	// Language identifier of this TextRepresentation
 	@VarType(type = EVarType.ATTRIBUTE)
