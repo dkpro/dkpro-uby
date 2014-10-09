@@ -34,8 +34,10 @@ import de.tudarmstadt.ukp.lmf.writer.LMFWriterException;
 /**
  * Transforms resource to LMF XML
  * @author chebotar
+ * @deprecated THIS CLASS WILL BE REMOVED SOON. USE {@link UBYXMLTransformer} INSTEAD.
  */
-public abstract class LMFXMLTransformer extends LMFTransformer{	
+@Deprecated
+abstract class LMFXMLTransformer extends LMFTransformer{	
 	// LMF Writer
 	protected LMFWriter writer;
 	

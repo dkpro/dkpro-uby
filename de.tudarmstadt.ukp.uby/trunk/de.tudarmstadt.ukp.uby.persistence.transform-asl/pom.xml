@@ -43,6 +43,10 @@
 			<groupId>de.tudarmstadt.ukp.uby</groupId>
 			<artifactId>de.tudarmstadt.ukp.uby.lmf.api-asl</artifactId>
 		</dependency>
-		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 </project>

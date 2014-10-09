@@ -29,6 +29,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Table;
+import org.hibernate.service.ServiceRegistryBuilder;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 
@@ -41,7 +42,7 @@ public class LMFDBUtils {
 	 * @param dbConfig
 	 * @throws FileNotFoundException
 	 */
-	public static  void createTables(DBConfig dbConfig) 
+	public static void createTables(DBConfig dbConfig) 
 			throws FileNotFoundException{
 		// public static  void createTables(DBConfig dbConfig/*, boolean constraints*/) 
 		System.out.println("CREATE TABLES");
@@ -72,11 +73,12 @@ public class LMFDBUtils {
 		}*/
 	}
 	
-	@SuppressWarnings("deprecation")
 	public static void dropTables(final DBConfig dbConfig) {
 		System.out.println("DROP TABLES");
 		Configuration cfg = HibernateConnect.getConfiguration(dbConfig);
-		SessionFactory sf = cfg.buildSessionFactory();
+		SessionFactory sf = cfg.buildSessionFactory(
+				new ServiceRegistryBuilder().applySettings(
+				cfg.getProperties()).buildServiceRegistry());
 		Session session = sf.openSession();
 		Transaction tx = session.beginTransaction();
 		try {
@@ -103,6 +105,26 @@ public class LMFDBUtils {
 			}
 		} finally {
 			tx.commit();
+			session.disconnect();
+			session.close();
+		}
+	}
+
+	public static void truncateTables(final DBConfig dbConfig) {
+		System.out.println("TRUNCATE TABLES");
+		Configuration cfg = HibernateConnect.getConfiguration(dbConfig);
+		SessionFactory sf = cfg.buildSessionFactory(
+				new ServiceRegistryBuilder().applySettings(
+				cfg.getProperties()).buildServiceRegistry());
+		Session session = sf.openSession();
+		try {
+			session.createSQLQuery("SET FOREIGN_KEY_CHECKS=0").executeUpdate();
+			Iterator<Table> iter = cfg.getTableMappings();
+			while (iter.hasNext())
+				session.createSQLQuery("TRUNCATE TABLE " + iter.next().getName()).executeUpdate();
+		} finally {
+			session.createSQLQuery("SET FOREIGN_KEY_CHECKS=1").executeUpdate();
+			session.disconnect();
 			session.close();
 		}
 	}
