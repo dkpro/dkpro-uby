@@ -8,12 +8,12 @@
     <id name="id" column="subcatFrameId" node="@id" type="string"/>
     
     <many-to-one name="parentSubcatFrame" class="de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrame" column="parentSubcatFrame"
-    		 node="@parentSubcatFrame" foreign-key="none" not-found="ignore" index="parentSubcatFrame_IDX"/>
+    		 node="@parentSubcatFrame" foreign-key="none" not-found="ignore" index="subcatframe_parentSubcatFrame_IDX"/>
 
     <property name="subcatLabel" column="subcatLabel" node="@subcatLabel" type="string"/>
       
     <many-to-one name="lexemeProperty" class="de.tudarmstadt.ukp.lmf.model.syntax.LexemeProperty" column="lexemePropertyId"
-    		 node="LexemeProperty" unique="true" foreign-key="none" lazy="false"/>
+    		 node="LexemeProperty" unique="true" foreign-key="none"/>
        
     <list name="syntacticArguments" node=".">
             <key column="subcatFrameId" />

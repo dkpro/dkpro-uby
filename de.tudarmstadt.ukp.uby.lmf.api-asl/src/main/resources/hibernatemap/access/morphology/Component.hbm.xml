@@ -15,7 +15,7 @@
     <property name="position" column="position" node="@position" type="integer"/>
 		
   	<many-to-one name="targetLexicalEntry" class="de.tudarmstadt.ukp.lmf.model.core.LexicalEntry" column="targetLexicalEntry" 
-			node="@targetLexicalEntry" foreign-key="none" not-found="ignore" index="targetLexicalEntry_IDX"/>
+			node="@targetLexicalEntry" foreign-key="none" not-found="ignore" index="component_targetLexicalEntry_IDX"/>
 			
 
 
