@@ -19,92 +19,45 @@
 package de.tudarmstadt.ukp.lmf.transform;
 
 import java.io.FileNotFoundException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-
-import de.tudarmstadt.ukp.lmf.hibernate.HibernateConnect;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.ConstraintSet;
-import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
-import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
 import de.tudarmstadt.ukp.lmf.model.semantics.SynSemCorrespondence;
 import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrame;
 import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrameSet;
-import de.tudarmstadt.ukp.lmf.writer.LMFWriter;
-import de.tudarmstadt.ukp.lmf.writer.LMFWriterException;
 
 /**
- * Transforms resource to LMF database
- * @author chebotar
+ * Basic transformation of a lexical resource into a UBY database. Extend this
+ * class to convert the resource-specific information.
+ * @author Yevgen Chebotar
+ * @author Christian M. Meyer
  */
-@SuppressWarnings("unchecked")
-public abstract class LMFDBTransformer extends LMFTransformer{
+public abstract class LMFDBTransformer extends UBYHibernateTransformer {
 
-	private DBConfig dbConfig;
-	private Session session;
-	private Transaction tx;
-	private SessionFactory sessionFactory;
-	private Configuration cfg;
-
-	private int commitNumber = 100;
-	private int commitCounter = 0;
-
-	private LexicalResource lexicalResource;
-	/**
-	 * Creates LMFTransformer, which writes to LMFXmlWriter
-	 * @param writer
-	 * @throws FileNotFoundException
-	 */
-	@SuppressWarnings("deprecation")
+	/** Initialize a new transformer for writing to the database with the
+	 *  specified configuration. */
 	public LMFDBTransformer(DBConfig dbConfig) throws FileNotFoundException{
-		super();
-		this.dbConfig = dbConfig;
-		cfg = HibernateConnect.getConfiguration(dbConfig);
-		sessionFactory = cfg.buildSessionFactory();
+		super(dbConfig);
 	}
-
-	/**
-	 * Transforms Resource to LMF sequentially
-	 */
-	@Override
-	public void transform(){
-		// OLD: public void transform(/*boolean constraints, boolean delete*/)
+	
+	/** Start the transformation. That is, the transformer will sequentially
+	 *  invoke the createNext* methods which are to convert the 
+	 *  resource-specific information types into UBY-LMF model objects. */
+	public void transform() {
 		System.out.println("START DB TRANSFORM");
 		openSession();
-		resourceAlias = getResourceAlias();
-		lexicalResource = createLexicalResource();
-		/*if(delete) {
-			LMFDBUtils.deleteLexicalResourceFromDatabase(lexicalResource, dbConfig); // Delete LexicalResource before importing new one
-		}
-		if(constraints) {
-			LMFDBUtils.turnOffConstraints(dbConfig); // We need to turn off some constraints in order not to get
-		}*/
-												 // constraint errors during the import
-		lexicalResource.setLexicons(new ArrayList<Lexicon>());
+
+		LexicalResource lexicalResource = createLexicalResource();
 		saveCascade(lexicalResource, null);
 
 		Lexicon lexicon;
-		while((lexicon = createNextLexicon()) != null){
+		while ((lexicon = createNextLexicon()) != null) {
 			lexicalResource.getLexicons().add(lexicon);
-			lexicon.setLexicalEntries(new ArrayList<LexicalEntry>(commitNumber));
-			lexicon.setSubcategorizationFrames(new ArrayList<SubcategorizationFrame>(commitNumber));
-			lexicon.setSemanticPredicates(new ArrayList<SemanticPredicate>(commitNumber));
-			lexicon.setSynsets(new ArrayList<Synset>(commitNumber));
-			lexicon.setSynSemCorrespondences(new ArrayList<SynSemCorrespondence>(commitNumber));
-			lexicon.setConstraintSets(new ArrayList<ConstraintSet>(commitNumber));
 			saveCascade(lexicon,lexicalResource);
 
 			LexicalEntry lexEntry;
@@ -127,7 +80,6 @@ public abstract class LMFDBTransformer extends LMFTransformer{
 			}
 			commit();
 			session.update(lexicon);
-
 
 			SemanticPredicate semPredicate;
 			while((semPredicate = getNextSemanticPredicate()) != null) {
@@ -167,179 +119,39 @@ public abstract class LMFDBTransformer extends LMFTransformer{
 
 		finish();
 		closeSession();
-		// Turn on the constraints in order to have consistent connections
-		// in the database (e.g. to delete cascade in the future)
-		/*if(constraints) {
-			LMFDBUtils.turnOnConstraints(dbConfig);
-		}*/
 	}
 
-	/**
-	 * Saves transformed lexcialResource to XML
-	 * @param writer XML writer
-	 * @throws LMFWriterException
-	 * @throws FileNotFoundException
-	 */
-	public void saveToXML(LMFWriter writer) throws LMFWriterException, FileNotFoundException{
-		DBToXMLTransformer dbToXml = new DBToXMLTransformer(dbConfig, writer);
-		dbToXml.transform(lexicalResource);
-	}
+	/** Creates LexicalResource object. */
+	protected abstract LexicalResource createLexicalResource();
+	
+	/** Creates next Lexicon object. */
+	protected abstract Lexicon createNextLexicon();
+	
+	/** Returns next LexicalEntry that should be stored in LMF. */
+	protected abstract LexicalEntry getNextLexicalEntry();
 
-	/**
-	 * Saves child element of the parent to the list and updates the parent
-	 * Periodically commits to the database
-	 * @param parent
-	 * @param list
-	 * @param child
-	 */
-	private void saveListElement(Object parent, @SuppressWarnings("rawtypes") List list, Object child){
-		commitCounter ++;
-		list.add(child);
-		saveCascade(child, parent);
-		if(commitCounter % commitNumber == 0){
-			commit();
-			session.update(parent);
-			list.clear();
-		}
-	}
+	/** Returns next SubcategorizationFrame that should be stored in LMF. */
+	protected abstract SubcategorizationFrame getNextSubcategorizationFrame();
 
-	/**
-	 * Opens Hibernate session
-	 */
-	private void openSession(){
-		session = sessionFactory.openSession();
-		tx = session.beginTransaction();
-	}
+	/** Returns next SubcategorizationFrameSet that should be stored in LMF. */
+	protected abstract SubcategorizationFrameSet getNextSubcategorizationFrameSet();
+	
+	/** Returns next SemanticPredicate that should be stored in LMF. */
+	protected abstract SemanticPredicate getNextSemanticPredicate();
+	
+	/** Returns next Synset that should be stored in LMF. */
+	protected abstract Synset getNextSynset();
+	
+	/** Returns next SynSemCorrespondence that should be stored in LMF. */
+	protected abstract SynSemCorrespondence getNextSynSemCorrespondence();
+	
+	/** Returns next ConstraintSet that should be stored in LMF. */
+	protected abstract ConstraintSet getNextConstraintSet();
 
-	/**
-	 * Closes Hibernate session
-	 */
-	private void closeSession(){
-		tx.commit();
-		session.close();
-	}
+	/** Returns next SesnseAxis that should be stored in LMF. */
+	protected abstract SenseAxis getNextSenseAxis();
 
-	/**
-	 * Commits changes made to the Hibernate session
-	 */
-	protected void commit(){
-		closeSession();
-		openSession();
-	}
+	/** Finalize the transformation. */
+	protected abstract void finish();
 
-	/**
-	 * Returns object from the Hibernate database by its class and id
-	 * @param clazz
-	 * @param id
-	 * @return
-	 */
-	protected Object getLmfObjectById(@SuppressWarnings("rawtypes") Class clazz, String id){
-		Object obj = session.get(clazz, id);
-		return obj;
-	}
-
-
-	/**
-	 * Saves all elements of the list and updates their parent
-	 * (in contrast to saveCascade(), which would also save the parent and lead to
-	 * "element already exists" Hibernate exception)
-	 * @param parent
-	 * @param list
-	 */
-	protected void saveList(Object parent, @SuppressWarnings("rawtypes") List list){
-		for(Object obj : list){
-			saveCascade(obj, parent);
-		}
-		session.update(parent);
-	}
-
-	/**
-	 * Updates the object in the Hibernate session
-	 * @param obj
-	 */
-	protected void update(Object obj){
-		session.update(obj);
-	}
-
-	/**
-	 * Saves element and all its children to the Hibernate session
-	 * @param obj
-	 * @param parent
-	 */
-	@SuppressWarnings("rawtypes")
-	protected void saveCascade(Object obj, Object parent){
-		Class objClass = obj.getClass();
-		obj.toString();	// It can happen that a Hibernate object is not initialized properly
-						// --> force initialization of object by calling its toString() method
-
-		Class parentClass = objClass;
-		if(parent != null){
-			parentClass = parent.getClass();
-			parent.toString();	// Force initialization of parent by calling its toString() method
-		}
-
-		try{
-			session.save(obj);
-		}catch(Exception ex){
-			try{ // If no correct mapping was found, try to save according to
-				 // the disambiguated entity-name like "TextRepresentation_Definition" or "FormRepresentation_Lemma"
-				session.save(objClass.getSimpleName()+"_"+parentClass.getSimpleName(), obj);
-			}catch(Exception ex2){
-				System.out.println("CAN'T SAVE "+objClass.getSimpleName()+" PARENT: "+parentClass.getSimpleName() +": "+ex.getMessage());
-			}
-		}
-		
-		// Find all fields including inherited fields. 
-		ArrayList<Field> fields = new ArrayList<Field>();
-		fields.addAll(Arrays.asList(objClass.getDeclaredFields()));
-		Class<?> superClass = objClass.getSuperclass();
-		while (superClass != null){
-			fields.addAll(Arrays.asList(superClass.getDeclaredFields()));
-			superClass = superClass.getSuperclass();
-		}
-				
-		// Iterating over all fields
-		for(Field field : fields){
-			String fieldName = field.getName().replace("_", "");
-			VarType varType = field.getAnnotation(VarType.class);
-			// No VarType-Annotation found for the field
-			if(varType == null) {
-				continue;
-			}
-
-			EVarType type = varType.type();
-			if(!(type.equals(EVarType.CHILD) || type.equals(EVarType.CHILDREN))) {
-				continue;
-			}
-			// Get-Method for the field
-			String getFuncName = "get"+fieldName.substring(0,1).toUpperCase() + fieldName.substring(1);
-
-			try{
-				Method getMethod = objClass.getMethod(getFuncName);
-				Object retObj = getMethod.invoke(obj); // Run the Get-Method
-
-				if(retObj != null){
-					if(type.equals(EVarType.CHILD)) {
-						saveCascade(retObj, obj);
-					}
-					else if(type.equals(EVarType.CHILDREN)){
-						for(Object el : (Iterable)retObj){
-							saveCascade(el, obj);
-						}
-					}
-				}
-			}catch(Exception ex){
-				System.out.println("CAN'T SAVE "+objClass.getSimpleName()+": "+ex.getMessage());
-				ex.printStackTrace();
-			}
-		}
-	}
-
-	/**
-	 * Saves element and all its children without given parent
-	 * @param obj
-	 */
-	protected void saveCascade(Object obj){
-		saveCascade(obj, null);
-	}
 }

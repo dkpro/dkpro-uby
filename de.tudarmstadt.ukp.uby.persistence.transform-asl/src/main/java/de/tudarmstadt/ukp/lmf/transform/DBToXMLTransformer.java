@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright 2013
  * Ubiquitous Knowledge Processing (UKP) Lab
- * Technische Universit��t Darmstadt
+ * Technische Universität Darmstadt
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,232 +15,103 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ******************************************************************************/
-
 package de.tudarmstadt.ukp.lmf.transform;
 
-import java.util.HashSet;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.hibernate.Query;
+import org.hibernate.ScrollMode;
+import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
+import org.xml.sax.SAXException;
 
 import de.tudarmstadt.ukp.lmf.api.CriteriaIterator;
-import de.tudarmstadt.ukp.lmf.hibernate.HibernateConnect;
-import de.tudarmstadt.ukp.lmf.model.core.GlobalInformation;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
-import de.tudarmstadt.ukp.lmf.model.miscellaneous.ConstraintSet;
+import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
 import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
 import de.tudarmstadt.ukp.lmf.model.semantics.SynSemCorrespondence;
 import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrame;
 import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrameSet;
-import de.tudarmstadt.ukp.lmf.writer.LMFWriter;
-import de.tudarmstadt.ukp.lmf.writer.LMFWriterException;
-import de.tudarmstadt.ukp.lmf.writer.xml.LMFXmlWriter;
 
 /**
- * Converts UBY-database to  a XML file.
- * 
+ * Converts a given lexical resource from a UBY database to a UBY-XML file.
  * @author Yevgen Chebotar
  * @author Zijad Maksuti
- * 
+ * @author Christian M. Meyer
  * @since UBY 0.1.0
  */
-public class DBToXMLTransformer {
+public class DBToXMLTransformer extends UBYHibernateTransformer {
 
-	private final SessionFactory sessionFactory;
-	private final LMFWriter writer;
 	private static final Logger logger = Logger.getLogger(DBToXMLTransformer.class.getSimpleName());
-	
-	// true only if only selected lexicons should be converted to XML
-	private boolean lexiconsOnly = false;
-	// the list of lexicons which should be to XML; used only when selectiveConversion set to true
-	private Set<String> selectedLexicons;
-	
-	// true only if only sense axes should be converted to XML
-	private boolean senseAxesOnly = false;
 
-	/**
-	 * Constructs a new {@link DBToXMLTransformer} instance which is used to convert UBY
-	 * from a database to an XML file.
-	 * 
-	 * @param dbConfig {@link DBConfig} instance used to access the database
-	 * @param writer  {@link LMFWriter} used to write to a XML file
-	 * 
-	 * @since UBY 0.1.0
-	 */
-	@SuppressWarnings("deprecation")
-	public DBToXMLTransformer(DBConfig dbConfig, LMFWriter writer) {
-		Configuration cfg = HibernateConnect.getConfiguration(dbConfig);
-
-		this.sessionFactory = cfg.buildSessionFactory();
-		this.writer = writer;
+	protected LexicalResource lexicalResource;
+	
+	/** Constructs a new {@link DBToXMLTransformer} instance which is used to 
+	 *  convert UBY from a database to an XML file.
+	 *  @param dbConfig {@link DBConfig} instance used to access the database.
+	 *  @param outputPath the file path of the resulting XML file.
+	 *  @param dtdPath the file path of the DTD file. */
+	public DBToXMLTransformer(final DBConfig dbConfig, final String outputPath, 
+			String dtdPath) throws FileNotFoundException, SAXException {
+		this(dbConfig, new FileOutputStream(outputPath), dtdPath);
 	}
 
+	/** Constructs a new {@link DBToXMLTransformer} instance which is used to 
+	 *  convert UBY from a database to an XML file.
+	 *  @param dbConfig {@link DBConfig} instance used to access the database.
+	 *  @param outputStream the (file) stream of the resulting XML data.
+	 *  @param dtdPath the file path of the DTD file. */
+	public DBToXMLTransformer(final DBConfig dbConfig, 
+			final OutputStream outputStream, final String dtdPath) 
+			throws SAXException {
+		super(dbConfig);
+		writeStartDocument(outputStream, dtdPath);
+	}
+	
 	/**
 	 * Transforms a {@link LexicalResource} instance retrieved from a database
 	 * to a XML file.
 	 * 
 	 * @param lexicalResource the lexical resource retrived from the database 
 	 * 
-	 * @throws LMFWriterException if a severe error occurs when writing to a file
+	 * @throws SAXException if a severe error occurs when writing to a file
 	 * 
 	 * @since UBY 0.1.0
 	 */
-	public void transform(LexicalResource lexicalResource) throws LMFWriterException{
-		Session session = sessionFactory.openSession();
-		String lexicalResourceName = lexicalResource.getName();
-		lexicalResource = (LexicalResource)session.get(LexicalResource.class, lexicalResourceName);
-		
-		
-		if(writer instanceof LMFXmlWriter)
-			logger.log(Level.INFO, "Started writing lexicalResource "+ lexicalResourceName
-					+ " to " + ((LMFXmlWriter) writer).getOutputPath());
-		else
+	public void transform(final LexicalResource lexicalResource) throws SAXException {
+		openSession();
+		try {
+			String lexicalResourceName = lexicalResource.getName();
+			this.lexicalResource = (LexicalResource)session.get(LexicalResource.class, lexicalResourceName);
 			logger.log(Level.INFO, "Started writing lexicalResource " +  lexicalResourceName);
 			
-		
-		writer.writeStartElement(lexicalResource);
-		
-		// write GlobalInformation
-		GlobalInformation globalInformation = lexicalResource.getGlobalInformation();
-		writer.writeElement(globalInformation);
-		int counter = 1;
-		
-		int bufferSize = 100;
-		// Iterate over all lexicons
-		for(Lexicon lexicon : lexicalResource.getLexicons()){
-			
-			String lexiconName = lexicon.getName();
-			// write lexicons
-			if((lexiconsOnly && !selectedLexicons.contains(lexiconName)) || senseAxesOnly){
-				// on selective conversion, omit the lexicons not in the list
-				// when only sense axes should be converter, omit all
-				continue;
-			}
-			
-			logger.info("processing lexicon: " + lexiconName);
-			writer.writeStartElement(lexicon);
-
-			// Iterate over all possible sub-elements of this Lexicon and write them to the XML
-			@SuppressWarnings("rawtypes")
-			Class[] lexiconClassesToSave = {LexicalEntry.class, SubcategorizationFrame.class,
-				SubcategorizationFrameSet.class, SemanticPredicate.class,Synset.class,
-				SynSemCorrespondence.class,ConstraintSet.class
-			};
-
-			for(@SuppressWarnings("rawtypes") Class clazz : lexiconClassesToSave){
-				DetachedCriteria criteria = DetachedCriteria.forClass(clazz)
-					.add(Restrictions.sqlRestriction("lexiconId = '"+lexicon.getId()+"'"));
-				@SuppressWarnings("rawtypes")
-				CriteriaIterator iter = new CriteriaIterator(criteria, sessionFactory, bufferSize);
-				while(iter.hasNext()){
-					if(counter % 1000 == 0) {
-						logProcessedInstances(counter);
-					}
-					Object obj = iter.next();
-					writer.writeElement(obj);
-					session.evict(obj);
-					counter++;
-				}
-			}
-			writer.writeEndElement(lexicon);
+			doTransform(true, (Lexicon[]) null);
+		} finally {
+			closeSession();
 		}
-		
-		if(!lexiconsOnly){
-			
-			// Iterate over SenseAxes and write them to XMLX when not only lexicons should be converted
-			DetachedCriteria criteria = DetachedCriteria.forClass(SenseAxis.class)
-					.add(Restrictions.sqlRestriction("lexicalResourceId = '"+lexicalResource.getName()+"'"));
-			@SuppressWarnings("rawtypes")
-			CriteriaIterator iter = new CriteriaIterator(criteria, sessionFactory, bufferSize);
-			logger.info("started processing sense axes");
-			while(iter.hasNext()){
-				if(counter % 1000 == 0) {
-					logProcessedInstances(counter);
-				}
-				Object obj = iter.next();
-				writer.writeElement(obj);
-				session.evict(obj);
-				counter++;
-			}
-		}
-		writer.writeEndElement(lexicalResource);
-		writer.writeEndDocument();
-		
-		// clear the previous parameter values
-		this.lexiconsOnly = false;
-		this.senseAxesOnly = false;
-		this.selectedLexicons = new HashSet<String>();
 	}
 	
-	
-	public void transform(LexicalResource lexicalResource, Lexicon lexicon) throws LMFWriterException{
-		Session session = sessionFactory.openSession();
-		String lexicalResourceName = lexicalResource.getName();
-		lexicalResource = (LexicalResource)session.get(LexicalResource.class, lexicalResourceName);
-		
-		
-		if(writer instanceof LMFXmlWriter)
-			logger.log(Level.INFO, "Started writing lexicalResource "+ lexicalResourceName
-					+ " to " + ((LMFXmlWriter) writer).getOutputPath());
-		else
-			logger.log(Level.INFO, "Started writing lexicalResource " +  lexicalResourceName);
-			
-		
-		writer.writeStartElement(lexicalResource);
-		
-		// write GlobalInformation
-		GlobalInformation globalInformation = lexicalResource.getGlobalInformation();
-		writer.writeElement(globalInformation);
-		int counter = 1;
-		
-		int bufferSize = 50;
-		// Iterate over all lexicons
-		//for(Lexicon lexicon : lexicalResource.getLexicons()){
-			
-			String lexiconName = lexicon.getName();
-			
-			logger.info("processing lexicon: " + lexiconName);
-			writer.writeStartElement(lexicon);
-
-			// Iterate over all possible sub-elements of this Lexicon and write them to the XML
-			@SuppressWarnings("rawtypes")
-			Class[] lexiconClassesToSave = {LexicalEntry.class, SubcategorizationFrame.class,
-				SubcategorizationFrameSet.class, SemanticPredicate.class,Synset.class,
-				SynSemCorrespondence.class,ConstraintSet.class
-			};
-
-			for(@SuppressWarnings("rawtypes") Class clazz : lexiconClassesToSave){
-				DetachedCriteria criteria = DetachedCriteria.forClass(clazz)
-					.add(Restrictions.sqlRestriction("lexiconId = '"+lexicon.getId()+"'"));
-				@SuppressWarnings("rawtypes")
-				CriteriaIterator iter = new CriteriaIterator(criteria, sessionFactory, bufferSize);
-				while(iter.hasNext()){
-					if(counter % 1000 == 0) {
-						logProcessedInstances(counter);
-					}
-					Object obj = iter.next();
-					writer.writeElement(obj);
-					session.evict(obj);
-					counter++;
-				}
-			}
-			writer.writeEndElement(lexicon);
-		//}
-		
-		writer.writeEndElement(lexicalResource);
-		writer.writeEndDocument();
-		
+	public void transform(final LexicalResource lexicalResource, 
+			final Lexicon lexicon) throws SAXException {
+		this.lexicalResource = lexicalResource;
+		openSession();
+		try {
+			doTransform(false, lexicon);
+		} finally {
+			closeSession();
+		}
 	}
 
 	/**
@@ -252,17 +123,22 @@ public class DBToXMLTransformer {
 	 * 
 	 * @param lexicons the set of names of lexicons which should be written to XML file
 	 * 
-	 * @throws LMFWriterException if a severe error occurs when writing to a file
+	 * @throws SAXException if a severe error occurs when writing to a file
 	 * 
 	 * @since UBY 0.2.0
 	 * 
 	 * @see #transform(LexicalResource)
 	 * @see #transformSenseAxes(LexicalResource)
 	 */
-	public void transformLexicons(LexicalResource lexialResource, Set<String> lexicons) throws LMFWriterException{
-		this.lexiconsOnly = true;
-		this.selectedLexicons = lexicons;
-		transform(lexialResource);
+	public void transformLexicons(final LexicalResource lexicalResource, 
+			final Set<String> lexicons) throws SAXException {
+		this.lexicalResource = lexicalResource;
+		openSession();
+		try {
+			doTransform(false, lexicons.toArray(new Lexicon[0]));
+		} finally {
+			closeSession();
+		}
 	}
 	
 	/**
@@ -272,27 +148,135 @@ public class DBToXMLTransformer {
 	 * 
 	 * @param lexicalResource the lexical resource retrieved from the database
 	 * 
-	 * @throws LMFWriterException if a severe error occurs when writing to a file
+	 * @throws SAXException if a severe error occurs when writing to a file
 	 * 
 	 * @since UBY 0.2.0
 	 * 
 	 * @see #transform(LexicalResource)
 	 * @see #transformLexicons(LexicalResource, List)
 	 */
-	public void transformSenseAxes(LexicalResource lexialResource) throws LMFWriterException{
-		this.senseAxesOnly = true;
-		transform(lexialResource);
+	public void transformSenseAxes(final LexicalResource lexicalResource) 
+			throws SAXException {
+		this.lexicalResource = lexicalResource;
+		openSession();
+		try {
+			doTransform(true, new Lexicon[0]);
+		} finally {
+			closeSession();
+		}
 	}
 	
-	/**
-	 * Logs the number of UBY-LMF class instances written to a file.
-	 * 
-	 * @param counter number of processed class instances so far.
-	 * 
-	 * @since UBY 0.2.0
-	 */
-	private void logProcessedInstances(int counter){
-		logger.info("progress: " + counter  + " class instances written to file");
-	}
+	// lexicons = null (all lexicons), lexicons.length = 0 (no lexicons).
+	protected void doTransform(boolean includeSenseAxes, 
+			final Lexicon... includeLexicons) throws SAXException {
+		final int bufferSize = 100;
+		commitCounter = 1;
+		
+		writeStartElement(lexicalResource);
+		
+		// Iterate over all lexicons
+		if (includeLexicons == null || includeLexicons.length > 0) {
+			for (Lexicon lexicon : lexicalResource.getLexicons()) {
+				String lexiconName = lexicon.getName();
+				
+				// Check if we want to include this lexicon.
+				if (includeLexicons != null) {
+					boolean found = false;
+					for (Lexicon l : includeLexicons)
+						if (lexiconName.equals(l.getName())) {
+							found = true;
+							break;
+						}
+					if (!found)
+						continue;
+				}
+						
+				logger.info("Processing lexicon: " + lexiconName);
+				writeStartElement(lexicon);
 
+				// Iterate over all possible sub-elements of this Lexicon and 
+				// write them to the XML
+				Class<?>[] lexiconClassesToSave = {
+						LexicalEntry.class,
+						SubcategorizationFrame.class,
+						SubcategorizationFrameSet.class,
+						SemanticPredicate.class,
+						Synset.class,
+						SynSemCorrespondence.class,
+						//ConstraintSet.class
+				};
+
+				//  "Unfortunately, MySQL does not treat large offset values efficiently by default and will still read all the rows prior to an offset value. It is common to see a query with an offset above 100,000 take over 20 times longer than an offset of zero!"
+				// http://www.numerati.com/2012/06/26/reading-large-result-sets-with-hibernate-and-mysql/
+				for(Class<?> clazz : lexiconClassesToSave) {
+					/*DetachedCriteria criteria = DetachedCriteria.forClass(clazz)
+							.add(Restrictions.sqlRestriction("lexiconId = '" + lexicon.getId() + "'"));
+					CriteriaIterator<Object> iter = new CriteriaIterator<Object>(criteria, sessionFactory, bufferSize);
+					while (iter.hasNext()) {
+						Object obj = iter.next();
+						writeElement(obj);
+						session.evict(obj);
+						commitCounter++;
+						if (commitCounter % 1000 == 0)
+							logger.info("progress: " + commitCounter  + " class instances written to file");
+					}*/
+					Session lookupSession = sessionFactory.openSession();
+					Query query = lookupSession.createQuery("FROM " + clazz.getSimpleName() 
+							+ " WHERE lexiconId = '" + lexicon.getId() + "'");
+					query.setReadOnly(true);
+					query.setFetchSize(Integer.MIN_VALUE); // MIN_VALUE gives hint to JDBC driver to stream results
+					ScrollableResults results = query.scroll(ScrollMode.FORWARD_ONLY);
+					while (results.next()) {
+						// For streamed query results, no further queries are allowed (incl. lazy proxy queries!)
+						// Detach the object from the lookup session and reload it using the "official" session.
+						Object[] rows = results.get();
+						Object row = rows[0];
+						lookupSession.evict(row);
+						lookupSession.evict(rows);
+						rows = null;
+						row = session.get(row.getClass(), ((IHasID) row).getId());
+						writeElement(row);
+						session.evict(row);
+						row = null;
+						commitCounter++;
+						if (commitCounter % 1000 == 0)
+							logger.info("progress: " + commitCounter  + " class instances written to file");
+						if (commitCounter % 10000 == 0) {
+							closeSession();
+							openSession();
+						}
+				  }
+				  results.close();
+				  lookupSession.close();
+				}
+				writeEndElement(lexicon);
+			}
+		}
+		
+		// Iterate over SenseAxes and write them to XMLX when not only 
+		// lexicons should be converted
+		if (includeSenseAxes) {	
+			logger.info("Processing sense axes");
+			DetachedCriteria criteria = DetachedCriteria.forClass(SenseAxis.class)
+					.add(Restrictions.sqlRestriction("lexicalResourceId = '" + lexicalResource.getName() + "'"));
+			CriteriaIterator<Object> iter = new CriteriaIterator<Object>(criteria, sessionFactory, bufferSize);
+			while (iter.hasNext()) {
+				Object obj = iter.next();
+				writeElement(obj);
+				session.evict(obj);
+				commitCounter++;
+				if (commitCounter % 1000 == 0)
+					logger.info("progress: " + commitCounter  + " class instances written to file");
+			}
+		}
+		writeEndElement(lexicalResource);
+		
+		writeEndDocument();
+	}
+	
+	@Override
+	protected String getResourceAlias() {
+		return lexicalResource.getName();
+	}
+	
 }

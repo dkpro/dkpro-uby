@@ -30,13 +30,14 @@ import de.tudarmstadt.ukp.lmf.model.semantics.SynSemCorrespondence;
 import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrame;
 import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrameSet;
-import de.tudarmstadt.ukp.lmf.writer.LMFWriterException;
 
 /**
  * Transforms resource to LMF
  * @author chebotar
+ * @deprecated THIS CLASS WILL BE REMOVED SOON. USE {@link UBYTransformer} INSTEAD.
  */
-public abstract class LMFTransformer {
+@Deprecated
+abstract class LMFTransformer {
 	// Mapping of Resource unique IDs to LMF unique IDs
 	protected HashMap<String, String> idMapping;
 
