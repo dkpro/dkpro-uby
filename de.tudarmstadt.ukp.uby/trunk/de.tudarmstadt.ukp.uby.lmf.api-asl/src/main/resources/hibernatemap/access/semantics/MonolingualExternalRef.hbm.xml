@@ -10,9 +10,9 @@
            <generator class="increment"/>
     </id>
     <property name="externalSystem" column="externalSystem" node="@externalSystem" type="string" 
-    	index="externalSystem_IDX"/>	       	
+    	index="monolingualextref_externalSystem_IDX"/>	       	
     <property name="externalReference" column="externalReference" node="@externalReference" type="string"
-    	index="externalReference_IDX"/>	       	
+    	index="monolingualextref_externalReference_IDX"/>	       	
     
     
     

@@ -9,7 +9,7 @@
            <generator class="increment"/>
     </id>
 	<property name="writtenForm" column="writtenForm" node="@writtenForm" type="string" length="255" 
-		index="writtenForm_IDX"/>
+		index="formrep_lemma_writtenForm_IDX"/>
 	<property name="languageIdentifier" column="languageIdentifier" node="@languageIdentifier" type="string"/>   
   	<property name="phoneticForm" column="phoneticForm" node="@phoneticForm" type="string"/>	       	
 	<property name="sound" column="sound" node="@sound" type="string"/>
@@ -24,9 +24,9 @@
            <generator class="increment"/>
     </id>
 	<property name="writtenForm" column="writtenForm" node="@writtenForm" type="string" length="255"
-		index="writtenForm_IDX"/>
+		index="formrep_wordform_writtenForm_IDX"/>
 	<property name="languageIdentifier" column="languageIdentifier" node="@languageIdentifier" type="string" 
-		index = "languageIdentifier_IDX"/>
+		index="formrep_wordform_languageIdentifier_IDX"/>
   	<property name="phoneticForm" column="phoneticForm" node="@phoneticForm" type="string"/>	       	
 	<property name="sound" column="sound" node="@sound" type="string"/>
 	<property name="geographicalVariant" column="geographicalVariant" node="@geographicalVariant" type="string"/>
@@ -40,9 +40,9 @@
            <generator class="increment"/>
     </id>
 	<property name="writtenForm" column="writtenForm" node="@writtenForm" type="string" length="255"
-		index="writtenForm_IDX"/>
+		index="formrep_relatedform_writtenForm_IDX"/>
 	<property name="languageIdentifier" column="languageIdentifier" node="@languageIdentifier" type="string" 
-		index = "languageIdentifier_IDX"/>
+		index="formrep_relatedform_languageIdentifier_IDX"/>
   	<property name="phoneticForm" column="phoneticForm" node="@phoneticForm" type="string"/>	       	
 	<property name="sound" column="sound" node="@sound" type="string"/>
 	<property name="geographicalVariant" column="geographicalVariant" node="@geographicalVariant" type="string"/>
@@ -57,7 +57,7 @@
     </id>
 	<property name="writtenForm" column="writtenForm" node="@writtenForm" type="string" length="500"/>
 	<property name="languageIdentifier" column="languageIdentifier" node="@languageIdentifier" type="string" 
-		index = "languageIdentifier_IDX"/>
+		index="formrep_senserelation_languageIdentifier_IDX"/>
   	<property name="phoneticForm" column="phoneticForm" node="@phoneticForm" type="string"/>	       	
 	<property name="sound" column="sound" node="@sound" type="string"/>
 	<property name="geographicalVariant" column="geographicalVariant" node="@geographicalVariant" type="string"/>
