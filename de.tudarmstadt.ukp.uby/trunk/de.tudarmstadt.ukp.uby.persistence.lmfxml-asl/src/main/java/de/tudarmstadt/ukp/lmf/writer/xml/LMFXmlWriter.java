@@ -50,9 +50,11 @@ import de.tudarmstadt.ukp.lmf.writer.LMFWriter;
 import de.tudarmstadt.ukp.lmf.writer.LMFWriterException;
 
 /**
- * This class writes a LMF classes to XML Output Stream. 
+ * This class writes a LMF classes to XML Output Stream.
+ * @deprecated THIS CLASS WILL BE REMOVED SOON. USE MODULE persistence.transform INSTEAD! 
  */
-public class LMFXmlWriter extends LMFWriter{
+@Deprecated
+class LMFXmlWriter extends LMFWriter{
 	
 	/*
 	 * Private members
