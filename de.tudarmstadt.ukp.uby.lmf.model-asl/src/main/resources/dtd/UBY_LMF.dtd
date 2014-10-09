@@ -128,9 +128,9 @@ affixSuffix					http://www.isocat.org/datcat/DC-1395
 
 separableParticle 	http://www.isocat.org/datcat/DC-3546
 -->            
-<!ELEMENT Sense (Sense*, Context*, PredicativeRepresentation*, SenseExample*,
-                                 Definition*, SenseRelation*, Equivalent*, 
-                                 MonolingualExternalRef*,Frequency*, SemanticLabel*)>
+<!ELEMENT Sense (Sense|Context|PredicativeRepresentation|SenseExample
+	|Definition|SenseRelation|Equivalent|MonolingualExternalRef
+	|Frequency|SemanticLabel)*>
 <!ATTLIST Sense
     id     ID #REQUIRED
     index  CDATA #IMPLIED
