@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
@@ -75,7 +76,7 @@ public class LexicalEntryGenerator {
 
 	private  SenseGenerator senseGenerator; // SenseGenerator
 
-	private final String resourceVersion;
+//	private final String resourceVersion;
 
 	/**
 	 * Constructs a LexicalEntryGenerator
@@ -91,7 +92,7 @@ public class LexicalEntryGenerator {
 			Lexicon lexicon, String resourceVersion) throws UnsupportedEncodingException, OmegaWikiException {
 		this.omegawiki = omegawiki;
 		this.lexicon=lexicon;
-		this.resourceVersion = resourceVersion;
+//		this.resourceVersion = resourceVersion;
 		if(!initialized){
 			this.GlobalLanguage=synsetGenerator.getGlobalLanguage();
 			this.GlobalLanguageLMF=synsetGenerator.getGlobalLanguageLMF();
@@ -133,6 +134,85 @@ public class LexicalEntryGenerator {
 			posMappings.put("exclaiming pronoun", EPartOfSpeech.pronoun);
 			posMappings.put("Determinativpronomen", EPartOfSpeech.pronoun);
 
+			posMappings.put("aanwijzend voornaamwoord", EPartOfSpeech.pronounDemonstrative);
+			posMappings.put("adjective", EPartOfSpeech.adjective);
+			posMappings.put("name", EPartOfSpeech.nounProper);
+			posMappings.put("betrekkelijk voornaamwoord", EPartOfSpeech.pronounRelative);
+			posMappings.put("koppelwerkwoord", EPartOfSpeech.verb);
+			posMappings.put("noun", EPartOfSpeech.noun);
+			posMappings.put("soortnaam", EPartOfSpeech.noun);
+			posMappings.put("telwoord", EPartOfSpeech.numeral);
+			posMappings.put("onbepaald lidwoord", EPartOfSpeech.determinerIndefinite);
+			posMappings.put("article", EPartOfSpeech.determiner);
+			posMappings.put("auxiliary verb", EPartOfSpeech.verbAuxiliary);
+			posMappings.put("bezittelijk voornaamwoord", EPartOfSpeech.pronounPossessive);
+			posMappings.put("subjunktion", EPartOfSpeech.conjunctionSubordinating);
+			posMappings.put("tussenwerpsel", EPartOfSpeech.interjection);
+			posMappings.put("bepaald lidwoord", EPartOfSpeech.determinerDefinite);
+			posMappings.put("onbepaald voornaamwoord", EPartOfSpeech.pronounIndefinite);
+			posMappings.put("voegwoord", EPartOfSpeech.conjunction);
+			posMappings.put("bepaald hoofdtelwoord", EPartOfSpeech.numeral);
+			posMappings.put("onbepaald hoofdtelwoord", EPartOfSpeech.numeral);
+			posMappings.put("preposition", EPartOfSpeech.adpositionPreposition);
+			posMappings.put("Ortsadverb", EPartOfSpeech.adverb);
+			posMappings.put("onomatopoeia", EPartOfSpeech.interjection);
+			posMappings.put("wederkerend voornaamwoord", EPartOfSpeech.pronounPersonalReflexive);
+			posMappings.put("uitroepend voornaamwoord", EPartOfSpeech.pronoun);
+			posMappings.put("intransitive verb", EPartOfSpeech.verb);
+			posMappings.put("transitive verb", EPartOfSpeech.verb);
+			posMappings.put("vragend voornaamwoord", EPartOfSpeech.pronounInterrogative);
+			posMappings.put("wederkerig voornaamwoord", EPartOfSpeech.pronoun);
+			posMappings.put("determiner", EPartOfSpeech.determiner);
+			posMappings.put("Abstrakta", EPartOfSpeech.noun);
+//			posMappings.put("ナ形容詞", EPartOfSpeech.symbol);
+//			posMappings.put("adnominal", EPartOfSpeech.adjective);
+//			posMappings.put("adposition", EPartOfSpeech.symbol);
+			posMappings.put("Richtungsadverb", EPartOfSpeech.adverb);
+			posMappings.put("adverb", EPartOfSpeech.adverb);
+			posMappings.put("Kausaladverb", EPartOfSpeech.adverb);
+			posMappings.put("verb", EPartOfSpeech.verb);
+			posMappings.put("Sammelname", EPartOfSpeech.noun);
+			posMappings.put("Konjunktionaladverb", EPartOfSpeech.adverb);
+			posMappings.put("disjunktives Konjunktionaladverb", EPartOfSpeech.adverb);
+			posMappings.put("kausales Konjunktionaladverb", EPartOfSpeech.adverb);
+			posMappings.put("konzessives Konjunktionaladverb", EPartOfSpeech.adverb);
+			posMappings.put("adversatives Konjunktionaladverb", EPartOfSpeech.adverb);
+			posMappings.put("konsekutives Konjunktionaladverb", EPartOfSpeech.adverb);
+			posMappings.put("kopulatives Konjunktionaladverb", EPartOfSpeech.adverb);
+			posMappings.put("measure word", EPartOfSpeech.numeral);
+			posMappings.put("demonstrative", EPartOfSpeech.determinerDemonstrative);
+			posMappings.put("Ausdruckswort", EPartOfSpeech.interjection);
+			posMappings.put("Modaladverb", EPartOfSpeech.adverb);
+//			posMappings.put("終助詞", EPartOfSpeech.symbol);
+			posMappings.put("formal noun", EPartOfSpeech.noun);
+			posMappings.put("Grußwort", EPartOfSpeech.interjection);
+//			posMappings.put("イ形容詞", EPartOfSpeech.symbol);
+			posMappings.put("personal pronoun", EPartOfSpeech.pronounPersonal);
+			posMappings.put("Interrogativadverb", EPartOfSpeech.adverb);
+			posMappings.put("contraction", EPartOfSpeech.contraction);
+			posMappings.put("Lokaladverb", EPartOfSpeech.adverb);
+			posMappings.put("Stoffname", EPartOfSpeech.noun);
+//			posMappings.put("動作名詞", EPartOfSpeech.symbol);
+			posMappings.put("nominativ gebrauchtes Verb", EPartOfSpeech.noun);
+			posMappings.put("Partikel der Bejahung oder Verneinung", EPartOfSpeech.particleAnswer);
+//			posMappings.put("助詞", EPartOfSpeech.symbol);
+			posMappings.put("pronoun", EPartOfSpeech.pronoun);
+			posMappings.put("interrogative word", EPartOfSpeech.pronounInterrogative);
+			posMappings.put("Satzadverb", EPartOfSpeech.adverb);
+			posMappings.put("Temporaladverb", EPartOfSpeech.adverb);
+//			posMappings.put("bacru", EPartOfSpeech.symbol);
+//			posMappings.put("outrecuidant", EPartOfSpeech.symbol); arrogant
+			posMappings.put("Determinativpronomen", EPartOfSpeech.pronoun);
+//			posMappings.put("grammatical property", EPartOfSpeech.symbol);
+			posMappings.put("Oronym", EPartOfSpeech.nounProper);
+			posMappings.put("Nomen", EPartOfSpeech.noun);
+			posMappings.put("coordonnant", EPartOfSpeech.conjunctionCoordinating);
+			posMappings.put("subordinating conjunction", EPartOfSpeech.conjunctionSubordinating);
+			posMappings.put("proword", EPartOfSpeech.pronoun);
+			posMappings.put("proword for verb", EPartOfSpeech.pronoun);
+			posMappings.put("common noun", EPartOfSpeech.nounCommon);
+//			posMappings.put("stupid", EPartOfSpeech.symbol);
+
 			senseGenerator = new SenseGenerator(synsetGenerator,resourceVersion);
 
 			createLexicalEntries();
@@ -149,25 +229,22 @@ public class LexicalEntryGenerator {
 	 */
 	@SuppressWarnings("unchecked")
 	private void groupLexemes() throws UnsupportedEncodingException, OmegaWikiException {
-		byte percentage = 0;
-		double overall = 0;
-		double current = 0;
-		System.out.print(" grouping lexemes...");
+		int overall = 0;
+		int current = 0;
 		lexemeGroupLexicalEntryMaping= new HashMap<Set<SynTrans>, LexicalEntry>();
 		Iterator<DefinedMeaning> dmIter = null; // DefinedMeaning iterator
-			System.out.print(percentage);
-			System.out.print("% ");
 			HashMap<String, HashSet<SynTrans>>lemmaLexemeGroup = new HashMap<String, HashSet<SynTrans>>();
 			try {
-				dmIter =  omegawiki.getAllDefinedMeanings(this.GlobalLanguage).iterator();
-				overall = omegawiki.getAllDefinedMeanings(this.GlobalLanguage).size();
+				Set<DefinedMeaning> defMeanings = omegawiki.getAllDefinedMeanings(this.GlobalLanguage); 
+				dmIter = defMeanings.iterator();
+				overall = defMeanings.size();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			while(dmIter.hasNext()){
-				if(current++ % 100 == 0)
+				if(current++ % 1000 == 0)
 				{
-					System.out.println((current) / overall+"");
+					System.out.println("Grouping lexemes... " + ((current * 100) / overall) + "%");
 				}
 				DefinedMeaning dm = dmIter.next();
 				String pos="";
@@ -241,7 +318,7 @@ public class LexicalEntryGenerator {
 
 			}
 
-		System.out.print("100% ");
+		System.out.println("Grouping lexemes... done");
 	}
 
 	/**
@@ -251,25 +328,22 @@ public class LexicalEntryGenerator {
 	 * @throws UnsupportedEncodingException
 	 */
 	private void createLexicalEntries() throws UnsupportedEncodingException, OmegaWikiException{
-		System.out.print("transforming lexeme groups... 0% ");
-		double overall = posLemmaLexemeGroup.keySet().size();
-
-			for (String pos : posLemmaLexemeGroup.keySet())
+		System.out.println("Transforming lexeme groups... 0%");
+		for (Entry<String, HashMap<String, HashSet<SynTrans>>> pos : posLemmaLexemeGroup.entrySet())
+		{
+			int current = 0;
+			int overall = pos.getValue().size();
+			for(Entry<String, HashSet<SynTrans>> lemmaSet : pos.getValue().entrySet())
 			{
-				double current = 0;
-				overall = posLemmaLexemeGroup.get(pos).entrySet().size();
-				for(Map.Entry<String,HashSet<SynTrans>> lemmaSet :posLemmaLexemeGroup.get(pos).entrySet() )
-				{
-					Set<SynTrans> sts = lemmaSet.getValue();
-					System.out.print((current++) / overall+"\r");
-			LexicalEntry lexicalEntry = createLexicalEntry(sts,pos,lemmaSet.getKey(),lexicon);
-
-			lexicalEntries.add(lexicalEntry);
-			lexemeGroupLexicalEntryMaping.put(sts, lexicalEntry);
-
-				}
+				Set<SynTrans> sts = lemmaSet.getValue();
+				if(current++ % 1000 == 0)
+					System.out.println("Transforming lexeme groups " + pos.getKey() + "... " + ((current * 100) / overall) + "%");
+				LexicalEntry lexicalEntry = createLexicalEntry(sts, pos.getKey(), lemmaSet.getKey(), lexicon);
+				lexicalEntries.add(lexicalEntry);
+				lexemeGroupLexicalEntryMaping.put(sts, lexicalEntry);
+			}
 		}
-		System.out.print("100%");
+		System.out.println("Transforming lexeme groups... done");
 	}
 
 	/**
@@ -312,7 +386,6 @@ public class LexicalEntryGenerator {
 		//*** Creating Senses ***//
 		lexicalEntry.setSenses(senseGenerator.generateSenses(lexemeGroup,lexicalEntry));
 		lexicalEntry.getSenses();
-
 
 		return lexicalEntry;
 	}

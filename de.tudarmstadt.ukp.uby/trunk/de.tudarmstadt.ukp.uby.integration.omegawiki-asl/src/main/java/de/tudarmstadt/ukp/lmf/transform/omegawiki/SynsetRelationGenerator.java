@@ -18,12 +18,13 @@
 package de.tudarmstadt.ukp.lmf.transform.omegawiki;
 
 import java.io.UnsupportedEncodingException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.enums.ELabelTypeSemantics;
@@ -36,6 +37,7 @@ import de.tudarmstadt.ukp.omegawiki.api.DefinedMeaning;
 import de.tudarmstadt.ukp.omegawiki.api.OWLanguage;
 import de.tudarmstadt.ukp.omegawiki.api.OmegaWiki;
 import de.tudarmstadt.ukp.omegawiki.api.SynTrans;
+import de.tudarmstadt.ukp.omegawiki.db.DatabaseStatements;
 import de.tudarmstadt.ukp.omegawiki.exception.OmegaWikiException;
 
 /**
@@ -85,13 +87,13 @@ public class SynsetRelationGenerator {
 	 */
 	public void updateSynsetRelations() throws OmegaWikiException, UnsupportedEncodingException{
 		// Iterate over all Synset-Bindings and update
-		double overall = synsetGenerator.getOWSynsetLMFSynsetMappings().size();
-		double current = 0;
+		int overall = synsetGenerator.getOWSynsetLMFSynsetMappings().size();
+		int current = 0;
 		for(Entry<DefinedMeaning, Synset> binding : synsetGenerator.getOWSynsetLMFSynsetMappings().entrySet()) {
 			updateSynsetRelations(binding);
-			if(current++ % 100 == 0)
+			if(current++ % 1000 == 0)
 			{
-				System.out.println((current) / overall+"");
+				System.out.println("Generating SynsetRelations... Finished " + ((current * 100) / overall) + "%");
 			}
 		}
 	}
@@ -125,6 +127,8 @@ public class SynsetRelationGenerator {
 		binding.getValue().setSynsetRelations(synsetRelations);
 	}
 
+	private DatabaseStatements dbStatements;
+	
 	/**
 	 * This method consumes two  DMs  plus relationtype as int and generates the corresponding SynsetRelation for it
 	 *
@@ -142,7 +146,15 @@ public class SynsetRelationGenerator {
 		String relationName="";
 		if(type >0)
 		{
-			rel = ow.getDefinedMeaningById(type);
+//			rel = ow.getDefinedMeaningById(type);
+			//TODO: Dirty hack! Return to old code as soon as https://code.google.com/p/jowkl/issues/detail?id=2 is fixed and released. 
+			if (dbStatements == null)
+				try {
+					dbStatements = new DatabaseStatements(ow.getDatabaseConfiguration());
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
+			rel = new DefinedMeaning(type, dbStatements);
 		Set<SynTrans> sta = rel.getSynTranses(OWLanguage.English);
 		for (SynTrans st : sta)
 			{relationName = st.getSyntrans().getSpelling();

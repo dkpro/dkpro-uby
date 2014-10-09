@@ -20,6 +20,7 @@ package de.tudarmstadt.ukp.lmf.transform.omegawiki;
 import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.mrd.Equivalent;
@@ -35,16 +36,12 @@ import de.tudarmstadt.ukp.omegawiki.exception.OmegaWikiException;
 public class EquivalentGenerator {
 
 	private final LexicalEntryGenerator lexicalEntryGenerator;
-	private final SynsetGenerator synsetGenerator;
 
 	private final int GlobalLanguage;
 
 	public EquivalentGenerator(LexicalEntryGenerator lexicalEntryGenerator, SynsetGenerator synsetGenerator, int globalLanguage) {
-
 		this.GlobalLanguage = globalLanguage;
 		this.lexicalEntryGenerator = lexicalEntryGenerator;
-		this.synsetGenerator = synsetGenerator;
-
 	}
 
 	/**
@@ -60,6 +57,9 @@ public class EquivalentGenerator {
 		}
 	}
 
+	// Skip supplementary planes (multi-byte UTF16 characters), as they cause problems with the XML reader.
+	protected static Pattern SUPPLEMENTARY_PLANES = Pattern.compile("[\\uD7FF-\\uE000]");
+	
 	/**
 	 * This method updates the Equvalents
 	 * of lexeme's Sense
@@ -78,9 +78,14 @@ public class EquivalentGenerator {
 			{
 				if (st.getSyntrans().getLanguageId() != GlobalLanguage && st.getSyntrans().getSpelling()!=null && st.getSyntrans().getSpelling().length()>0)
 				{
+					String writtenForm = st.getSyntrans().getSpelling();
+					if (SUPPLEMENTARY_PLANES.matcher(writtenForm).find())
+						continue;
+					if (writtenForm.length() > 255)
+						writtenForm = writtenForm.substring(0, 255);
 					Equivalent eq = new  Equivalent();
 					eq.setLanguageIdentifier(OmegaWikiLMFMap.mapLanguage(st.getSyntrans().getLanguageId()));
-					eq.setWrittenForm(st.getSyntrans().getSpelling());
+					eq.setWrittenForm(writtenForm);
 					equivalents.add(eq);
 				}
 			}
@@ -92,12 +97,5 @@ public class EquivalentGenerator {
 
 		sense.setEquivalents(equivalents);
 	}
-
-
-
-
-
-
-
 
 }
