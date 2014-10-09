@@ -85,7 +85,7 @@ public class LexicalEntry extends HasFrequencies implements IHasID, Comparable<L
 	private ListOfComponents listOfComponents;
 	
 	// Backlink to Lexicon added for convenience
-	@VarType(type = EVarType.IDREF)
+	@VarType(type = EVarType.NONE)
 	private Lexicon lexicon;
 	
 	/**

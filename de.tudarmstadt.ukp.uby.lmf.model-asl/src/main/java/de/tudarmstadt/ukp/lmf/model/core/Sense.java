@@ -69,7 +69,7 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 	// Sense has transparent Meaning
 	@VarType(type = EVarType.ATTRIBUTE)
 	@AccessType(type = EAccessType.FIELD)
-	private boolean transparentMeaning;
+	private Boolean transparentMeaning;
 
 	// List of more specific senses
 	@VarType(type = EVarType.CHILDREN)
@@ -108,7 +108,7 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 	private List<SemanticLabel> semanticLabels = new ArrayList<SemanticLabel>();
 
 	// Backlink to LexicalEntry added for convenience
-	@VarType(type = EVarType.IDREF)
+	@VarType(type = EVarType.NONE)
 	private LexicalEntry lexicalEntry;
 
 	/**
