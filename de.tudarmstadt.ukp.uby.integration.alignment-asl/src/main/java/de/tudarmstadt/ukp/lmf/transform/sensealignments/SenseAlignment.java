@@ -31,6 +31,7 @@ import java.util.List;
 import javax.xml.transform.TransformerException;
 
 import org.dom4j.DocumentException;
+import org.xml.sax.SAXException;
 
 import de.tudarmstadt.ukp.lmf.api.Uby;
 import de.tudarmstadt.ukp.lmf.model.core.GlobalInformation;
@@ -40,9 +41,8 @@ import de.tudarmstadt.ukp.lmf.model.enums.ESenseAxisType;
 import de.tudarmstadt.ukp.lmf.model.meta.MetaData;
 import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
+import de.tudarmstadt.ukp.lmf.transform.LMFXmlWriter;
 import de.tudarmstadt.ukp.lmf.transform.XMLToDBTransformer;
-import de.tudarmstadt.ukp.lmf.writer.LMFWriterException;
-import de.tudarmstadt.ukp.lmf.writer.xml.LMFXmlWriter;
 
 abstract public class SenseAlignment
 {
@@ -269,11 +269,11 @@ abstract public class SenseAlignment
 	 * @param crosslingual
 	 * @param dtdVersion
 	 * @param UBY_HOME
-	 * @throws LMFWriterException
 	 * @throws TransformerException
 	 * @throws IOException
+	 * @throws SAXException 
 	 */
-	public void toLMF(String idPrefix, boolean crosslingual, String dtdVersion,String UBY_HOME) throws LMFWriterException, IOException, TransformerException
+	public void toLMF(String idPrefix, boolean crosslingual, String dtdVersion,String UBY_HOME) throws IOException, TransformerException, SAXException
 	{
 		toLMF(idPrefix,crosslingual,true,dtdVersion,UBY_HOME);
 	}
@@ -285,11 +285,11 @@ abstract public class SenseAlignment
 	 * @param usingSynsetAxis
 	 * @param dtdVersion
 	 * @param UBY_HOME
-	 * @throws LMFWriterException
 	 * @throws IOException
 	 * @throws TransformerException
+	 * @throws SAXException 
 	 */
-	public void toLMF(String idPrefix, boolean crosslingual, boolean usingSynsetAxis,String dtdVersion,String UBY_HOME) throws LMFWriterException, IOException, TransformerException
+	public void toLMF(String idPrefix, boolean crosslingual, boolean usingSynsetAxis,String dtdVersion,String UBY_HOME) throws IOException, TransformerException, SAXException
 	{
 		LMFXmlWriter xmlWriter = new LMFXmlWriter(UBY_HOME+"/target/"+idPrefix+".xml", UBY_HOME+"/resources/dtd/DTD_unifiedModel_"+dtdVersion+".dtd");
 
