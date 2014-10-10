@@ -23,6 +23,7 @@ import java.util.List;
 import de.tudarmstadt.ukp.lmf.model.abstracts.HasMonolingualExternalRefs;
 import de.tudarmstadt.ukp.lmf.model.core.Definition;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
+import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.core.TextRepresentation;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
@@ -60,6 +61,11 @@ public class Synset extends HasMonolingualExternalRefs implements IHasID, IHasDe
 	@VarType(type = EVarType.NONE)
 	private List<Sense> senses = new ArrayList<Sense>();
 
+	// Backlink to Lexicon added for convenience
+	@VarType(type = EVarType.NONE)
+	private Lexicon lexicon;
+	
+	
 	/**
 	 * Constructs an empty {@link Synset} instance.
 	 *
@@ -219,6 +225,24 @@ public class Synset extends HasMonolingualExternalRefs implements IHasID, IHasDe
 		}
 	}
 
+	/**
+	 * Returns the {@link Lexicon} containing this {@link Synset} instance. <p>
+	 * <i>This backlink is not a part of Uby-LMF model and exists for convenience.</i>
+	 * @return the lexicon containing this synset or null if the backlink is not set
+	 */
+	public Lexicon getLexicon() {
+		return lexicon;
+	}
+
+	/**
+	 * Sets the {@link Lexicon} containing this {@link Synset} instance.<p>
+	 * <i> This backlink is not a part of Uby-LMF model and exists for convenience.</i>
+	 * @param lexicon the synset to set
+	 */
+	public void setLexicon(Lexicon lexicon) {
+		this.lexicon = lexicon;
+	}
+	
 	@Override
 	public String toString(){
 		return this.id == null?"":this.id.toString();
