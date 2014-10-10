@@ -191,6 +191,7 @@ public class Synset extends HasMonolingualExternalRefs implements IHasID, IHasDe
 	 *
 	 * @see Sense#getDefinitionText()
 	 */
+	//TODO: This conflicts with Synset.getDefinitions (Synset vs. Sense definition).
 	public String getGloss(){
 		StringBuilder result = new StringBuilder();
 		for(Sense sense : senses){
