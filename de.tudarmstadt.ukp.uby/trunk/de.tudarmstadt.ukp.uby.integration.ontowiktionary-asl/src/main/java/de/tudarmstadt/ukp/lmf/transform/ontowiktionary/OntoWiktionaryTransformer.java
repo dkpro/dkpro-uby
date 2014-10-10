@@ -20,10 +20,11 @@ package de.tudarmstadt.ukp.lmf.transform.ontowiktionary;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import de.tudarmstadt.ukp.jwktl.JWKTL;
 import de.tudarmstadt.ukp.jwktl.api.IPronunciation;
@@ -111,7 +112,7 @@ public class OntoWiktionaryTransformer extends LMFDBTransformer {
 	// Handler for Wiktionary's pragmatic labels.
 	protected WiktionaryLabelManager labelManager;
 	// Cache of unsaved word forms defined by Wiktionary word form labels.
-	protected final HashMap<String, List<WordForm>> wordForms;			
+	protected final Map<String, List<WordForm>> wordForms;			
 	// Cache of unsaved subcategorization frames.
 	protected final List<SubcategorizationFrame> subcatFrames;			
 
@@ -141,10 +142,10 @@ public class OntoWiktionaryTransformer extends LMFDBTransformer {
 		this.wktLang = wktLang;
 		this.wktDate = wktDate;
 		this.entryIterator = wkt.getAllEntries();
-		this.wordForms = new HashMap<String, List<WordForm>>();
+		this.wordForms = new TreeMap<String, List<WordForm>>();
 		this.subcatFrames = new LinkedList<SubcategorizationFrame>();
 		this.labelManager = WiktionaryLMFMap.createLabelManager();
-		jwktlVersion = JWKTL.getVersion();
+		jwktlVersion = /*JWKTL.getVersion() - version clash!*/ "1.0.0";
 		dtd_version = dtd;
 	}
 
@@ -207,7 +208,7 @@ public class OntoWiktionaryTransformer extends LMFDBTransformer {
 		entry.setPartOfSpeech(pos);
 		
 		// Lemma
-		String word = convert(wktEntry.getWord(), 1000);
+		String word = wktEntry.getWord();
 		Lemma lemma = new Lemma();
 		lemma.setFormRepresentations(createFormRepresentationList(word, wktEntry.getWordLanguage()));
 		entry.setLemma(lemma);
@@ -337,7 +338,7 @@ public class OntoWiktionaryTransformer extends LMFDBTransformer {
 				source = null;
 				wktSense = null;
 				
-				if (++senseCount % 1000 == 0) {
+				if (++senseCount % 500 == 0) {
 					System.out.println("PROCESSED " + senseCount + " RELATIONS");
 					commit();
 				}
@@ -348,7 +349,7 @@ public class OntoWiktionaryTransformer extends LMFDBTransformer {
 		ontoWiktionary.freeSemanticRelations();
 	}
 	
-	public void convertSemanticRelations(final Sense source, 
+	protected void convertSemanticRelations(final Sense source, 
 			final IWiktionarySense wktSense, 
 			final IWiktionaryEntry wktEntry) {		
 		// Sense relations (SenseRelation class).
@@ -397,7 +398,7 @@ public class OntoWiktionaryTransformer extends LMFDBTransformer {
 				
 				// Save target word as targetFormRepresentation.
 				FormRepresentation targetFormRepresentation = new FormRepresentation();
-				targetFormRepresentation.setWrittenForm(convert(wktRelation.getTarget(),1000));
+				targetFormRepresentation.setWrittenForm(convert(wktRelation.getTarget(), 255));
 				targetFormRepresentation.setLanguageIdentifier(WiktionaryLMFMap.mapLanguage(wktEntry.getWordLanguage()));
 				senseRelation.setFormRepresentation(targetFormRepresentation); 
 				senseRelations.add(senseRelation);
@@ -424,7 +425,7 @@ public class OntoWiktionaryTransformer extends LMFDBTransformer {
 
 				// Save target word as targetFormRepresentation.
 				FormRepresentation targetFormRepresentation = new FormRepresentation();
-				targetFormRepresentation.setWrittenForm(convert(owktRelation.getTargetWordForm(), 1000));
+				targetFormRepresentation.setWrittenForm(convert(owktRelation.getTargetWordForm(), 255));
 				targetFormRepresentation.setLanguageIdentifier(WiktionaryLMFMap.mapLanguage(wktEntry.getWordLanguage()));
 				senseRelation.setFormRepresentation(targetFormRepresentation); 
 				senseRelations.add(senseRelation);
@@ -570,7 +571,7 @@ public class OntoWiktionaryTransformer extends LMFDBTransformer {
 				
 				// Save target word as targetFormRepresentation.
 				FormRepresentation targetFormRepresentation = new FormRepresentation();
-				targetFormRepresentation.setWrittenForm(convert(wktRelation.getTarget(),1000));
+				targetFormRepresentation.setWrittenForm(convert(wktRelation.getTarget(), 255));
 				targetFormRepresentation.setLanguageIdentifier(WiktionaryLMFMap.mapLanguage(wktEntry.getWordLanguage()));
 				senseRelation.setFormRepresentation(targetFormRepresentation); 
 				senseRelations.add(senseRelation);
@@ -597,7 +598,7 @@ public class OntoWiktionaryTransformer extends LMFDBTransformer {
 
 				// Save target word as targetFormRepresentation.
 				FormRepresentation targetFormRepresentation = new FormRepresentation();
-				targetFormRepresentation.setWrittenForm(convert(owktRelation.getTargetWordForm(), 1000));
+				targetFormRepresentation.setWrittenForm(convert(owktRelation.getTargetWordForm(), 255));
 				targetFormRepresentation.setLanguageIdentifier(WiktionaryLMFMap.mapLanguage(wktEntry.getWordLanguage()));
 				senseRelation.setFormRepresentation(targetFormRepresentation); 
 				senseRelations.add(senseRelation);
@@ -734,7 +735,7 @@ public class OntoWiktionaryTransformer extends LMFDBTransformer {
 					WordForm wordForm = new WordForm();
 					List<FormRepresentation> formRepresentations = new ArrayList<FormRepresentation>();
 					FormRepresentation formRepresentation = new FormRepresentation();
-					formRepresentation.setWrittenForm(StringUtils.replaceNonUtf8(wktEntry.getWord(), 1000));						
+					formRepresentation.setWrittenForm(convert(wktEntry.getWord(), 255));						
 					formRepresentations.add(formRepresentation);	
 					wordForm.setFormRepresentations(formRepresentations);
 
@@ -831,7 +832,7 @@ public class OntoWiktionaryTransformer extends LMFDBTransformer {
 			final String writtenForm, final ILanguage language) {
 		List<FormRepresentation> result = new ArrayList<FormRepresentation>();
 		FormRepresentation formRepresentation = new FormRepresentation();
-		formRepresentation.setWrittenForm(writtenForm);
+		formRepresentation.setWrittenForm(convert(writtenForm, 255));
 		formRepresentation.setLanguageIdentifier(WiktionaryLMFMap.mapLanguage(language));
 		result.add(formRepresentation);
 		return result;
@@ -1019,8 +1020,11 @@ public class OntoWiktionaryTransformer extends LMFDBTransformer {
 	}
 	
 	private static String convert(final String text, int maxLength) {
-		return StringUtils.replaceNonUtf8(
-				StringUtils.replaceHtmlEntities(text), maxLength);
+		if (text == null)
+			return "";
+		else
+			return StringUtils.replaceNonUtf8(
+					StringUtils.replaceHtmlEntities(text), maxLength);
 	}
 
 	protected String convertEtymology(final IWikiString etymology) {
