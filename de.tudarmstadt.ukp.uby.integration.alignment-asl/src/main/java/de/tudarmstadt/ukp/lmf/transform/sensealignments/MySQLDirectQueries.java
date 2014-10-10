@@ -41,7 +41,13 @@ public class MySQLDirectQueries
 	public MySQLDirectQueries(DBConfig dbConfig) throws SQLException, InstantiationException, IllegalAccessException, ClassNotFoundException{
 		this.dbConfig = dbConfig;
 		Class.forName(dbConfig.getJdbc_driver_class()).newInstance();
-		String connect2mysql = "jdbc:"+dbConfig.getDb_vendor()+"://"+dbConfig.getJdbc_url()+"?characterEncoding=UTF-8&useUnicode=true";
+		String connect2mysql = null;
+		if(dbConfig.getDb_vendor().equals("h2")) {
+			connect2mysql = dbConfig.getJdbc_url();
+		} else {
+			connect2mysql = "jdbc:"+dbConfig.getDb_vendor()+"://"+dbConfig.getJdbc_url()+"?characterEncoding=UTF-8&useUnicode=true";
+
+		}
 
 		System.out.println(connect2mysql);
 		connect = DriverManager.getConnection(connect2mysql, this.dbConfig.getUser(), this.dbConfig.getPassword());
