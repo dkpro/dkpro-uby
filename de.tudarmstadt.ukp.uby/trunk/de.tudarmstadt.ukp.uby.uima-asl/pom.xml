@@ -68,4 +68,15 @@
   	    </dependency>
   </dependencies>
   
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>de.tudarmstadt.ukp.dkpro.uby</groupId>
+				<artifactId>dkpro-uby-model-data-en-light</artifactId>
+				<version>20140801.1</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+  
+  
 </project>
