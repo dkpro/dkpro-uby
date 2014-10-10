@@ -29,6 +29,8 @@ import org.apache.commons.io.IOUtils;
 
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
+import de.tudarmstadt.ukp.lmf.transform.alignments.SenseAlignment;
+import de.tudarmstadt.ukp.lmf.transform.alignments.SenseAlignmentUtils;
 
 /**
  * Converts GermaNet sense ID - WiktionaryDE sense ID alignment file to UBY format (SenseAxis)

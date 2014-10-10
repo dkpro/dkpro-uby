@@ -16,7 +16,7 @@
  * limitations under the License.
  ******************************************************************************/
 
-package de.tudarmstadt.ukp.lmf.transform.sensealignments;
+package de.tudarmstadt.ukp.lmf.transform.alignments;
 
 import java.io.BufferedReader;
 import java.io.File;

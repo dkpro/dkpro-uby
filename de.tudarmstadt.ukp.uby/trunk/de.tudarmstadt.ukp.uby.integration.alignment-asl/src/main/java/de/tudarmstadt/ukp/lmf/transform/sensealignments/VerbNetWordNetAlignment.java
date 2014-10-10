@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
+import de.tudarmstadt.ukp.lmf.transform.alignments.SenseAlignment;
 
 public class VerbNetWordNetAlignment extends SenseAlignment
 {
