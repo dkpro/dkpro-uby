@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.Set;
 
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
+import de.tudarmstadt.ukp.lmf.transform.alignments.SenseAlignment;
 import de.tudarmstadt.ukp.omegawiki.api.OmegaWiki;
 import de.tudarmstadt.ukp.omegawiki.api.SynTrans;
 

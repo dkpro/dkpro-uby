@@ -16,7 +16,7 @@
  * limitations under the License.
  ******************************************************************************/
 
-package de.tudarmstadt.ukp.lmf.transform.sensealignments;
+package de.tudarmstadt.ukp.lmf.transform.alignments;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
