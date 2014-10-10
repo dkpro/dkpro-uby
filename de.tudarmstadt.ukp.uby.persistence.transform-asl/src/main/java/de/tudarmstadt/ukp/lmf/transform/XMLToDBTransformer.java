@@ -130,6 +130,8 @@ public class XMLToDBTransformer extends UBYHibernateTransformer
 				glInformation.setLabel(el.attributeValue("label"));
 				lexicalResource.setGlobalInformation(glInformation);
 				saveCascade(glInformation, lexicalResource);
+				commit();
+				lexicalResource.setGlobalInformation(null);
 			}
 		}
 	}
