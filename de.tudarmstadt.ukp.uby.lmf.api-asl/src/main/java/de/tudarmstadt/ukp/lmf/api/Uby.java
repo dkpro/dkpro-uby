@@ -21,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -90,7 +91,7 @@ public class Uby
 		this.dbConfig = dbConfig;
 		cfg = HibernateConnect.getConfiguration(dbConfig);
 		ServiceRegistryBuilder serviceRegistryBuilder = new ServiceRegistryBuilder()
-					.applySettings(cfg.getProperties());
+				.applySettings(cfg.getProperties());
 		sessionFactory = cfg.buildSessionFactory(serviceRegistryBuilder.buildServiceRegistry());
 		openSession();
 	}
@@ -181,7 +182,7 @@ public class Uby
      *
      * @see LexicalResource#getName()
      */
-	private LexicalResource getLexicalResource(String name)
+	public LexicalResource getLexicalResource(String name)
 	{
 		LexicalResource lexicalResource = (LexicalResource) session.get(
 				LexicalResource.class, name);
@@ -231,7 +232,7 @@ public class Uby
      * Fetches a {@link Lexicon} with the specified name from the database accessed by this
      * {@link Uby} instance.
      *
-     * @param name
+     * @param lexiconName
      *            the name of the Lexicon to be fetched. Possible values of this argument are:
      *            <ul>
      *            <li>"FrameNet"</li>
@@ -249,13 +250,13 @@ public class Uby
      *             if no lexicon with the given name is found
      * @see Lexicon#getName()
      */
-	public Lexicon getLexiconByName(String name) throws IllegalArgumentException
+	public Lexicon getLexiconByName(String lexiconName) throws IllegalArgumentException
 	{
 		Criteria criteria = session.createCriteria(Lexicon.class);
-		criteria = criteria.add(Restrictions.sqlRestriction("lexiconName = '"+name+"'"));
+		criteria = criteria.add(Restrictions.eq("name", lexiconName));
 		Lexicon result = (Lexicon) criteria.uniqueResult();
 		if (result==null) {
-			throw new IllegalArgumentException("Database does not contain a lexicon called " +name);
+			throw new IllegalArgumentException("Database does not contain a lexicon called " +lexiconName);
 		}
 		return result;
 
@@ -310,8 +311,7 @@ public class Uby
 		}
 
 		if (lexicon != null) {
-			criteria = criteria.add(Restrictions.sqlRestriction("lexiconId = '"
-					+ lexicon.getId() + "'"));
+			criteria = criteria.add(Restrictions.eq("lexicon", lexicon));
 		}
 
 		criteria = criteria.createCriteria("lemma")
@@ -373,8 +373,7 @@ public class Uby
 			criteria = criteria.add(Restrictions.eq("partOfSpeech", pos));
 		}
 		if (lexicon != null) {
-			criteria = criteria.add(Restrictions.sqlRestriction("lexiconId = '"
-					+ lexicon.getId() + "'"));
+			criteria = criteria.add(Restrictions.eq("lexicon", lexicon));
 		}
 
 		CriteriaIterator<LexicalEntry> lexEntryIterator = new CriteriaIterator<LexicalEntry>(
@@ -408,7 +407,7 @@ public class Uby
 	public LexicalEntry getLexicalEntryById(String lexicalEntryId)
 			throws IllegalArgumentException {
 		Criteria criteria = session.createCriteria(LexicalEntry.class).add(
-				Restrictions.sqlRestriction("lexicalEntryId = '" + lexicalEntryId + "'"));
+				Restrictions.eq("id", lexicalEntryId));
 		LexicalEntry ret = null;
 		if (criteria.list() != null && criteria.list().size() > 0) {
 			ret = (LexicalEntry) criteria.list().get(0);
@@ -447,17 +446,12 @@ public class Uby
 		if (pos != null) {
 			criteria = criteria.add(Restrictions.eq("partOfSpeech", pos));
 		}
-
 		if (lexicon != null) {
-			criteria = criteria.add(Restrictions.sqlRestriction("lexiconId = '"
-					+ lexicon.getId() + "'"));
+			criteria = criteria.add(Restrictions.eq("lexicon", lexicon));
 		}
 		criteria = criteria.createCriteria("lemma")
 			.createCriteria("formRepresentations")
-			.add(Restrictions.or(
-					Restrictions.sqlRestriction("writtenForm like '" +lemma +"%'"),
-					Restrictions.eq( "writtenForm", lemma )
-			));
+			.add(Restrictions.like("writtenForm", lemma + "%"));
 
 		@SuppressWarnings("unchecked")
 		List<LexicalEntry> result = criteria.list();
@@ -552,8 +546,7 @@ public class Uby
 	{
 		DetachedCriteria criteria = DetachedCriteria.forClass(Synset.class);
 		if (lexicon != null) {
-			criteria = criteria.add(Restrictions.sqlRestriction("lexiconId = '"
-					+ lexicon.getId() + "'"));
+			criteria = criteria.add(Restrictions.eq("lexicon", lexicon));
 		}
 		CriteriaIterator<Synset> synsetIterator = new CriteriaIterator<Synset>(
 				criteria, sessionFactory, 500);
@@ -589,14 +582,13 @@ public class Uby
      */
 	public List<Sense> getSensesByOriginalReference(String externalSys, String externalRef){
 		Criteria criteria = session.createCriteria(Sense.class);
-
 		criteria = criteria.createCriteria("monolingualExternalRefs").add(
-				Restrictions.sqlRestriction("externalSystem = '"
-						+ externalSys + "' and externalReference ='"+ externalRef + "'"));
+				Restrictions.and(
+						Restrictions.eq("externalSystem", externalSys),
+						Restrictions.eq("externalReference", externalRef)));
 
 		@SuppressWarnings("unchecked")
 		List<Sense> result = criteria.list();
-
 		if(result == null) {
 			result = new ArrayList<Sense>(0);
 		}
@@ -619,10 +611,10 @@ public class Uby
      */
 	public Synset getSynsetByOriginalReference(String externalSys, String externalRef){
 		Criteria criteria = session.createCriteria(Synset.class);
-
 		criteria = criteria.createCriteria("monolingualExternalRefs").add(
-				Restrictions.sqlRestriction("externalSystem = '"
-						+ externalSys + "' and externalReference ='"+ externalRef + "'"));
+				Restrictions.and(
+						Restrictions.eq("externalSystem", externalSys),
+						Restrictions.eq("externalReference", externalRef)));
 		
 		return (Synset) criteria.uniqueResult();
 
@@ -639,10 +631,10 @@ public class Uby
      **/
 	public List<Sense> getSensesByOriginalReference(String externalSys, String externalRef, Lexicon lexicon){
 	    Criteria criteria = session.createCriteria(Sense.class);
-
-        criteria = criteria.createCriteria("monolingualExternalRefs").add(
-                Restrictions.sqlRestriction("externalSystem = '"
-                        + externalSys + "' and externalReference ='"+ externalRef + "'"));
+		criteria = criteria.createCriteria("monolingualExternalRefs").add(
+				Restrictions.and(
+						Restrictions.eq("externalSystem", externalSys),
+						Restrictions.eq("externalReference", externalRef)));
 
         @SuppressWarnings("unchecked")
         List<Sense> result = criteria.list();
@@ -715,12 +707,14 @@ public class Uby
      *         This method returns an empty list if the accessed UBY-LMF database does not contain
      *         any alignments of the specified sense, or the specified sense is null.
      */
-	public List<SenseAxis> getSenseAxesBySense(Sense sense){
-		if (sense!=null && sense.getId()!=null && !sense.getId().equals("")){
-			Criteria criteria=session.createCriteria(SenseAxis.class);
-			criteria=criteria.add(Restrictions.sqlRestriction("senseOneId='"+sense.getId()+"' or senseTwoId='"+sense.getId()+"'"));
+	public List<SenseAxis> getSenseAxesBySense(Sense sense) {
+		if (sense != null && sense.getId() != null && !sense.getId().equals("")) {
+			Criteria criteria = session.createCriteria(SenseAxis.class);
+			criteria = criteria.add(Restrictions.or(
+					Restrictions.eq("senseOneId", sense.getId()),
+					Restrictions.eq("senseTwoId=", sense.getId())));
 			@SuppressWarnings("unchecked")
-			List<SenseAxis> result =  criteria.list();
+			List<SenseAxis> result = criteria.list();
 			return result;
 		}
 		else {
@@ -794,16 +788,13 @@ public class Uby
 	public Sense getSenseById(String senseId)
 			throws IllegalArgumentException {
 		Criteria criteria = session.createCriteria(Sense.class).add(
-				Restrictions.sqlRestriction("senseId = '" + senseId + "'"));
-		Sense ret = null;
-		if (criteria.list() != null && criteria.list().size() > 0) {
-			ret = (Sense) criteria.list().get(0);
-		}
-		if (ret == null) {
+				Restrictions.eq("id", senseId));
+		List<?> result = criteria.list();
+		if (result.size() < 0)
 			throw new IllegalArgumentException(
 					"Sense with this ID does not exist");
-		}
-		return ret;
+		
+		return (Sense) result.get(0);
 	}
 
     /**
@@ -816,15 +807,14 @@ public class Uby
      *             if a synset with this identifier does not exist
      */
 	public Synset getSynsetById(String synsetId) throws IllegalArgumentException{
-		Criteria criteria= session.createCriteria(Synset.class).add(Restrictions.sqlRestriction("synsetId = '"+ synsetId+"'"));
-		Synset ret=null;
-		if (criteria.list()!=null && criteria.list().size()>0){
-			ret=(Synset)criteria.list().get(0);
-		}
-		if (ret==null) {
-			throw new IllegalArgumentException(new Exception("Synset with the ID " +synsetId +" does not exist"));
-		}
-		return ret;
+		Criteria criteria = session.createCriteria(Synset.class).add(
+				Restrictions.eq("id", synsetId));
+		List<?> result = criteria.list();
+		if (result.size() < 0)
+			throw new IllegalArgumentException(
+					"Synset with the ID " +synsetId +" does not exist");
+		
+		return (Synset) result.get(0);
 	}
 
 
