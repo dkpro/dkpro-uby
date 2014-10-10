@@ -42,11 +42,13 @@ public class MySQLDirectQueries
 		this.dbConfig = dbConfig;
 		Class.forName(dbConfig.getJdbc_driver_class()).newInstance();
 		String connect2mysql = null;
-		if(dbConfig.getDb_vendor().equals("h2")) {
+		switch (dbConfig.getDBType()) {
+		case DBConfig.H2:
 			connect2mysql = dbConfig.getJdbc_url();
-		} else {
-			connect2mysql = "jdbc:"+dbConfig.getDb_vendor()+"://"+dbConfig.getJdbc_url()+"?characterEncoding=UTF-8&useUnicode=true";
-
+			break;
+		case DBConfig.MYSQL:
+			connect2mysql = "jdbc:mysql://"+dbConfig.getJdbc_url()+"?characterEncoding=UTF-8&useUnicode=true";
+			break;
 		}
 
 		System.out.println(connect2mysql);
@@ -59,8 +61,8 @@ public class MySQLDirectQueries
 	}
 
 	public void executeUpdateQuery(String sql)throws SQLException{
-		statement.executeUpdate(sql);
+		int rows = statement.executeUpdate(sql);
+		System.out.println(sql);
+		System.out.println(rows + " updated");
 	}
-
-
 }
