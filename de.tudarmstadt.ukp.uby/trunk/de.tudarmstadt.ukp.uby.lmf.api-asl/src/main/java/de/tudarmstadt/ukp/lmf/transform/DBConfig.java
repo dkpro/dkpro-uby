@@ -17,6 +17,8 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.transform;
 
+import de.tudarmstadt.ukp.lmf.hibernate.UBYH2Dialect;
+
 /**
  * Instance of this class holds database configuration of UBY-LMF Database.
  *
@@ -246,4 +248,17 @@ public class DBConfig
     {
         this.host = host;
     }
+    
+    public String getDBType()
+    {
+    	if (db_vendor.equals("org.h2.Driver") || db_vendor.equals(UBYH2Dialect.class.getName())) {
+    		return H2;
+    	}
+		else {
+			return MYSQL;
+    	}
+    }
+    
+    public static final String H2 = "h2";
+    public static final String MYSQL = "mysql";
 }

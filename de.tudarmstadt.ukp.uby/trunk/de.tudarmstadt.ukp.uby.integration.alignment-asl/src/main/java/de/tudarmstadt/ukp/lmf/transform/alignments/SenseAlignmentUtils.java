@@ -87,7 +87,8 @@ public class SenseAlignmentUtils
 		String sql1 = null;
 		String sql2 = null;
 		
-		if (source.getDb_vendor().equals("h2")) {
+		switch (source.getDBType()) {
+		case DBConfig.H2:
 			sql1 = "CREATE TEMPORARY TABLE "
 					+ tempTable1
 					+ " (senseId varchar(255) ,"
@@ -98,19 +99,21 @@ public class SenseAlignmentUtils
 					+ " (senseId varchar(255) ,"
 					+ ((usingSynsetAxis == true) ? "synsetId  varchar(255) ,"
 							: "") + "externalReference varchar(255) )";
-		} else {
-
-		sql1 = "CREATE TEMPORARY TABLE "
-				+ tempTable1
-				+ " (senseId varchar(255) CHARACTER SET utf8 NOT NULL,"
-				+ ((usingSynsetAxis == true) ? "synsetId  varchar(255) CHARACTER SET utf8 ,"
-						: "") + "externalReference varchar(255) CHARACTER SET utf8 NOT NULL)";
-		sql2 = "CREATE TEMPORARY TABLE "
-				+ tempTable2
-				+ " (senseId varchar(255) CHARACTER SET utf8 NOT NULL,"
-				+ ((usingSynsetAxis == true) ? "synsetId  varchar(255) CHARACTER SET utf8,"
-						: "") + "externalReference varchar(255) CHARACTER SET utf8)";
+			break;
+		case DBConfig.MYSQL:
+			sql1 = "CREATE TEMPORARY TABLE "
+					+ tempTable1
+					+ " (senseId varchar(255) CHARACTER SET utf8 NOT NULL,"
+					+ ((usingSynsetAxis == true) ? "synsetId  varchar(255) CHARACTER SET utf8 ,"
+							: "") + "externalReference varchar(255) CHARACTER SET utf8 NOT NULL)";
+			sql2 = "CREATE TEMPORARY TABLE "
+					+ tempTable2
+					+ " (senseId varchar(255) CHARACTER SET utf8 NOT NULL,"
+					+ ((usingSynsetAxis == true) ? "synsetId  varchar(255) CHARACTER SET utf8,"
+							: "") + "externalReference varchar(255) CHARACTER SET utf8)";
+			break;
 		}
+		
 		sourceConnection.executeUpdateQuery(sql1);
 		destConnection.executeUpdateQuery(sql2);
 
@@ -120,13 +123,21 @@ public class SenseAlignmentUtils
 		//dest
 		insert2DefaultTemporaryTable(1, usingSynsetAxis);
 
-		// Create an index on externalReference.
-		sourceConnection.executeUpdateQuery("ALTER TABLE " + tempTable1
-				+ " ADD INDEX i_" + tempTable1
-				+ "_externalReference (externalReference)");
-		destConnection.executeUpdateQuery("ALTER TABLE " + tempTable2
-				+ " ADD INDEX i_" + tempTable2
-				+ "_externalReference (externalReference)");
+		switch (source.getDBType()) {
+		case DBConfig.H2:
+			sourceConnection.executeUpdateQuery("CREATE INDEX IF NOT EXISTS  i_" + tempTable1 + " ON " + tempTable1 + " (externalReference)");
+			destConnection.executeUpdateQuery("CREATE INDEX IF NOT EXISTS i_" + tempTable1 + " ON " + tempTable1 + " (externalReference)");
+			break;
+		case DBConfig.MYSQL:
+			// Create an index on externalReference.
+			sourceConnection.executeUpdateQuery("ALTER TABLE " + tempTable1
+					+ " ADD INDEX i_" + tempTable1
+					+ "_externalReference (externalReference)");
+			destConnection.executeUpdateQuery("ALTER TABLE " + tempTable2
+					+ " ADD INDEX i_" + tempTable2
+					+ "_externalReference (externalReference)");
+			break;
+		}
 	}
 
 	/**
@@ -191,12 +202,12 @@ public class SenseAlignmentUtils
 		switch (DB) {
 		case 0:
 			sql = "SELECT senseId, writtenForm, externalReference " +
-				"FROM " + tempTable1 + " WHERE externalReference=\"" + refId + "\" AND writtenForm=\""+ wnLemma+ "\"";
+				"FROM " + tempTable1 + " WHERE externalReference='" + refId + "' AND writtenForm='"+ wnLemma+ "'";
 			rs = sourceConnection.doQuery(sql);
 			break;
 		case 1:
 			sql = "SELECT senseId, writtenForm, externalReference " +
-				"FROM " + tempTable1 + " WHERE externalReference=\"" + refId + "\" AND writtenForm=\""+ wnLemma+ "\"";
+				"FROM " + tempTable1 + " WHERE externalReference='" + refId + "' AND writtenForm='"+ wnLemma+ "'";
 			rs = destConnection.doQuery(sql);
 			break;
 		}
@@ -229,15 +240,15 @@ public class SenseAlignmentUtils
 		case 0:
 			sql = "Select senseId, externalReference "
 					+ ((usingSynsetId == true) ? ",synsetId" : " ") + " from "
-					+ tempTable1 + " where externalReference=\"" + referenceID
-					+ "\"";
+					+ tempTable1 + " where externalReference='" + referenceID
+					+ "'";
 			rs = sourceConnection.doQuery(sql);
 			break;
 		case 1:
 			sql = "Select senseId, externalReference "
 					+ ((usingSynsetId == true) ? ",synsetId" : " ") + " from "
-					+ tempTable2 + " where externalReference=\"" + referenceID
-					+ "\"";
+					+ tempTable2 + " where externalReference='" + referenceID
+					+ "'";
 			rs = destConnection.doQuery(sql);
 			break;
 		}
@@ -290,8 +301,9 @@ public class SenseAlignmentUtils
 				+ " (Sense.senseId=MonolingualExternalRef.senseId)";
 
 		String sql2 = " Select Count(Sense.senseId) as count "
-				+ " FROM Sense JOIN (Synset, MonolingualExternalRef)"
-				+ " ON (Sense.synsetId=Synset.synsetId AND Synset.synsetId=MonolingualExternalRef.synsetId)";
+				+ "FROM Sense "
+				+ "JOIN Synset ON Sense.synsetId=Synset.synsetId "
+				+ "JOIN MonolingualExternalRef ON Synset.synsetId=MonolingualExternalRef.synsetId";
 
 		// Insert data into these temp tables
 		String sql1_Insert = "INSERT INTO " + ((DB==0)?tempTable1:tempTable2) + " SELECT Sense.senseId, "
@@ -304,8 +316,9 @@ public class SenseAlignmentUtils
 				+ " SELECT Sense.senseId, "
 				+ ((usingSynsetAxis == true) ? "Sense.synsetId," : "")
 				+ " MonolingualExternalRef.externalReference "
-				+ " FROM Sense JOIN (Synset, MonolingualExternalRef)"
-				+ " ON (Sense.synsetId=Synset.synsetId AND Synset.synsetId=MonolingualExternalRef.synsetId)";
+				+ "FROM Sense "
+				+ "JOIN Synset ON Sense.synsetId=Synset.synsetId "
+				+ "JOIN MonolingualExternalRef ON Synset.synsetId=MonolingualExternalRef.synsetId";
 
 		switch (DB) {
 		case 0:
