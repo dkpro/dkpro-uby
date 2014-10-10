@@ -30,6 +30,8 @@ import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 public class SenseAlignmentUtils
 {
 
+	private DBConfig source;
+	private DBConfig dest;	
 	private int typeSource;
 	private int typeDest;
 	private MySQLDirectQueries sourceConnection;
@@ -64,6 +66,9 @@ public class SenseAlignmentUtils
 
 		this.tempTable1 = tempTableSource;
 		this.tempTable2 = tempTableDest;
+		
+		this.source = source;
+		this.dest = dest;
 
 	}
 
@@ -79,17 +84,33 @@ public class SenseAlignmentUtils
 		throws SQLException
 	{
 		// create temp table
+		String sql1 = null;
+		String sql2 = null;
+		
+		if (source.getDb_vendor().equals("h2")) {
+			sql1 = "CREATE TEMPORARY TABLE "
+					+ tempTable1
+					+ " (senseId varchar(255) ,"
+					+ ((usingSynsetAxis == true) ? "synsetId  varchar(255) ,"
+							: "") + "externalReference varchar(255) )";
+			sql2 = "CREATE TEMPORARY TABLE "
+					+ tempTable2
+					+ " (senseId varchar(255) ,"
+					+ ((usingSynsetAxis == true) ? "synsetId  varchar(255) ,"
+							: "") + "externalReference varchar(255) )";
+		} else {
 
-		String sql1 = "CREATE TEMPORARY TABLE "
+		sql1 = "CREATE TEMPORARY TABLE "
 				+ tempTable1
 				+ " (senseId varchar(255) CHARACTER SET utf8 NOT NULL,"
 				+ ((usingSynsetAxis == true) ? "synsetId  varchar(255) CHARACTER SET utf8 ,"
 						: "") + "externalReference varchar(255) CHARACTER SET utf8 NOT NULL)";
-		String sql2 = "CREATE TEMPORARY TABLE "
+		sql2 = "CREATE TEMPORARY TABLE "
 				+ tempTable2
 				+ " (senseId varchar(255) CHARACTER SET utf8 NOT NULL,"
 				+ ((usingSynsetAxis == true) ? "synsetId  varchar(255) CHARACTER SET utf8,"
 						: "") + "externalReference varchar(255) CHARACTER SET utf8)";
+		}
 		sourceConnection.executeUpdateQuery(sql1);
 		destConnection.executeUpdateQuery(sql2);
 

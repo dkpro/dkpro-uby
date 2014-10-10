@@ -48,9 +48,9 @@ public class WiktionaryWNAlignment extends SenseAlignment
 		DBConfig d = new DBConfig(destUrl,dbDriver,dbVendor, user, pass, true);
 		// temp_Duc is the name of temporary table
 		if (sourceUrl.equals(destUrl)) {
-			saUtils = new SenseAlignmentUtils(s, s, 1, 0, "temp_Duc", "temp_Duc");
+			saUtils = new SenseAlignmentUtils(s, s, 1, 0, "temp_source", "temp_dest");
 		}else{
-			saUtils = new SenseAlignmentUtils(s, d, 1, 0, "temp_Duc", "temp_Duc");
+			saUtils = new SenseAlignmentUtils(s, d, 1, 0, "temp_source", "temp_dest");
 		}
 		saUtils.createDefaultTempTables(false);
 	}
