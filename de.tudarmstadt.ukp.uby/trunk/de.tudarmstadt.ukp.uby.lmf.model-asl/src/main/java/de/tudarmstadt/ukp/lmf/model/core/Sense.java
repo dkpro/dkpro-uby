@@ -210,7 +210,7 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 	 * i.e. it merely adds information to the semantic center of the phrase.
 	 * @param flag set it to true to indicate that the sense has a transparent meaning, or to false otherwise
 	 */
-	public void setTransparentMeaning(boolean transparentMeaning){
+	public void setTransparentMeaning(Boolean transparentMeaning){
 		this.transparentMeaning = transparentMeaning;
 	}
 
@@ -219,7 +219,7 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 	 * @return true if the sense has a transparent meaning, false otherwise
 	 *
 	 */
-	public boolean isTransparentMeaning() {
+	public Boolean isTransparentMeaning() {
 		return transparentMeaning;
 	}
 
