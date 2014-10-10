@@ -16,7 +16,7 @@
   	</property>
   	
 	<many-to-one name="target" class="de.tudarmstadt.ukp.lmf.model.core.Sense" column="target" 
-			node="@target" foreign-key="none" not-found="ignore" index="senserelation_target_IDX"/>
+			node="@target" foreign-key="none" index="senserelation_target_IDX"/>
     
 	<many-to-one name="formRepresentation" class="de.tudarmstadt.ukp.lmf.model.morphology.FormRepresentation" 
 		entity-name="FormRepresentation_SenseRelation" column="formRepresentationId" 

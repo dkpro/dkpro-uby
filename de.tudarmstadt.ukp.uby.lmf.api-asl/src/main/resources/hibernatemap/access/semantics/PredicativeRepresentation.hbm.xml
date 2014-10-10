@@ -10,7 +10,7 @@
     </id>
     
     <many-to-one name="predicate" class="de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate" 
-     	column="predicate" node="@predicate" foreign-key="none" not-found="ignore" index="predicativerepresentation_predicate_IDX"/>
+     	column="predicate" node="@predicate" foreign-key="none" index="predicativerepresentation_predicate_IDX"/>
     
    
 </class>

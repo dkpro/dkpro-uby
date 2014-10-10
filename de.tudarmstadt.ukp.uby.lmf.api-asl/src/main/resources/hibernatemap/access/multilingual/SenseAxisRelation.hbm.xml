@@ -11,7 +11,7 @@
   	<property name="relType" column="relType" node="@relType" type="string"/>
   	<property name="relName" column="relName" node="@relName" type="string"/>
 	<many-to-one name="target" class="de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis" column="target" 
-			node="@target" foreign-key="none" not-found="ignore" index="senseaxisrelation_target_IDX"/>
+			node="@target" foreign-key="none" index="senseaxisrelation_target_IDX"/>
 	
          
 </class>
