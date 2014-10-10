@@ -25,7 +25,10 @@
     <bag name="senses">
             <key column="synsetId" foreign-key="none" />
             <one-to-many class="de.tudarmstadt.ukp.lmf.model.core.Sense" />
-    </bag>   
+    </bag>
+    <!-- Not in the model, mapped for convenience --> 
+    <many-to-one name="lexicon" column="lexiconId" class="de.tudarmstadt.ukp.lmf.model.core.Lexicon"
+            insert="false" update="false"/>
 </class>
 
 </hibernate-mapping>
