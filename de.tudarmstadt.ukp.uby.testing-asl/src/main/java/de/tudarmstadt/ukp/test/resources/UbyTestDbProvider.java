@@ -23,6 +23,7 @@ import java.io.FileNotFoundException;
 import org.dom4j.DocumentException;
 
 import de.tudarmstadt.ukp.lmf.api.Uby;
+import de.tudarmstadt.ukp.lmf.hibernate.UBYH2Dialect;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 import de.tudarmstadt.ukp.lmf.transform.LMFDBUtils;
 import de.tudarmstadt.ukp.lmf.transform.XMLToDBTransformer;
@@ -50,7 +51,8 @@ public class UbyTestDbProvider {
 		String uby_pass = "pass";
 
 		DBConfig dbConfig = 
-			new DBConfig("not_important","org.h2.Driver","h2",uby_user,uby_pass,true);
+//			new DBConfig("not_important","org.h2.Driver","h2",uby_user,uby_pass,true);
+			new DBConfig("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1","org.h2.Driver",UBYH2Dialect.class.getName(),uby_user,uby_pass,true);
 		
 			LMFDBUtils.createTables(dbConfig);
 			
