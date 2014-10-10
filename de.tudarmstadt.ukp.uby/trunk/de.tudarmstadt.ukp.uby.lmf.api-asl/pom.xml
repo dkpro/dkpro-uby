@@ -36,10 +36,6 @@
 			<artifactId>de.tudarmstadt.ukp.uby.lmf.model-asl</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>jboss</groupId>
-			<artifactId>javassist</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
 		</dependency>
@@ -52,16 +48,8 @@
 			<artifactId>slf4j-simple</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>c3p0</groupId>
-			<artifactId>c3p0</artifactId>
-			<version>0.9.1.2</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-c3p0</artifactId>
-			<version>4.1.9.Final</version>
 		</dependency>
 	</dependencies>
 </project>

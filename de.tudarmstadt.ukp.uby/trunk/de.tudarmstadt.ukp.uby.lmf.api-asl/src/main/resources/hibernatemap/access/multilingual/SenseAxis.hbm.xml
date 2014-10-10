@@ -20,22 +20,22 @@
     
     
     <many-to-one name="senseOne" class="de.tudarmstadt.ukp.lmf.model.core.Sense" column="senseOneId"
-    	 node="@senseOne" foreign-key="none" not-found="ignore" index="senseaxis_senseOneId_IDX"/>
+    	 node="@senseOne" foreign-key="none" index="senseaxis_senseOneId_IDX"/>
     <many-to-one name="senseTwo" class="de.tudarmstadt.ukp.lmf.model.core.Sense" column="senseTwoId"
-    	 node="@senseTwo" foreign-key="none" not-found="ignore" index="senseaxis_senseTwoId_IDX"/>
+    	 node="@senseTwo" foreign-key="none" index="senseaxis_senseTwoId_IDX"/>
     
     <many-to-one name="synsetOne" class="de.tudarmstadt.ukp.lmf.model.semantics.Synset" column="synsetOneId"
-    	 node="@synsetOne" foreign-key="none" not-found="ignore" index="senseaxis_synsetOneId_IDX"/>
+    	 node="@synsetOne" foreign-key="none" index="senseaxis_synsetOneId_IDX"/>
     <many-to-one name="synsetTwo" class="de.tudarmstadt.ukp.lmf.model.semantics.Synset" column="synsetTwoId"
-    	 node="@synsetTwo" foreign-key="none" not-found="ignore" index="senseaxis_synsetTwoId_IDX"/>
+    	 node="@synsetTwo" foreign-key="none" index="senseaxis_synsetTwoId_IDX"/>
     	 
     <many-to-one name="lexiconOne" class="de.tudarmstadt.ukp.lmf.model.core.Lexicon" column="lexiconOne"
-    	 node="@lexiconOne" foreign-key="none" not-found="ignore" index="senseaxis_lexiconOne_IDX"/>
+    	 node="@lexiconOne" foreign-key="none" index="senseaxis_lexiconOne_IDX"/>
     <many-to-one name="lexiconTwo" class="de.tudarmstadt.ukp.lmf.model.core.Lexicon" column="lexiconTwo"
-    	 node="@lexiconTwo" foreign-key="none" not-found="ignore" index="senseaxis_lexiconTwo_IDX"/>
+    	 node="@lexiconTwo" foreign-key="none" index="senseaxis_lexiconTwo_IDX"/>
    
 	<many-to-one name="metaData" class="de.tudarmstadt.ukp.lmf.model.meta.MetaData" column="metaDataId"
-    	 node="@metaData" foreign-key="none" not-found="ignore" index="senseaxis_metaDataId_IDX"/>
+    	 node="@metaData" foreign-key="none" index="senseaxis_metaDataId_IDX"/>
     <property name="confidence" column="confidence" node="@confidence" type="double" />    
     	 
  </class>

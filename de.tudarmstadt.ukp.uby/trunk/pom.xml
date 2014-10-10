@@ -31,6 +31,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.target>1.6</java.target>
+		<hibernate.version>4.1.9.Final</hibernate.version>
 	</properties>
 	<modules>
 		<module>de.tudarmstadt.ukp.uby.lmf.model-asl</module>
@@ -132,11 +133,6 @@
 				<groupId>JFN_042_recompiled</groupId>
 				<artifactId>JFN_042_recompiled</artifactId>
 				<version>0.2.0</version>
-			</dependency>
-			<dependency>
-				<groupId>jboss</groupId>
-				<artifactId>javassist</artifactId>
-				<version>3.7.ga</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
@@ -252,8 +248,13 @@
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-core</artifactId>
-				<version>4.1.9.Final</version>
+				<version>${hibernate.version}</version>
 			</dependency>
+            <dependency>
+                 <groupId>org.hibernate</groupId>
+                 <artifactId>hibernate-c3p0</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
 		</dependencies>
 	</dependencyManagement>
 	<profiles>

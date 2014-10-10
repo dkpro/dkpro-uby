@@ -150,10 +150,10 @@ public class HibernateConnect
 
         // SQL dialect
         if (db_vendor.equals("mysql")) {
-            p.setProperty("hibernate.dialect", CustomMySQLDialect.class.getName());
+            p.setProperty("hibernate.dialect", UBYMySQLDialect.class.getName());
         }
         else if (db_vendor.equals("h2")) {
-            p.setProperty("hibernate.dialect", H2Dialect.class.getName());
+            p.setProperty("hibernate.dialect", UBYH2Dialect.class.getName());
         }
         else {
             p.setProperty("hibernate.dialect", db_vendor);

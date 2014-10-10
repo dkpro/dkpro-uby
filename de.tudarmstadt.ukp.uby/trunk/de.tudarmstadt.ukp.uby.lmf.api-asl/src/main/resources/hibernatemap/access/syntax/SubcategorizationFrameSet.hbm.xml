@@ -7,9 +7,10 @@
 
     <id name="id" column="subcatFrameSetId" node="@id" type="string"/>
     
-    <many-to-one name="parentSubcatFrameSet" class="de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrameSet" column="parentSubcatFrameSet"
-    		 node="@parentSubcatFrameSet" foreign-key="none" not-found="ignore" index="subcatframeset_parentSubcatFrameSet_IDX"/>
-
+    
+    <many-to-one name="parentSubcatFrameSet" class="de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrameSet" column="parentSubcatFrameSet" lazy="proxy"
+    		 node="@parentSubcatFrameSet" foreign-key="none" index="subcatframeset_parentSubcatFrameSet_IDX"/>
+ 
     <list name="subcatFrameSetElements" node=".">
             <key column="subcatFrameSetId" />
             <index column="idx"/>

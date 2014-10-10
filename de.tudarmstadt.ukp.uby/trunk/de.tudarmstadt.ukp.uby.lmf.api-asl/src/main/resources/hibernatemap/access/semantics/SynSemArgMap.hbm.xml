@@ -7,9 +7,9 @@
            <generator class="increment"/>
     </id>    
     <many-to-one name="syntacticArgument" class="de.tudarmstadt.ukp.lmf.model.syntax.SyntacticArgument" column="syntacticArgumentId"
-    	 node="@syntacticArgument" foreign-key="none" not-found="ignore" index="synsemargmap_syntacticArgumentId_IDX"/>
+    	 node="@syntacticArgument" foreign-key="none" index="synsemargmap_syntacticArgumentId_IDX"/>
     <many-to-one name="semanticArgument" class="de.tudarmstadt.ukp.lmf.model.semantics.SemanticArgument" column="semanticArgumentId" 
-    	 node="@semanticArgument" foreign-key="none" not-found="ignore" index="synsemargmap_semanticArgumentId_IDX"/>
+    	 node="@semanticArgument" foreign-key="none" index="synsemargmap_semanticArgumentId_IDX"/>
     
 </class>
 
