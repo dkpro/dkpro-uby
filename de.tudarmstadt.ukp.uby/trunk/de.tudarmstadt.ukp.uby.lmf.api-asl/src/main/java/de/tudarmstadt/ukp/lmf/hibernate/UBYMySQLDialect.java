@@ -17,6 +17,7 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.hibernate;
 
+import org.hibernate.HibernateException;
 import org.hibernate.dialect.MySQL5InnoDBDialect;
 
 
@@ -27,10 +28,19 @@ import org.hibernate.dialect.MySQL5InnoDBDialect;
  * @author Yevgen Chebotar
  *
  */
-public class CustomMySQLDialect extends MySQL5InnoDBDialect {
+public class UBYMySQLDialect extends MySQL5InnoDBDialect {
 
 	public String getTableTypeString() {
         return " ENGINE=InnoDB default character set = \"UTF8\" default collate = \"utf8_general_ci\"";
     }
 
+	@Override
+	public String getTypeName(int code, long length, int precision, int scale)
+			throws HibernateException {
+		String result = super.getTypeName(code, length, precision, scale);
+		if ("boolean".equals(result))
+			return "bit";
+		return result;
+	}
+	
 }
