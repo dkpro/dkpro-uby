@@ -184,10 +184,10 @@ public class HibernateConnect
 		}
 
         // Do only update schema on changes e.g. validate | update | create | create-drop
-        p.setProperty("hibernate.hbm2ddl.auto","update"); 
+//        p.setProperty("hibernate.hbm2ddl.auto","update"); 
         
         // JEK see http://stackoverflow.com/questions/3179765/how-to-turn-off-hbm2ddl
-        //p.setProperty("hibernate.hbm2ddl.auto","validate");
+        p.setProperty("hibernate.hbm2ddl.auto","validate");
         // p.setProperty("hibernate.hbm2ddl.auto","none");
 
         return p;
