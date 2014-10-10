@@ -289,7 +289,7 @@ abstract public class SenseAlignment
 	 * @throws TransformerException
 	 * @throws SAXException 
 	 */
-	public void toLMF(String idPrefix, boolean crosslingual, boolean usingSynsetAxis,String dtdVersion,String UBY_HOME) throws IOException, TransformerException, SAXException
+	public void toLMF(String idPrefix, boolean crosslingual, boolean usingSynsetAttribute,String dtdVersion,String UBY_HOME) throws IOException, TransformerException, SAXException
 	{
 		LMFXmlWriter xmlWriter = new LMFXmlWriter(UBY_HOME+"/target/"+idPrefix+".xml", UBY_HOME+"/resources/dtd/DTD_unifiedModel_"+dtdVersion+".dtd");
 
@@ -318,7 +318,7 @@ abstract public class SenseAlignment
 			}
 			senseAxis.setSenseOne(sourcesSenses.get(i));
 			senseAxis.setSenseTwo(destinationsSenses.get(i));
-			if (usingSynsetAxis){
+			if (usingSynsetAttribute){
 				senseAxis.setSynsetOne(sourcesSenses.get(i).getSynset());
 				senseAxis.setSynsetTwo(destinationsSenses.get(i).getSynset());
 			}
