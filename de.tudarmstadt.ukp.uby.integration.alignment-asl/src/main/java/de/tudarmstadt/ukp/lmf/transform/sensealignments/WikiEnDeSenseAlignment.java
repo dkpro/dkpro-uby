@@ -73,8 +73,8 @@ public class WikiEnDeSenseAlignment extends SenseAlignment
 					String titleWikiEn = tmp[0];
 					String titleWikiDe = tmp[1];
 					System.out.println("...processing line: "+lineNumber+"...");
-					List<Sense> sensesSource = ubySource.getSensesByOriginalReference("Wikipedia",titleWikiEn);
-					List<Sense> sensesDest = ubyDest.getSensesByOriginalReference("Wikipedia",titleWikiDe);
+					List<Sense> sensesSource = ubySource.getSensesByOriginalReference("Wikipedia",titleWikiEn);//FIXME change to new external System label
+					List<Sense> sensesDest = ubyDest.getSensesByOriginalReference("Wikipedia",titleWikiDe);    //FIXME change to new external System label
 
 					Sense source = null, dest = null;
 					if (sensesSource.size() != 0 && sensesDest.size() != 0) {
