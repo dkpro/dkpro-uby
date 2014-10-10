@@ -19,6 +19,8 @@
 package de.tudarmstadt.ukp.lmf.transform;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -30,6 +32,9 @@ import org.dom4j.Element;
 import org.dom4j.ElementHandler;
 import org.dom4j.ElementPath;
 import org.dom4j.io.SAXReader;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import de.tudarmstadt.ukp.lmf.model.core.GlobalInformation;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
@@ -78,7 +83,16 @@ public class XMLToDBTransformer extends UBYHibernateTransformer
 		if (lexicalResourceName != null)
 			lexicalResource = (LexicalResource) session.get(LexicalResource.class, lexicalResourceName);
 
-		SAXReader reader = new SAXReader();
+		SAXReader reader = new SAXReader(false);
+		reader.setEntityResolver(new EntityResolver() {			
+			@Override
+			public InputSource resolveEntity(String publicId, String systemId)
+					throws SAXException, IOException {
+				if (systemId.endsWith(".dtd"))
+					return new InputSource(new StringReader(""));
+				return null;
+			}
+		});
 		reader.setDefaultHandler(this);
 		reader.read(xmlFile);
 		
