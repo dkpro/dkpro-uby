@@ -22,7 +22,7 @@ public class CalculateDijkstraWSA
 	/**
 	 *
 	 *
-	 * For maximum efficiency, the actual calculation of the shortest paths is not done in Java, but C++.
+	 * For maximum efficiency, the actual calculation of the shortest paths is not done in Java, but C. An efficient reimplementation in Java is pending
 	 *
 	 * In the src/main/resources folder you will find an executable which has been compiled on 64-Bit Ubuntu Linux, but also
 	 * an archive containing the sources if you need to recompile. The program takes three arguments:
