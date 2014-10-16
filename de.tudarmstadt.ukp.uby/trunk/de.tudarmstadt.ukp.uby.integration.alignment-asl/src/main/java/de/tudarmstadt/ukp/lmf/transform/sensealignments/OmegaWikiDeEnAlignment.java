@@ -55,11 +55,11 @@ public class OmegaWikiDeEnAlignment
 			int count = 0;
 			Map <SynTrans,Set<SynTrans>> stm = ow.getInterlanguageSTLinks(sourceLang, targetLang);
 			for(SynTrans source : stm.keySet() ) {
-					List<Sense> first = ubySource.getSensesByOWSynTransId(""+source.getSyntransid());
+					List<Sense> first = ubySource.getSensesByOriginalReference("OW SynTrans ID", ""+source.getSyntransid());;
 					if (first.size()>0) {
 					Sense sourceSense = first.get(0);
 					for (SynTrans target : stm.get(source)){
-						List<Sense> second = ubyDest.getSensesByOWSynTransId(""+target.getSyntransid());
+						List<Sense> second = ubyDest.getSensesByOriginalReference("OW SynTrans ID", ""+target.getSyntransid());;
 						if (second.size()>0) {
 							Sense targetSense = second.get(0);
 							System.out.println(count);

@@ -94,12 +94,13 @@ public class OmegaWikiCrossLingualAlignment extends SenseAlignment
 			Map <SynTrans,Set<SynTrans>> stm = ow.getInterlanguageSTLinks(sourceLang, targetLang);
 			System.out.println("Number of STlinks:" + stm.size());
 			for(SynTrans source : stm.keySet()) {
-				List<Sense> first = ubySource.getSensesByOWSynTransId(""+source.getSyntransid());
+			//	List<Sense> first = ubySource.getSensesByOWSynTransId(""+source.getSyntransid());
+				List<Sense> first = ubySource.getSensesByOriginalReference("OW SynTrans ID", ""+source.getSyntransid());
 				if (first.size()>0) {
 					Sense sourceSense = first.get(0);
 					System.out.print("First:" + sourceSense.getId());
 					for (SynTrans target : stm.get(source)){
-						List<Sense> second = ubyDest.getSensesByOWSynTransId(""+target.getSyntransid());
+						List<Sense> second = ubyDest.getSensesByOriginalReference("OW SynTrans ID", ""+target.getSyntransid());
 						if (second.size() > 0) {
 							Sense targetSense = second.get(0);
 							System.out.print("Second:" + targetSense.getId());

@@ -76,7 +76,7 @@ public class OmegaWikiWikipediaAlignment
 
 			for(SynTrans source : stm.keySet() )
 			{
-				List<Sense> first = ubySource.getSensesByOWSynTransId(""+source.getSyntransid());
+				List<Sense> first = ubySource.getSensesByOriginalReference("OW SynTrans ID", ""+source.getSyntransid());
 				Sense sourceSense = first.get(0);
 				String wikiRef = stm.get(source);
 
