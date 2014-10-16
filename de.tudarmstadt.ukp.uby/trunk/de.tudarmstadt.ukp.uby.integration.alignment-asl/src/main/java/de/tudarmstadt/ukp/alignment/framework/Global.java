@@ -91,21 +91,18 @@ public class Global
 	public static void mergeTwoGraphs(String infile1,String infile2, String outfile ) throws ClassNotFoundException,  IOException
 	{
 		StringBuilder sb = new StringBuilder();
-		/*Take care of having it undirected*/
 		FileReader in = new FileReader("target/"+infile1);
 		BufferedReader input =  new BufferedReader(in);
-			FileOutputStream outstream;
-			PrintStream p;
-			outstream = new FileOutputStream("target/"+outfile);
-			p = new PrintStream( outstream );
+		FileOutputStream outstream;
+		PrintStream p;
+		outstream = new FileOutputStream("target/"+outfile);
+		p = new PrintStream( outstream );
 
 		int maxId = 0;
 		int size = 0;
 		 String line;
 
 		int i = 0;
-
-	//	p.println("p sp "+Offsets.Overall_maxid+" "+edgeCount);
 		 while((line =input.readLine())!=null)
 		 {
 			 if(line.startsWith("p"))
@@ -126,7 +123,7 @@ public class Global
 
 
 		 }
-		 //p.println("p sp "+nodes_count+" "+arcs_count);
+		 input.close();
 			in = new FileReader("target/"+infile2);
 			input =  new BufferedReader(in);
 			 while((line =input.readLine())!=null)
@@ -152,7 +149,8 @@ public class Global
 			 }
 			 p.println("p sp "+maxId+" "+size);
 			 p.print(sb.toString());
-		 //System.out.println("p sp "+nodes_count+" "+arcs_count);
+			 input.close();
+			 p.close();
 	}
 
 	public static double overlap(List<String> o1, List<String> o2)
@@ -163,6 +161,12 @@ public class Global
 		set2.retainAll(set1);
 		return set2.size();
 	}
+	/**
+	 * This method maps an alignment file with numerical IDs to either UBY-IDs or the original IDs
+	 * 
+	 * @param extRef states whether the original ids should be used
+	 * 
+	 * */
 	public static void mapAlignmentToUby(OneResourceBuilder gb1, OneResourceBuilder gb2, String alignmentfile, boolean extRef)
 	{
 
@@ -173,11 +177,10 @@ public class Global
 		{
 		String alignment_file= alignmentfile;
 		outstream = new FileOutputStream(alignment_file.replace(".txt", "")+"_"+(extRef? "extRef": "UbyID")+".txt");
-		p = new PrintStream( outstream );
+		 p = new PrintStream( outstream );
 		 FileReader in = new FileReader(alignment_file);
 		 BufferedReader input_reader =  new BufferedReader(in);
 		 String line;
-		 StringBuilder sb = new StringBuilder();
 		 HashMap<String,String> extRefs1 = new HashMap<String, String>();
 		 HashMap<String,String> extRefs2 = new HashMap<String, String>();
 		 if(extRef)
@@ -223,6 +226,7 @@ public class Global
 
 			System.out.println("lines processed "+i++);
 		 }
+		 input_reader.close();
 		}
 		catch(Exception e)
 		{
@@ -230,18 +234,23 @@ public class Global
 
 
 		}
-		//CONTINUE HERE
-		/*TODO: Conform to newly defined standard*/
+	
+		/*TODO: Conform to newly defined XML standard*/
 		/*
 		 *
 		 * */
 		/*TODO: Create actual SenseAxis instances? NO! Use import class in UBY!*/
 
 	}
-
+	/**
+	 * This method streamlines proprieatary alignment gold standard files
+	 * 
+	 * @param graph states whether numerical ids for the graph should be created
+	 * 
+	 * */
 	public static void processExtRefGoldstandardFile(OneResourceBuilder gb1, OneResourceBuilder gb2, String alignmentfile, boolean graph)
 	{
-		/*TODO Has to be adapted to new standard - this is a propietary solution fo now*/
+		/*TODO Has to be adapted to new standard - this is a propietary solution for now*/
 
 		int i = 0;
 		FileOutputStream outstream;
@@ -251,8 +260,8 @@ public class Global
 		String alignment_file= alignmentfile;
 		outstream = new FileOutputStream(alignment_file.replace(".txt", "")+"_"+(graph? "graph": "UbyID")+".txt");
 		p = new PrintStream( outstream );
-		 FileReader in = new FileReader(alignment_file);
-		 BufferedReader input_reader =  new BufferedReader(in);
+	 FileReader in = new FileReader(alignment_file);
+	 BufferedReader input_reader =  new BufferedReader(in);
 		 String line;
 		 StringBuilder sb = new StringBuilder();
 		 HashMap<String,String> extRefs1 = new HashMap<String, String>();
@@ -319,6 +328,7 @@ public class Global
 
 			System.out.println("lines processed "+i++);
 		 }
+		 input_reader.close();
 		}
 		catch(Exception e)
 		{

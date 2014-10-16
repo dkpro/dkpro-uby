@@ -32,7 +32,7 @@ public class CreateAlignmentFromGraphOutput
 {
 
 	/**
-	 * @param args
+	 *This method creates an alignment from the distances output by the Dijkstra-WSA implementation and outputs them in the desired format
 	 */
 	public static void main(String[] args)
 	{
@@ -59,17 +59,17 @@ public class CreateAlignmentFromGraphOutput
 
 		/*Alignment parameters*/
 		int depth = 5; // Manually set; exhaustive search can be triggered by depth >20
-		boolean allowMultiple = true;
-		boolean alignSingle = false;
-
-		boolean backoff=true;
+		boolean allowMultiple = true; //allow 1:n alignments 
+		boolean alignSingle = false; //allow instant alignment in case of only ine candidate
+ 
+		boolean backoff=true;  //use a similarity-based backoff file in case no alignment can be found
 		String backoff_file = "WN_OW_en_alignment_similarity_Pos_tfidf_nonZero.txt";
 
 		createAlignment(bg_1,bg_2,monoLinkThreshold1,monoLinkThreshold2, depth, allowMultiple,alignSingle, backoff, backoff_file);
 
-		boolean extRef = true;
+		boolean extRef = true; //Use either UBY-Ids or the original IDs for the final alignment file
 
-		//Global.mapAlignmentToUby(bg_1,bg_2,bg_1.prefix_string+"_"+bg_2.prefix_string+"_alignment_"+(bg_2.pos ? "Pos": "noPos")+"_"+depth+"_"+(allowMultiple? "1toN"  :"1to1")+(alignSingle ? "_alignSingle":"")+(backoff ? "_backoff":""), extRef);
+		Global.mapAlignmentToUby(bg_1,bg_2,bg_1.prefix_string+"_"+bg_2.prefix_string+"_alignment_"+(bg_2.pos ? "Pos": "noPos")+"_"+depth+"_"+(allowMultiple? "1toN"  :"1to1")+(alignSingle ? "_alignSingle":"")+(backoff ? "_backoff":""), extRef);
 		}
 
 		catch(Exception e)
@@ -79,15 +79,16 @@ public class CreateAlignmentFromGraphOutput
 	}
 
 
-
+	/**
+	 * This method creates an alignment from the distances output by the Dijkstra-WSA implementation
+	 */
 	public static void createAlignment(OneResourceBuilder gb1,OneResourceBuilder gb2, int monoLinkThreshold1, int monoLinkThreshold2,  int depth, boolean allowMultiple,boolean alignSingle, boolean backoff, String backoff_file)
 	{
 
 		HashMap<String,TreeSet<NodeWithDistance> > alignment_results = new HashMap<String, TreeSet<NodeWithDistance>>();
-		HashMap<String,HashSet<String> > reverse_candidates = new HashMap<String, HashSet<String>>();
 		HashMap<String,HashSet<String> > candidates = new HashMap<String, HashSet<String>>();
-		HashMap<String,HashSet<String> > backoff_alignments = new HashMap<String, HashSet<String>>();
-		HashMap<String,HashSet<String> > final_clusters = new HashMap<String, HashSet<String>>();
+		
+		//Read the candidates and distance files
 		try
 		{
 		FileReader in = new FileReader("target/"+gb1.prefix_string+"_"+gb2.prefix_string+"_candidates_"+(gb2.pos ? "Pos": "noPos")+".txt");
@@ -170,6 +171,7 @@ public class CreateAlignmentFromGraphOutput
 				}
 				if(cands!=null && polled_out!= null && !polled_out.isEmpty()) {
 							cands.addAll(polled_out);
+							
 				/*HERE THE OUTPUT BEGINS*/
 				}
 				for(NodeWithDistance t : targets)
@@ -187,7 +189,7 @@ public class CreateAlignmentFromGraphOutput
 
 
 
-					if(backoff) //Einfach adden
+					if(backoff) // We add the alignment from the backoff for this which were not aligned using DWSA
 					{
 						in = new FileReader("target/"+backoff_file) ;
 						input =  new BufferedReader(in);
@@ -207,35 +209,12 @@ public class CreateAlignmentFromGraphOutput
 							}
 							p.println(id_1+"\t"+id_2+"\t"+conf);
 
-
-//							if(!backoff_alignments.containsKey(id_1))
-//							{
-//								backoff_alignments.put(id_1, new HashSet<String>());
-//							}
-//							backoff_alignments.get(id_1).add(id_2+"#"+conf);
 						}
 
-//						for(String key : backoff_alignments.keySet())
-//						{
-//
-//							if(candidates.containsKey(key)) {
-//								System.out.println("Already aligned!!");
-//								continue;
-//
-//							}
-//							candidates.put(key, new HashSet<String>());
-//							for(String value : backoff_alignments.get(key))
-//							{
-//
-//
-//									p.println(key+" "+value+" "+"SIM");
-//
-//
-//
-//							}
-//						}
 					}
+					p.close();
 					}
+		
 		catch(Exception e)
 		{
 			e.printStackTrace();

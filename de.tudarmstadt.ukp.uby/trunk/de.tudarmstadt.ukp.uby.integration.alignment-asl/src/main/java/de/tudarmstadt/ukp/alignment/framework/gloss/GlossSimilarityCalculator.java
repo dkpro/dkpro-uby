@@ -78,7 +78,7 @@ public class GlossSimilarityCalculator
 
 			OneResourceBuilder bg_2 = new OneResourceBuilder("uby_release_1_0","root","fortuna",prefix2,language,synset2,usePos2);
 
-			//			bg_2.createGlossFile();
+	//		bg_2.createGlossFile();
 
 		//	bg_2.lemmatizePOStagGlossFileInChunks(chunksize2);
 
@@ -272,7 +272,7 @@ public class GlossSimilarityCalculator
 				String current_id2 ="";
 				Double similarity =0.0;
 				String line = "";
-				String line2 = "";
+				
 				FileOutputStream outstream_alignment = new FileOutputStream("target/"+gb1.prefix_string+"_"+gb2.prefix_string+"_alignment_similarity_"+(gb2.pos ? "Pos": "noPos")+""+(tfidf? "_tfidf"  :"")+(onlyGreaterZero ? "_nonZero":"")+".txt");
 				PrintStream p_align = new PrintStream( outstream_alignment );
 
@@ -343,8 +343,10 @@ public class GlossSimilarityCalculator
 
 								}
 
-
+							
+								
 							}
+				p_align.close();
 		}
 		catch(Exception e)
 		{
