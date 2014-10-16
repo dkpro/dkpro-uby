@@ -104,7 +104,7 @@ public class OmegaWikiWordNetAlignment extends SenseAlignment
 				List<Sense> WNRef = saUtils.getSensesByExternalRefID(refId, 1, true);
 
 				for (SynTrans st : sts){
-					List<Sense> first = ubySource.getSensesByOWSynTransId(""+st.getSyntransid());
+					List<Sense> first = ubySource.getSensesByOriginalReference("OW SynTrans ID", ""+st.getSyntransid());
 					Sense sourceSense = first.get(0);
 					for (Sense targetSense: WNRef){
 						addSourceSense(sourceSense);

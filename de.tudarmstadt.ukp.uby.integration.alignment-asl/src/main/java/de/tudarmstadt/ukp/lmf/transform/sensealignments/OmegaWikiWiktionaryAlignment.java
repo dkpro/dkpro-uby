@@ -119,7 +119,7 @@ public class OmegaWikiWiktionaryAlignment
 		try {
 			int count = 1;
 			FileReader in = new FileReader( getAlignmentFileLocation());
-			String UBY_HOME = System.getenv("UBY_HOME");
+//			String UBY_HOME = System.getenv("UBY_HOME");
 //			Statement statement = alignment_connection.createStatement();
 //			ResultSet resultSet = statement.executeQuery("select id1,id2 from WNOWRelatedness_MiM_EN_DE_PPR_classify where ClassTraining = 1");
 			BufferedReader input =  new BufferedReader(in);
@@ -140,7 +140,7 @@ public class OmegaWikiWiktionaryAlignment
 
 				for (SynTrans st : sts)
 				{
-					List<Sense> first = ubySource.getSensesByOWSynTransId(""+st.getSyntransid());
+					List<Sense> first = ubySource.getSensesByOriginalReference("OW SynTrans ID", ""+st.getSyntransid());
 					Sense sourceSense = first.get(0);
 					for (Sense targetSense: senseWKN)
 					{
