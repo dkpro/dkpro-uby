@@ -22,6 +22,10 @@
 		</dependency>
 		<dependency>
 			<groupId>de.tudarmstadt.ukp.uby</groupId>
+			<artifactId>de.tudarmstadt.ukp.uby.integration.omegawiki-asl</artifactId>
+		</dependency>		
+		<dependency>
+			<groupId>de.tudarmstadt.ukp.uby</groupId>
 			<artifactId>de.tudarmstadt.ukp.uby.persistence.transform-asl</artifactId>
 			<exclusions>
 				<exclusion>
