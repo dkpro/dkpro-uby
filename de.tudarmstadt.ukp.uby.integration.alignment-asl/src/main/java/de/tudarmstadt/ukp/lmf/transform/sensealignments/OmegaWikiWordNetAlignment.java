@@ -30,6 +30,7 @@ import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 import de.tudarmstadt.ukp.lmf.transform.alignments.SenseAlignment;
 import de.tudarmstadt.ukp.lmf.transform.alignments.SenseAlignmentUtils;
+import de.tudarmstadt.ukp.lmf.transform.omegawiki.OmegaWikiLMFMap;
 import de.tudarmstadt.ukp.omegawiki.api.DefinedMeaning;
 import de.tudarmstadt.ukp.omegawiki.api.OmegaWiki;
 import de.tudarmstadt.ukp.omegawiki.api.SynTrans;
@@ -41,6 +42,7 @@ public class OmegaWikiWordNetAlignment extends SenseAlignment
 	//private final Connection alignment_connection;
 	private final OmegaWiki ow;
 	private final int owLanguage;
+	private final String owLanguageId;
 	
 	// the param alignmentFile is a dummy param that is not used; passing the name of any existing file is ok
 	public OmegaWikiWordNetAlignment(String sourceUrl, String destUrl,String dbDriver, String dbVendor, 
@@ -51,6 +53,7 @@ public class OmegaWikiWordNetAlignment extends SenseAlignment
 		super(sourceUrl, destUrl,dbDriver,dbVendor, alignmentFile, user, pass,UBY_HOME);
 		this.ow = ow;
 		this.owLanguage = language;
+		this.owLanguageId = OmegaWikiLMFMap.mapLanguage(owLanguage);
 		Class.forName(dbDriver);
 //		alignment_connection=  DriverManager.getConnection("jdbc:"+db_vendor+"://"+alignment_host+"/"+alignment_db, alignment_user, alignment_pass);
 		DBConfig s = new DBConfig(sourceUrl,dbDriver,dbVendor, user, pass, true);
@@ -104,7 +107,7 @@ public class OmegaWikiWordNetAlignment extends SenseAlignment
 				List<Sense> WNRef = saUtils.getSensesByExternalRefID(refId, 1, true);
 
 				for (SynTrans st : sts){
-					List<Sense> first = ubySource.getSensesByOriginalReference("OW SynTrans ID", ""+st.getSyntransid());
+					List<Sense> first = ubySource.getSensesByOriginalReference("OmegaWiki_"+owLanguageId+"_synTrans", ""+st.getSyntransid());
 					Sense sourceSense = first.get(0);
 					for (Sense targetSense: WNRef){
 						addSourceSense(sourceSense);
