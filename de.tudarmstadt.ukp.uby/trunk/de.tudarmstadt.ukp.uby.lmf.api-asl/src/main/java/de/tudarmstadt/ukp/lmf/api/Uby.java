@@ -711,8 +711,8 @@ public class Uby
 		if (sense != null && sense.getId() != null && !sense.getId().equals("")) {
 			Criteria criteria = session.createCriteria(SenseAxis.class);
 			criteria = criteria.add(Restrictions.or(
-					Restrictions.eq("senseOneId", sense.getId()),
-					Restrictions.eq("senseTwoId=", sense.getId())));
+					Restrictions.eq("senseOne", sense),
+					Restrictions.eq("senseTwo", sense)));
 			@SuppressWarnings("unchecked")
 			List<SenseAxis> result = criteria.list();
 			return result;
