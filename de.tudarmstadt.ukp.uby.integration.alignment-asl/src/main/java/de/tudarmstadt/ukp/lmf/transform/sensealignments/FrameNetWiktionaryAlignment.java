@@ -101,7 +101,7 @@ public class FrameNetWiktionaryAlignment
 			while ((line = reader.readLine()) != null) {
 				// each component is separated by tab character
 				lineNumber++;
-				if (lineNumber != 1) {
+				if ((lineNumber != 1) && !line.contains("###")) {
 					String[] lineSplitter = line.split("\t");
 					if (lineSplitter.length >= 2) {
 						String sourceID = lineSplitter[0];
@@ -112,8 +112,8 @@ public class FrameNetWiktionaryAlignment
 							List<Sense> sourceSenses;
 							sourceSenses = saUtils.getSensesByExternalRefID(
 									sourceID, 0, false);
-							List<Sense> senseWKN = saUtils
-									.getSensesByExternalRefID(destID, 1,false);
+							List<Sense> senseWKN = saUtils.getSensesByExternalRefID(
+									destID, 1, false);
 							if (sourceSenses.size() != 0
 									&& senseWKN.size() != 0) {
 								for (Sense FNSense : sourceSenses) {
