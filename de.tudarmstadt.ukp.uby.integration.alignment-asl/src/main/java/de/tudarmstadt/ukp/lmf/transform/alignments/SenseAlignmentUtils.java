@@ -199,18 +199,39 @@ public class SenseAlignmentUtils
 		List<String> returnList = null;
 		String sql = "";
 		ResultSet rs = null;
+		
 		switch (DB) {
-		case 0:
-			sql = "SELECT senseId, writtenForm, externalReference " +
+		case 0:			
+			switch (source.getDBType()) {
+			case DBConfig.H2:
+				sql = "SELECT senseId, writtenForm, externalReference " +
 				"FROM " + tempTable1 + " WHERE externalReference='" + refId + "' AND writtenForm='"+ wnLemma+ "'";
-			rs = sourceConnection.doQuery(sql);
+				rs = sourceConnection.doQuery(sql);
+				break;			
+			case DBConfig.MYSQL:
+				sql = "SELECT senseId, writtenForm, externalReference " +
+						"FROM " + tempTable1 + " WHERE externalReference=\"" + refId + "\" AND writtenForm=\""+ wnLemma+ "\"";
+				rs = sourceConnection.doQuery(sql);
+				break;
+			} 					
 			break;
-		case 1:
-			sql = "SELECT senseId, writtenForm, externalReference " +
+		case 1:			
+			switch (source.getDBType()) {
+			case DBConfig.H2:			
+				sql = "SELECT senseId, writtenForm, externalReference " +
 				"FROM " + tempTable1 + " WHERE externalReference='" + refId + "' AND writtenForm='"+ wnLemma+ "'";
-			rs = destConnection.doQuery(sql);
+				rs = destConnection.doQuery(sql);
+				break;			
+			case DBConfig.MYSQL:
+				sql = "SELECT senseId, writtenForm, externalReference " +
+					"FROM " + tempTable1 + " WHERE externalReference=\"" + refId + "\" AND writtenForm=\""+ wnLemma+ "\"";
+				rs = destConnection.doQuery(sql);
+				break;
+			} 									
 			break;
 		}
+		
+		
 		if (rs != null) {
 			returnList = new ArrayList<String>();
 			while (rs.next()) {
