@@ -128,7 +128,7 @@ public class UbyResource extends Resource_ImplBase implements ExternalResourceLo
                 setDefault(GROUP_ID, "de.tudarmstadt.ukp.dkpro.uby");
 
                 setDefault(ARTIFACT_ID, "${groupId}.data-model-dict-${language}-${variant}");
-                setDefault(LOCATION, "classpath:/de/tudarmstadt/ukp/uby/data/lib/dict-${language}-${variant}.properties");
+                setDefault(LOCATION, "classpath:/de/tudarmstadt/ukp/dkpro/uby/data/lib/data-${language}-${variant}.properties");
                 setDefault(VARIANT, "light");
 
                 setOverride(LOCATION, modelLocation);
