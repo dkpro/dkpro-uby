@@ -125,6 +125,7 @@ public class UbyResource extends Resource_ImplBase implements ExternalResourceLo
         modelProvider = new ModelProviderBase<Uby>() {
             {
                 setContextObject(UbyResource.this);
+                setDefault(GROUP_ID, "de.tudarmstadt.ukp.dkpro.uby");
 
                 setDefault(ARTIFACT_ID, "${groupId}.data-model-dict-${language}-${variant}");
                 setDefault(LOCATION, "classpath:/de/tudarmstadt/ukp/uby/data/lib/dict-${language}-${variant}.properties");
