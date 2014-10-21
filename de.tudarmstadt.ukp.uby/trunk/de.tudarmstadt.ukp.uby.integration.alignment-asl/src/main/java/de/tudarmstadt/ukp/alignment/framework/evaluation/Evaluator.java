@@ -23,43 +23,21 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
 
-import de.tudarmstadt.ukp.alignment.framework.Global;
-import de.tudarmstadt.ukp.alignment.framework.graph.OneResourceBuilder;
-import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 
 public class Evaluator
 {
 
-	/**
-	 * @param args
-	 */
+
 	public static void main(String[] args)
 	{
 
-
-		Global.init();
-		final String language = ELanguageIdentifier.ENGLISH;
-
-		boolean synset1 = true;
-		boolean usePos1 = true;
-		final int prefix1 = Global.WN_Synset_prefix;
-
-		OneResourceBuilder bg_1 = new OneResourceBuilder("uby_release_1_0","root","fortuna", prefix1,language,synset1,usePos1);
-
-
-
-
-		/*RESOURCE 2*/
-		boolean synset2 = true;
-		boolean usePos2 = true;
-		final int prefix2 = Global.OW_EN_Synset_prefix;
-
-		OneResourceBuilder bg_2 = new OneResourceBuilder("uby_release_1_0","root","fortuna",prefix2,language,synset2,usePos2);
-
-		//Global.processExtRefGoldstandardFile(bg_1,bg_2, "target/WN_OW_alignment_gold_standard.txt", true);
-		performEvaluation("target/WN_OW_en_alignment_similarity_Pos_tfidf_nonZero.txt", "target/WN_OW_alignment_gold_standard_graph.txt", false);
-
+		performEvaluation("target/wn_wp_alignment_babelnet", "target/wn_wp_goldstandard_extref", false);
+		
 	}
+	
+	/**
+	 * Here  we can perform the evaluation if we have the alignment and goldstandards are available
+	 */
 	public static void performEvaluation(String alignment, String goldstandard, boolean pos)
 	{
 
@@ -97,7 +75,8 @@ public class Evaluator
 				}
 
 			 }
-
+			 input.close();
+			 in.close();
 			 /*TODO* for later use*/
 			 String[] poses = {"noun","adjective","adverb","verb"};
 			 if(!pos)
@@ -114,7 +93,6 @@ public class Evaluator
 			 double tp_0 = 0.0;
 			 double fn_0 = 0.0;
 			 double fp_0 = 0.0;
-			 double tn_1 = 0.0;
 			 double tn_0 = 0.0;
 			 for(String gp : gold_pos)
 			 {
@@ -142,8 +120,7 @@ public class Evaluator
 					}
 					else {
 						tp_0++;
-						tn_1++;
-					}
+						}
 				}
 			 }
 
@@ -157,9 +134,9 @@ public class Evaluator
 			 double overall_size=  gold_neg.size()+gold_pos.size();
 			 double weight_1 = gold_pos.size() / overall_size;
 			 double weight_0 = gold_neg.size() / overall_size;
-//			 System.out.println("Class 1 Size: "+gold_pos.size()+" Weight: "+weight_1);
-//			 System.out.println("Class 0 Size: "+gold_neg.size()+" Weight: "+weight_0);
-//			 System.out.println("Overall Size: "+overall_size);
+			 System.out.println("Class 1 Size: "+gold_pos.size()+" Weight: "+weight_1);
+			 System.out.println("Class 0 Size: "+gold_neg.size()+" Weight: "+weight_0);
+			 System.out.println("Overall Size: "+overall_size);
 			 System.out.println("TP_1: "+tp_1);
 			 System.out.println("FP_1: "+fp_1);
 			 System.out.println("FN_1: "+fn_1);
@@ -183,11 +160,11 @@ public class Evaluator
 		}
 		}
 		catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+		
 			 System.out.println("File not found");
 		}
 		catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 

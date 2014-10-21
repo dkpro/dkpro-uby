@@ -29,9 +29,6 @@ import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 public class CandidateExtractor
 {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException
 	{
 
@@ -69,6 +66,15 @@ public class CandidateExtractor
 
 
 	}
+	
+
+	/**
+	 * This method extracts the possible alignment candidates (those with matching lemma and POS) from two resources
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
 	public static void createCandidateFileFull(OneResourceBuilder gb1, OneResourceBuilder gb2) throws ClassNotFoundException, SQLException, IOException
 	{
 		StringBuilder sb = new StringBuilder();
@@ -111,16 +117,27 @@ public class CandidateExtractor
 		}
 	p.println("p aux sp p2p "+count);
 	p.print(sb.toString());
+	p.close();
 	}
 
 	public static void createCandidateFileLemmaList(OneResourceBuilder gb1, OneResourceBuilder gb2,String input, String output) throws ClassNotFoundException, SQLException, IOException
 	{
-		/*TODO*/
+		/*TODO
+		 * 
+		 * Here a candidate file based on a list of lemmas will be created, i.e. for each lemma all senses in both resources will be extracted and considered as alignment candidates
+		 * 
+		 * 
+		 * 
+		 * */
 	}
 
 	public static void createCandidateFileGoldStandard(OneResourceBuilder gb1, OneResourceBuilder gb2,String input, String output) throws ClassNotFoundException, SQLException, IOException
 	{
-		/*TODO*/
+		/*TODO
+		 * 
+		 * Here a candidate file based on gold standard will be created
+		 * 
+		 * */
 	}
 
 
