@@ -40,9 +40,6 @@ public class GlossSimilarityCalculator
 	public static HashMap<String,Double> combinedLexemeFreqInGlosses = new HashMap<String, Double>();
 	public static HashMap<String,Double> combinedLemmaFreqInGlosses = new HashMap<String, Double>();
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException
 	{
 
@@ -62,11 +59,9 @@ public class GlossSimilarityCalculator
 
 			final int chunksize1 = 2000;
 
-//			bg_1.createGlossFile();
-
-//			bg_1.lemmatizePOStagGlossFileInChunks(chunksize1);
-
-//			bg_1.fillIndexTables();
+			bg_1.createGlossFile(false);
+			bg_1.lemmatizePOStagGlossFileInChunks(chunksize1);
+			bg_1.fillIndexTables();
 
 
 			/*RESOURCE 2*/
@@ -78,31 +73,31 @@ public class GlossSimilarityCalculator
 
 			OneResourceBuilder bg_2 = new OneResourceBuilder("uby_release_1_0","root","fortuna",prefix2,language,synset2,usePos2);
 
-	//		bg_2.createGlossFile();
+			bg_2.createGlossFile(false);
+			bg_2.lemmatizePOStagGlossFileInChunks(chunksize2);
+			bg_2.fillIndexTables();
 
-		//	bg_2.lemmatizePOStagGlossFileInChunks(chunksize2);
-
-	//		bg_2.fillIndexTables();
-
-	//		CandidateExtractor.createCandidateFileFull(bg_1, bg_2);
-
+		
 
 			boolean useTaggedGloss = false;
 			boolean tfidf = true;
 
-		//	createIdfFiles(bg_1, bg_2);
+			createIdfFiles(bg_1, bg_2);
 
-		//	calculateSimilarityForCandidates(bg_1, bg_2,useTaggedGloss, tfidf);
+			calculateSimilarityForCandidates(bg_1, bg_2,useTaggedGloss, tfidf);
 
 			boolean onlyGreaterZero = true;
 
-//			createAlignmentFromSimilarityFileUnsupervised(bg_1, bg_2,useTaggedGloss, tfidf, onlyGreaterZero);
+            createAlignmentFromSimilarityFileUnsupervised(bg_1, bg_2,useTaggedGloss, tfidf, onlyGreaterZero);
 			boolean extRef = true;
-	//		Global.mapAlignmentToUby(bg_1,bg_2,"target/"+bg_1.prefix_string+"_"+bg_2.prefix_string+"_alignment_similarity_"+(bg_2.pos ? "Pos": "noPos")+(tfidf ? "_tfidf": "")+(onlyGreaterZero ? "_nonZero"  :"")+".txt", extRef);
+			Global.mapAlignmentToUby(bg_1,bg_2,"target/"+bg_1.prefix_string+"_"+bg_2.prefix_string+"_alignment_similarity_"+(bg_2.pos ? "Pos": "noPos")+(tfidf ? "_tfidf": "")+(onlyGreaterZero ? "_nonZero"  :"")+".txt", extRef);
 
 		}
 
 
+	/**
+	 * This method creates a combined idf value for the two resources to enable tfidf weighted cosine similarity calcujlation
+	 */
 	public static void createIdfFiles(OneResourceBuilder gb1, OneResourceBuilder gb2)
 	{
 		for(String s : gb1.lexemeFreqInGlosses.keySet())
@@ -173,25 +168,33 @@ public class GlossSimilarityCalculator
 
 	}
 
+
+	/**
+	 * This method calculates the cosine similarities between the glosses of two resources. Candidate files need to be created beforehand
+	 * 
+	 * @param pos Consider pos-tagged lexemes or only lemmas
+	 * @param tfidf Use tfidf weighting
+	 */
 	public static void calculateSimilarityForCandidates(OneResourceBuilder gb1, OneResourceBuilder gb2, boolean pos, boolean tfidf)
 	{
-		StringBuilder sb = new StringBuilder();
-		int count = 0;
-		int maxId = 0;
 		try
 		{
 		 FileReader in = new FileReader("target/"+gb1.prefix_string+"_"+gb2.prefix_string+"_candidates_"+(gb2.pos ? "Pos": "noPos")+".txt"); //+"_short"
 		 BufferedReader input_reader =  new BufferedReader(in);
-		 String line;
-
-		//"target/"+gb1.prefix_string+"_"+gb2.prefix_string+"_candidates_"+(gb2.pos ? "Pos": "noPos")
+		 String line;	
 		FileOutputStream outstream;
 		PrintStream p;
 		outstream = new FileOutputStream( "target/"+gb1.prefix_string+"_"+gb2.prefix_string+"_glossSimilarities"+(pos? "_tagged": "_plain")+(tfidf? "_tfidf": "")+".txt");
 		p = new PrintStream( outstream );
 		TextSimilarityMeasure measure = null;
 
-		/*TODO Other similarity measures*/
+		/*TODO 
+		 * 
+		 * Other similarity measures can be integrated here
+		 * 
+		 * 
+		 * 
+		 * */
 		if(!tfidf)
 		{
 			measure  = new CosineSimilarity();
@@ -231,10 +234,7 @@ public class GlossSimilarityCalculator
 				 gloss1 = gb1.senseIdGloss.get(id1);
 				 gloss2 = gb2.senseIdGloss.get(id2);
 			 }
-//			 System.out.println(id1);
-//			 System.out.println(id2);
-//			 System.out.println(gloss1);
-//			 System.out.println(gloss2);
+
 
 			 if(gloss1 == null || gloss2 ==null) {
 				p.println(id1+"\t"+id2+"\t"+0.0);
@@ -245,11 +245,12 @@ public class GlossSimilarityCalculator
 				 List<String> gloss_set1 =Arrays.asList(gloss_arr1);
 				 String [] gloss_arr2 = gloss2.split(" ");
 				 List<String> gloss_set2 =Arrays.asList(gloss_arr2);
-//				 double similarity = measure.getSimilarity(gloss1, gloss2);
 				 double similarity = measure.getSimilarity(gloss_set1, gloss_set2);
 				 p.println(id1+"\t"+id2+"\t"+similarity);
 			 }
 		 }
+		input_reader.close();
+		p.close();
 		}
 		catch(Exception e)
 		{
@@ -260,7 +261,13 @@ public class GlossSimilarityCalculator
 }
 
 
-
+	/**
+	 * This method creates an alignment from the similarity files in an unsupervised way by picking the candidate with the greatest value
+	 * 
+	 * @param pos Consider pos-tagged lexemes or only lemmas
+	 * @param tfidf Use tfidf weighting
+	 * @param onlyGreaterZero only consider candidates with a non-zero similarity value
+	 */
 	public static void createAlignmentFromSimilarityFileUnsupervised(OneResourceBuilder gb1, OneResourceBuilder gb2, boolean pos, boolean tfidf,boolean onlyGreaterZero)
 	{
 		try
