@@ -68,26 +68,22 @@ public class OmegaWikiWiktionaryAlignment
 	{
 		System.out.println("Starting getting alignment for OmegaWiki - Wiktionary "
 				+ getAlignmentFileLocation());
+		BufferedReader input = null;		
 		try {
+			input = new BufferedReader(new FileReader(getAlignmentFileLocation()));
+			String line = null;
 			int count = 1;
-			FileReader in = new FileReader( getAlignmentFileLocation());
-//			String UBY_HOME = System.getenv("UBY_HOME");
-//			Statement statement = alignment_connection.createStatement();
-//			ResultSet resultSet = statement.executeQuery("select id1,id2 from WNOWRelatedness_MiM_EN_DE_PPR_classify where ClassTraining = 1");
-			BufferedReader input =  new BufferedReader(in);
-			String line ;
 			while((line =input.readLine()) != null){
-
+				
 				String owId = line.split(",")[1].replaceAll("\"","");
 				String wktId = line.split(",")[0].replaceAll("\"","");
+				System.out.println("OW ID " +owId +" WKT ID " +wktId);
 				DefinedMeaning dm = ow.getDefinedMeaningById(Integer.parseInt(owId)); //Synset!!!
 				Set<SynTrans> sts = dm.getSynTranses(owLanguage); //Senses!!!
-				String[] temp = wktId.split("--");
-				if(temp.length < 2) {
-					continue;
-				}
+								
 				System.out.println(saUtils);
-				List<Sense> senseWKN = saUtils.getSensesByExternalRefID(temp[1], 1,false);
+				List<Sense> senseWKN = saUtils.getSensesByExternalRefID(wktId, 1,false);
+
 				System.out.println(senseWKN.size());
 
 				for (SynTrans st : sts)
