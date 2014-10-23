@@ -24,6 +24,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -31,6 +32,10 @@ import java.util.TreeMap;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -198,6 +203,159 @@ public class OntoWiktionary {
 			in.close();
 		}
 		return concepts;
+	}
+	
+	public Iterable<OntoWiktionaryConcept> getStreamedConcepts() throws IOException, 
+			ParserConfigurationException, SAXException {
+		return new Iterable<OntoWiktionaryConcept>() {			
+			
+			@Override
+			public Iterator<OntoWiktionaryConcept> iterator() {
+				try {
+					InputStream in = new FileInputStream(new File(directory, 
+							"OntoWiktionary_" + language.getISO639_1().toUpperCase() + ".xml"));
+					final XMLStreamReader parser = XMLInputFactory.newInstance().createXMLStreamReader(in);
+					return new Iterator<OntoWiktionaryConcept>() {
+
+						protected boolean atStartPosition = true;
+						
+						@Override
+						public boolean hasNext() {
+							try {
+								return parser.hasNext();
+							} catch (XMLStreamException e) {
+								throw new RuntimeException(e);
+							}
+						}
+						
+						/*protected void findNextStartElement() {
+							while (parser.hasNext() 
+									&& parser.getEventType() != XMLStreamConstants.START_ELEMENT
+									&& true)
+								parser.next();								
+						}*/
+
+						@Override
+						public OntoWiktionaryConcept next() {
+							try {
+								// Find the first concept node.
+								if (atStartPosition) {
+									while (parser.hasNext()
+											&& (parser.getEventType() != XMLStreamConstants.START_ELEMENT
+											|| !"Concept".equals(parser.getLocalName())))
+										parser.next();
+									atStartPosition = false;
+								}
+
+								if (!parser.hasNext())
+									return null;
+							
+							/*spacer.append( "  " );
+							      System.out.println( spacer + "START_ELEMENT: " + parser.getLocalName() );
+
+							      // Der Event XMLStreamConstants.ATTRIBUTE wird nicht geliefert!
+							      for ( int i = 0; i < parser.getAttributeCount(); i++ )
+							        System.out.println( spacer + "  Attribut: "
+							                            + parser.getAttributeLocalName( i )
+							                            + " Wert: " + parser.getAttributeValue( i ) );
+							      break;
+
+							      if ( ! parser.isWhiteSpace() )
+							        System.out.println( spacer + "  CHARACTERS: " + parser.getText() );
+							      break;
+
+							      System.out.println( spacer + "END_ELEMENT: " + parser.getLocalName() );
+							      spacer.delete( (spacer.length() – 2), spacer.length() );
+							      break;*/
+
+								OntoWiktionaryConcept currentConcept = 
+										new OntoWiktionaryConcept(parser.getAttributeValue(null, "id"));
+								
+								// Iterate over all elements before the concept node's end element.
+								while (parser.hasNext()
+										&& (parser.getEventType() != XMLStreamConstants.END_ELEMENT
+										|| !"Concept".equals(parser.getLocalName()))) {									
+									if (parser.getEventType() == XMLStreamConstants.START_ELEMENT) {
+										String qName = parser.getLocalName();
+										if ("Lexicalization".equals(qName))
+											currentConcept.addLexicalization(parser.getAttributeValue(null, "id"));
+										else
+										if ("Subsumes".equals(qName))
+											currentConcept.addSubsumesRelation(parser.getAttributeValue(null, "target_id"));
+										else
+										if ("SubsumedBy".equals(qName))
+											currentConcept.addSubsumedByRelation(parser.getAttributeValue(null, "target_id"));
+										else
+										if ("RelatedConcept".equals(qName))
+											currentConcept.addRelatedConcept(parser.getAttributeValue(null, "target_id"));
+									}
+									parser.next();
+								}
+								
+								// Find the next concept node.
+								while (parser.hasNext()
+										&& (parser.getEventType() != XMLStreamConstants.START_ELEMENT
+										|| !"Concept".equals(parser.getLocalName())))
+									parser.next();
+								
+								return currentConcept;
+							} catch (Exception e) {
+								throw new RuntimeException(e);
+							}
+						}
+
+						@Override
+						public void remove() {
+							new UnsupportedOperationException("Iterator<OntoWiktionaryConcept>.remove()");
+						}
+
+
+					};
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			}
+		};
+/*		
+		if (concepts != null)
+			return concepts;
+		
+		concepts = new ArrayList<OntoWiktionaryConcept>();
+		InputStream in = new FileInputStream(new File(directory, 
+				"OntoWiktionary_" + language.getISO639_1().toUpperCase() + ".xml"));
+		try {
+			// Run the SAX parser.
+			SAXParserFactory factory = SAXParserFactory.newInstance();
+			SAXParser saxParser = factory.newSAXParser();
+			saxParser.parse(in, new DefaultHandler(){
+
+				protected OntoWiktionaryConcept currentConcept;
+				
+				@Override
+				public void startElement(final String uri, final String localName, 
+						final String qName, final Attributes attributes) throws SAXException {
+					if ("Concept".equals(qName)) {
+						currentConcept = new OntoWiktionaryConcept(attributes.getValue("id"));
+						concepts.add(currentConcept);
+					} else					
+					if ("Lexicalization".equals(qName))
+						currentConcept.addLexicalization(attributes.getValue("id"));
+					else
+					if ("Subsumes".equals(qName))
+						currentConcept.addSubsumesRelation(attributes.getValue("target_id"));
+					else
+					if ("SubsumedBy".equals(qName))
+						currentConcept.addSubsumedByRelation(attributes.getValue("target_id"));
+					else
+					if ("RelatedConcept".equals(qName))
+						currentConcept.addRelatedConcept(attributes.getValue("target_id"));					
+				}
+				
+			});
+		} finally {
+			in.close();
+		}
+		return concepts;*/
 	}
 
 	public void freeConcepts() {

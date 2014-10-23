@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import de.tudarmstadt.ukp.jwktl.JWKTL;
 import de.tudarmstadt.ukp.jwktl.api.IPronunciation;
 import de.tudarmstadt.ukp.jwktl.api.IPronunciation.PronunciationType;
 import de.tudarmstadt.ukp.jwktl.api.IQuotation;
@@ -183,6 +182,8 @@ public class OntoWiktionaryTransformer extends LMFDBTransformer {
 	@Override
 	protected LexicalEntry getNextLexicalEntry() {		
 		// If we're finished, convert the semantic relations and free resources.
+		//if (entryIterator != null){tx.rollback();session.close();session = sessionFactory.openSession();tx = session.beginTransaction();return null;}		
+		//if (entryIterator != null){tx.rollback();session.close();session = sessionFactory.openSession();tx = session.beginTransaction();
 		if (!entryIterator.hasNext()/* || currentEntryNr > 1000*/) {
 			System.out.println("PROCESS SENSE RELATIONS");
 			convertSemanticRelations();
@@ -283,7 +284,8 @@ public class OntoWiktionaryTransformer extends LMFDBTransformer {
 				WordForm wordForm = new WordForm();
 				List<FormRepresentation> formRep = createFormRepresentationList(
 						writtenForm, wktEntry.getWordLanguage());
-				formRep.get(0).setPhoneticForm(pronunciation.getText());
+				if (pronunciation.getText() != null && !pronunciation.getText().isEmpty())
+					formRep.get(0).setPhoneticForm(pronunciation.getText());
 				wordForm.setFormRepresentations(formRep);
 				if ("Pl.".equals(pronunciation.getNote())
 						|| "Pl.1".equals(pronunciation.getNote())
@@ -339,8 +341,11 @@ public class OntoWiktionaryTransformer extends LMFDBTransformer {
 				wktSense = null;
 				
 				if (++senseCount % 500 == 0) {
-					System.out.println("PROCESSED " + senseCount + " RELATIONS");
-					commit();
+					System.out.println("SAVING RELATIONS / PROCESSED " + senseCount + " SENSES");
+					tx.commit();
+					session.close();
+					session = sessionFactory.openSession();
+					tx = session.beginTransaction();
 				}
 			}
 			wktEntry = null;
@@ -391,6 +396,7 @@ public class OntoWiktionaryTransformer extends LMFDBTransformer {
 								senseRelation.setTarget(target);
 //							else
 //								System.err.println("SenseRelation.Target not found: " + owktRelation.getTargetSenseId());
+							target = null;
 						}
 						break;
 					}
@@ -421,6 +427,7 @@ public class OntoWiktionaryTransformer extends LMFDBTransformer {
 						senseRelation.setTarget(target);
 //					else
 //						System.err.println("SenseRelation.Target not found: " + owktRelation.getTargetSenseId());
+					target = null;
 				}
 
 				// Save target word as targetFormRepresentation.
@@ -527,86 +534,9 @@ public class OntoWiktionaryTransformer extends LMFDBTransformer {
 		}
 		sense.setContexts(contexts);
 
-		// Sense relations (SenseRelation class).
-	/*	List<OntoWiktionarySemanticRelation> owktRelations;
-		try {
-			owktRelations = ontoWiktionary.getSemanticRelations(wktSense.getKey());
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		List<SenseRelation> senseRelations = new ArrayList<SenseRelation>();
-		if (wktSense.getRelations() != null) {
-			for (IWiktionaryRelation wktRelation : wktSense.getRelations()) {
-				if (wktRelation.getRelationType() == null || wktRelation.getTarget().isEmpty()) {
-					continue;
-				}
-
-				SenseRelation senseRelation = new SenseRelation();
-				senseRelation.setRelType(WiktionaryLMFMap.mapRelationType(wktRelation.getRelationType()));
-				senseRelation.setRelName(WiktionaryLMFMap.mapRelationName(wktRelation.getRelationType()));
-				if (senseRelation.getRelType() == null) {
-					continue;
-				}
-				
-				// Find a suitable relation in OntoWiktionary.
-				if (owktRelations != null) {
-					Iterator<OntoWiktionarySemanticRelation> owktRelationIter = owktRelations.iterator();
-					while (owktRelationIter.hasNext()) {
-						OntoWiktionarySemanticRelation owktRelation = owktRelationIter.next();
-						if (wktRelation.getRelationType().equals(owktRelation.getRelationType())
-								&& wktRelation.getTarget().equals(owktRelation.getTargetWordForm())) {
-							String targetId = getLmfId(Sense.class, getSenseId(owktRelation.getTargetSenseId()));
-							if (!"???".equals(targetId)) {
-								Sense  target = (Sense) getLmfObjectById(Sense.class, targetId);
-								if (sense != null)
-									senseRelation.setTarget(target);
-								else
-									System.err.println("SenseRelation.Target not found: " + owktRelation.getTargetSenseId());
-							}
-							owktRelationIter.remove();
-							break;
-						}
-					}
-				}
-				
-				// Save target word as targetFormRepresentation.
-				FormRepresentation targetFormRepresentation = new FormRepresentation();
-				targetFormRepresentation.setWrittenForm(convert(wktRelation.getTarget(), 255));
-				targetFormRepresentation.setLanguageIdentifier(WiktionaryLMFMap.mapLanguage(wktEntry.getWordLanguage()));
-				senseRelation.setFormRepresentation(targetFormRepresentation); 
-				senseRelations.add(senseRelation);
-			}
-		}
+		// Sense relations (SenseRelation class) 
+		// -- skip (will be done in a separate step!
 		
-		// Save inferred relations.
-		if (owktRelations != null) {
-			for (OntoWiktionarySemanticRelation owktRelation : owktRelations) {
-				SenseRelation senseRelation = new SenseRelation();
-				senseRelation.setRelType(WiktionaryLMFMap.mapRelationType(owktRelation.getRelationType()));
-				senseRelation.setRelName(WiktionaryLMFMap.mapRelationName(owktRelation.getRelationType()) + "-AUTO");
-				if (senseRelation.getRelType() == null)
-					continue;
-
-				String targetId = getLmfId(Sense.class, getSenseId(owktRelation.getTargetSenseId()));
-				if (!"???".equals(targetId)) {
-					Sense  target = (Sense) getLmfObjectById(Sense.class, targetId);
-					if (sense != null)
-						senseRelation.setTarget(target);
-					else
-						System.err.println("SenseRelation.Target not found: " + owktRelation.getTargetSenseId());
-				}
-
-				// Save target word as targetFormRepresentation.
-				FormRepresentation targetFormRepresentation = new FormRepresentation();
-				targetFormRepresentation.setWrittenForm(convert(owktRelation.getTargetWordForm(), 255));
-				targetFormRepresentation.setLanguageIdentifier(WiktionaryLMFMap.mapLanguage(wktEntry.getWordLanguage()));
-				senseRelation.setFormRepresentation(targetFormRepresentation); 
-				senseRelations.add(senseRelation);
-			}
-		}
-		
-		sense.setSenseRelations(senseRelations);*/
-
 		// Translations (Equivalent class).
 		if (wktSense.getTranslations() != null) {
 			List<Equivalent> equivalents = new ArrayList<Equivalent>();
@@ -772,6 +702,7 @@ public class OntoWiktionaryTransformer extends LMFDBTransformer {
 							}
 						}
 					}
+
 				} else				
 					if (labelGroup.startsWith("syntax:gram")) {
 						// Grammatical labels.
@@ -848,7 +779,9 @@ public class OntoWiktionaryTransformer extends LMFDBTransformer {
 		// If we haven't started yet, initialize the iterator.
 		if (synsetIter == null)
 			try {
-				synsetIter = ontoWiktionary.getConcepts().iterator();
+//tx.rollback();session.close();session = sessionFactory.openSession();tx = session.beginTransaction();
+				//synsetIter = ontoWiktionary.getConcepts().iterator(); //This is probelmatic!
+				synsetIter = ontoWiktionary.getStreamedConcepts().iterator();
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
@@ -929,8 +862,11 @@ public class OntoWiktionaryTransformer extends LMFDBTransformer {
 			saveCascade(source);
 			
 			if (++conceptCount % 1000 == 0) {
-				System.out.println("PROCESSED " + conceptCount + " SYNSETS");
-				commit();
+				System.out.println("SAVING RELATIONS / PROCESSED " + conceptCount + " SYNSETS");
+				tx.commit();
+				session.close();
+				session = sessionFactory.openSession();
+				tx = session.beginTransaction();
 			}
 		}
 		
