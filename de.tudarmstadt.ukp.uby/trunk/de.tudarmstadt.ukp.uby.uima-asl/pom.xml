@@ -69,7 +69,7 @@
 		<dependencies>
 			<dependency>
 				<groupId>de.tudarmstadt.ukp.dkpro.uby</groupId>
-				<artifactId>e.tudarmstadt.ukp.uby-model-data-en-light</artifactId>
+				<artifactId>de.tudarmstadt.ukp.uby-model-data-en-light</artifactId>
 				<version>20140801.1</version>
 			</dependency>
 		</dependencies>
