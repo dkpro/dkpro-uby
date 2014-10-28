@@ -259,18 +259,40 @@ public class SenseAlignmentUtils
 		ResultSet rs = null;
 		switch (DB) {
 		case 0:
-			sql = "Select senseId, externalReference "
-					+ ((usingSynsetId == true) ? ",synsetId" : " ") + " from "
-					+ tempTable1 + " where externalReference='" + referenceID
-					+ "'";
-			rs = sourceConnection.doQuery(sql);
+			switch (source.getDBType()) {
+			case DBConfig.H2:
+				sql = "Select senseId, externalReference "
+						+ ((usingSynsetId == true) ? ",synsetId" : " ") + " from "
+						+ tempTable1 + " where externalReference='" + referenceID
+						+ "'";
+				rs = sourceConnection.doQuery(sql);				
+				break;			
+			case DBConfig.MYSQL:				
+				sql = "Select senseId, externalReference "
+						+ ((usingSynsetId == true) ? ",synsetId" : " ") + " from "
+						+ tempTable1 + " where externalReference=\"" + referenceID
+						+ "\"";				
+				rs = sourceConnection.doQuery(sql);
+				break;
+			} 					
 			break;
 		case 1:
-			sql = "Select senseId, externalReference "
-					+ ((usingSynsetId == true) ? ",synsetId" : " ") + " from "
-					+ tempTable2 + " where externalReference='" + referenceID
-					+ "'";
-			rs = destConnection.doQuery(sql);
+			switch (source.getDBType()) {
+			case DBConfig.H2:
+				sql = "Select senseId, externalReference "
+						+ ((usingSynsetId == true) ? ",synsetId" : " ") + " from "
+						+ tempTable2 + " where externalReference='" + referenceID
+						+ "'";
+				rs = destConnection.doQuery(sql);
+				break;			
+			case DBConfig.MYSQL:				
+				sql = "Select senseId, externalReference "
+						+ ((usingSynsetId == true) ? ",synsetId" : " ") + " from "
+						+ tempTable2 + " where externalReference=\"" + referenceID
+						+ "\"";				
+				rs = destConnection.doQuery(sql);
+				break;
+			}		
 			break;
 		}
 
