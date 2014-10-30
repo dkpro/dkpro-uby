@@ -27,6 +27,7 @@ import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 import de.tudarmstadt.ukp.lmf.transform.alignments.SenseAlignment;
 import de.tudarmstadt.ukp.lmf.transform.alignments.SenseAlignmentUtils;
+import de.tudarmstadt.ukp.lmf.transform.omegawiki.OmegaWikiLMFMap;
 import de.tudarmstadt.ukp.omegawiki.api.OWLanguage;
 import de.tudarmstadt.ukp.omegawiki.api.OmegaWiki;
 import de.tudarmstadt.ukp.omegawiki.api.SynTrans;
@@ -37,7 +38,9 @@ public class OmegaWikiWikipediaAlignment
 	public StringBuilder logString;
 	private final SenseAlignmentUtils saUtils;
 	private final OmegaWiki ow;
-	private final int language;
+	private final int owLanguage;
+	private final String owLangId;
+
 
 	private String WPlanguage;
 	public OmegaWikiWikipediaAlignment(String sourceUrl, String destUrl,String dbDriver,String dbVendor, 
@@ -46,7 +49,9 @@ public class OmegaWikiWikipediaAlignment
 	{
 		super(sourceUrl,destUrl,dbDriver,dbVendor,alignmentFile,user,pass,UBY_HOME);
 		logString = new StringBuilder();
-		this.language = language;
+		this.owLanguage = language;
+		this.owLangId = OmegaWikiLMFMap.mapLanguage(owLanguage);
+
 		if(language == OWLanguage.English) {
 			WPlanguage = "en";
 		}else if(language == OWLanguage.German) {
@@ -72,11 +77,12 @@ public class OmegaWikiWikipediaAlignment
 			
 			int count = 0;
 
-			Map <SynTrans,String> stm = ow.getWPLinks(language);
+			Map <SynTrans,String> stm = ow.getWPLinks(owLanguage);
 
 			for(SynTrans source : stm.keySet() )
 			{
-				List<Sense> first = ubySource.getSensesByOriginalReference("OW SynTrans ID", ""+source.getSyntransid());
+				List<Sense> first = ubySource.getSensesByOriginalReference("OmegaWiki_"+owLangId+"_synTrans", ""+source.getSyntransid());
+
 				Sense sourceSense = first.get(0);
 				String wikiRef = stm.get(source);
 
