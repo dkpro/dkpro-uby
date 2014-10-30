@@ -58,7 +58,7 @@ public class WikiEnDeSenseAlignment extends SenseAlignment
 	}
 
 	@Override
-	public void getAlignment()
+	public void getAlignment() // TODO check!
 	{
 		try {
 			System.out.println(getAlignmentFileLocation());
@@ -118,6 +118,8 @@ public class WikiEnDeSenseAlignment extends SenseAlignment
 			ex.printStackTrace();
 		}
 	}
+	
+	@Deprecated
 	public void insertAlignment(String sourceUrl,
 			String destUrl,String dbDriver, String dbVendor, String user, String pass,String UBY_HOME) 
 			throws SQLException, ClassNotFoundException, IOException
@@ -146,6 +148,7 @@ public class WikiEnDeSenseAlignment extends SenseAlignment
 		input.close();
 	}
 	
+	@Deprecated
 	public void correctAlignmentFile(String sourceUrl,
 			String destUrl,String dbDriver, String dbVendor, String user, String pass,String UBY_HOME) throws SQLException, ClassNotFoundException, IOException
 	{
