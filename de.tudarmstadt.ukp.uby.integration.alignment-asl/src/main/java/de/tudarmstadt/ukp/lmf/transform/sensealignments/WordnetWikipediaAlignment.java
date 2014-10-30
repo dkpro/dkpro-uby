@@ -58,7 +58,6 @@ public class WordnetWikipediaAlignment extends SenseAlignment
 	@Override
 	public void getAlignment()
 	{
-		// TODO Auto-generated method stub
 		int lineNumber = 0;
 		System.out.println("Starting getting alignment from "
 				+ getAlignmentFileLocation());
@@ -69,15 +68,13 @@ public class WordnetWikipediaAlignment extends SenseAlignment
 			int count = 0;
 			while ((line = reader.readLine()) != null) {
 				lineNumber++;
-				//String temp[] = line.split(";");
-				// TODO check this
 				String temp[] = line.split("\t");
 
 				// if connection is available
-				//if (temp.length == 6 && temp[5].equals("1")) {
 				if (temp.length == 2 ) {
 
-					String wordNetRef = "[POS: noun] " + temp[0]; //
+					//String wordNetRef = "[POS: noun] " + temp[0]; // old format
+					String wordNetRef = temp[0]; //
 					System.out.println(wordNetRef);
 					String wikiRef = temp[1];
 					wikiRef = wikiRef.replaceAll("'", "\\'");
