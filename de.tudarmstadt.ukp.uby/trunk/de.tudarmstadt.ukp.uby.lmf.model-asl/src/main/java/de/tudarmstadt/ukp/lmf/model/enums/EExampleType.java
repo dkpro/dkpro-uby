@@ -17,16 +17,29 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.enums;
 
+import de.tudarmstadt.ukp.lmf.model.semantics.SenseExample;
+
 /**
- * Enumeration of possible example types.
- * 
- * @author Zijad Maksuti
- *
+ * Enumeration of different types of {@link SenseExample}s.
  */
 public enum EExampleType {
+	
+	/** Example sentence illustrating a subcategorization frame.
+	 *  ISOcat: http://www.isocat.org/datcat/DC-4630 */
     subcatFrame,
+
+	/** Example sentence illustrating syntactic usage.
+	 *  ISOcat: http://www.isocat.org/datcat/DC-455 */
     syntacticUsage,
+
+	/** Example sentence illustrating a word's meaning.
+	 *  ISOcat: http://www.isocat.org/datcat/DC-3778 */
     senseInstance,
+
+	/** Example sentence illustrating the use of an idiomatic expression.
+	 *  ISOcat: http://www.isocat.org/datcat/DC-351 */
     idiomaticExpression,
-    other 
+    
+    other;
+
 }

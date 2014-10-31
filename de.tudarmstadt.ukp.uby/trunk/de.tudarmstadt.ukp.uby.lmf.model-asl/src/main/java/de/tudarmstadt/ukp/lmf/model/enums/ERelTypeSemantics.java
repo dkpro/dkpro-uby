@@ -20,10 +20,6 @@ package de.tudarmstadt.ukp.lmf.model.enums;
 /**
  * Enumeration of possible relation types specified by an instance of
  * {@link SenseRelation} or {@link SynsetRelation} class.
- * 
- * @author Zijad Maksuti
- * @author Eckle-Kohler
- *
  */
 public enum ERelTypeSemantics {
 	

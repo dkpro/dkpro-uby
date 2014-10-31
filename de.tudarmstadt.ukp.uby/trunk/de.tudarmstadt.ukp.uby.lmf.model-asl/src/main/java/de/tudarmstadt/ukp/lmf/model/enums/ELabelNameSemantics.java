@@ -23,9 +23,6 @@ import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
  * Frequently used names for {@link SemanticLabel}s. The label names are not 
  * limited to those specified by this class; the constants focus only on 
  * closed classes of semantic labels.
- * 
- * @author Christian M. Meyer
- *
  */
 public class ELabelNameSemantics {
 

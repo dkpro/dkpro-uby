@@ -18,19 +18,28 @@
 package de.tudarmstadt.ukp.lmf.model.enums;
 
 /**
- * Enumerator of cases.<p>
- * Case is a grammatical category appropriate for inflecting grammatical classes displaying nominal or adjectival features,
- * as well as for prepositions where case is understood as a governed case.
- * 
- * @author Zijad Maksuti
- *
+ * Enumeration of grammatical cases.
  */
 public enum ECase {
+
+	/** Nominative case.
+	 *  ISOcat: http://www.isocat.org/datcat/DC-2721 */
 	nominative,
+	
+	/** Genitive case.
+	 *  ISOcat: http://www.isocat.org/datcat/DC-2722 */
 	genitive,
+	
+	/** Dative case.
+	 *  ISOcat: http://www.isocat.org/datcat/DC-2723 */
 	dative,
+	
+	/** Accusative case.
+	 *  ISOcat: http://www.isocat.org/datcat/DC-2724 */
 	accusative,
+	
 	vocative,
 	instrumental,
-	locative
+	locative;
+
 }

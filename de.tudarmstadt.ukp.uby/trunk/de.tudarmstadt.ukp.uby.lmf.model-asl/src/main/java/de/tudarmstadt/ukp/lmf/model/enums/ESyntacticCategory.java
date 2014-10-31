@@ -21,14 +21,11 @@ import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticArgument;
 
 /**
  * Enumeration of the different categories of a {@link SyntacticArgument}
- * instance.<br>
- * A syntactic category is a set of words and/or phrases in a language which share a
- * significant number of common characteristics.
- * 
- * @author Zijad Maksuti
- *
+ * instance. A syntactic category is a set of words and/or phrases in a 
+ * language which share a significant number of common characteristics.
  */
 public enum ESyntacticCategory {
+	
 	nounPhrase,
 	reflexive,
 	expletive,
@@ -40,5 +37,6 @@ public enum ESyntacticCategory {
     subordinateClause,
     adverbPhrase_prepositionalPhrase_nounPhrase,
     adverbPhrase_prepositionalPhrase,
-    adjectivePhrase_nounPhrase
+    adjectivePhrase_nounPhrase;
+    
 }

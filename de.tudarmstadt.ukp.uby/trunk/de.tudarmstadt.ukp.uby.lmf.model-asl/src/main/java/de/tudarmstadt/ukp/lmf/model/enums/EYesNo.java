@@ -25,10 +25,9 @@ package de.tudarmstadt.ukp.lmf.model.enums;
  * the boolean values <i>true</i> and <i>false</i>.<br>
  * It is created for convenience reasons when converting the Uby-LMF
  * to an XML-file or to a database.
- * 
- * @author Zijad Maksuti
- *
+ * @deprecated Use boolean types instead. This enum will be removed.
  */
+@Deprecated
 public enum EYesNo {
 	yes,
 	no

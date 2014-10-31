@@ -17,17 +17,19 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.enums;
 
+import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticArgument;
+
 /**
- * Enumeration of grammatical functions of a {@link SyntacticArgument}.
- * @author Zijad Maksuti
- *
+ * Enumeration of the grammatical function of a {@link SyntacticArgument}.
  */
 public enum EGrammaticalFunction {
+	
 	subject,
 	subjectComplement,
 	directObject,
 	objectComplement,
 	complement,
 	adverbialComplement,
-	prepositionalComplement
+	prepositionalComplement;
+	
 }

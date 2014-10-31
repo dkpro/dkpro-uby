@@ -17,16 +17,23 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.enums;
 
+import de.tudarmstadt.ukp.lmf.model.morphology.WordForm;
+
 /**
- * Enumeration of different person properties.<br>
- * Person property is the class of properties with a deictic dimension,
- * interpreted relative to the speaker, encoding the participants in a speech situation.
- * Usually a three-way contrast is found: first person (speaker), second person (addressee), and third person (neither speaker nor addressee).
- * @author Zijad Maksuti
- *
+ * Enumeration of the grammatical person of a {@link WordForm}.
  */
 public enum EPerson {
+	
+	/** First person (e.g., I, we).
+	 *  ISOcat: http://www.isocat.org/datcat/DC-3198 */
 	first,
+	
+	/** Second person (e.g., you).
+	 *  ISOcat: http://www.isocat.org/datcat/DC-3464 */
 	second,
-	third
+	
+	/** Third person (e.g., she, they).
+	 *  ISOcat: http://www.isocat.org/datcat/DC-3526 */
+	third;
+	
 }

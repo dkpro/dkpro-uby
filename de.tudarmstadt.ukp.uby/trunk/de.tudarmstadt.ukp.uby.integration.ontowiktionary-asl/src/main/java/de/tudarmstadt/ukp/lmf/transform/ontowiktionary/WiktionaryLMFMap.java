@@ -402,11 +402,11 @@ public class WiktionaryLMFMap {
 		if (wordForm.getDegree() != null)
 			switch (wordForm.getDegree()) {
 				case POSITIVE:
-					return EDegree.POSITIVE;
+					return EDegree.positive;
 				case COMPARATIVE:
-					return EDegree.COMPARATIVE;
+					return EDegree.comparative;
 				case SUPERLATIVE:
-					return EDegree.SUPERLATIVE;
+					return EDegree.superlative;
 			}
 		return null;
 	}

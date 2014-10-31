@@ -17,13 +17,14 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.enums;
 
+import de.tudarmstadt.ukp.lmf.model.mrd.Context;
+
 /**
- * Enumeration of different context types
- * for usage of a word form.
- * @author Zijad Maksuti
- *
+ * Enumeration of different {@link Context} types.
  */
 public enum EContextType {
+	
 	corpusEvidence,
-	citation
+	citation;
+	
 }

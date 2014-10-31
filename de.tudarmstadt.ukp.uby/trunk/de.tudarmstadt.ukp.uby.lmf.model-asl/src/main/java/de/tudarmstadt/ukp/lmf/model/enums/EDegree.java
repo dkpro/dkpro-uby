@@ -18,40 +18,21 @@
 package de.tudarmstadt.ukp.lmf.model.enums;
 
 /**
- * Degree is a grammatical category appropriate for grammatical classes of adjectives
- * and adverbs expressing the gradation in the level of intensity of the named feature.<p>
- * For example, an adjective "big" has following degrees:
- * <list>
- * <li> POSITIVE: "big" </li>
- * <li> COMPARATIVE: "bigger" </li>
- * <li> SUPERLATIVE: "biggest" </li>
- * <list>
- * @author Zijad Maksuti
- * 
- * @since 0.2.0
- *
+ * Enumeration of grammatical degrees of adjectives and adverbs (e.g., big, 
+ * bigger, biggest).
  */
 public enum EDegree {
+
+	/** Positive; basic level of intensity.
+	 *  ISOcat: http://www.isocat.org/datcat/DC-2780 */
+	positive,
+
+	/** Comparative; higher level of intensity than the basic level.
+	 *  http://www.isocat.org/datcat/DC-2781 */
+	comparative,
 	
-	POSITIVE{
-		public String toString(){
-			return "positive";
-		}
-	},
-	
-	COMPARATIVE{
-		public String toString(){
-			return "comparative";
-		}
-	},
-	
-	SUPERLATIVE{
-		public String toString(){
-			return "superlative";
-		}
-	}
-	
-	
-	
+	/** Superlative; highest level of intensity.
+	 *  ISOcat: http://www.isocat.org/datcat/DC-2782 */
+	superlative;
 	
 }

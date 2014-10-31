@@ -17,16 +17,14 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.enums;
 
+import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticArgument;
+
 /**
- * Enumeration of different determiners.<p>
- * <i> Determiner is word or affix that belongs to a class of noun modifiers
- * that expresses the reference,
- * including quantity, of a noun.
- * 
- * @author Zijad Maksuti
- *
+ * Enumeration of different types of determiners of a {@link SyntacticArgument}.
  */
 public enum EDeterminer {
+	
 	possessive,
-	indefinite
+	indefinite;
+
 }

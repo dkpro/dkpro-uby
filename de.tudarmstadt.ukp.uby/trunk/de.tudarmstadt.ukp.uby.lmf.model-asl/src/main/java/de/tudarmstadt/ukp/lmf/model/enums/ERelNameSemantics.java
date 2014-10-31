@@ -22,10 +22,6 @@ package de.tudarmstadt.ukp.lmf.model.enums;
  * {@link SynsetRelation}s. Relation names are not limited to those specified
  * by this class; the constants focus only on the most common relations
  * and on those relations used in WordNet and GermaNet.
- * 
- * @author Christian M. Meyer
- * @author Judith Eckle-Kohler
- *
  */
 public final class ERelNameSemantics {
 	

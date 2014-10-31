@@ -17,11 +17,12 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.enums;
 
+import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
+
 /**
- * Enumeration of different part of speech properties
- * assigned to a word based on its grammatical and semantic properties.
- * @author Zijad
- *
+ * Enumeration of different part of speech properties used by 
+ * {@link LexicalEntry}. The enum values use a prefix notation to
+ * allow for coarse- and fine-grained database queries.
  */
 public enum EPartOfSpeech {
 

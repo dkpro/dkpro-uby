@@ -18,20 +18,17 @@
 package de.tudarmstadt.ukp.lmf.model.enums;
 
 /**
- * 
  * ESyntacticProperty encodes the name of some lexical-syntactic, i.e. idiosyncratic,
  * behaviour of the lexeme.
- * 
- * @author Judith Eckle-Kohler
- * @author Zijad Maksuti
- *
  */
 public enum ESyntacticProperty {
+	
 	subjectControl,
 	objectControl,
 	subjectRaising,
 	objectRaising,
 	nonPredicativeAdjective,
     predicativeAdjective,
-    postpositiveAdjective
+    postpositiveAdjective;
+
 }
