@@ -39,6 +39,7 @@ import de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.ADJ;
 import de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.NN;
 import de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS;
 import de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.V;
+import de.tudarmstadt.ukp.dkpro.core.api.resources.ResourceObjectProviderBase;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Lemma;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
@@ -47,14 +48,11 @@ import de.tudarmstadt.ukp.dkpro.core.testing.AssertAnnotations;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 import de.tudarmstadt.ukp.lmf.transform.LMFDBUtils;
 import de.tudarmstadt.ukp.lmf.transform.XMLToDBTransformer;
+import de.tudarmstadt.ukp.uby.resource.UbyResource;
 import de.tudarmstadt.ukp.uby.resource.UbySemanticFieldResource;
 import de.tudarmstadt.ukp.uby.uima.annotator.UbySemanticFieldAnnotator;
 
 
-/**
- * @author Judith Eckle-Kohler
- *
- */
 public class UbySemanticFieldAnnotatorTest
 {
 
@@ -135,12 +133,15 @@ public class UbySemanticFieldAnnotatorTest
 				createEngineDescription(UbySemanticFieldAnnotator.class,
 						UbySemanticFieldAnnotator.PARAM_UBY_SEMANTIC_FIELD_RESOURCE, 
 							createExternalResourceDescription(UbySemanticFieldResource.class,
-									UbySemanticFieldResource.PARAM_URL, "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1",
-									UbySemanticFieldResource.PARAM_DRIVER, "org.h2.Driver",
-									UbySemanticFieldResource.PARAM_DRIVER_NAME, "h2",
-									UbySemanticFieldResource.PARAM_USERNAME, "root",
-									UbySemanticFieldResource.PARAM_PASSWORD, "pass"
-									))
+									UbySemanticFieldResource.RES_UBY,				                
+					                createExternalResourceDescription(UbyResource.class,
+					                		UbyResource.PARAM_MODEL_LOCATION, ResourceObjectProviderBase.NOT_REQUIRED,
+					                        UbyResource.PARAM_URL, "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1",
+					                        UbyResource.PARAM_DRIVER, "org.h2.Driver",
+					                        UbyResource.PARAM_DIALECT, "h2",
+					                        UbyResource.PARAM_USERNAME, "root",
+					                        UbyResource.PARAM_PASSWORD, "pass"
+									)))
 		);
 
 		AnalysisEngine engine = createEngine(processor);
@@ -200,12 +201,15 @@ public class UbySemanticFieldAnnotatorTest
                 UbySemanticFieldAnnotator.class,
                 UbySemanticFieldAnnotator.PARAM_UBY_SEMANTIC_FIELD_RESOURCE,
                 createExternalResourceDescription(UbySemanticFieldResource.class,
-                        UbySemanticFieldResource.PARAM_URL, "localhost/uby_open_0_3_0",
-                        UbySemanticFieldResource.PARAM_DRIVER, "com.mysql.jdbc.Driver",
-                        UbySemanticFieldResource.PARAM_DRIVER_NAME, "mysql",
-                        UbySemanticFieldResource.PARAM_USERNAME, "root",
-                        UbySemanticFieldResource.PARAM_PASSWORD, "pass")));
-
+						UbySemanticFieldResource.RES_UBY,				                
+		                createExternalResourceDescription(UbyResource.class,
+		                		UbyResource.PARAM_MODEL_LOCATION, ResourceObjectProviderBase.NOT_REQUIRED,
+		                        UbyResource.PARAM_URL, "localhost/uby_lite_0_6_0",
+		                        UbyResource.PARAM_DRIVER, "com.mysql.jdbc.Driver",
+		                        UbyResource.PARAM_DIALECT, "mysql",
+		                        UbyResource.PARAM_USERNAME, "root",
+		                        UbyResource.PARAM_PASSWORD, "pass"))));
+                		
 		AnalysisEngine engine = createEngine(processor);
 		JCas aJCas = engine.newJCas();
 		aJCas.setDocumentLanguage(language);
