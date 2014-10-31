@@ -213,5 +213,10 @@ public class UBYLMFClassMetadata {
 	public Iterable<UBYLMFFieldMetadata> getFields() {
 		return fields;
 	}
+	
+	/** Returns the class type for which the metadata is stored. */
+	public Class<?> getClazz() {
+		return clazz;
+	}
 
 }

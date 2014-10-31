@@ -293,7 +293,7 @@ public class XMLToDBTransformer extends UBYHibernateTransformer
 				// Save the new value using the setter method.
 				Method setter = fieldMeta.getSetter();
 				if (setter == null)
-					System.out.println(lmfObject.getClass() + "." + xmlFieldName);
+					throw new RuntimeException("Missing setter for : " + lmfObject.getClass() + "." + xmlFieldName);
 				setter.invoke(lmfObject, newValue);
 			}
 			return lmfObject;
