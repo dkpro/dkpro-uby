@@ -57,6 +57,7 @@ public class DBToXMLTransformer extends UBYHibernateTransformer {
 	private static final Logger logger = Logger.getLogger(DBToXMLTransformer.class.getSimpleName());
 
 	protected LexicalResource lexicalResource;
+	protected DBConfig dbConfig;
 	
 	/** Constructs a new {@link DBToXMLTransformer} instance which is used to 
 	 *  convert UBY from a database to an XML file.
@@ -66,6 +67,7 @@ public class DBToXMLTransformer extends UBYHibernateTransformer {
 	public DBToXMLTransformer(final DBConfig dbConfig, final String outputPath, 
 			String dtdPath) throws FileNotFoundException, SAXException {
 		this(dbConfig, new FileOutputStream(outputPath), dtdPath);
+		this.dbConfig = dbConfig;
 	}
 
 	/** Constructs a new {@link DBToXMLTransformer} instance which is used to 
@@ -222,9 +224,12 @@ public class DBToXMLTransformer extends UBYHibernateTransformer {
 					}*/
 					Session lookupSession = sessionFactory.openSession();
 					Query query = lookupSession.createQuery("FROM " + clazz.getSimpleName() 
-							+ " WHERE lexiconId = '" + lexicon.getId() + "'");
+							+ " WHERE lexiconId = '" + lexicon.getId() + "' ORDER BY id");
 					query.setReadOnly(true);
-					query.setFetchSize(Integer.MIN_VALUE); // MIN_VALUE gives hint to JDBC driver to stream results
+					if (DBConfig.MYSQL.equals(dbConfig.getDBType()))
+						query.setFetchSize(Integer.MIN_VALUE); // MIN_VALUE gives hint to JDBC driver to stream results
+					else
+						query.setFetchSize(1000); 
 					ScrollableResults results = query.scroll(ScrollMode.FORWARD_ONLY);
 					while (results.next()) {
 						// For streamed query results, no further queries are allowed (incl. lazy proxy queries!)
