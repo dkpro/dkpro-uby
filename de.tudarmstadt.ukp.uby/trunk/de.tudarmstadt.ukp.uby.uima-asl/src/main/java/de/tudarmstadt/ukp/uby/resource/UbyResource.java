@@ -90,8 +90,9 @@ public class UbyResource extends Resource_ImplBase implements ExternalResourceLo
 
     /**
      * Load the model from this location instead of locating the model automatically. If
-     *  you are NOT using an embedded database, you need to set this to
+     *  you are NOT using an embedded database, you need to set this parameter to
      * {@link ResourceObjectProviderBase#NOT_REQUIRED} 
+     * like this: UbyResource.PARAM_MODEL_LOCATION, ResourceObjectProviderBase.NOT_REQUIRED
      * (i.e. in that case it is mandatory to set this parameter)
      */
     public static final String PARAM_MODEL_LOCATION = ComponentParameters.PARAM_MODEL_LOCATION;

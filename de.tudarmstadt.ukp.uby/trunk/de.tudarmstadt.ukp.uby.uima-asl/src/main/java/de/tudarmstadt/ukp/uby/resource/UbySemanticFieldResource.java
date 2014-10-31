@@ -27,6 +27,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.uima.fit.component.Resource_ImplBase;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.descriptor.ExternalResource;
 import org.apache.uima.resource.ResourceAccessException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
@@ -41,7 +42,6 @@ import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.enums.ELabelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
-import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 
 
 /**
@@ -58,33 +58,16 @@ public class UbySemanticFieldResource
 	extends Resource_ImplBase
 	implements SemanticTagProvider
 {
-	
-	public static final String PARAM_URL = "ubyDatabaseUrl";
-	@ConfigurationParameter(name = PARAM_URL, mandatory = true)
-	private String ubyDatabaseUrl;
-
-	public static final String PARAM_DRIVER = "databaseDriver";
-	@ConfigurationParameter(name = PARAM_DRIVER, mandatory = true)
-	private String databaseDriver;
-	
-	public static final String PARAM_DRIVER_NAME = "databaseDriverName"; //name of database driver (this parameter is called "vendor" in DBConfig), e.g. mysql, h2
-	@ConfigurationParameter(name = PARAM_DRIVER_NAME, mandatory = true)
-	private String databaseDriverName;
-	
-	public static final String PARAM_USERNAME = "ubyUsername";
-	@ConfigurationParameter(name = PARAM_USERNAME, mandatory = true)
-	private String ubyUsername;
-	
-	public static final String PARAM_PASSWORD = "ubyPassword";
-	@ConfigurationParameter(name = PARAM_PASSWORD, mandatory = true)
-	private String ubyPassword;
+		
+    public static final String RES_UBY = "uby";
+    @ExternalResource(key = RES_UBY)
+    private Uby uby;
 	
     public static final String PARAM_LANGUAGE = ComponentParameters.PARAM_LANGUAGE;
     @ConfigurationParameter(name = PARAM_LANGUAGE, mandatory = false)
     protected String language;
 
 	
-	private Uby uby;
 	private Lexicon wordnet;
 
 	
@@ -92,17 +75,8 @@ public class UbySemanticFieldResource
     public boolean initialize(ResourceSpecifier aSpecifier, Map aAdditionalParams)
         throws ResourceInitializationException
     {
-        if (!super.initialize(aSpecifier, aAdditionalParams)) {
-            return false;
-        }
-
-        try {
- 			DBConfig dbConfig = new DBConfig(ubyDatabaseUrl,databaseDriver,databaseDriverName,ubyUsername,ubyPassword,false); 			
-			uby = new Uby(dbConfig);
-			
-        }
-        catch (IllegalArgumentException e) {       	       	
-            throw new ResourceInitializationException(e);
+		if (!super.initialize(aSpecifier, aAdditionalParams)) {
+			return false;
 		}
 
         return true;
