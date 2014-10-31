@@ -1969,209 +1969,209 @@ etym	etym	etym	in Fremdwörtern aus dem Lateinischen
 etym	etym	etym	from=Chinese
 syntax	syntax:form	form	Vergangenheitsform
 syntax	syntax:form	form	alternative Schreibweise von
-syntax	syntax:gram	gram	häufig als Partizip II
+syntax	syntax:gram:auxiliary	haben	mit Hilfsverb haben
+syntax	syntax:gram:auxiliary	haben	Hilfsverb haben
+syntax	syntax:gram:auxiliary	sein	Hilfsverb sein
+syntax	syntax:gram:auxiliary	sein	mit Hilfsverb sein
+syntax	syntax:gram:auxiliary	habenSein	beide Hilfsverben
+syntax	syntax:gram:subcat	onlySubject	intransitiv
+syntax	syntax:gram:subcat	onlySubject	intrans.
+syntax	syntax:gram:subcat	onlySubject	intransitive
+syntax	syntax:gram:subcat	directObject	trans
+syntax	syntax:gram:subcat	directObject	trans.
+syntax	syntax:gram:subcat	directObject	transitive
+syntax	syntax:gram:subcat	directObject	transitiv
+syntax	syntax:gram:subcat	directObjectMitPrepositionalComplement	jemanden mit etwas
+syntax	syntax:gram:subcat	directObjectObjectComplement	mit doppeltem Akkusativ oder Dativ
+syntax	syntax:gram:subcat	directObjectObjectComplement	mit doppeltem Akkusativ
+syntax	syntax:gram:subcat	directObjectObjectComplement	may take two objects
+syntax	syntax:gram:subcat	optionalDirectObject	ohne und mit Akkusativ
+syntax	syntax:gram:subcat	optionalDirectObject	ergative
+syntax	syntax:gram:subcat	optionalDirectObject	auch transitiv
+syntax	syntax:gram:subcat	optionalDirectObject	ambitransitive
+syntax	syntax:gram:subcat	optionalDirectObject	transitive and intransitive
+syntax	syntax:gram:subcat	optionalDirectObject	ohne obligatorisches Objekt
+syntax	syntax:gram:subcat	dativeComplement	mit Dativ
+syntax	syntax:gram:subcat	dativeComplement	mit Dativobjekt
+syntax	syntax:gram:subcat	dativeComplement	Präposition mit dem Dativ
+syntax	syntax:gram:subcat	dativeComplement	mit Dativ-Objekt
+syntax	syntax:gram:subcat	dativeComplementFuerPrepositionalComplement	jemandem für etwas
+syntax	syntax:gram:subcat	accusativeComplement	mit dem Akkusativ
+syntax	syntax:gram:subcat	accusativeComplement	mit Akkusativ
+syntax	syntax:gram:subcat	reflexiveComplement	reflexiv
+syntax	syntax:gram:subcat	reflexiveComplement	reflexives Verb
+syntax	syntax:gram:subcat	reflexiveComplement	refl.
+syntax	syntax:gram:subcat	reflexiveComplement	reflexive
+syntax	syntax:gram:subcat	reflexiveComplement	sich ~
+syntax	syntax:gram:subcat	reflexiveComplement	+sich
+syntax	syntax:gram:subcat	reflexiveComplementZuPrepositionalComplement	sich zu jemandem
+syntax	syntax:gram:subcat	reflexiveDativeComplement	mit sich im Dativ
+syntax	syntax:gram:subcat	genitiveComplement	mit Genitiv
+syntax	syntax:gram:subcat	impersonalComplement	impersonal
+syntax	syntax:gram:subcat	adjectivalComplement	copulative
+syntax	syntax:gram:subcat	adjectivalComplement	mit Adjektivzusatz
+syntax	syntax:gram:subcat	thatClauseComplement	mit erweitertem Infinitiv oder mit dass
+syntax	syntax:gram:subcat	zuPrepositionalComplement	mit der Präposition zu
+syntax	syntax:gram:subcat	aufPrepositionalComplement	auf jemanden
+syntax	syntax:gram:subcat	aufPrepositionalComplement	mit der Präposition auf
+syntax	syntax:gram:subcat	infinitivalComplement	with infinitive
+syntax	syntax:gram:synprop	predicativeAdjective	nur prädikativ
+syntax	syntax:gram:nounClass	agentNoun	agent noun
+syntax	syntax:gram:nounClass	onlySingular	ohne Plural
+syntax	syntax:gram:nounClass	onlySingular	kPl.
+syntax	syntax:gram:nounClass	onlySingular	nur Einzahl
+syntax	syntax:gram:nounClass	onlySingular	nur Singular
+syntax	syntax:gram:nounClass	onlySingular	singulare tantum
+syntax	syntax:gram:nounClass	onlySingular	kein Plural
+syntax	syntax:gram:nounClass	onlySingular	nur im Singular
+syntax	syntax:gram:nounClass	onlySingular	singular only
+syntax	syntax:gram:nounClass	onlyPlural	plural only
+syntax	syntax:gram:nounClass	onlyPlural	kein Singular
+syntax	syntax:gram:nounClass	onlyPlural	pluralonly
+syntax	syntax:gram:nounClass	onlyPlural	plurale tantum
+syntax	syntax:gram:nounClass	onlyPlural	nur Plural
+syntax	syntax:gram:nounClass	onlyPlural	only as plural
+syntax	syntax:gram:nounClass	onlyPlural	nur im Plural
+syntax	syntax:gram:nounClass	onlyMasculine	nur Maskulinum
+syntax	syntax:gram:nounClass	massNoun	unzählbar
+syntax	syntax:gram:nounClass	massNoun	not countable
+syntax	syntax:gram:nounClass	massNoun	uncountable
+syntax	syntax:gram:nounClass	countNoun	countable
+syntax	syntax:gram:usage	oftenSingular	meist nur im Singular
+syntax	syntax:gram:usage	oftenSingular	meistens kein Plural
+syntax	syntax:gram:usage	oftenSingular	Plural unüblich
+syntax	syntax:gram:usage	oftenSingular	meist Singular
+syntax	syntax:gram:usage	oftenPlural	often plural
+syntax	syntax:gram:usage	oftenPlural	zumeist im Plural
+syntax	syntax:gram:usage	oftenPlural	often in plural
+syntax	syntax:gram:usage	oftenPlural	usually in the plural
+syntax	syntax:gram:usage	oftenPlural	often pluralized
+syntax	syntax:gram:usage	oftenPlural	chiefly in plural
+syntax	syntax:gram:usage	oftenPlural	zumeist Plural
+syntax	syntax:gram:usage	oftenPlural	Singular ungebräuchlich
+syntax	syntax:gram:usage	oftenPlural	meistens im Plural
+syntax	syntax:gram:usage	oftenPlural	besonders im Plural
+syntax	syntax:gram:usage	oftenPlural	meist kollektiv im Plural
+syntax	syntax:gram:usage	oftenPlural	meist im Plural
+syntax	syntax:gram:usage	oftenPlural	meist Plural
+syntax	syntax:gram:usage	oftenPlural	usually in plural
+syntax	syntax:gram:usage	oftenPlural	usually plural
+syntax	syntax:gram:usage	oftenCapitalized	often capitalized
+syntax	syntax:gram:usage	oftenCapitalized	usually capitalized
+syntax	syntax:gram:usage	oftenPassive	usually in the passive
+syntax	syntax:gram:usage	oftenPerfectParticiple	häufig als Partizip II
+syntax	syntax:gram:usage	oftenPerfectParticiple	oft im Partizip II
+syntax	syntax:gram:usage	oftenNegated	meist in Negation
+syntax	syntax:gram:usage	collocationPart	nur in der Wortverbindung
+syntax	syntax:gram:usage	collocationPart	nur in festen Wendungen
+syntax	syntax:gram:usage	collocationPart	in combinations
+syntax	syntax:gram:usage	collocationPart	in Bildungen mit Substantiven
+syntax	syntax:gram:usage	oftenCompoundPart	häufig in Komposita
+syntax	syntax:gram:usage	attributive	attributive
+syntax	syntax:gram:usage	attributive	in attributive use
+syntax	syntax:gram:usage	oftenAttributive	usually used attributively
+syntax	syntax:gram:usage	oftenAttributive	often used attributively
+syntax	syntax:gram:usage	adverbial	adverbialer Gebrauch
+syntax	syntax:gram:usage	oftenAdverbial	meist als Adverb
+syntax	syntax:gram:usage	comparable	comparable
+syntax	syntax:gram:usage	notComparable	not comparable
+syntax	syntax:gram:usage	notComparable	uncomparable
+syntax	syntax:gram:usage	notComparable	ohne Steigerung
+syntax	syntax:gram:usage	notComparable	keine Steigerung
+syntax	syntax:gram:usage	notComparable	kSt.
+syntax	syntax:gram:usage	notComparable	nicht steigerbar
+syntax	syntax:gram:usage	oftenOnlySubject	meist intransitiv
+syntax	syntax:gram:usage	onlyPerfectParticiple	nur Partizip II
+syntax	syntax:gram:usage	withDeterminer	mit Artikel
+syntax	syntax:gram:usage	withoutDeterminer	ohne Artikel
+syntax	syntax:gram:usage	withDefiniteDeterminer	with definite article
+syntax	syntax:gram:usage	oftenWithoutDeterminer	meist ohne Artikel
 syntax	syntax:gram	gram	auch im Plural
 syntax	syntax:gram	gram	многокр.
 syntax	syntax:gram	gram	Genitiv
-syntax	syntax:gram	gram	copulative
-syntax	syntax:gram	gram	mit dem Akkusativ
-syntax	syntax:gram	gram	meist nur im Singular
-syntax	syntax:gram	gram	zumeist Plural
-syntax	syntax:gram	gram	meist in Negation
 syntax	syntax:gram	gram	im Konjunktiv II
-syntax	syntax:gram	gram	mit Dativ
 syntax	syntax:gram	gram	Pl.2
 syntax	syntax:gram	gram	auxiliary
-syntax	syntax:gram	gram	Singular ungebräuchlich
 syntax	syntax:gram	gram	Plural
-syntax	syntax:gram	gram	reflexives Verb
-syntax	syntax:gram	gram	trans
-syntax	syntax:gram	gram	mit sich im Dativ
-syntax	syntax:gram	gram	intransitiv
-syntax	syntax:gram	gram	intrans.
 syntax	syntax:gram	gram	одуш.
-syntax	syntax:gram	gram	meistens kein Plural
 syntax	syntax:gram	gram	Plural
 syntax	syntax:gram	gram	capitalized
-syntax	syntax:gram	gram	nur in festen Wendungen
-syntax	syntax:gram	gram	mit erweitertem Infinitiv oder mit dass
-syntax	syntax:gram	gram	plural only
 syntax	syntax:gram	gram	mit Plural 1
 syntax	syntax:gram	gram	Partizip II
-syntax	syntax:gram	gram	nur in der Wortverbindung
 syntax	syntax:gram	gram	предик.
-syntax	syntax:gram	gram	Plural unüblich
 syntax	syntax:gram	gram	non-productive
 syntax	syntax:gram	gram	im Imperativ auch freundliche Aufforderung zum einlenken
-syntax	syntax:gram	gram	mit der Präposition zu
 syntax	syntax:gram	gram	неперех.
 syntax	syntax:gram	gram	in der 3. Person
-syntax	syntax:gram	gram	kein Singular
 syntax	syntax:gram	gram	Pl. 2
-syntax	syntax:gram	gram	nur prädikativ
-syntax	syntax:gram	gram	pluralonly
-syntax	syntax:gram	gram	ohne Plural
 syntax	syntax:gram	gram	неисч.
-syntax	syntax:gram	gram	attributive
-syntax	syntax:gram	gram	"with ""the"""
-syntax	syntax:gram	gram	auch transitiv
-syntax	syntax:gram	gram	kPl.
-syntax	syntax:gram	gram	agent noun
-syntax	syntax:gram	gram	refl.
-syntax	syntax:gram	gram	nur Einzahl
-syntax	syntax:gram	gram	mit Dativobjekt
-syntax	syntax:gram	gram	in combinations
-syntax	syntax:gram	gram	mit Hilfsverb haben
+syntax	syntax:gram	gram	with "the"
 syntax	syntax:gram	gram	plural of
 syntax	syntax:gram	gram	als Eigenname ohne Artikel und Plural
-syntax	syntax:gram	gram	mit Genitiv
-syntax	syntax:gram	gram	trans.
-syntax	syntax:gram	gram	auf jemanden
 syntax	syntax:gram	gram	неодуш.
-syntax	syntax:gram	gram	Hilfsverb sein
-syntax	syntax:gram	gram	nicht steigerbar
 syntax	syntax:gram	gram	modal
 syntax	syntax:gram	gram	im Präteritum
-syntax	syntax:gram	gram	Hilfsverb haben
 syntax	syntax:gram	gram	mit Plural 2
 syntax	syntax:gram	gram	umgangssprachlich im Plural
-syntax	syntax:gram	gram	comparable
-syntax	syntax:gram	gram	meist als Adverb
-syntax	syntax:gram	gram	plurale tantum
-syntax	syntax:gram	gram	jemandem für etwas
 syntax	syntax:gram	gram	im Plural
-syntax	syntax:gram	gram	beide Hilfsverben
 syntax	syntax:gram	gram	alternate form of
-syntax	syntax:gram	gram	nur Singular
-syntax	syntax:gram	gram	uncountable
-syntax	syntax:gram	gram	ohne und mit Akkusativ
-syntax	syntax:gram	gram	transitive
-syntax	syntax:gram	gram	mit Dativ-Objekt
 syntax	syntax:gram	gram	Plural 1
-syntax	syntax:gram	gram	reflexiv
 syntax	syntax:gram	gram	статив.
-syntax	syntax:gram	gram	Präposition mit dem Dativ
-syntax	syntax:gram	gram	mit doppeltem Akkusativ
 syntax	syntax:gram	gram	in der 3. Person Singular
-syntax	syntax:gram	gram	adverbialer Gebrauch
 syntax	syntax:gram	gram	Grammatik
-syntax	syntax:gram	gram	in Bildungen mit Substantiven
 syntax	syntax:gram	gram	substantiviert
 syntax	syntax:gram	gram	нескл.
-syntax	syntax:gram	gram	ergative
 syntax	syntax:gram	gram	indeklinabel
 syntax	syntax:gram	gram	plural
-syntax	syntax:gram	gram	meistens im Plural
-syntax	syntax:gram	gram	besonders im Plural
 syntax	syntax:gram	gram	перех.
-syntax	syntax:gram	gram	mit Adjektivzusatz
-syntax	syntax:gram	gram	mit doppeltem Akkusativ oder Dativ
 syntax	syntax:gram	gram	plural
 syntax	syntax:gram	gram	conjunctive
-syntax	syntax:gram	gram	nur Partizip II
 syntax	syntax:gram	gram	verneint
-syntax	syntax:gram	gram	meist kollektiv im Plural
-syntax	syntax:gram	gram	meist im Plural
-syntax	syntax:gram	gram	meist Plural
 syntax	syntax:gram	gram	im Passiv
 syntax	syntax:gram	gram	auch Plural 2
-syntax	syntax:gram	gram	usually in plural
 syntax	syntax:gram	gram	Nebenformen im Plural
-syntax	syntax:gram	gram	oft im Partizip II
 syntax	syntax:gram	gram	insbesondere im Perfekt
 syntax	syntax:gram	gram	однокр.
-syntax	syntax:gram	gram	singulare tantum
 syntax	syntax:gram	gram	attributiv
-syntax	syntax:gram	gram	countable
-syntax	syntax:gram	gram	reflexive
-syntax	syntax:gram	gram	sich zu jemandem
 syntax	syntax:gram	gram	in the plural
-syntax	syntax:gram	gram	transitiv
 syntax	syntax:gram	gram	als Präfix oder durch Bindestrich verbundener Zusatz
-syntax	syntax:gram	gram	meist intransitiv
-syntax	syntax:gram	gram	ohne obligatorisches Objekt
-syntax	syntax:gram	gram	intransitive
-syntax	syntax:gram	gram	ambitransitive
-syntax	syntax:gram	gram	not comparable
-syntax	syntax:gram	gram	jemanden mit etwas
-syntax	syntax:gram	gram	häufig in Komposita
-syntax	syntax:gram	gram	kein Plural
 syntax	syntax:gram	gram	Plural 1+2
 syntax	syntax:gram	gram	ohne Adverbiale der Richtung
-syntax	syntax:gram	gram	usually plural
-syntax	syntax:gram	gram	nur Maskulinum
 syntax	syntax:gram	gram	seltener Plural 2
-syntax	syntax:gram	gram	nur Plural
 syntax	syntax:gram	gram	allenfalls Plural 1
 syntax	syntax:gram	gram	in combination
 syntax	syntax:gram	gram	in plural
-syntax	syntax:gram	gram	with definite article
 syntax	syntax:gram	gram	женск.
 syntax	syntax:gram	gram	in der Wendung
 syntax	syntax:gram	gram	present participle of
-syntax	syntax:gram	gram	uncomparable
 syntax	syntax:gram	gram	спец.
-syntax	syntax:gram	gram	mit Artikel
 syntax	syntax:gram	gram	Plural 2
-syntax	syntax:gram	gram	in attributive use
-syntax	syntax:gram	gram	mit Akkusativ
 syntax	syntax:gram	gram	past of
 syntax	syntax:gram	gram	alternative form of
 syntax	syntax:gram	gram	past participial
-syntax	syntax:gram	gram	usually used attributively
 syntax	syntax:gram	gram	mit Plural
-syntax	syntax:gram	gram	often plural
-syntax	syntax:gram	gram	meist Singular
-syntax	syntax:gram	gram	mit der Präposition auf
 syntax	syntax:gram	gram	in Verbindung mit es
-syntax	syntax:gram	gram	+sich
-syntax	syntax:gram	gram	unzählbar
 syntax	syntax:gram	gram	often in combination
-syntax	syntax:gram	gram	ohne Steigerung
-syntax	syntax:gram	gram	with infinitive
 syntax	syntax:gram	gram	nur Plural 1
 syntax	syntax:gram	gram	Pl.1
 syntax	syntax:gram	gram	construed with of
-syntax	syntax:gram	gram	transitive and intransitive
 syntax	syntax:gram	gram	the third person singular
-syntax	syntax:gram	gram	may take two objects
-syntax	syntax:gram	gram	often capitalized
-syntax	syntax:gram	gram	zumeist im Plural
 syntax	syntax:gram	gram	trennbar
 syntax	syntax:gram	gram	Singular
 syntax	syntax:gram	gram	субстантивир.
 syntax	syntax:gram	gram	noun adjunct
-syntax	syntax:gram	gram	nur im Singular
-syntax	syntax:gram	gram	usually capitalized
-syntax	syntax:gram	gram	meist ohne Artikel
-syntax	syntax:gram	gram	keine Steigerung
 syntax	syntax:gram	gram	as imperative
-syntax	syntax:gram	gram	often in plural
 syntax	syntax:gram	gram	jemanden
-syntax	syntax:gram	gram	usually in the passive
 syntax	syntax:gram	gram	pluralized
-syntax	syntax:gram	gram	not countable
-syntax	syntax:gram	gram	singular only
 syntax	syntax:gram	gram	except in set phrases
 syntax	syntax:gram	gram	alternative spelling of
-syntax	syntax:gram	gram	only as plural
-syntax	syntax:gram	gram	nur im Plural
 syntax	syntax:gram	gram	im Konjunktiv II Präteritum
-syntax	syntax:gram	gram	often used attributively
-syntax	syntax:gram	gram	kSt.
 syntax	syntax:gram	gram	singular
-syntax	syntax:gram	gram	mit Hilfsverb sein
 syntax	syntax:gram	gram	nur Plural 2
-syntax	syntax:gram	gram	impersonal
 syntax	syntax:gram	gram	also in plural
-syntax	syntax:gram	gram	usually in the plural
-syntax	syntax:gram	gram	ohne Artikel
 syntax	syntax:gram	gram	im Singular
 syntax	syntax:gram	gram	страд.
-syntax	syntax:gram	gram	often pluralized
 syntax	syntax:gram	gram	imperative
-syntax	syntax:gram	gram	sich ~
-syntax	syntax:gram	gram	chiefly in plural
 syntax	syntax:gram	gram	as plural
 syntax	syntax:gram	gram	especially in plural
 syntax	syntax:gram	gram	sometimes capitalized

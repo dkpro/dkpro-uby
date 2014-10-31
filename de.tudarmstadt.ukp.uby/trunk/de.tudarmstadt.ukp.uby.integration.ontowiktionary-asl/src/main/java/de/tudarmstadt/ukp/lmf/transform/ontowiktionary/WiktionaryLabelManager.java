@@ -52,14 +52,17 @@ public class WiktionaryLabelManager {
 		protected int labelIndex;
 		protected String labelType;
 		protected String labelGroup;
+		protected String standardizedLabel;
 
 		/** Instanciates the label with the given parameters. */
 		public PragmaticLabel(final String label, int labelIndex, 
-				final String labelType, final String labelGroup) {
+				final String labelType, final String labelGroup,
+				final String standardizedLabel) {
 			this.label = label;
 			this.labelIndex = labelIndex;
 			this.labelType = labelType;
 			this.labelGroup = labelGroup;
+			this.standardizedLabel = standardizedLabel;
 		}
 		
 		/** Returns the label text. */
@@ -83,6 +86,10 @@ public class WiktionaryLabelManager {
 		 *  for labels covering agriculture). */
 		public String getLabelGroup() {
 			return labelGroup;
+		}
+		
+		public String getStandardizedLabel() {
+			return standardizedLabel;
 		}
 		
 		@Override
@@ -139,10 +146,10 @@ public class WiktionaryLabelManager {
 			line = line.substring(idx + 1);
 
 			idx = line.indexOf('\t');
-			//String group3 = line.substring(0, idx);
+			String group3 = line.substring(0, idx);
 			String label = line.substring(idx + 1);
 
-			labelGroups.put(label, new String[]{group1, group2});
+			labelGroups.put(label, new String[]{group1, group2, group3});
 		}
 		reader.close();
 	}
@@ -204,9 +211,12 @@ public class WiktionaryLabelManager {
 			loadLabelGroups();
 			
 		String[] labelGroup = labelGroups.get(label);
-		return new PragmaticLabel(label, labelIndex, 
-				(labelGroup != null ? labelGroup[0] : null), 
-				(labelGroup != null ? labelGroup[1] : null));
+		if (labelGroup != null)
+			return new PragmaticLabel(label, labelIndex, 
+					labelGroup[0], labelGroup[1], labelGroup[2]);
+		else		
+			return new PragmaticLabel(label, labelIndex,
+					null, null, null);
 	}
 
 	/** Extracts pragmatic labels from the given sense definitions. Usually,

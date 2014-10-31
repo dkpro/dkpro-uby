@@ -20,7 +20,7 @@ package de.tudarmstadt.ukp.lmf.transform.ontowiktionary;
 import java.util.ArrayList;
 import java.util.List;
 
-class OntoWiktionaryConcept {
+public class OntoWiktionaryConcept {
 	
 	protected String conceptId;
 	protected List<String> lexicalizations;

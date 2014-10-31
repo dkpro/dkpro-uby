@@ -187,11 +187,12 @@ public class HibernateConnect
 //        p.setProperty("hibernate.hbm2ddl.auto","update"); 
         
         // JEK see http://stackoverflow.com/questions/3179765/how-to-turn-off-hbm2ddl
-        if (db_vendor.equals("mysql")) {
-        	p.setProperty("hibernate.hbm2ddl.auto","validate");
-        } else if (db_vendor.equals("h2")) {
-        	p.setProperty("hibernate.hbm2ddl.auto","update"); 
-        }
+        p.setProperty("hibernate.hbm2ddl.auto","validate");
+//        if (db_vendor.equals("mysql")) {
+//        	p.setProperty("hibernate.hbm2ddl.auto","validate");
+//        } else if (db_vendor.equals("h2")) {
+//        	p.setProperty("hibernate.hbm2ddl.auto","update"); 
+//        }
         // p.setProperty("hibernate.hbm2ddl.auto","none");
 
         return p;

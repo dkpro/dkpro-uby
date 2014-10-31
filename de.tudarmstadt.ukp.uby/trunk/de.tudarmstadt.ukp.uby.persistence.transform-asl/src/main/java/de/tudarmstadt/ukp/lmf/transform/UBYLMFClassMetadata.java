@@ -205,7 +205,6 @@ public class UBYLMFClassMetadata {
 				fields.add(new UBYLMFFieldMetadata(field, genericType));
 
 			superClassType = superClass.getGenericSuperclass();
-			break;
 		}
 	}
 

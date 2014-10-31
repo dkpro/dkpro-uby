@@ -50,6 +50,7 @@ import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.core.Statement;
 import de.tudarmstadt.ukp.lmf.model.core.TextRepresentation;
+import de.tudarmstadt.ukp.lmf.model.enums.EAuxiliary;
 import de.tudarmstadt.ukp.lmf.model.enums.ECase;
 import de.tudarmstadt.ukp.lmf.model.enums.EContextType;
 import de.tudarmstadt.ukp.lmf.model.enums.EDefinitionType;
@@ -62,6 +63,7 @@ import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
 import de.tudarmstadt.ukp.lmf.model.enums.ERelTypeMorphology;
 import de.tudarmstadt.ukp.lmf.model.enums.ERelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.EStatementType;
+import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticProperty;
 import de.tudarmstadt.ukp.lmf.model.enums.ETense;
 import de.tudarmstadt.ukp.lmf.model.enums.EVerbFormMood;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
@@ -80,6 +82,7 @@ import de.tudarmstadt.ukp.lmf.model.semantics.SenseRelation;
 import de.tudarmstadt.ukp.lmf.model.semantics.SynSemCorrespondence;
 import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 import de.tudarmstadt.ukp.lmf.model.semantics.SynsetRelation;
+import de.tudarmstadt.ukp.lmf.model.syntax.LexemeProperty;
 import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrame;
 import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrameSet;
 import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticBehaviour;
@@ -648,18 +651,20 @@ public class OntoWiktionaryTransformer extends LMFDBTransformer {
 			result.add(semanticLabel);
 		}
 		
-		// Create semantic labels from the sense definition.
+		// Process labels encoded in the sense definition.
 		IWikiString senseDefinition = wktSense.getGloss();
 		List<PragmaticLabel> labels = labelManager.parseLabels(
 				senseDefinition.getText(), wktSense.getEntry().getWord());
-		if (labels != null) {			
+		if (labels != null) {
+			LexemeProperty lexemeProperty = null;
+			List<String> subcatLabels = new LinkedList<String>();
 			for (PragmaticLabel label : labels) {
 				String labelGroup = label.getLabelGroup();
 				if (labelGroup == null || labelGroup.length() == 0)
 					continue;
 
 				if (labelManager.isWordFormLabel(label)) {
-					// Morphological labels.
+					// WordForm.
 					String targetWord = labelManager.extractTargetWordForm(senseDefinition.getText()); 
 					IWiktionaryEntry wktEntry = wktSense.getEntry();
 					WordForm wordForm = new WordForm();
@@ -703,48 +708,97 @@ public class OntoWiktionaryTransformer extends LMFDBTransformer {
 						}
 					}
 
-				} else				
-					if (labelGroup.startsWith("syntax:gram")) {
-						// Grammatical labels.
-						SubcategorizationFrame subcatFrame = new SubcategorizationFrame();
-						subcatFrame.setSubcatLabel(label.getLabel());
-						subcatFrame.setId(getResourceAlias() + "_SubcatFrame_" + (subcatFrameIdx++));
-						subcatFrames.add(subcatFrame);
+				} else		
+				if ("syntax:gram:auxiliary".equals(labelGroup)) {
+					// LexemeProperty:auxiliary.
+					if ("habenSein".equals(label.getStandardizedLabel()))
+						continue; //TODO: Add enum value!
+					
+					if (lexemeProperty == null)
+						lexemeProperty = new LexemeProperty();
+					lexemeProperty.setAuxiliary(EAuxiliary.valueOf(label.getStandardizedLabel()));
+				} else
+				if ("syntax:gram:synprop".equals(labelGroup)) {
+					// LexemeProperty:syntacticProperty.
+					if (lexemeProperty == null)
+						lexemeProperty = new LexemeProperty();
+					lexemeProperty.setSyntacticProperty(ESyntacticProperty.valueOf(label.getStandardizedLabel()));
+				} else
+				if ("syntax:gram:subcat".equals(labelGroup)) {
+					// SubcategorizationFrame.
+					subcatLabels.add(label.getStandardizedLabel());
+					/*
+					SubcategorizationFrame subcatFrame = new SubcategorizationFrame();
+					subcatFrame.setSubcatLabel(label.getStandardizedLabel());
+					subcatFrame.setId(getResourceAlias() + "_SubcatFrame_" + (subcatFrameIdx++));
+					subcatFrames.add(subcatFrame);
 
-						SyntacticBehaviour sb = new SyntacticBehaviour();
-						sb.setSubcategorizationFrame(subcatFrame);
-						sb.setId(getResourceAlias() + "_SyntacticBehaviour_" + (syntacticBehaviourIdx++));
-						sb.setSense(sense);
-						if (entry.getSyntacticBehaviours() == null) {
-							entry.setSyntacticBehaviours(new LinkedList<SyntacticBehaviour>());
-						}
-						entry.getSyntacticBehaviours().add(sb);
-						
-					} else {
-						// Semantic labels.
-						SemanticLabel semanticLabel = new SemanticLabel();
-						semanticLabel.setLabel(StringUtils.replaceNonUtf8(label.getLabel()));
-						if (labelGroup.startsWith("dom"))
-							semanticLabel.setType(ELabelTypeSemantics.domain);
-						else
-						if (labelGroup.startsWith("reg") || labelGroup.startsWith("dia"))
-							semanticLabel.setType(ELabelTypeSemantics.regionOfUsage);
-						else
-						if (labelGroup.startsWith("phas") || labelGroup.startsWith("strat") || labelGroup.startsWith("eval"))
-							semanticLabel.setType(ELabelTypeSemantics.register);
-						else
-						if (labelGroup.startsWith("temp"))
-							semanticLabel.setType(ELabelTypeSemantics.timePeriodOfUsage);
-						else
-						if (labelGroup.startsWith("freq") || labelGroup.startsWith("norm"))
-							semanticLabel.setType(ELabelTypeSemantics.usage);
-						else
-							continue;
+					SyntacticBehaviour sb = new SyntacticBehaviour();
+					sb.setSubcategorizationFrame(subcatFrame);
+					sb.setId(getResourceAlias() + "_SyntacticBehaviour_" + (syntacticBehaviourIdx++));
+					sb.setSense(sense);
+					if (entry.getSyntacticBehaviours() == null)
+						entry.setSyntacticBehaviours(new LinkedList<SyntacticBehaviour>());
+					entry.getSyntacticBehaviours().add(sb);*/
+				} else
+				if ("syntax:gram:nounClass".equals(labelGroup)) {
+					// SemanticLabel:semanticNounClass.
+					SemanticLabel semanticLabel = new SemanticLabel();
+					semanticLabel.setLabel(StringUtils.replaceNonUtf8(label.getStandardizedLabel()));
+					semanticLabel.setType(ELabelTypeSemantics.semanticNounClass);
+					result.add(semanticLabel);
+				} else
+				if ("syntax:gram:usage".equals(labelGroup)) {
+					// SemanticLabel:usage.
+					SemanticLabel semanticLabel = new SemanticLabel();
+					semanticLabel.setLabel(StringUtils.replaceNonUtf8(label.getStandardizedLabel()));
+					semanticLabel.setType(ELabelTypeSemantics.usage);
+					result.add(semanticLabel);
+				} else {
+					// Semantic labels.
+					SemanticLabel semanticLabel = new SemanticLabel();
+					semanticLabel.setLabel(StringUtils.replaceNonUtf8(label.getLabel()));
+					if (labelGroup.startsWith("dom"))
+						semanticLabel.setType(ELabelTypeSemantics.domain);
+					else
+					if (labelGroup.startsWith("reg") || labelGroup.startsWith("dia"))
+						semanticLabel.setType(ELabelTypeSemantics.regionOfUsage);
+					else
+					if (labelGroup.startsWith("phas") || labelGroup.startsWith("strat") || labelGroup.startsWith("eval"))
+						semanticLabel.setType(ELabelTypeSemantics.register);
+					else
+					if (labelGroup.startsWith("temp"))
+						semanticLabel.setType(ELabelTypeSemantics.timePeriodOfUsage);
+					else
+					if (labelGroup.startsWith("freq") || labelGroup.startsWith("norm"))
+						semanticLabel.setType(ELabelTypeSemantics.usage);
+					else
+						continue;
 
-						result.add(semanticLabel);
-					}
-				// TODO: Additional labels: etym;request;syntax:form;syntax:pos
+					result.add(semanticLabel); //TODO: standardize
+				}
+				// TODO: Additional labels: etym request syntax:form syntax:pos syntax:gram
 			}
+			
+			// Save subcategorization frames.
+			if (subcatLabels.isEmpty() && lexemeProperty != null)
+				subcatLabels.add("");
+			for (String subcatLabel : subcatLabels) {
+				SubcategorizationFrame subcatFrame = new SubcategorizationFrame();
+				subcatFrame.setId(getResourceAlias() + "_SubcatFrame_" + (subcatFrameIdx++));
+				subcatFrame.setSubcatLabel(subcatLabel);
+				subcatFrame.setLexemeProperty(lexemeProperty);
+				subcatFrames.add(subcatFrame);
+
+				SyntacticBehaviour sb = new SyntacticBehaviour();
+				sb.setSubcategorizationFrame(subcatFrame);
+				sb.setId(getResourceAlias() + "_SyntacticBehaviour_" + (syntacticBehaviourIdx++));
+				sb.setSense(sense);
+				if (entry.getSyntacticBehaviours() == null)
+					entry.setSyntacticBehaviours(new LinkedList<SyntacticBehaviour>());
+				entry.getSyntacticBehaviours().add(sb);	
+			}
+			
 		}
 		return result;
 	}
@@ -779,8 +833,6 @@ public class OntoWiktionaryTransformer extends LMFDBTransformer {
 		// If we haven't started yet, initialize the iterator.
 		if (synsetIter == null)
 			try {
-//tx.rollback();session.close();session = sessionFactory.openSession();tx = session.beginTransaction();
-				//synsetIter = ontoWiktionary.getConcepts().iterator(); //This is probelmatic!
 				synsetIter = ontoWiktionary.getStreamedConcepts().iterator();
 			} catch (Exception e) {
 				throw new RuntimeException(e);
