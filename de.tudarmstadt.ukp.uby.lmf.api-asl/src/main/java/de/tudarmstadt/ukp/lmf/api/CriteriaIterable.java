@@ -30,20 +30,20 @@ import org.hibernate.criterion.DetachedCriteria;
  *
  * @param <T> Class of the object that is iterated
  */
-public class CriteriaIterable<T> implements Iterable<T>{
+public class CriteriaIterable<T> implements Iterable<T> {
 	
 	private int bufferSize;
 	private DetachedCriteria criteria;
 	private SessionFactory sessionFactory;
 
 	public CriteriaIterable(DetachedCriteria criteria, SessionFactory sessionFactory, int bufferSize){
-		this.bufferSize = bufferSize;
+		this.criteria = criteria;
 		this.sessionFactory = sessionFactory;
+		this.bufferSize = bufferSize;
 	}
 	
 	@Override
-	public Iterator<T> iterator() {
-		
+	public Iterator<T> iterator() {		
 		return new CriteriaIterator<T>(criteria, sessionFactory, bufferSize);
 	}
 	

@@ -306,7 +306,7 @@ public class OntoWiktionary {
 
 						@Override
 						public void remove() {
-							new UnsupportedOperationException("Iterator<OntoWiktionaryConcept>.remove()");
+							throw new UnsupportedOperationException("Iterator<OntoWiktionaryConcept>.remove()");
 						}
 
 

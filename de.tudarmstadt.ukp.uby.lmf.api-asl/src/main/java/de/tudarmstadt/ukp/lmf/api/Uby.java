@@ -1245,7 +1245,7 @@ public class Uby
     protected void finalize()
 		throws Throwable
 	{
-		dbConfig = null;
+		//dbConfig = null; -- FindBugs: This finalizer nulls out fields. This is usually an error, as it does not aid garbage collection, and the object is going to be garbage collected anyway.
 		session.close();
 	}
 }
