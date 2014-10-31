@@ -19,8 +19,6 @@ package de.tudarmstadt.ukp.lmf.model.enums;
 
 /**
  * Enumeration of unique language identifiers specified in ISO 639.
- * @author Zijad Maksuti
- * @author Christian M. Meyer
  */
 public final class ELanguageIdentifier {
 

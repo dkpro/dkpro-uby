@@ -17,13 +17,23 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.enums;
 
+import de.tudarmstadt.ukp.lmf.model.morphology.WordForm;
+
 /**
- * Enumerator of grammatical genders of {@link WordForm}.
- * @author Zijad Maksuti
- *
+ * Enumeration of grammatical genders of a {@link WordForm}.
  */
 public enum EGrammaticalGender {
+	
+	/** Feminine gender.
+	 *  ISOcat: http://www.isocat.org/datcat/DC-3197 */
 	feminine,
+
+	/** Masculine gender.
+	 *  ISOcat: http://www.isocat.org/datcat/DC-3312 */
 	masculine,
-	neuter
+	
+	/** Neuter.
+	 *  ISOcat: http://www.isocat.org/datcat/DC-3336 */
+	neuter;
+
 }

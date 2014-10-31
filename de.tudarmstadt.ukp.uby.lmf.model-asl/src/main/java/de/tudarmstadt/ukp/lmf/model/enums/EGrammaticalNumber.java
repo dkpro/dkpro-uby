@@ -17,16 +17,19 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.enums;
 
+import de.tudarmstadt.ukp.lmf.model.morphology.WordForm;
+
 /**
- * Enumerator for grammatical numbers.<p>
- * 
- * <i>In many languages,
- * the grammatical distinction that indicates the number of objects 
- * referred to by the term or word.</i>
- * @author Zijad Maksuti
- *
+ * Enumeration of grammatical numbers of a {@link WordForm}.
  */
 public enum EGrammaticalNumber {
+	
+	/** Singular form.
+	 *  ISOcat: http://www.isocat.org/datcat/DC-252 */
 	singular,
-	plural
+
+	/** Plural form.
+	 *  ISOcat: http://www.isocat.org/datcat/DC-253 */
+	plural;
+	
 }

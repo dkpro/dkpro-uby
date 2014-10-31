@@ -27,11 +27,13 @@ import de.tudarmstadt.ukp.lmf.model.morphology.WordForm;
  *
  */
 public enum EVerbFormMood {
+	
 	infinitive,
 	infinitiveZu,
 	participle,
 	indicative,
 	subjunctive,
 	imperative,
-	ingForm
+	ingForm;
+
 }

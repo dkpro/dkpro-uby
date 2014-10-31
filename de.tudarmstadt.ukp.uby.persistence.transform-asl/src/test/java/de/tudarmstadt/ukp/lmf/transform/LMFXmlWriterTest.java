@@ -152,7 +152,7 @@ public class LMFXmlWriterTest {
 	private static final EPerson wordForm_person = EPerson.third;
 	private static final ETense wordForm_tense = ETense.present;
 	private static final EVerbFormMood wordForm_verbFormMoode = EVerbFormMood.imperative;
-	private static final EDegree wordForm_degree = EDegree.SUPERLATIVE;
+	private static final EDegree wordForm_degree = EDegree.superlative;
 	
 	private static final String frequency_corpus = "frequency_corpus";
 	private static final int frequency_frequancy = 12345;

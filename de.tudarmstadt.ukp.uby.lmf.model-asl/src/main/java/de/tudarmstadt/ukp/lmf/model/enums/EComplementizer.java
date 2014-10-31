@@ -18,15 +18,13 @@
 package de.tudarmstadt.ukp.lmf.model.enums;
 
 /**
- * Enumeration of different complementizers.<p>
- * 
- * A complementizer is a connective which marks a complement clause.
- * 
- * @author Zijad Maksuti
- *
+ * Enumeration of different complementizers. A complementizer is a 
+ * connective which marks a complement clause.
  */
 public enum EComplementizer {
+
 	thatType,
 	whType,
-	yesNoType
+	yesNoType;
+	
 }

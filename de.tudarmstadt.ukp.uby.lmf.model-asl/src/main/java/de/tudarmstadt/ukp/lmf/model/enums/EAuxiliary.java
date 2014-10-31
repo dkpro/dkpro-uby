@@ -19,18 +19,15 @@ package de.tudarmstadt.ukp.lmf.model.enums;
 
 /**
  * Enumeration of auxiliary verbs.
- * @author Zijad Maksuti
- *
  */
 public enum EAuxiliary {
 	
-	/**
-	 * German auxiliary verb <i>"to have"</i>
-	 */
+	/** German auxiliary verb <i>haben</i>.
+	 *  ISOcat: http://www.isocat.org/datcat/DC-1299 */
 	haben,
 	
-	/**
-	 * German auxiliary verb <i>"to be"</i>
-	 */
-	sein
+	/** German auxiliary verb <i>sein</i>.
+	 *  ISOcat: http://www.isocat.org/datcat/DC-1246 */
+	sein;
+
 }

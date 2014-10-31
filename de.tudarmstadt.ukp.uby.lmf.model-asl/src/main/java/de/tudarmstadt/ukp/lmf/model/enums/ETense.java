@@ -17,14 +17,23 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.enums;
 
+import de.tudarmstadt.ukp.lmf.model.morphology.WordForm;
+import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticArgument;
+
 /**
- * Enumeration of tenses.<br>
- * Tense is the grammaticalisation of location in time.
- * 
- * @author Zijad Maksuti
- *
+ * Enumeration of the grammatical tense of a {@link WordForm} or
+ * {@link SyntacticArgument}.
  */
 public enum ETense {
+	
+	/** Present tense.
+	 *  ISOcat: http://www.isocat.org/datcat/DC-3421 */
 	present,
-	past
+
+	/** Past tense.
+	 *  ISOcat: http://www.isocat.org/datcat/DC-3378 */
+	past;
+
+	//TODO: future
+	
 }

@@ -305,10 +305,10 @@ public class OntoWiktionaryTransformer extends LMFDBTransformer {
 				if ("Prät.".equals(pronunciation.getNote()))
 					wordForm.setTense(ETense.past);
 				if ("Komp.".equals(pronunciation.getNote()))
-					wordForm.setDegree(EDegree.COMPARATIVE);
+					wordForm.setDegree(EDegree.comparative);
 				else
 				if ("Sup.".equals(pronunciation.getNote()))
-					wordForm.setDegree(EDegree.SUPERLATIVE);
+					wordForm.setDegree(EDegree.superlative);
 				if ("Part.".equals(pronunciation.getNote())) {
 					wordForm.setVerbFormMood(EVerbFormMood.participle);
 					wordForm.setTense(ETense.past); // Partizip II

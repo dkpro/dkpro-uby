@@ -18,10 +18,8 @@
 package de.tudarmstadt.ukp.lmf.model.enums;
 
 /**
- * Enumeration of possible relation types specified by an instance of {@link RelatedForm} class.
- * 
- * @author Zijad Maksuti
- * 
+ * Enumeration of possible relation types specified by an instance of 
+ * {@link RelatedForm} class.
  */
 public enum ERelTypeMorphology {
 	etymology,

@@ -19,13 +19,13 @@ package de.tudarmstadt.ukp.lmf.model.enums;
 
 /**
  * Enumeration of different types of a {@link Statement} instance.
- * @author Zijad Maksuti
- *
  */
 public enum EStatementType {
+	
 	usageNote,
 	encyclopedicInformation,
 	etymology,
 	backgroundText,
-	externalReference
+	externalReference;
+
 }
