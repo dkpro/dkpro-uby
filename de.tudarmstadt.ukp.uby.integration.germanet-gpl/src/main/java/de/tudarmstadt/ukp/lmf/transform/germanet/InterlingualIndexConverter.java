@@ -93,7 +93,6 @@ public class InterlingualIndexConverter {
 		synsetGenerator.initialize();
 
 		List<IliRecord> iliRecords = gnet.getIliRecords();
-
 		int synsetAlignmentCounter = 0;
 		int senseAlignmentCounter = 0;
 
@@ -101,9 +100,7 @@ public class InterlingualIndexConverter {
 		for(IliRecord iliRecord : iliRecords){
 
 			EwnRel relation = iliRecord.getEwnRelation();
-
-			if(relation.equals("synonym")){
-
+			if(relation.toString().equals("synonym")){
 				/*
 				 * Only synonyms are converted to sense axes
 				 */
@@ -123,6 +120,7 @@ public class InterlingualIndexConverter {
 				 * targeted by the ILI-record
 				 */
 				 Synset wnUBYSynset = synsetMappings.get(pos).get(offset);
+
 				 if(wnUBYSynset == null){
 					logger.warning("Synset for the given WordNet word could not be found. SenseAxis will not be generated." + iliRecord);
 					continue; // skip
