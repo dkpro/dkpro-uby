@@ -70,7 +70,7 @@
 			<dependency>
 				<groupId>de.tudarmstadt.ukp.uby</groupId>
 				<artifactId>de.tudarmstadt.ukp.uby-model-data-en-light</artifactId>
-				<version>20140801.1</version>
+				<version>20141105.1</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
