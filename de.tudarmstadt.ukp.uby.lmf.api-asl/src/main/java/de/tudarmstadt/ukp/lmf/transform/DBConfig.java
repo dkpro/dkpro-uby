@@ -251,7 +251,7 @@ public class DBConfig
     
     public String getDBType()
     {
-    	if (db_vendor.equals("org.h2.Driver") || db_vendor.equals(UBYH2Dialect.class.getName())) {
+    	if (db_vendor.equals("h2") || db_vendor.equals(UBYH2Dialect.class.getName())) {
     		return H2;
     	}
 		else {
