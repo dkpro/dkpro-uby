@@ -4,7 +4,7 @@
   <parent>
     <groupId>de.tudarmstadt.ukp.uby</groupId>
     <artifactId>de.tudarmstadt.ukp.uby</artifactId>
-    <version>0.6.0</version>
+    <version>0.7.0-SNAPSHOT</version>
   </parent>
   <artifactId>de.tudarmstadt.ukp.uby.testing-asl</artifactId>
   <name>Testing: API testing with in-memory DB</name>

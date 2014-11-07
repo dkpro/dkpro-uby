@@ -20,7 +20,7 @@
 	<parent>
 		<artifactId>de.tudarmstadt.ukp.uby</artifactId>
 		<groupId>de.tudarmstadt.ukp.uby</groupId>
-		<version>0.6.0</version>
+		<version>0.7.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>de.tudarmstadt.ukp.uby.integration.wikipedia-asl</artifactId>
 	<name>Integration: Wikipedia</name>
