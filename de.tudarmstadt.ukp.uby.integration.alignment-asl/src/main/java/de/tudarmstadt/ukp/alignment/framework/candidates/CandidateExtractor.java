@@ -17,10 +17,14 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.alignment.framework.candidates;
 
+import java.io.BufferedReader;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.HashSet;
 
 import de.tudarmstadt.ukp.alignment.framework.Global;
 import de.tudarmstadt.ukp.alignment.framework.graph.OneResourceBuilder;
@@ -49,9 +53,9 @@ public class CandidateExtractor
 			bg_1.fillIndexTables();
 
 			/*RESOURCE 2*/
-			boolean synset2 = true;
+			boolean synset2 = false;
 			boolean usePos2 = true;
-			final int prefix2 = Global.OW_EN_Synset_prefix;
+			final int prefix2 = Global.WKT_EN_prefix;
 			OneResourceBuilder bg_2 = new OneResourceBuilder("uby_release_1_0","root","fortuna", prefix2,language,synset2,usePos2);
 			bg_2.fillIndexTables();
 
@@ -61,7 +65,10 @@ public class CandidateExtractor
 			/*Calculate alignment candidates between the two LSRs*/
 			/*Index tables must be filled at this point*/
 
-			createCandidateFileFull(bg_1, bg_2);
+	//	Global.processExtRefGoldstandardFileWKTWP(bg_1, bg_2, "target/ijcnlp2011-meyer-dataset.txt", true);
+	//	createCandidateFileFull(bg_1, bg_2);
+	//	createCandidateFileGoldStandard(bg_1, bg_2, "target/ijcnlp2011-meyer-dataset_graph.csv",false);
+	//	createCandidateFileLemmaList(bg_1, bg_2, "target/lemmas.tsv");
 
 
 
@@ -81,7 +88,7 @@ public class CandidateExtractor
 		int count = 0;
 		FileOutputStream outstream;
 		PrintStream p;
-		outstream = new FileOutputStream("target/"+gb1.prefix_string+"_"+gb2.prefix_string+"_candidates_"+(gb2.pos ? "Pos": "noPos"));
+		outstream = new FileOutputStream("target/"+gb1.prefix_string+"_"+gb2.prefix_string+"_candidates_"+(gb2.pos ? "Pos": "noPos")+".txt");
 		p = new PrintStream( outstream );
 		for(String lemmaPos: gb1.lemmaPosSenses.keySet())
 		{
@@ -119,25 +126,156 @@ public class CandidateExtractor
 	p.print(sb.toString());
 	p.close();
 	}
-
-	public static void createCandidateFileLemmaList(OneResourceBuilder gb1, OneResourceBuilder gb2,String input, String output) throws ClassNotFoundException, SQLException, IOException
+	/**
+	 * This method creates a list of alignment candidates (those with matching lemma and POS) from a given list 
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	public static void createCandidateFileLemmaList(OneResourceBuilder gb1, OneResourceBuilder gb2,String input) throws ClassNotFoundException, SQLException, IOException
 	{
-		/*TODO
-		 * 
-		 * Here a candidate file based on a list of lemmas will be created, i.e. for each lemma all senses in both resources will be extracted and considered as alignment candidates
-		 * 
-		 * 
-		 * 
-		 * */
+		
+		HashMap<String, String> lemmaPosList = new HashMap<String,String>();
+		
+
+		FileReader in = new FileReader(input);
+		BufferedReader input_reader =  new BufferedReader(in);
+		String line;
+	
+		while((line =input_reader.readLine())!=null)
+		{
+			lemmaPosList.put(line.split("\t")[0],line.split("\t")[1]);
+		}
+		
+		StringBuilder sb = new StringBuilder();
+		int count = 0;
+		FileOutputStream outstream;
+		PrintStream p;
+		outstream = new FileOutputStream("target/"+gb1.prefix_string+"_"+gb2.prefix_string+"_LemmaListCandidates_"+(gb2.pos ? "Pos": "noPos")+".txt");
+		p = new PrintStream( outstream );
+		for(String lemmaPos: gb1.lemmaPosSenses.keySet())
+		{
+			String lemma = lemmaPos.split("#")[0];
+			String pos = lemmaPos.split("#")[1];
+			System.out.println(lemma);
+			System.out.println(pos);
+			if(!(lemmaPosList.containsKey(lemma) && lemmaPosList.get(lemma).equals(pos)))
+				continue;
+			if(gb2.pos) {
+				if(gb2.lemmaPosSenses.get(lemmaPos)!= null)
+				{
+					for(String id1 :gb1.lemmaPosSenses.get(lemmaPos))
+					{
+						for(String id2 :gb2.lemmaPosSenses.get(lemmaPos))
+						{
+							sb.append("q "+id1+" "+id2+""+Global.LF);
+							count++;
+						}
+					}
+				}
+			}
+			else
+			{
+		
+				if(gb2.lemmaPosSenses.get(lemma)!= null)
+				{
+					for(String id1 :gb1.lemmaPosSenses.get(lemmaPos))
+					{
+						for(String id2 :gb2.lemmaPosSenses.get(lemma))
+						{
+							sb.append("q "+id1+" "+id2+""+Global.LF);
+							count++;
+						}
+					}
+				}
+			}
+
+		}
+	p.println("p aux sp p2p "+count);
+	p.print(sb.toString());
+	p.close();
 	}
 
-	public static void createCandidateFileGoldStandard(OneResourceBuilder gb1, OneResourceBuilder gb2,String input, String output) throws ClassNotFoundException, SQLException, IOException
+	
+	/**
+	 * This method extracts the possible alignment candidates from a gold standard file
+	 * 
+	 * 
+	 * 
+	 * @param checkIntegrity This parameter toggles if the gold standard should be checked for correctness of lemma/POS combinations. If unchecked, the GS is just output in the correct format
+	 */
+	public static void createCandidateFileGoldStandard(OneResourceBuilder gb1, OneResourceBuilder gb2,String input, boolean checkIntegrity) throws ClassNotFoundException, SQLException, IOException
 	{
-		/*TODO
-		 * 
-		 * Here a candidate file based on gold standard will be created
-		 * 
-		 * */
+
+
+		int count = 0;
+		HashSet<String> candidates = new HashSet<String>();
+		FileReader in = new FileReader(input);
+		BufferedReader input_reader =  new BufferedReader(in);
+		String line;
+		StringBuilder sb = new StringBuilder();
+		while((line =input_reader.readLine())!=null)
+		{
+			if(checkIntegrity)
+			{
+				candidates.add(line.split("\t")[0]+"###"+line.split("\t")[1]);
+			}
+			else
+			{
+				sb.append("q "+line.split("\t")[0]+"\t"+line.split("\t")[1]+""+Global.LF);
+				count++;
+			}
+		}
+			
+		FileOutputStream outstream;
+		PrintStream p;
+		outstream = new FileOutputStream("target/"+gb1.prefix_string+"_"+gb2.prefix_string+"_GScandidates_"+(!checkIntegrity? "noCheck":(gb2.pos ? "Pos": "noPos"))+".txt");
+		p = new PrintStream( outstream );
+		if(checkIntegrity)
+		{
+		for(String lemmaPos: gb1.lemmaPosSenses.keySet())
+		{
+			if(gb2.pos) {
+				if(gb2.lemmaPosSenses.get(lemmaPos)!= null)
+				{
+					for(String id1 :gb1.lemmaPosSenses.get(lemmaPos))
+					{
+						for(String id2 :gb2.lemmaPosSenses.get(lemmaPos))
+						{
+							if(candidates.contains(id1+"###"+id2))
+							{
+								sb.append("q "+id1+" "+id2+""+Global.LF);
+								count++;
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				String lemma = lemmaPos.split("#")[0];
+				if(gb2.lemmaPosSenses.get(lemma)!= null)
+				{
+					for(String id1 :gb1.lemmaPosSenses.get(lemmaPos))
+					{
+						for(String id2 :gb2.lemmaPosSenses.get(lemma))
+						{
+							if(candidates.contains(id1+"###"+id2))
+							{
+								sb.append("q "+id1+" "+id2+""+Global.LF);
+								count++;
+							}
+						}
+					}
+				}
+			}
+
+		}
+		}
+	p.println("p aux sp p2p "+count);
+	p.print(sb.toString());
+	p.close();
 	}
 
 
