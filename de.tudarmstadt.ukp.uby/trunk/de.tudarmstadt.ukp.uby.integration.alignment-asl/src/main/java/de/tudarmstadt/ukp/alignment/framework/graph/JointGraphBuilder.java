@@ -48,7 +48,7 @@ public class JointGraphBuilder
 			boolean synset1 = true;
 			boolean usePos1 = true;
 
-			//Chose the resource we want to align by selecting the apporpriate prefixes
+			//Chose the resource we want to align by selecting the appropriate prefixes
 
 			 int prefix1 = Global.WN_Synset_prefix;
 			 String prefix_string1 = Global.prefixTable.get(prefix1);				
@@ -61,44 +61,45 @@ public class JointGraphBuilder
 					
 			 //Build the resource by using the appropriate databases	
 			 
-		    OneResourceBuilder bg_1 = new OneResourceBuilder("uby_release_1_0","root","fortuna", prefix1,language,synset1,usePos1);
+		    OneResourceBuilder bg_1 = new OneResourceBuilder("uby_wordnet31","root","fortuna", prefix1,language,synset1,usePos1);
 		
 			//Create text files with glosses for the two resources, and do POS tagging
 					    
-			bg_1.createGlossFile(false);
-			bg_1.lemmatizePOStagGlossFileInChunks(chunksize1);
+//			bg_1.createGlossFile(false);
+//			bg_1.lemmatizePOStagGlossFileInChunks(chunksize1);
 			
 			// Fill the index, build graphs from the relations and the monosemous linking - merge in the end
-			bg_1.fillIndexTables();
-			bg_1.builtRelationGraphFromDb(false);
-			bg_1.createMonosemousLinks(monoLinkThreshold1);
-			Global.mergeTwoGraphs(prefix_string1+"_"+(synset1?"synset":"sense")+"_relationgraph.txt" ,
-					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_monosemousLinks"+"_"+monoLinkThreshold1+".txt",
-					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold1+".txt");
-
+		//	bg_1.fillIndexTables();
+//			bg_1.builtRelationGraphFromDb(false);
+//			bg_1.createMonosemousLinks(monoLinkThreshold1);
+//			Global.mergeTwoGraphs(prefix_string1+"_"+(synset1?"synset":"sense")+"_relationgraph.txt" ,
+//					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_monosemousLinks"+"_"+monoLinkThreshold1+".txt",
+//					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold1+".txt");
+//
 
 
 
 			/*RESOURCE 2*/
 			
-			boolean synset2 = true;
+			boolean synset2 = false;
 			boolean usePos2 = true;
-			final int prefix2 = Global.OW_EN_Synset_prefix;
+			final int prefix2 = Global.WKT_EN_prefix;
 			final String prefix_string2 = Global.prefixTable.get(prefix2);
-			final int monoLinkThreshold2 = 500;
-			final int chunksize2 = 1000;
+			final int monoLinkThreshold2 = 2000;
+			final int chunksize2 = 2000;
 			OneResourceBuilder bg_2 = new OneResourceBuilder("uby_release_1_0","root","fortuna",prefix2,language,synset2,usePos2);
 
 	
-			bg_2.createGlossFile(false);
-			bg_2.lemmatizePOStagGlossFileInChunks(chunksize2);
+		//	bg_2.createGlossFile(false);
+			//bg_2.lemmatizePOStagGlossFileInChunks(chunksize2);
 			bg_2.fillIndexTables();
-			bg_2.builtRelationGraphFromDb(false);
-			bg_2.createMonosemousLinks(monoLinkThreshold2);
+		//	boolean filter = true;
+ 		//	bg_2.builtRelationGraphFromDb(filter);
+		//	bg_2.createMonosemousLinks(monoLinkThreshold2);
 
-			Global.mergeTwoGraphs(prefix_string2+"_"+(synset2?"synset":"sense")+"_relationgraph.txt" ,
-					prefix_string2+"_"+(synset2?"synset":"sense")+"_"+(usePos2 ? "Pos":"noPos")+"_monosemousLinks"+"_"+monoLinkThreshold2+".txt",
-					prefix_string2+"_"+(synset2?"synset":"sense")+"_"+(usePos2 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold2+".txt");
+//			Global.mergeTwoGraphs(prefix_string2+"_"+(synset2?"synset":"sense")+"_relationgraph.txt" ,
+//					prefix_string2+"_"+(synset2?"synset":"sense")+"_"+(usePos2 ? "Pos":"noPos")+"_monosemousLinks"+"_"+monoLinkThreshold2+".txt",
+//					prefix_string2+"_"+(synset2?"synset":"sense")+"_"+(usePos2 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold2+".txt");
 
 
 			/*Merge the two graphs*/
@@ -106,6 +107,7 @@ public class JointGraphBuilder
 			Global.mergeTwoGraphs(
 					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold1+".txt",
 					prefix_string2+"_"+(synset2?"synset":"sense")+"_"+(usePos2 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold2+".txt",
+				//	prefix_string2+"_"+(synset2?"synset":"sense")+"_relationgraph"+(filter ? "_filtered":"")+".txt",
 					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold1
 					+"_MERGED_"+
 					prefix_string2+"_"+(synset2?"synset":"sense")+"_"+(usePos2 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold2+".txt"

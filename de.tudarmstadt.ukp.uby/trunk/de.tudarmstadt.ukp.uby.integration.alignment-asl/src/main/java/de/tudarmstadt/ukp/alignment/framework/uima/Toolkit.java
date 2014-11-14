@@ -365,7 +365,7 @@ public class Toolkit
 			//		AnalysisEngineDescription pos = createEngineDescription(StanfordPosTagger.class	);
 			  	AnalysisEngineDescription pos = createEngineDescription(OpenNlpPosTagger.class	);
 					HashSet<String> swords = new HashSet<String>();
-					 swords.add("/home/matuschek/UBY_HOME/resources/snowball_english_stopwords.txt");
+					 swords.add("resources/stopwords_english_punctuation.txt");
 			AnalysisEngineDescription sw = createEngineDescription(StopWordRemover.class,
 				StopWordRemover.PARAM_STOP_WORD_LIST_FILE_NAMES,  swords
 					//StopWordRemover.PARAM_STOP_WORD_LIST_FILE_NAMES, new String[]{"/home/matuschek/UBY_HOME/resources/snowball_english_stopwords.txt"}
