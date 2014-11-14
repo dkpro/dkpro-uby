@@ -59,8 +59,8 @@ public class Global
 		prefixTableLong.put(Global.GN_Sense_prefix, "GN_Sense_");
 		prefixTableLong.put(Global.WN_Synset_prefix, "WN_Synset_");
 		prefixTableLong.put(Global.WN_Sense_prefix, "WN_Sense_");
-		prefixTableLong.put(Global.WKT_EN_prefix, "WktEn_Sense_");
-		prefixTableLong.put(Global.WKT_DE_prefix, "WktDe_Sense_");
+		prefixTableLong.put(Global.WKT_EN_prefix, "WktEN_sense_");
+		prefixTableLong.put(Global.WKT_DE_prefix, "WktDN_sense_");
 		prefixTableLong.put(Global.WP_EN_prefix, "WikiEn_sense_");
 		prefixTableLong.put(Global.WP_DE_prefix, "WikiDe_sense_");
 		prefixTableLong.put(Global.OW_EN_Synset_prefix, "OW_en_Synset_");
@@ -258,7 +258,7 @@ public class Global
 		try
 		{
 		String alignment_file= alignmentfile;
-		outstream = new FileOutputStream(alignment_file.replace(".txt", "")+"_"+(graph? "graph": "UbyID")+".txt");
+		outstream = new FileOutputStream(alignment_file.replace(".csv", "")+"_"+(graph? "graph": "UbyID")+".csv");
 		p = new PrintStream( outstream );
 	 FileReader in = new FileReader(alignment_file);
 	 BufferedReader input_reader =  new BufferedReader(in);
@@ -344,5 +344,113 @@ public class Global
 		/*TODO: Create actual SenseAxis instances? NO! Use import class in UBY!*/
 
 	}
+	/**
+	 * This method streamlines proprieatary alignment gold standard files as provided by EW and ChM
+	 * 
+	 * @param graph states whether numerical ids for the graph should be created
+	 * 
+	 * */
+	public static void processExtRefGoldstandardFileWKTWP(OneResourceBuilder gb1, OneResourceBuilder gb2, String alignmentfile, boolean graph)
+	{
+		/*TODO Has to be adapted to new standard - this is a propietary solution for now*/
 
+		int i = 0;
+		FileOutputStream outstream;
+		PrintStream p;
+		try
+		{
+		String alignment_file= alignmentfile;
+		outstream = new FileOutputStream(alignment_file.replace(".txt", "")+"_"+(graph? "graph": "UbyID")+".csv");
+		p = new PrintStream( outstream );
+	 FileReader in = new FileReader(alignment_file);
+	 BufferedReader input_reader =  new BufferedReader(in);
+		 String line;
+		 StringBuilder sb = new StringBuilder();
+		 HashMap<String,String> extRefs1 = new HashMap<String, String>();
+		 HashMap<String,String> extRefs2 = new HashMap<String, String>();
+		 Statement statement= gb1.connection.createStatement();
+		 ResultSet rs = statement.executeQuery("SELECT externalReference, "+(gb1.synset? "synsetId" : "senseId")+" FROM MonolingualExternalRef where "+(gb1.synset? "synsetId" : "senseId")+" like '"+gb1.prefix_string+"%' ");
+			 while(rs.next())
+			 {
+				 extRefs1.put(rs.getString(1),rs.getString(2));
+			 }
+			 statement.close();
+			 statement= gb2.connection.createStatement();
+			 rs = statement.executeQuery("SELECT externalReference, "+(gb2.synset? "synsetId" : "senseId")+" FROM MonolingualExternalRef where "+(gb2.synset? "synsetId" : "senseId")+" like '"+gb2.prefix_string+"%' ");
+			 while(rs.next())
+			 {
+				 extRefs2.put(rs.getString(1),rs.getString(2));
+			 }
+			 statement.close();
+			 rs.close();
+
+		 while((line =input_reader.readLine())!=null)
+		 {
+			if(line.startsWith("#")  )
+			{
+			//	p.println(line);
+				continue;
+			}
+			
+			String[] temp = line.split(" ; ");
+			String id1 = temp[0];
+			String pos = temp[1];
+			if (pos.equals("noun"))
+			{
+				id1 = "[POS: noun] "+id1;
+			}
+			else if (pos.equals("verb"))
+			{
+				id1 = "[POS: verb] "+id1;
+			}
+			else if (pos.equals("adjective"))
+			{
+				id1 = "[POS: adjective] "+id1;
+			}
+			else if (pos.equals("#adverb"))
+			{
+				id1 = "[POS: adverb] "+id1;
+			}
+
+			String id2 = temp[3];
+			String conf = temp[4];
+			System.out.println(id1);
+			System.out.println(id2);
+			String uby_id1 = extRefs1.get(id1);//Global.prefixTableLong.get(Integer.parseInt(id1.substring(0, 2)))+id1.substring(2);
+			String uby_id2 = extRefs2.get(id2);//Global.prefixTableLong.get(Integer.parseInt(id2.substring(0, 2)))+id2.substring(2);
+			System.out.println(uby_id1);
+			System.out.println(uby_id2);
+			if(uby_id1==null || uby_id2 == null) {
+				continue;
+			}
+			if(graph)
+			{
+				
+			System.out.println(uby_id2);				System.out.println(Global.prefixTableLong.get(gb2.prefix));
+				p.println(gb1.prefix+uby_id1.split(Global.prefixTableLong.get(gb1.prefix))[1] 
+						+ "\t" +gb2.prefix+uby_id2.split(Global.prefixTableLong.get(gb2.prefix))[1]+"\t"+conf);
+			}
+			else
+			{
+				p.println(uby_id1+"\t"+uby_id2+"\t"+conf);
+			}
+
+			System.out.println("lines processed "+i++);
+		 }
+		 input_reader.close();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+
+
+		}
+		//CONTINUE HERE
+		/*TODO: Conform to newly defined standard*/
+		/*
+		 *
+		 * */
+		/*TODO: Create actual SenseAxis instances? NO! Use import class in UBY!*/
+
+	}
 }
