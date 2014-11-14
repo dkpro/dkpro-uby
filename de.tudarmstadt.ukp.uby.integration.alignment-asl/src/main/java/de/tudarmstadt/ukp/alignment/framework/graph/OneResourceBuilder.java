@@ -25,6 +25,7 @@ package de.tudarmstadt.ukp.alignment.framework.graph;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -82,7 +83,7 @@ public class OneResourceBuilder
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			connection = DriverManager.getConnection("jdbc:mysql://localhost/"+dbname,user,pass);
-
+			System.out.println(connection.isClosed());
 			this.prefix =prefix;
 			this.prefix_string = Global.prefixTable.get(prefix);
 			this.synset = synset;
@@ -121,7 +122,7 @@ public class OneResourceBuilder
 		if(synset) {
 			rs =	statement.executeQuery("SELECT synsetId,target FROM SynsetRelation where synsetId like '"+prefix_string+"%'");
 		}
-		else { //Special handling of FrameNet, as relations are expresseddifferently here 
+		else { //Special handling of FrameNet, as relations are expressed differently here 
 			if(prefix == Global.FN_prefix)
 			{
 				rs =	statement.executeQuery("SELECT distinct pr1.senseId, pr2.senseId FROM PredicativeRepresentation pr1  join PredicativeRepresentation pr2 where pr1.predicate = pr2.predicate and  pr1.senseId like 'FN%' and pr2.senseId like 'FN%' and pr1.senseId != pr2.senseId");
@@ -139,7 +140,7 @@ public class OneResourceBuilder
 			String id1 = rs.getString(1);
 			String id2 = rs.getString(2);
 	//		System.out.println(id1+" "+id2);
-			System.out.println(count+=1);
+		//	System.out.println(count);
 			if(id2 == null) {
 				continue;
 			}
@@ -155,7 +156,11 @@ public class OneResourceBuilder
 			}
 			//HashSet<String> lemmas1 = senseIdLemma.get(id1);
 			HashSet<String> lemmas2 = senseIdLemma.get(id2);
-			String gloss1 = senseIdGlossPos.get(id1);
+			String gloss1;
+			if(filterByGloss)
+				gloss1 = senseIdGloss.get(id1);
+			else
+				gloss1 = senseIdGlossPos.get(id1);
 			if(gloss1 == null) {
 				gloss1 = "";
 			}
@@ -684,7 +689,27 @@ public class OneResourceBuilder
 	public void fillIndexTables() throws ClassNotFoundException, SQLException, IOException
 		{
 			String prefix_string  = Global.prefixTable.get(prefix);
+			Statement statement = connection.createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY, java.sql.ResultSet.CONCUR_READ_ONLY);
+			statement.setFetchSize(Integer.MIN_VALUE);
+			
+			int count =0;
 
+			if(lemmaIdWrittenForm == null || lemmaIdWrittenForm.size()==0)
+			{	
+			
+				
+		
+			ResultSet rs =	statement.executeQuery("select distinct LexicalEntry.lemmaId,writtenForm from FormRepresentation_Lemma join LexicalEntry where LexicalEntry.lexicalEntryId like '"+prefix_string+"%' and LexicalEntry.lemmaId = FormRepresentation_Lemma.lemmaId");
+			
+			while(rs.next())
+			{
+				String lemmaId = rs.getString(1);
+				String writtenForm = rs.getString(2);
+						lemmaIdWrittenForm.put(lemmaId,writtenForm);
+				
+			}
+			rs.close();
+			}
 
 			if(lemmaFreqInGlosses.size()==0) {
 				lemmaFreqInGlosses = new TreeMap<String, Integer>();
@@ -701,9 +726,11 @@ public class OneResourceBuilder
 
 			}
 			System.out.println("Lemma frequencies filled for "+this.prefix_string);
-
+			try
+			{
 			if(lexemeFreqInGlosses.size()==0) {
 				lexemeFreqInGlosses = new TreeMap<String, Integer>();
+				
 				 FileReader in = new FileReader("target/"+prefix_string+"_"+(synset?"synset":"sense")+"_lexeme_frequencies.txt");
 				 BufferedReader input_reader =  new BufferedReader(in);
 				 String line;
@@ -719,6 +746,12 @@ public class OneResourceBuilder
 
 			}
 			System.out.println("Lexeme frequencies filled for "+this.prefix_string);
+			}
+			catch(FileNotFoundException nfe)
+			{
+				System.err.println("Lexeme frequencies not found, skipped");
+			}
+			
 			if(senseIdGloss == null || senseIdGloss.size()==0) {
 				senseIdGloss = new TreeMap<String, String>();
 				 FileReader in = new FileReader("target/"+prefix_string+"_"+(synset?"synset":"sense")+"_glosses.txt");
@@ -738,7 +771,8 @@ public class OneResourceBuilder
 			}
 		
 			System.out.println("Glosses filled for "+this.prefix_string);
-
+			try
+			{
 			if(senseIdGlossPos == null || senseIdGlossPos.size()==0) {
 				senseIdGlossPos = new TreeMap<String, String>();
 				 FileReader in = new FileReader("target/"+prefix_string+"_"+(synset?"synset":"sense")+"_glosses_tagged.txt");
@@ -758,23 +792,15 @@ public class OneResourceBuilder
 
 			}
 			System.out.println("Tagged glosses filled for "+this.prefix_string);
-
-			Statement statement = connection.createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY, java.sql.ResultSet.CONCUR_READ_ONLY);
-			statement.setFetchSize(Integer.MIN_VALUE);
-			
-			if(lemmaIdWrittenForm == null || lemmaIdWrittenForm.size()==0)
-			{	
-		
-			ResultSet rs =	statement.executeQuery("select distinct LexicalEntry.lemmaId,writtenForm from FormRepresentation_Lemma join LexicalEntry where LexicalEntry.lexicalEntryId like '"+prefix_string+"%' and LexicalEntry.lemmaId = FormRepresentation_Lemma.lemmaId");
-			while(rs.next())
+			}
+			catch(FileNotFoundException nfe)
 			{
-				String lemmaId = rs.getString(1);
-				String writtenForm = rs.getString(2);
-
-				lemmaIdWrittenForm.put(lemmaId,writtenForm);
-			}
+				System.err.println("Tagged glosses not found, skipped");
 			}
 			
+			
+			
+			count = 0;
 			if(lemmaPosSenses == null || lemmaPosSenses.size()==0) {
 			
 			ResultSet rs =	statement.executeQuery("select distinct lemmaId,partOfSpeech, "+ (synset ? "synsetId" : "senseId") +" from LexicalEntry join Sense where LexicalEntry.lexicalEntryId like '"+prefix_string+"%' and LexicalEntry.lexicalEntryId = Sense.lexicalEntryId");
@@ -797,6 +823,7 @@ public class OneResourceBuilder
 				if(lemma == null) {
 					continue;
 				}
+				if(count++%1000==0) System.out.println(count);
 				String key = "";
 				if(pos) {
 
@@ -826,10 +853,10 @@ public class OneResourceBuilder
 
 
 			}
-			for(String key : lemmaPosSenses.keySet())
-			{
-				System.out.println(key+" "+lemmaPosSenses.get(key).size());
-			}
+//			for(String key : lemmaPosSenses.keySet())
+//			{
+//				System.out.println(key+" "+lemmaPosSenses.get(key).size());
+//			}
 			rs.close();
 			statement.close();
 			System.out.println("Lexeme-sense map filled for "+this.prefix_string);

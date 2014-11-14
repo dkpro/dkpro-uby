@@ -59,38 +59,38 @@ public class GlossSimilarityCalculator
 
 			final int chunksize1 = 2000;
 
-			bg_1.createGlossFile(false);
-			bg_1.lemmatizePOStagGlossFileInChunks(chunksize1);
+//			bg_1.createGlossFile(false);
+//			bg_1.lemmatizePOStagGlossFileInChunks(chunksize1);
 			bg_1.fillIndexTables();
 
 
 			/*RESOURCE 2*/
-			boolean synset2 = true;
+			boolean synset2 = false;
 			boolean usePos2 = true;
-			final int prefix2 = Global.OW_EN_Synset_prefix;
+			final int prefix2 = Global.WKT_EN_prefix;
 
 			final int chunksize2 = 1000;
 
 			OneResourceBuilder bg_2 = new OneResourceBuilder("uby_release_1_0","root","fortuna",prefix2,language,synset2,usePos2);
 
-			bg_2.createGlossFile(false);
-			bg_2.lemmatizePOStagGlossFileInChunks(chunksize2);
+//			bg_2.createGlossFile(false);
+//			bg_2.lemmatizePOStagGlossFileInChunks(chunksize2);
 			bg_2.fillIndexTables();
 
 		
 
-			boolean useTaggedGloss = false;
+			boolean useTaggedGloss = true;
 			boolean tfidf = true;
 
 			createIdfFiles(bg_1, bg_2);
 
-			calculateSimilarityForCandidates(bg_1, bg_2,useTaggedGloss, tfidf);
-
+			calculateSimilarityForCandidates(bg_1, bg_2,useTaggedGloss, tfidf,"target/WN_WktEn_LemmaListCandidates_Pos.txt");
+			//"target/"+gb1.prefix_string+"_"+gb2.prefix_string+"_candidates_"+(gb2.pos ? "Pos": "noPos")+".txt"
 			boolean onlyGreaterZero = true;
 
-            createAlignmentFromSimilarityFileUnsupervised(bg_1, bg_2,useTaggedGloss, tfidf, onlyGreaterZero);
+          //  createAlignmentFromSimilarityFileUnsupervised(bg_1, bg_2,useTaggedGloss, tfidf, onlyGreaterZero);
 			boolean extRef = true;
-			Global.mapAlignmentToUby(bg_1,bg_2,"target/"+bg_1.prefix_string+"_"+bg_2.prefix_string+"_alignment_similarity_"+(bg_2.pos ? "Pos": "noPos")+(tfidf ? "_tfidf": "")+(onlyGreaterZero ? "_nonZero"  :"")+".txt", extRef);
+	//		Global.mapAlignmentToUby(bg_1,bg_2,"target/"+bg_1.prefix_string+"_"+bg_2.prefix_string+"_alignment_similarity_"+(bg_2.pos ? "Pos": "noPos")+(tfidf ? "_tfidf": "")+(onlyGreaterZero ? "_nonZero"  :"")+".txt", extRef);
 
 		}
 
@@ -175,11 +175,11 @@ public class GlossSimilarityCalculator
 	 * @param pos Consider pos-tagged lexemes or only lemmas
 	 * @param tfidf Use tfidf weighting
 	 */
-	public static void calculateSimilarityForCandidates(OneResourceBuilder gb1, OneResourceBuilder gb2, boolean pos, boolean tfidf)
+	public static void calculateSimilarityForCandidates(OneResourceBuilder gb1, OneResourceBuilder gb2, boolean pos, boolean tfidf, String candidatesFile)
 	{
 		try
 		{
-		 FileReader in = new FileReader("target/"+gb1.prefix_string+"_"+gb2.prefix_string+"_candidates_"+(gb2.pos ? "Pos": "noPos")+".txt"); //+"_short"
+		 FileReader in = new FileReader(candidatesFile); //+"_short"
 		 BufferedReader input_reader =  new BufferedReader(in);
 		 String line;	
 		FileOutputStream outstream;
@@ -220,6 +220,8 @@ public class GlossSimilarityCalculator
 				 p.println("f "+gb1.prefix_string+"_"+gb2.prefix_string+"_candidates_"+(gb2.pos ? "Pos": "noPos")+" "+"Cosine similarity");
 				 continue;
 			 }
+//			 String id1 = line.split("\t")[1];
+//			 String id2 = line.split("\t")[2];
 			 String id1 = line.split(" ")[1];
 			 String id2 = line.split(" ")[2];
 			 String gloss1 = "";

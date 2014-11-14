@@ -51,10 +51,10 @@ public class CreateAlignmentFromGraphOutput
 		OneResourceBuilder bg_1 = new OneResourceBuilder("uby_release_1_0","root","fortuna", prefix1,language,synset1,usePos1);
 
 		/*RESOURCE 2*/
-		boolean synset2 = true;
+		boolean synset2 = false;
 		boolean usePos2 = true;
-		final int monoLinkThreshold2 = 500;
-		final int prefix2 = Global.OW_EN_Synset_prefix;
+		final int monoLinkThreshold2 = 2000;
+		final int prefix2 = Global.WKT_EN_prefix;
 		OneResourceBuilder bg_2 = new OneResourceBuilder("uby_release_1_0","root","fortuna", prefix2,language,synset2,usePos2);
 
 		/*Alignment parameters*/
@@ -62,14 +62,16 @@ public class CreateAlignmentFromGraphOutput
 		boolean allowMultiple = true; //allow 1:n alignments 
 		boolean alignSingle = false; //allow instant alignment in case of only ine candidate
  
-		boolean backoff=true;  //use a similarity-based backoff file in case no alignment can be found
+		boolean backoff=false;  //use a similarity-based backoff file in case no alignment can be found
 		String backoff_file = "WN_OW_en_alignment_similarity_Pos_tfidf_nonZero.txt";
+		
+		boolean all_distances = true; // Set this if you don't actually want to calculate an alignment, but just output the distances for all pairs
+		
+		createAlignment(bg_1,bg_2,monoLinkThreshold1,monoLinkThreshold2, depth, allowMultiple,alignSingle, backoff, backoff_file,all_distances,"target/WN_WktEn_GScandidates_noCheck.txt");
 
-		createAlignment(bg_1,bg_2,monoLinkThreshold1,monoLinkThreshold2, depth, allowMultiple,alignSingle, backoff, backoff_file);
+		boolean extRef = false; //Use either UBY-Ids or the original IDs for the final alignment file
 
-		boolean extRef = true; //Use either UBY-Ids or the original IDs for the final alignment file
-
-		Global.mapAlignmentToUby(bg_1,bg_2,bg_1.prefix_string+"_"+bg_2.prefix_string+"_alignment_"+(bg_2.pos ? "Pos": "noPos")+"_"+depth+"_"+(allowMultiple? "1toN"  :"1to1")+(alignSingle ? "_alignSingle":"")+(backoff ? "_backoff":""), extRef);
+	//	Global.mapAlignmentToUby(bg_1,bg_2,"target/"+bg_1.prefix_string+"_"+bg_2.prefix_string+"_alignment_dwsa_"+(bg_2.pos ? "Pos": "noPos")+"_"+depth+"_"+(allowMultiple? "1toN"  :"1to1")+(alignSingle ? "_alignSingle":"")+(backoff ? "_backoff":"")+".txt", extRef);
 		}
 
 		catch(Exception e)
@@ -82,7 +84,7 @@ public class CreateAlignmentFromGraphOutput
 	/**
 	 * This method creates an alignment from the distances output by the Dijkstra-WSA implementation
 	 */
-	public static void createAlignment(OneResourceBuilder gb1,OneResourceBuilder gb2, int monoLinkThreshold1, int monoLinkThreshold2,  int depth, boolean allowMultiple,boolean alignSingle, boolean backoff, String backoff_file)
+	public static void createAlignment(OneResourceBuilder gb1,OneResourceBuilder gb2, int monoLinkThreshold1, int monoLinkThreshold2,  int depth, boolean allowMultiple,boolean alignSingle, boolean backoff, String backoff_file, boolean all_distances, String candidate_file)
 	{
 
 		HashMap<String,TreeSet<NodeWithDistance> > alignment_results = new HashMap<String, TreeSet<NodeWithDistance>>();
@@ -91,14 +93,21 @@ public class CreateAlignmentFromGraphOutput
 		//Read the candidates and distance files
 		try
 		{
-		FileReader in = new FileReader("target/"+gb1.prefix_string+"_"+gb2.prefix_string+"_candidates_"+(gb2.pos ? "Pos": "noPos")+".txt");
+		FileReader in = new FileReader(candidate_file);
 		BufferedReader input =  new BufferedReader(in);
 		FileReader in2 = new FileReader("target/"+gb1.prefix_string+"_"+(gb1.synset?"synset":"sense")+"_"+(gb1.pos ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold1
 				+"_MERGED_"+
 				gb2.prefix_string+"_"+(gb2.synset?"synset":"sense")+"_"+(gb2.pos ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold2+
 				"_trivial_result.txt");
 		BufferedReader input2 =  new BufferedReader(in2);
-
+		FileOutputStream outstream;
+		PrintStream p = null;
+		if(all_distances)
+		{
+			 outstream = new FileOutputStream("target/"+gb1.prefix_string+"_"+gb2.prefix_string+"_distances_dwsa_"+(gb2.pos ? "Pos": "noPos")+".txt");
+			 p = new PrintStream( outstream );
+			 p.println("f\t"+gb1.prefix_string+"_"+gb2.prefix_string+"_candidates_"+(gb2.pos ? "Pos": "noPos")+".txt"+"\t"+"DWSA distances");
+		}
 		String current_id1 ="";
 		String current_id2 ="";
 		String distance ="";
@@ -116,26 +125,37 @@ public class CreateAlignmentFromGraphOutput
 				if(line2.startsWith("d"))
 				{
 				System.out.println("Source Nodes parsed "+i++);
-				current_id1 = line.split(" ")[1];
-				current_id2 = line.split(" ")[2];
+//				current_id1 = line.split(" ")[1];
+//				current_id2 = line.split(" ")[2];
+				current_id1 = line.split("\t")[0];
+				current_id2 = line.split("\t")[1];
 			    distance = line2.split(" ")[1];
+			    if(distance.length()>3)
+				{
+			    	distance = "1000";
+				}
+			    if(all_distances)
+			    {
+			    	p.println(current_id1+"\t"+current_id2+"\t"+distance);
+			    	continue;
+			    }
 				if(alignment_results.get(current_id1)==null)
 				{
 					alignment_results.put(current_id1, new TreeSet<NodeWithDistance>());
 				}
-				}
-//					if(distance.length()>3)
-//					{
-//						NodeWithDistance nwd = new NodeWithDistance(Integer.parseInt(current_id2),1000);
-//						alignment_results.get(current_id1).add(nwd);
-//					}
-//					else
+				
+					if(distance.length()>3)
+					{
+						NodeWithDistance nwd = new NodeWithDistance(Integer.parseInt(current_id2),1000);
+						alignment_results.get(current_id1).add(nwd);
+					}
+					else
 					{
 						NodeWithDistance nwd = new NodeWithDistance(Integer.parseInt(current_id2), Integer.parseInt(distance));
 						alignment_results.get(current_id1).add(nwd);
 					}
 					}
-
+			}
 
 		}
 		in.close();
@@ -143,10 +163,11 @@ public class CreateAlignmentFromGraphOutput
 
 		/*HERE THE ACTUAL ANALYISIS BEGINS*/
 
-
+		if(!all_distances)
+		{
 		candidates  = new HashMap<String, HashSet<String>>();
-		FileOutputStream outstream = new FileOutputStream("target/"+gb1.prefix_string+"_"+gb2.prefix_string+"_alignment_dwsa_"+(gb2.pos ? "Pos": "noPos")+"_"+depth+"_"+(allowMultiple? "1toN"  :"1to1")+(alignSingle ? "_alignSingle":"")+(backoff ? "_backoff":"")+".txt");
-		PrintStream p = new PrintStream( outstream );
+		 outstream = new FileOutputStream("target/"+gb1.prefix_string+"_"+gb2.prefix_string+"_alignment_dwsa_"+(gb2.pos ? "Pos": "noPos")+"_"+depth+"_"+(allowMultiple? "1toN"  :"1to1")+(alignSingle ? "_alignSingle":"")+(backoff ? "_backoff":"")+".txt");
+		 p = new PrintStream( outstream );
 		for(String s : alignment_results.keySet())
 		{
 				TreeSet<NodeWithDistance> cands = alignment_results.get(s);
@@ -212,9 +233,10 @@ public class CreateAlignmentFromGraphOutput
 						}
 
 					}
+		
 					p.close();
 					}
-		
+		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
