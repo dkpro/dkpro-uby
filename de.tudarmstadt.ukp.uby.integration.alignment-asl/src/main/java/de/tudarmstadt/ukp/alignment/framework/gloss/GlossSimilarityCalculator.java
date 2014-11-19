@@ -84,11 +84,10 @@ public class GlossSimilarityCalculator
 
 			createIdfFiles(bg_1, bg_2);
 
-			calculateSimilarityForCandidates(bg_1, bg_2,useTaggedGloss, tfidf,"target/WN_WktEn_LemmaListCandidates_Pos.txt");
-			//"target/"+gb1.prefix_string+"_"+gb2.prefix_string+"_candidates_"+(gb2.pos ? "Pos": "noPos")+".txt"
+			calculateSimilarityForCandidates(bg_1, bg_2,useTaggedGloss, tfidf,"target/ijcnlp2011-meyer-dataset_graph.csv");
 			boolean onlyGreaterZero = true;
 
-          //  createAlignmentFromSimilarityFileUnsupervised(bg_1, bg_2,useTaggedGloss, tfidf, onlyGreaterZero);
+            createAlignmentFromSimilarityFileUnsupervised(bg_1, bg_2,useTaggedGloss, tfidf, onlyGreaterZero);
 			boolean extRef = true;
 	//		Global.mapAlignmentToUby(bg_1,bg_2,"target/"+bg_1.prefix_string+"_"+bg_2.prefix_string+"_alignment_similarity_"+(bg_2.pos ? "Pos": "noPos")+(tfidf ? "_tfidf": "")+(onlyGreaterZero ? "_nonZero"  :"")+".txt", extRef);
 
@@ -220,10 +219,10 @@ public class GlossSimilarityCalculator
 				 p.println("f "+gb1.prefix_string+"_"+gb2.prefix_string+"_candidates_"+(gb2.pos ? "Pos": "noPos")+" "+"Cosine similarity");
 				 continue;
 			 }
-//			 String id1 = line.split("\t")[1];
-//			 String id2 = line.split("\t")[2];
-			 String id1 = line.split(" ")[1];
-			 String id2 = line.split(" ")[2];
+			 String id1 = line.split("\t")[0];
+			 String id2 = line.split("\t")[1];
+//			 String id1 = line.split(" ")[0];
+//			 String id2 = line.split(" ")[1];
 			 String gloss1 = "";
 			 String gloss2 = "";
 			 if(pos)

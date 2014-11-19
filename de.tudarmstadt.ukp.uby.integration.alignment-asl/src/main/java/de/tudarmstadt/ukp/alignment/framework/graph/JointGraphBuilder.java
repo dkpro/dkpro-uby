@@ -61,7 +61,7 @@ public class JointGraphBuilder
 					
 			 //Build the resource by using the appropriate databases	
 			 
-		    OneResourceBuilder bg_1 = new OneResourceBuilder("uby_wordnet31","root","fortuna", prefix1,language,synset1,usePos1);
+		    OneResourceBuilder bg_1 = new OneResourceBuilder("uby_release_1_0","root","fortuna", prefix1,language,synset1,usePos1);
 		
 			//Create text files with glosses for the two resources, and do POS tagging
 					    
@@ -69,13 +69,13 @@ public class JointGraphBuilder
 //			bg_1.lemmatizePOStagGlossFileInChunks(chunksize1);
 			
 			// Fill the index, build graphs from the relations and the monosemous linking - merge in the end
-		//	bg_1.fillIndexTables();
+			bg_1.fillIndexTables();
 //			bg_1.builtRelationGraphFromDb(false);
 //			bg_1.createMonosemousLinks(monoLinkThreshold1);
 //			Global.mergeTwoGraphs(prefix_string1+"_"+(synset1?"synset":"sense")+"_relationgraph.txt" ,
 //					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_monosemousLinks"+"_"+monoLinkThreshold1+".txt",
 //					prefix_string1+"_"+(synset1?"synset":"sense")+"_"+(usePos1 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold1+".txt");
-//
+
 
 
 
@@ -93,10 +93,10 @@ public class JointGraphBuilder
 		//	bg_2.createGlossFile(false);
 			//bg_2.lemmatizePOStagGlossFileInChunks(chunksize2);
 			bg_2.fillIndexTables();
-		//	boolean filter = true;
- 		//	bg_2.builtRelationGraphFromDb(filter);
-		//	bg_2.createMonosemousLinks(monoLinkThreshold2);
-
+			boolean filter = false;
+// 			bg_2.builtRelationGraphFromDb(filter);
+//			bg_2.createMonosemousLinks(monoLinkThreshold2);
+//
 //			Global.mergeTwoGraphs(prefix_string2+"_"+(synset2?"synset":"sense")+"_relationgraph.txt" ,
 //					prefix_string2+"_"+(synset2?"synset":"sense")+"_"+(usePos2 ? "Pos":"noPos")+"_monosemousLinks"+"_"+monoLinkThreshold2+".txt",
 //					prefix_string2+"_"+(synset2?"synset":"sense")+"_"+(usePos2 ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold2+".txt");
@@ -146,7 +146,7 @@ public class JointGraphBuilder
 	public static void createTrivialAlignments(OneResourceBuilder gb1, OneResourceBuilder gb2) throws ClassNotFoundException, SQLException, IOException
 		{
 		StringBuilder sb = new StringBuilder();
-		int count = 0;
+		int edge_count = 0;
 		int maxId = 0;
 		FileOutputStream outstream;
 		PrintStream p;
@@ -170,9 +170,10 @@ public class JointGraphBuilder
 						if(id2_int > maxId) {
 							maxId = id2_int;
 						}
-						sb.append("a "+id1+" "+id2+" 1"+Global.LF); //edges are unweighted
-						sb.append("a "+id2+" "+id1+" 1"+Global.LF);
-						count+=2;
+						//sb.append("a "+id1+" "+id2+" 1"+Global.LF); //edges are unweighted
+						//sb.append("a "+id2+" "+id1+" 1"+Global.LF);
+						sb.append("e"+edge_count+++" "+id1+" "+id2+Global.LF);
+					
 					}
 				}
 				else
@@ -188,15 +189,17 @@ public class JointGraphBuilder
 						if(id2_int > maxId) {
 							maxId = id2_int;
 						}
-						sb.append("a "+id1+" "+id2+" 1"+Global.LF); //edges are unweighted
-						sb.append("a "+id2+" "+id1+" 1"+Global.LF);
-						count+=2;
-						count+=2;
+//						sb.append("a "+id1+" "+id2+" 1"+Global.LF); //edges are unweighted
+//						sb.append("a "+id2+" "+id1+" 1"+Global.LF);
+						sb.append("e"+edge_count+++" "+id1+" "+id2+Global.LF);
+						
 					}
 				}
 			}
 		}
-		 p.println("p sp "+maxId+" "+count);
+		 //p.println("p sp "+maxId+" "+count);
+		 String header = "graph class=grph.in_memory.InMemoryGrph";
+		 p.println(header);
 		 p.print(sb.toString());
 		 p.close();
 	}

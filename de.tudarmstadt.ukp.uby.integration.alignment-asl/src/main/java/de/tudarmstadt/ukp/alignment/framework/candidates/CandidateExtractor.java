@@ -195,6 +195,7 @@ public class CandidateExtractor
 	p.println("p aux sp p2p "+count);
 	p.print(sb.toString());
 	p.close();
+	in.close();
 	}
 
 	
@@ -223,7 +224,7 @@ public class CandidateExtractor
 			}
 			else
 			{
-				sb.append("q "+line.split("\t")[0]+"\t"+line.split("\t")[1]+""+Global.LF);
+				sb.append("q "+line.split(" ")[0]+"\t"+line.split(" ")[1]+""+Global.LF);
 				count++;
 			}
 		}
@@ -276,6 +277,7 @@ public class CandidateExtractor
 	p.println("p aux sp p2p "+count);
 	p.print(sb.toString());
 	p.close();
+	in.close();
 	}
 
 

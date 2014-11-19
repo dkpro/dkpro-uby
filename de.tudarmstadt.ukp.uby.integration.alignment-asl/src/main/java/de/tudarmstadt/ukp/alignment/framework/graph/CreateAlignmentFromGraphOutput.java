@@ -64,14 +64,12 @@ public class CreateAlignmentFromGraphOutput
  
 		boolean backoff=false;  //use a similarity-based backoff file in case no alignment can be found
 		String backoff_file = "WN_OW_en_alignment_similarity_Pos_tfidf_nonZero.txt";
-		
-		boolean all_distances = true; // Set this if you don't actually want to calculate an alignment, but just output the distances for all pairs
-		
-		createAlignment(bg_1,bg_2,monoLinkThreshold1,monoLinkThreshold2, depth, allowMultiple,alignSingle, backoff, backoff_file,all_distances,"target/WN_WktEn_GScandidates_noCheck.txt");
+
+		createAlignment(bg_1,bg_2,monoLinkThreshold1,monoLinkThreshold2, depth, allowMultiple,alignSingle, backoff, backoff_file);
 
 		boolean extRef = false; //Use either UBY-Ids or the original IDs for the final alignment file
 
-	//	Global.mapAlignmentToUby(bg_1,bg_2,"target/"+bg_1.prefix_string+"_"+bg_2.prefix_string+"_alignment_dwsa_"+(bg_2.pos ? "Pos": "noPos")+"_"+depth+"_"+(allowMultiple? "1toN"  :"1to1")+(alignSingle ? "_alignSingle":"")+(backoff ? "_backoff":"")+".txt", extRef);
+		Global.mapAlignmentToUby(bg_1,bg_2,"target/"+bg_1.prefix_string+"_"+bg_2.prefix_string+"_alignment_dwsa_"+(bg_2.pos ? "Pos": "noPos")+"_"+depth+"_"+(allowMultiple? "1toN"  :"1to1")+(alignSingle ? "_alignSingle":"")+(backoff ? "_backoff":"")+".txt", extRef);
 		}
 
 		catch(Exception e)
@@ -84,7 +82,8 @@ public class CreateAlignmentFromGraphOutput
 	/**
 	 * This method creates an alignment from the distances output by the Dijkstra-WSA implementation
 	 */
-	public static void createAlignment(OneResourceBuilder gb1,OneResourceBuilder gb2, int monoLinkThreshold1, int monoLinkThreshold2,  int depth, boolean allowMultiple,boolean alignSingle, boolean backoff, String backoff_file, boolean all_distances, String candidate_file)
+	@Deprecated
+	public static void createAlignmentOldGraphFormat(OneResourceBuilder gb1,OneResourceBuilder gb2, int monoLinkThreshold1, int monoLinkThreshold2,  int depth, boolean allowMultiple,boolean alignSingle, boolean backoff, String backoff_file, boolean all_distances, String candidate_file)
 	{
 
 		HashMap<String,TreeSet<NodeWithDistance> > alignment_results = new HashMap<String, TreeSet<NodeWithDistance>>();
@@ -244,7 +243,146 @@ public class CreateAlignmentFromGraphOutput
 
 	}
 
+	/**
+	 * This method creates an alignment from the distances output by the Dijkstra-WSA implementation
+	 */
+	public static void createAlignment(OneResourceBuilder gb1,OneResourceBuilder gb2, int monoLinkThreshold1, int monoLinkThreshold2,  int depth, boolean allowMultiple,boolean alignSingle, boolean backoff, String backoff_file)
+	{
+
+		HashMap<String,TreeSet<NodeWithDistance> > alignment_results = new HashMap<String, TreeSet<NodeWithDistance>>();
+		HashMap<String,HashSet<String> > candidates = new HashMap<String, HashSet<String>>();
+		
+		//Read the candidates and distance files
+		try
+		{
+
+		FileReader in2 = new FileReader("target/"+gb1.prefix_string+"_"+(gb1.synset?"synset":"sense")+"_"+(gb1.pos ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold1
+				+"_MERGED_"+
+				gb2.prefix_string+"_"+(gb2.synset?"synset":"sense")+"_"+(gb2.pos ? "Pos":"noPos")+"_relationMLgraph"+"_"+monoLinkThreshold2+
+				"_trivial_result.txt");
+		BufferedReader input2 =  new BufferedReader(in2);
+		FileOutputStream outstream;
+		PrintStream p = null;
+		String current_id1 ="";
+		String current_id2 ="";
+		String distance ="";
+		
+		String line2 = "";
+		int i =0;
+		while( (line2 = input2.readLine())!=null)
+		{
+
+				System.out.println("Source Nodes parsed "+i++);
+//				current_id1 = line.split(" ")[1];
+//				current_id2 = line.split(" ")[2];
+				current_id1 = line2.split("\t")[0];
+				current_id2 = line2.split("\t")[1];
+			    distance = line2.split("\t")[2];
+			    if(distance.length()>5)
+				{
+			    	distance = "1000";
+				}
+				if(alignment_results.get(current_id1)==null)
+				{
+					alignment_results.put(current_id1, new TreeSet<NodeWithDistance>());
+				}
+				
+					if(distance.length()>3)
+					{
+						NodeWithDistance nwd = new NodeWithDistance(Integer.parseInt(current_id2),1000);
+						alignment_results.get(current_id1).add(nwd);
+					}
+					else
+					{
+						NodeWithDistance nwd = new NodeWithDistance(Integer.parseInt(current_id2), Integer.parseInt(distance));
+						alignment_results.get(current_id1).add(nwd);
+					}
+					
+			
+
+		}
+
+		in2.close();
+
+		/*HERE THE ACTUAL ANALYISIS BEGINS*/
+
+		candidates  = new HashMap<String, HashSet<String>>();
+		outstream = new FileOutputStream("target/"+gb1.prefix_string+"_"+gb2.prefix_string+"_alignment_dwsa_"+(gb2.pos ? "Pos": "noPos")+"_"+depth+"_"+(allowMultiple? "1toN"  :"1to1")+(alignSingle ? "_alignSingle":"")+(backoff ? "_backoff":"")+".txt");
+		p = new PrintStream( outstream );
+		for(String s : alignment_results.keySet())
+		{
+				TreeSet<NodeWithDistance> cands = alignment_results.get(s);
+				TreeSet<NodeWithDistance> polled_out = new TreeSet<NodeWithDistance>();
+				HashSet<NodeWithDistance> targets = new HashSet<NodeWithDistance>();
+				int observed_d = 0;
+				while(observed_d <=depth)
+				{
+					NodeWithDistance nwd =cands.pollFirst();
+					if(nwd==null) {
+						break;
+					}
+					polled_out.add(nwd);
+					observed_d = nwd.path_length;
+					if(observed_d<=depth || (cands.size() ==1  && alignSingle))
+					{
+						targets.add(nwd);
+					}
+					if(!allowMultiple) {
+						break;
+					}
+				}
+				if(cands!=null && polled_out!= null && !polled_out.isEmpty()) {
+							cands.addAll(polled_out);
+							
+				/*HERE THE OUTPUT BEGINS*/
+				}
+				for(NodeWithDistance t : targets)
+				{
+						/*Preparation for Backoff*/
+							if(!candidates.containsKey(s)) {
+								candidates.put(s, new HashSet<String>());
+							}
+							candidates.get(s).add(t+"");
+							p.println(s+"\t"+t.id+"\t"+t.path_length);
+
+						}
+
+		 		}
 
 
+
+					if(backoff) // We add the alignment from the backoff for this which were not aligned using DWSA
+					{
+						in2 = new FileReader("target/"+backoff_file) ;
+						input2 =  new BufferedReader(in2);
+						while((line2 = input2.readLine())!=null)
+						{
+							if(line2.startsWith("f")) {
+								continue;
+							}
+							String id_1 = line2.split("\t")[0];
+							String id_2 = line2.split("\t")[1];
+							String conf = line2.split("\t")[2];
+
+							if(candidates.containsKey(id_1)) {
+								System.out.println("Already aligned!!");
+								continue;
+
+							}
+							p.println(id_1+"\t"+id_2+"\t"+conf);
+
+						}
+
+					}
+		
+					p.close();
+					
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+
+	}
 
 }

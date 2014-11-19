@@ -103,6 +103,7 @@ public class Global
 		 String line;
 
 		int i = 0;
+		int edge_count=0;
 		 while((line =input.readLine())!=null)
 		 {
 			 if(line.startsWith("p"))
@@ -113,9 +114,11 @@ public class Global
 
 
 			}
-			 else
+			 else if(line.startsWith("e"))
 			 {
-				 sb.append(line+Global.LF);
+				 String[] temp = line.split(" ");
+				 //sb.append(line+Global.LF);
+				 sb.append("e"+edge_count+++" "+temp[1]+" "+temp[2]+Global.LF);
 			 }
 			 if(i++ % 1000 ==0) {
 			System.out.println("Lines processed "+i);
@@ -128,7 +131,7 @@ public class Global
 			input =  new BufferedReader(in);
 			 while((line =input.readLine())!=null)
 			 {
-				 if(line.contains("p"))
+				 if(line.startsWith("p"))
 				 {
 					 String[] info = line.split(" ");
 					 int max = Integer.parseInt(info[2]);
@@ -137,9 +140,10 @@ public class Global
 					}
 					 size = size+ Integer.parseInt(info[3]);
 				}
-				 else
-				 {
-					 sb.append(line+Global.LF);
+				 else if (line.startsWith("e"))
+				 { String[] temp = line.split(" ");
+					 sb.append("e"+edge_count+++" "+temp[1]+" "+temp[2]+Global.LF);
+				//	 sb.append(line+Global.LF);
 				 }
 				if(i++ % 1000 ==0) {
 				System.out.println("Lines processed "+i);
@@ -147,7 +151,8 @@ public class Global
 
 
 			 }
-			 p.println("p sp "+maxId+" "+size);
+		//	 p.println("p sp "+maxId+" "+size);
+			 p.println("graph class=grph.in_memory.InMemoryGrph");
 			 p.print(sb.toString());
 			 input.close();
 			 p.close();

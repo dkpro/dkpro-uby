@@ -38,7 +38,6 @@ import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.BayesNet;
 import weka.classifiers.meta.FilteredClassifier;
-import weka.classifiers.trees.J48;
 import weka.core.Instances;
 import weka.core.SerializationHelper;
 import weka.core.converters.ConverterUtils.DataSource;
@@ -59,22 +58,21 @@ public class WekaMachineLearning {
 
 				boolean synset1 = true;
 				boolean usePos1 = true;
-				final int monoLinkThreshold1 = 1000;
 				final int prefix1 = Global.WN_Synset_prefix;
 				OneResourceBuilder bg_1 = new OneResourceBuilder("uby_release_1_0","root","fortuna", prefix1,language,synset1,usePos1);
 
 				/*RESOURCE 2*/
 				boolean synset2 = true;
 				boolean usePos2 = true;
-				final int monoLinkThreshold2 = 500;
+				
 				final int prefix2 = Global.OW_EN_Synset_prefix;
 				OneResourceBuilder bg_2 = new OneResourceBuilder("uby_release_1_0","root","fortuna", prefix2,language,synset2,usePos2);
 
-	//	Global.processExtRefGoldstandardFile(bg_1,bg_2,"target/WN_OW_alignment_gold_standard.csv",true);
+//	Global.processExtRefGoldstandardFile(bg_1,bg_2,"target/WN_OW_alignment_gold_standard.csv",true);
 		
-	//createArffFile("target/ijcnlp2011-meyer-dataset_graph.csv","target/WN_WKT_dwsa_cos_gs.arff", "target/WN_WktEn_distances_dwsa_Pos.txt","target/WN_WktEn_glossSimilarities_tagged_tfidf.txt");
+//	createArffFile("target/ijcnlp2011-meyer-dataset_graph.csv","target/WN_WKT_dwsa_cos_gs.arff", "target/WN_synset_Pos_relationMLgraph_1000_MERGED_WktEn_sense_Pos_relationMLgraph_2000_trivial_result.txt","target/WN_WktEn_glossSimilarities_tagged_tfidf.txt");
 //	createModelFromGoldstandard("target/WN_WKT_dwsa_cos_gs.arff", "target/WN_WKT_dwsa_cos_model", true);
-	applyModelToUnlabeledArff("target/WN_OW_dwsa_cos_unlabeled_full.arff", "target/WN_OW_dwsa_cos_model", "target/WN_OW_dwsa_cos_labeled_full.arff");
+//	applyModelToUnlabeledArff("target/WN_OW_dwsa_cos_unlabeled_full.arff", "target/WN_OW_dwsa_cos_model", "target/WN_OW_dwsa_cos_labeled_full.arff");
 //				createFinalAlignmentFile("target/WN_OW_dwsa_cos_labeled_full.arff", "target/WN_OW_dwsa_cos_ML_alignment.tsv");
 		}
 
@@ -132,7 +130,6 @@ public class WekaMachineLearning {
 					String ids = line.split("\t")[0]+"###"+line.split("\t")[1];
 					System.out.println(ids);
 					String value = line.split("\t")[2];
-				//	
 					if(!entities.containsKey(ids))
 					{
 						entities.put(ids, new String[attNames.length]);
@@ -145,12 +142,11 @@ public class WekaMachineLearning {
 						System.out.println(value);
 					}
 				}
+				input.close();
 				filecount++;
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -173,20 +169,16 @@ public class WekaMachineLearning {
 					classes.put(ids, value);
 								
 				}
+				input.close();
 				filecount++;
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
+
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
 		}
-		
-		
-	  String[] test =	entities.get("1034749###1273021");
-	//  System.out.println(test[0]);
 		for(String key : entities.keySet())
 		{
 			if(classes.containsKey(key) || goldstandard == null)
@@ -210,9 +202,7 @@ public class WekaMachineLearning {
 			}
 		p.println(arffFile);
 	}
-	
-	
-	
+		
 	/**
 	 * 
 	 * This method creates a serialized WEKA model file from an .arff file containing the annotated gold standard

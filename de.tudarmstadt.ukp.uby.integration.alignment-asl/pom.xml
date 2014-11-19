@@ -14,8 +14,7 @@
 	</license>
   </licenses>  
   <dependencies>
-
-            
+ 
 		<dependency>
 			<groupId>de.tudarmstadt.ukp.uby</groupId>
 			<artifactId>de.tudarmstadt.ukp.uby.lmf.model-asl</artifactId>
@@ -23,7 +22,8 @@
 		<dependency>
 			<groupId>de.tudarmstadt.ukp.uby</groupId>
 			<artifactId>de.tudarmstadt.ukp.uby.integration.omegawiki-asl</artifactId>
-		</dependency>		
+		</dependency>	
+				
 		<dependency>
 			<groupId>de.tudarmstadt.ukp.uby</groupId>
 			<artifactId>de.tudarmstadt.ukp.uby.persistence.transform-asl</artifactId>
@@ -51,6 +51,11 @@
 			<artifactId>edu.mit.jwi</artifactId>
 			
 		</dependency>
+		<dependency>
+		<groupId>grph</groupId>
+		<artifactId>grph</artifactId>
+		<version>1.5.25</version>
+	</dependency>
 		
 			    <dependency>
     	<groupId>weka</groupId>
