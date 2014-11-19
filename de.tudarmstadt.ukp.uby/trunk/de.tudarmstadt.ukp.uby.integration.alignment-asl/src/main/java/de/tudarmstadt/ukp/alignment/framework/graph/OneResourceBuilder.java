@@ -77,8 +77,8 @@ public class OneResourceBuilder
 		lemmaPosSenses = new TreeMap<String, HashSet<String>>();
 		lexemeFreqInGlosses = new TreeMap<String, Integer>();
 		lemmaFreqInGlosses = new TreeMap<String, Integer>();
-		HashMap<Integer,String> senseIdGloss = new HashMap<Integer, String>();
-		HashMap<Integer,String> senseIdGlossPos = new HashMap<Integer, String>();
+//		HashMap<Integer,String> senseIdGloss = new HashMap<Integer, String>();
+//		HashMap<Integer,String> senseIdGlossPos = new HashMap<Integer, String>();
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -133,7 +133,7 @@ public class OneResourceBuilder
 			}
 		}
 		int max_id = 0;
-		int count = 0;
+		int edge_count = 0;
 
 		while(rs.next())
 		{
@@ -180,12 +180,12 @@ public class OneResourceBuilder
 						max_id = id2_num;
 					}
 
-					sb.append("a "+id1_num+" "+id2_num+" 1\n");
-					count+=1;
+//					sb.append("a "+id1_num+" "+id2_num+" 1\n");
+					sb.append("e"+edge_count+++" "+id1_num+" "+id2_num+Global.LF);
 					if(prefix != Global.FN_prefix)
 					{
-						sb.append("a "+id2_num+" "+id1_num+" 1\n");
-						count+=1;
+						//sb.append("a "+id2_num+" "+id1_num+" 1\n");
+						//count+=1;
 					}
 
 					break;
@@ -200,7 +200,8 @@ public class OneResourceBuilder
 
 		}
 
-		String header = "p sp "+max_id+" "+count;
+	//	String header = "p sp "+max_id+" "+count;
+		String header = "graph class=grph.in_memory.InMemoryGrph";
 		p.println(header);
 		p.print(sb.toString());
 		p.flush();
@@ -884,7 +885,8 @@ public class OneResourceBuilder
 			BufferedReader input_reader =  new BufferedReader(in);
 			outstream = new FileOutputStream("target/"+prefix_string+"_"+(synset?"synset":"sense")+"_"+(pos ? "Pos":"noPos")+"_monosemousLinks"+"_"+phi+".txt");
 			p = new PrintStream( outstream );
-			 String line;
+			int edge_count=0;
+			String line;
 			 while((line =input_reader.readLine())!=null)
 			 {
 				 String id1 = line.split("\t")[0];
@@ -917,8 +919,9 @@ public class OneResourceBuilder
 							if(id2_num > max_id) {
 								max_id = id2_num;
 							}
-							sb.append("a "+id1_num+" "+id2_num+" 1\n");
-							sb.append("a "+id2_num+" "+id1_num+" 1\n");
+//							sb.append("a "+id1_num+" "+id2_num+" 1\n");
+//							sb.append("a "+id2_num+" "+id1_num+" 1\n");
+							sb.append("e"+edge_count+++" "+id1_num+" "+id2_num+Global.LF);
 						 }
 					 }
 					 else
@@ -936,14 +939,16 @@ public class OneResourceBuilder
 							if(id2_num > max_id) {
 								max_id = id2_num;
 							}
-							sb.append("a "+id1_num+" "+id2_num+" 1\n");
-							sb.append("a "+id2_num+" "+id1_num+" 1\n");
+							sb.append("e"+edge_count+++" "+id1_num+" "+id2_num+Global.LF);
+							//sb.append("a "+id1_num+" "+id2_num+" 1\n");
+						//	sb.append("a "+id2_num+" "+id1_num+" 1\n");
 						 }
 					 }
 				 }
 			 }
 			 input_reader.close();
-				String header = "p sp "+max_id+" "+count;
+			//	String header = "p sp "+max_id+" "+count;
+			 String header = "graph class=grph.in_memory.InMemoryGrph";
 				p.println(header);
 				p.print(sb.toString());
 				p.flush();

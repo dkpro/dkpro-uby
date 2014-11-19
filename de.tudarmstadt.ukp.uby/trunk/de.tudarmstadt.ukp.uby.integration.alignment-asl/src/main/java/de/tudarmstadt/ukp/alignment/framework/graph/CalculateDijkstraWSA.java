@@ -17,24 +17,85 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.alignment.framework.graph;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintStream;
+
+
+import de.tudarmstadt.ukp.alignment.framework.Global;
+import grph.Grph;
+
+import grph.io.GraphBuildException;
+import grph.io.ParseException;
+import grph.path.Path;
+
+
 public class CalculateDijkstraWSA
 {
-	/**
-	 *
-	 *
-	 * For maximum efficiency, the actual calculation of the shortest paths is not done in Java, but C. An efficient reimplementation in Java is pending
-	 *
-	 * In the src/main/resources folder you will find an executable which has been compiled on 64-Bit Ubuntu Linux, but also
-	 * an archive containing the sources if you need to recompile. The program takes three arguments:
-	 *
-	 *  1) The graph constructed in JointGraphBuilder
-	 *  2) The candidate file constructed in CandidateExtractor
-	 *  3) An output file, which can in turn be read by CreateAlignmentFromGraphOutput
-	 *
-	 * A shell script with an example execution is also provided.
-	 *
-	 *
-	 *
-	 *
+	public static void main(String args[]) throws IOException, ParseException, GraphBuildException
+	{
+		calculateDijkstraWSAdistances("target/WN_synset_Pos_relationMLgraph_1000_MERGED_WktEn_sense_Pos_relationMLgraph_2000_trivial.txt", "target/WN_WktEn_GScandidates_noCheck.txt");
+	}
+	
+	/***
+	 * This method takes a graph and candidate file as input and calculates the distances between the candidates in the graph
+	 * 
+	 * 
+	 * @param graph_file The graph
+	 * @param candidate_file The candidate pairs
 	 */
+	
+	public static void calculateDijkstraWSAdistances(String graph_file, String candidate_file) throws IOException, ParseException, GraphBuildException
+	{
+		try
+		{
+				FileReader in = new FileReader(graph_file);
+				BufferedReader inp =  new BufferedReader(in);
+				String line;
+				StringBuilder graph = new StringBuilder();
+				 
+				 while((line =inp.readLine())!=null)
+				 {
+					 graph.append(line+Global.LF);
+				 }
+				 inp.close();
+				Grph g = Grph.fromGrphText(graph.toString());
+				FileOutputStream outstream;
+				PrintStream p;
+				
+				outstream = new FileOutputStream(graph_file.replace(".txt","_result.txt"));
+
+				p = new PrintStream( outstream );
+				in = new FileReader(candidate_file);
+				inp =  new BufferedReader(in);
+				
+				 while((line =inp.readLine())!=null)
+				 {
+					if(line.startsWith("q"))
+					{
+						int id1 = Integer.parseInt(line.split(" ")[1]);
+						int id2 = Integer.parseInt(line.split(" ")[2]);
+						try
+						{
+						Path path = g.getShortestPath(id1, id2);
+						p.println(id1+"\t"+id2+"\t"+path.getLength());
+						}
+						catch(Exception ise)
+						{
+							p.println(id1+"\t"+id2+"\t"+1000);							
+						}
+					}
+				 }
+				 p.close();
+				 inp.close();
+	}
+
+	catch(Exception e)
+	{
+		e.printStackTrace();
+	}
+	}
 }
