@@ -13,6 +13,18 @@
 		<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
 	</license>
   </licenses>  
+  <repositories>
+    <repository>
+	<id>lhogie.i3s.maven.repo</id>
+	<name>Luc Hogie Maven repository</name>
+	<url>http://www.i3s.unice.fr/~hogie/maven_repository/</url>
+	<snapshots>
+<enabled>false</enabled>
+</snapshots>
+	</repository>
+  </repositories>
+
+  
   <dependencies>
  
 		<dependency>
