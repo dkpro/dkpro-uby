@@ -384,7 +384,7 @@ public class GermanVcExtractor {
 			while((line = input.readLine())!=null){	
 				String temp[] = line.split("\t");
 				String oldClass = temp[1];
-				String newClass = temp[2];
+				String newClass = temp[3];
 				System.out.println(oldClass +"\t" +newClass);
 				verbClassMap.put(oldClass, newClass);
 			}
