@@ -161,9 +161,9 @@ public class SubcategorizationFrame extends HasFrequencies implements IHasID, Co
 		sb.append(" parentSubcatFrame:").append(parentSubcatFrame);
 		sb.append(" subcatLabel:").append(subcatLabel);
 		sb.append(" lexemeProperty:").append(lexemeProperty);
-		Collections.sort(syntacticArguments);
+		//Collections.sort(syntacticArguments);
 		sb.append(" syntacticArguments:").append(syntacticArguments);
-		Collections.sort(frequencies);
+		//Collections.sort(frequencies);
 		sb.append(" frequencies").append(frequencies);
 		
 		return sb.toString();
