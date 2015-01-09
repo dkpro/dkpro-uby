@@ -53,6 +53,7 @@ import de.tudarmstadt.ukp.lmf.model.enums.EVerbForm;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
 import de.tudarmstadt.ukp.lmf.model.morphology.FormRepresentation;
 import de.tudarmstadt.ukp.lmf.model.morphology.Lemma;
+import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
 import de.tudarmstadt.ukp.lmf.model.semantics.PredicativeRepresentation;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticArgument;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
@@ -72,6 +73,7 @@ import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticBehaviour;
  */
 public class GermanVcExtractor {
 
+	public static final String SENSE = "sense";
 	public Lexicon lexicon = new Lexicon();
 	
 	private List<SynSemCorrespondence> synSemCorrespondences = new LinkedList<SynSemCorrespondence>();
@@ -79,6 +81,7 @@ public class GermanVcExtractor {
 	
 	private File verbInputFile; // The File containing the Input lexicon
 	private String resourceName; // name of the LMF lexicon, i.e. "IMSlexSubset"
+	private final String resourceVersion;
 	
 	private final Logger logger = Logger.getLogger(GermanVcExtractor.class.getName());
 
@@ -120,12 +123,13 @@ public class GermanVcExtractor {
 	 * @return GermanVcExtractor
 	 * @throws IOException 
 	 */
-	public GermanVcExtractor(File gvcInput, String resourceName) throws IOException {
+	public GermanVcExtractor(File gvcInput, String resourceName, String resourceVersion) throws IOException {
 
 		getVerbClassMap();
 		
 		this.verbInputFile = gvcInput;
 		this.resourceName = resourceName;
+		this.resourceVersion = resourceVersion;
 		parseGermanVcInput();
 		convertGermanVcInput();
 	}
@@ -215,6 +219,7 @@ public class GermanVcExtractor {
 			}
 		}
 		
+		/*
 		for (GermanVcSense gvcSense : listOfGermanVcSenses) {
 			// Create SubcatFrameSets
 			if (!classSubcatFrameSetMap.containsKey(gvcSense.classInformation)) {
@@ -270,13 +275,14 @@ public class GermanVcExtractor {
 				classSubcatFrameSetMap.put(classKey, subcatFrameSet);
 			}
 		}
+		*/
 		
 		subcategorizationFrames.addAll(synargsSubcatFrameMap.values());
 		Collections.sort(subcategorizationFrames);
 		lexicon.setSubcategorizationFrames(subcategorizationFrames);
 		
-		subcategorizationFramesSets.addAll(classSubcatFrameSetMap.values());
-		lexicon.setSubcategorizationFrameSets(subcategorizationFramesSets);
+		//subcategorizationFramesSets.addAll(classSubcatFrameSetMap.values());
+		//lexicon.setSubcategorizationFrameSets(subcategorizationFramesSets);
 		
 		lexicon.setSemanticPredicates(semanticPredicates);
 		
@@ -325,6 +331,13 @@ public class GermanVcExtractor {
 				sense.setId("GVC_Sense_".concat(Integer.toString(senseNumber)));
 				sense.setIndex(senseNumber);
 				senseNumber++;
+				
+				MonolingualExternalRef monolingualExternalRef = new MonolingualExternalRef();
+				monolingualExternalRef.setExternalSystem(resourceVersion + "_" + SENSE);
+				monolingualExternalRef.setExternalReference(gvcSense.lemma);
+				List<MonolingualExternalRef> monolingualExternalRefs = new LinkedList<MonolingualExternalRef>();
+				monolingualExternalRefs.add(monolingualExternalRef);
+				sense.setMonolingualExternalRefs(monolingualExternalRefs);
 				
 				List<SemanticLabel> semanticLabels = new ArrayList<SemanticLabel>();
 				SemanticLabel semanticLabel = new SemanticLabel();
