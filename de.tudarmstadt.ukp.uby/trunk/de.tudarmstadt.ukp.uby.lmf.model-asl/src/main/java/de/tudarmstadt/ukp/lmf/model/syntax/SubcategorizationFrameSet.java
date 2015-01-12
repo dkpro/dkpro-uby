@@ -151,9 +151,9 @@ public class SubcategorizationFrameSet implements IHasID, Comparable<Subcategori
 		StringBuffer sb = new StringBuffer(512);
 		sb.append("SubcategorizationFrame ").append("id:")
 		.append(this.id).append(" name: ").append(this.name);
-		Collections.sort(subcatFrameSetElements);
+		//Collections.sort(subcatFrameSetElements);
 		sb.append(" subcatFrameSetElements: ").append(this.subcatFrameSetElements);
-		Collections.sort(this.synArgMaps);
+		//Collections.sort(this.synArgMaps);
 		sb.append("parentSubcatFrameSet: ").append(this.parentSubcatFrameSet);
 		return sb.toString();
 	}
