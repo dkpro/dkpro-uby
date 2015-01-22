@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.FileOutputStream;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.tudarmstadt.ukp.integration.alignment.xml.AlignmentXmlReader;
@@ -14,6 +15,7 @@ import de.tudarmstadt.ukp.integration.alignment.xml.model.XmlMeta;
 
 public class AlignmentXmlWriterTest {
 
+	@Ignore
 	@Test
 	public void readerWriterTest() throws Exception{
 		//System.err.println("testing: " + JAXBContext.newInstance(AlignmentXmlReader.class).getClass().getName());
