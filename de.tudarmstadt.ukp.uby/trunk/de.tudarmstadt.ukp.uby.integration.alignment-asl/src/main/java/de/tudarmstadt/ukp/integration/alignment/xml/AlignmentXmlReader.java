@@ -41,7 +41,7 @@ public class AlignmentXmlReader implements Closeable {
 			context = JAXBContext.newInstance(XmlMeta.class, Alignments.class); //Source.class
 			
 			unmarshaller = context.createUnmarshaller();
-		} catch (JAXBException | XMLStreamException e1) { 
+		} catch (JAXBException|XMLStreamException e1) { 
 			throw new IOException(e1);
 		} 
 
@@ -58,7 +58,7 @@ public class AlignmentXmlReader implements Closeable {
 			if (e!=null){
 				meta = unmarshaller.unmarshal(xmlEventReader, XmlMeta.class).getValue();
 			} 
-		} catch (XMLStreamException | JAXBException e1) {
+		} catch (XMLStreamException|JAXBException e1) {
 			e1.printStackTrace();
 			throw new IOException(e1);
 		}
@@ -77,7 +77,7 @@ public class AlignmentXmlReader implements Closeable {
     				System.err.println("ddd" + e.toString());
     				alignments = unmarshaller.unmarshal(xmlEventReader, Alignments.class).getValue();
     			} 
-			} catch (XMLStreamException | JAXBException e1) {
+			} catch (XMLStreamException|JAXBException e1) {
 				e1.printStackTrace();
 				throw new IOException(e1);
 			}

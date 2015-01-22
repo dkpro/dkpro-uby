@@ -8,6 +8,6 @@ import javax.xml.bind.annotation.XmlElement;
 public class Alignments {
 
 	@XmlElement(name = "source")
-	public List<Source> source = new ArrayList<>();
+	public List<Source> source = new ArrayList<Source>();
 
 }
