@@ -8,17 +8,11 @@ import javax.xml.bind.annotation.XmlElement;
 
 public class Source {
 
-//	@XmlID 
 	@XmlAttribute
 	public String ref;
 	
 	@XmlElement(name = "target")
-	public List<Target> targets = new ArrayList<>();
+	public List<Target> targets = new ArrayList<Target>();
 
-	
-//	
-//	public Source(String ref) {
-//		this.ref = ref;
-//	}
 	
 }

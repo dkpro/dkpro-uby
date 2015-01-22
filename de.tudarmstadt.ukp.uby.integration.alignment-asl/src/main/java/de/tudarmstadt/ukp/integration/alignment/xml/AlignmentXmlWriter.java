@@ -50,7 +50,9 @@ public class AlignmentXmlWriter implements Closeable {
 			xmlEventWriter.add(xmlef.createStartDocument());
 			xmlEventWriter.add(xmlef.createStartElement("", "", RESOURCE_ALIGNMENT));
 			
-		} catch (XMLStreamException | JAXBException e ) {
+		} catch (XMLStreamException e) {
+			throw new IOException(e);
+		} catch (JAXBException e) {
 			throw new IOException(e);
 		}
         

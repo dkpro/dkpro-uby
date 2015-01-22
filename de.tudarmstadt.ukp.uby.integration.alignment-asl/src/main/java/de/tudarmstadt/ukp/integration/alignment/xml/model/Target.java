@@ -16,6 +16,6 @@ public class Target {
 	public Decision decision;
 	
 	@XmlElement(name = "score")
-	public List<Score> scores = new ArrayList<>();
+	public List<Score> scores = new ArrayList<Score>();
 
 }
