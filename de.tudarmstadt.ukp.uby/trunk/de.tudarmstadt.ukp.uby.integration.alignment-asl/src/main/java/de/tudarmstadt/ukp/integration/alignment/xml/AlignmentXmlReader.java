@@ -74,7 +74,6 @@ public class AlignmentXmlReader implements Closeable {
     				e = xmlEventReader.peek();
     			}
     			if (e!=null){
-    				System.err.println("ddd" + e.toString());
     				alignments = unmarshaller.unmarshal(xmlEventReader, Alignments.class).getValue();
     			} 
 			} catch (XMLStreamException|JAXBException e1) {
@@ -94,7 +93,6 @@ public class AlignmentXmlReader implements Closeable {
 //    				e = xmlEventReader.peek();
 //    			}
 //    			if (e!=null){
-//    				System.err.println("ddd" + e.toString());
 //    				source = unmarshaller.unmarshal(xmlEventReader, Source.class).getValue();
 //    			} 
 //			} catch (XMLStreamException | JAXBException e1) {
