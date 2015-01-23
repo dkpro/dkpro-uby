@@ -57,7 +57,7 @@ public class JointGraphBuilder
 			final int monoLinkThreshold1 = 1000;
 			
 			//Chunksize for the POS-Tagging of the glosses. This is mostly a memory issues, higher values are faster, but might lead to crashes
-			final int chunksize1 = 2000;
+//			final int chunksize1 = 2000;
 					
 			 //Build the resource by using the appropriate databases	
 			 
@@ -86,14 +86,14 @@ public class JointGraphBuilder
 			final int prefix2 = Global.WKT_EN_prefix;
 			final String prefix_string2 = Global.prefixTable.get(prefix2);
 			final int monoLinkThreshold2 = 2000;
-			final int chunksize2 = 2000;
+//			final int chunksize2 = 2000;
 			OneResourceBuilder bg_2 = new OneResourceBuilder("uby_release_1_0","root","fortuna",prefix2,language,synset2,usePos2);
 
 	
 		//	bg_2.createGlossFile(false);
 			//bg_2.lemmatizePOStagGlossFileInChunks(chunksize2);
 			bg_2.fillIndexTables();
-			boolean filter = false;
+//			boolean filter = false;
 // 			bg_2.builtRelationGraphFromDb(filter);
 //			bg_2.createMonosemousLinks(monoLinkThreshold2);
 //
@@ -179,7 +179,7 @@ public class JointGraphBuilder
 				else
 				{
 					String lemma = lemmaPos.split("#")[0];
-					if((gb2.lemmaPosSenses.get(lemma)!= null && gb2.lemmaPosSenses.get(lemma).size()==1))
+					if(gb2.lemmaPosSenses.get(lemma)!= null && gb2.lemmaPosSenses.get(lemma).size()==1)
 					{
 						String id2= gb2.lemmaPosSenses.get(lemma).iterator().next();
 						int id2_int = Integer.parseInt(id2);

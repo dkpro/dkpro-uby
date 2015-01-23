@@ -119,9 +119,7 @@ public class CreateAlignmentFromGraphOutput
 			if(line.startsWith("p") || line.startsWith("f")) {
 				continue;
 			}
-			if(line.startsWith("q"))
-			{
-				if(line2.startsWith("d"))
+			if(line.startsWith("q") && line2.startsWith("d"))
 				{
 				System.out.println("Source Nodes parsed "+i++);
 //				current_id1 = line.split(" ")[1];
@@ -154,7 +152,6 @@ public class CreateAlignmentFromGraphOutput
 						alignment_results.get(current_id1).add(nwd);
 					}
 					}
-			}
 
 		}
 		in.close();
@@ -181,7 +178,7 @@ public class CreateAlignmentFromGraphOutput
 					}
 					polled_out.add(nwd);
 					observed_d = nwd.path_length;
-					if(observed_d<=depth || (cands.size() ==1  && alignSingle))
+					if(observed_d<=depth || cands.size() ==1  && alignSingle)
 					{
 						targets.add(nwd);
 					}
@@ -323,7 +320,7 @@ public class CreateAlignmentFromGraphOutput
 					}
 					polled_out.add(nwd);
 					observed_d = nwd.path_length;
-					if(observed_d<=depth || (cands.size() ==1  && alignSingle))
+					if(observed_d<=depth || cands.size() ==1  && alignSingle)
 					{
 						targets.add(nwd);
 					}

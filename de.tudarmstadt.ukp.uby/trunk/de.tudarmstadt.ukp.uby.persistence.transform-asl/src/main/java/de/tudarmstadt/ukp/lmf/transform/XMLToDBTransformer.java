@@ -52,12 +52,12 @@ import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrameSet;
 import de.tudarmstadt.ukp.lmf.transform.UBYLMFClassMetadata.UBYLMFFieldMetadata;
 
 /**
- * Converts a given lexical resource from a UBY-XML file to a UBY database 
+ * Converts a given lexical resource from a UBY-XML file to a UBY database
  * using Hibernate.
  * @author Yevgen Chebotar
  * @author Christian M. Meyer
  */
-public class XMLToDBTransformer extends UBYHibernateTransformer 
+public class XMLToDBTransformer extends UBYHibernateTransformer
 		implements ElementHandler {
 
 	protected LexicalResource lexicalResource; // Current lexical resource
@@ -67,38 +67,40 @@ public class XMLToDBTransformer extends UBYHibernateTransformer
 	public XMLToDBTransformer(final DBConfig dbConfig) {
 		super(dbConfig);
 	}
-	
+
 	/**
 	 * Read xml File and save its contents to Database
 	 * @param xmlFile
 	 * @param lexicalResourceName
 	 * @throws DocumentException
-	 * @throws UbyInvalidArgumentException 
+	 * @throws UbyInvalidArgumentException
 	 */
 	public void transform(File xmlFile, String lexicalResourceName) throws DocumentException, IllegalArgumentException{
 		long startTime = System.currentTimeMillis();
 
 		openSession();
-		
-		if (lexicalResourceName != null)
-			lexicalResource = (LexicalResource) session.get(LexicalResource.class, lexicalResourceName);
+
+		if (lexicalResourceName != null) {
+            lexicalResource = (LexicalResource) session.get(LexicalResource.class, lexicalResourceName);
+        }
 
 		SAXReader reader = new SAXReader(false);
-		reader.setEntityResolver(new EntityResolver() {			
+		reader.setEntityResolver(new EntityResolver() {
 			@Override
 			public InputSource resolveEntity(String publicId, String systemId)
 					throws SAXException, IOException {
-				if (systemId.endsWith(".dtd"))
-					return new InputSource(new StringReader(""));
+				if (systemId.endsWith(".dtd")) {
+                    return new InputSource(new StringReader(""));
+                }
 				return null;
 			}
 		});
 		reader.setDefaultHandler(this);
 		reader.read(xmlFile);
-		
+
 		commit();
 		closeSession();
-	
+
 		System.out.println("TOTAL TIME: " + (System.currentTimeMillis() - startTime));
 		System.out.println("NUM ENTRIES: " + commitCounter);
 	}
@@ -107,60 +109,62 @@ public class XMLToDBTransformer extends UBYHibernateTransformer
 	public void onStart(ElementPath epath) {
 		Element el = epath.getCurrent();
 		String n = el.getName();
-		
+
 		// Remove empty attributes and invalid characters.
 		Iterator<?> attrIter = el.attributeIterator();
 		while (attrIter.hasNext()) {
 			Attribute attr = (Attribute) attrIter.next();
-			if ("NULL".equals(attr.getStringValue()))
-				attrIter.remove();
-			else
-				attr.setValue(StringUtils.replaceNonUtf8(attr.getValue())); 
+			if ("NULL".equals(attr.getStringValue())) {
+                attrIter.remove();
+            }
+            else {
+                attr.setValue(StringUtils.replaceNonUtf8(attr.getValue()));
+            }
 		}
-		
+
 		if ("LexicalResource".equals(n)) {
 			// If no lexical resource exists yet, create a new one.
 			if (lexicalResource == null){
 				lexicalResource = new LexicalResource();
-				lexicalResource.setName(el.attributeValue("name"));				
+				lexicalResource.setName(el.attributeValue("name"));
 				lexicalResource.setDtdVersion(el.attributeValue("dtdVersion"));
 				session.save(lexicalResource);
-			} else 
-				externalLexicalResource = true;
+			}
+            else {
+                externalLexicalResource = true;
+            }
 		} else
 		if ("Lexicon".equals(n)) {
 			// Create a new, empty lexicon.
-			lexicon = new Lexicon();	
+			lexicon = new Lexicon();
 			lexicon.setId(el.attributeValue("id"));
 			lexicon.setName(el.attributeValue("name"));
 			lexicon.setLanguageIdentifier(el.attributeValue("languageIdentifier"));
-			lexicalResource.addLexicon(lexicon);			
+			lexicalResource.addLexicon(lexicon);
 			saveCascade(lexicon, lexicalResource);
-		} else 
-		if ("GlobalInformation".equals(n)) {
-			// Save some global information if we're using a new lexical resource. 
-			if (!externalLexicalResource) {
-				GlobalInformation glInformation = new GlobalInformation();
-				glInformation.setLabel(el.attributeValue("label"));
-				lexicalResource.setGlobalInformation(glInformation);
-				saveCascade(glInformation, lexicalResource);
-				commit();
-				lexicalResource.setGlobalInformation(null);
-			}
-		}
+        }
+        // Save some global information if we're using a new lexical resource.
+        else if ("GlobalInformation".equals(n) && !externalLexicalResource) {
+            GlobalInformation glInformation = new GlobalInformation();
+            glInformation.setLabel(el.attributeValue("label"));
+            lexicalResource.setGlobalInformation(glInformation);
+            saveCascade(glInformation, lexicalResource);
+            commit();
+            lexicalResource.setGlobalInformation(null);
+        }
 	}
-	
+
 	@Override
 	public void onEnd(ElementPath epath) {
 		Element el = epath.getCurrent();
 		String n = el.getName();
 		Object listElement = null;
-		
+
 		// Create instances for all direct children of Lexicon.
 		if ("LexicalEntry".equals(n)) {
 			listElement = fromXmlToObject(el, LexicalEntry.class);
 			saveListElement(lexicon, lexicon.getLexicalEntries(), listElement);
-		} else 
+		} else
 		if ("SemanticPredicate".equals(n)) {
 			listElement = fromXmlToObject(el, SemanticPredicate.class);
 			saveListElement(lexicon, lexicon.getSemanticPredicates(), listElement);
@@ -168,24 +172,24 @@ public class XMLToDBTransformer extends UBYHibernateTransformer
 		if ("SubcategorizationFrame".equals(n)) {
 			listElement = fromXmlToObject(el, SubcategorizationFrame.class);
 			saveListElement(lexicon, lexicon.getSubcategorizationFrames(), listElement);
-		} else 
+		} else
 		if ("SubcategorizationFrameSet".equals(n)) {
 			listElement = fromXmlToObject(el, SubcategorizationFrameSet.class);
 			saveListElement(lexicon, lexicon.getSubcategorizationFrameSets(), listElement);
-		} else 
+		} else
 		if ("SynSemCorrespondence".equals(n)) {
 			listElement = fromXmlToObject(el, SynSemCorrespondence.class);
 			saveListElement(lexicon, lexicon.getSynSemCorrespondences(), listElement);
-		} else 
+		} else
 		if ("Synset".equals(n)) {
 			listElement = fromXmlToObject(el, Synset.class);
 			saveListElement(lexicon, lexicon.getSynsets(), listElement);
-		} else 
+		} else
 		if ("ConstraintSet".equals(n)) {
 			listElement = fromXmlToObject(el, ConstraintSet.class);
 			saveListElement(lexicon, lexicon.getConstraintSets(), listElement);
-		} else			
-			
+		} else
+
 		// Create instances for all direct children of LexicalResource.
 		if ("SenseAxis".equals(n)) {
 			listElement = fromXmlToObject(el, SenseAxis.class);
@@ -194,88 +198,100 @@ public class XMLToDBTransformer extends UBYHibernateTransformer
 		if ("MetaData".equals(n)) {
 			listElement = fromXmlToObject(el, MetaData.class);
 			saveListElement(lexicalResource, lexicalResource.getMetaData(), listElement);
-		} 
-		
+		}
+
 		// Forget the corresponding XML elements of the saved instances.
-		if (listElement != null)
-			el.detach();
+		if (listElement != null) {
+            el.detach();
+        }
 	}
-	
+
 	/**
 	 * Transforms XML-Element and all its children to Java object
 	 * @param el XML-Element
 	 * @param clazz Java-Class of the Element
 	 * @return
 	 */
-	protected Object fromXmlToObject(Element el, Class<?> clazz)  {			
+	protected Object fromXmlToObject(Element el, Class<?> clazz)  {
 		try {
 			Object lmfObject = clazz.newInstance();
-			UBYLMFClassMetadata classMeta = getClassMetadata(clazz);			
+			UBYLMFClassMetadata classMeta = getClassMetadata(clazz);
 			for (UBYLMFFieldMetadata fieldMeta : classMeta.getFields()) {
 				String xmlFieldName = fieldMeta.getName().replace("_", "");
 				Class<?> fieldType = fieldMeta.getType();
-				
-				// Determine the field's value from the current XML element. 
+
+				// Determine the field's value from the current XML element.
 				Object newValue = null;
 				switch (fieldMeta.getVarType()) {
 					case ATTRIBUTE:
 					case ATTRIBUTE_OPTIONAL:
 						String attrValue = el.attributeValue(xmlFieldName);
-						if (attrValue == null) 
-							continue;
-						
+						if (attrValue == null) {
+                            continue;
+                        }
+
 						newValue = attrValue;
-						if (fieldMeta.isBoolean())
-							newValue = GenericUtils.getBoolean(attrValue);
-						else
-						if (fieldMeta.isInteger())
-							newValue = GenericUtils.getInteger(attrValue);
-						else
-						if (fieldMeta.isDouble())
-							newValue = GenericUtils.getDouble(attrValue);
-						else
-						if (fieldMeta.isEnum())
-							newValue = GenericUtils.getEnum(fieldType, attrValue);
+						if (fieldMeta.isBoolean()) {
+                            newValue = GenericUtils.getBoolean(attrValue);
+                        }
+                        else
+						if (fieldMeta.isInteger()) {
+                            newValue = GenericUtils.getInteger(attrValue);
+                        }
+                        else
+						if (fieldMeta.isDouble()) {
+                            newValue = GenericUtils.getDouble(attrValue);
+                        }
+                        else
+						if (fieldMeta.isEnum()) {
+                            newValue = GenericUtils.getEnum(fieldType, attrValue);
+                        }
 						break;
-						
+
 					case CHILD:
 						Element childEl = el.element(fieldType.getSimpleName());
-						if (childEl == null)
-							continue;
-						
+						if (childEl == null) {
+                            continue;
+                        }
+
 						newValue = fromXmlToObject(childEl, fieldType);
 						break;
-						
+
 					case CHILDREN:
 						Class<?> elementClass = fieldMeta.getGenericElementType();
-						if (elementClass == null)
-							throw new RuntimeException("Unable to obtain list element class for field " + fieldMeta.getName());
-							
+						if (elementClass == null) {
+                            throw new RuntimeException("Unable to obtain list element class for field " + fieldMeta.getName());
+                        }
+
 						List<Object> childList = new ArrayList<Object>();
-						for (Object child : el.elements(elementClass.getSimpleName()))
-							childList.add(fromXmlToObject((Element) child, elementClass));
+						for (Object child : el.elements(elementClass.getSimpleName())) {
+                            childList.add(fromXmlToObject((Element) child, elementClass));
+                        }
 						newValue = childList;
 						break;
-						
+
 					case IDREF:
 						String idref = el.attributeValue(xmlFieldName);
-						if (idref == null || idref.isEmpty()) 
-							continue;
+						if (idref == null || idref.isEmpty()) {
+                            continue;
+                        }
 
-						IHasID obj = (IHasID) fieldType.newInstance();						
+						IHasID obj = (IHasID) fieldType.newInstance();
 						obj.setId(idref);
 						newValue = obj;
 						break;
-						
+
 					case IDREFS:
-						String idStr = el.attributeValue(xmlFieldName);							
-						if (idStr == null || idStr.isEmpty()) 
-							continue;
-						
+						String idStr = el.attributeValue(xmlFieldName);
+						if (idStr == null || idStr.isEmpty()) {
+                            continue;
+                        }
+
 						elementClass = fieldMeta.getGenericElementType();
-						if (elementClass == null)
-							throw new RuntimeException("Unable to obtain list element class for field " + fieldMeta.getName());
-						
+						if (elementClass == null) {
+                            throw new RuntimeException("Unable to obtain list element class for field " + fieldMeta.getName());
+                        }
+
 						List<Object> idrefList = new ArrayList<Object>();
 						String ids[] = idStr.split(" ");
 						for (String id : ids) {
@@ -285,15 +301,16 @@ public class XMLToDBTransformer extends UBYHibernateTransformer
 						}
 						newValue = idrefList;
 						break;
-						
+
 					case NONE:
 						continue;
 				}
 
 				// Save the new value using the setter method.
 				Method setter = fieldMeta.getSetter();
-				if (setter == null)
-					throw new RuntimeException("Missing setter for : " + lmfObject.getClass() + "." + xmlFieldName);
+				if (setter == null) {
+                    throw new RuntimeException("Missing setter for : " + lmfObject.getClass() + "." + xmlFieldName);
+                }
 				setter.invoke(lmfObject, newValue);
 			}
 			return lmfObject;
@@ -307,5 +324,5 @@ public class XMLToDBTransformer extends UBYHibernateTransformer
 	protected String getResourceAlias() {
 		return lexicalResource.getName();
 	}
-	
+
 }

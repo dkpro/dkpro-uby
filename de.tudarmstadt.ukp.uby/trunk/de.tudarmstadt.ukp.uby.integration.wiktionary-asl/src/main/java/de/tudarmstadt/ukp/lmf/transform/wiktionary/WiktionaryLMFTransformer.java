@@ -93,22 +93,22 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 	// The embracing lexicon instance.
 	protected Lexicon lexicon;
 	// JWKTL Wiktionary object
-	protected final IWiktionaryEdition wkt;		 						
+	protected final IWiktionaryEdition wkt;
 	// Language of Wiktionary edition that should be transformed
 	protected final ILanguage wktLang;
 	// A string representation (YYYY-MM-DD) of the dump date.
 	protected final String wktDate;
-	
+
 	// JWKTL Entry iterator
 	protected final WiktionaryIterator<IWiktionaryEntry> entryIterator;
 	// Current entry number
-	protected int currentEntryNr = 0;								
+	protected int currentEntryNr = 0;
 	// Handler for Wiktionary's pragmatic labels.
 	protected WiktionaryLabelManager labelManager;
 	// Cache of unsaved word forms defined by Wiktionary word form labels.
-	protected final HashMap<String, List<WordForm>> wordForms;			
+	protected final HashMap<String, List<WordForm>> wordForms;
 	// Cache of unsaved subcategorization frames.
-	protected final List<SubcategorizationFrame> subcatFrames;			
+	protected final List<SubcategorizationFrame> subcatFrames;
 
 	protected final String jwktlVersion;
 	protected final String dtd_version;
@@ -122,7 +122,7 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 	 * @param wkt - JWKTL Wiktionary Object
 	 * @throws FileNotFoundException
 	 */
-	public WiktionaryLMFTransformer(final DBConfig dbConfig, 
+	public WiktionaryLMFTransformer(final DBConfig dbConfig,
 			final IWiktionaryEdition wkt, final ILanguage wktLang,
 			final String wktDate, final String dtd) throws IOException {
 		super(dbConfig);
@@ -136,7 +136,7 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 		jwktlVersion = JWKTL.getVersion();
 		dtd_version = dtd;
 	}
-	
+
 	@Override
 	protected String getResourceAlias() {
 		return "Wkt" + wktLang.getISO639_1().toUpperCase();
@@ -146,8 +146,8 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 	protected LexicalResource createLexicalResource() {
 		LexicalResource resource = new LexicalResource();
 		GlobalInformation glInformation = new GlobalInformation();
-		glInformation.setLabel("Wiktionary " + wktLang.getName() 
-				+" edition, dump of " + wktDate 
+		glInformation.setLabel("Wiktionary " + wktLang.getName()
+				+" edition, dump of " + wktDate
 				+ ", JWKTL "+ jwktlVersion);
 		resource.setGlobalInformation(glInformation);
 		resource.setName("Wiktionary" + wktLang.getISO639_1().toUpperCase());
@@ -157,8 +157,9 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 
 	@Override
 	protected Lexicon createNextLexicon() {
-		if(!entryIterator.hasNext()/* || currentEntryNr > 1000*/)
-			return null;
+		if(!entryIterator.hasNext()/* || currentEntryNr > 1000*/) {
+            return null;
+        }
 
 		lexicon = new Lexicon();
 		String lmfLang = WiktionaryLMFMap.mapLanguage(wktLang);
@@ -167,13 +168,13 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 		lexicon.setName("Wiktionary" + wktLang.getISO639_1().toUpperCase());
 		return lexicon;
 	}
-	
+
 	@Override
 	protected LexicalEntry getNextLexicalEntry() {
 		if (currentEntryNr % 1000 == 0) {
 			System.out.println("PROCESSED " + currentEntryNr + " ENTRIES");
 		}
-		
+
 		IWiktionaryEntry wktEntry = null;
 		while (entryIterator.hasNext()){
 			wktEntry = entryIterator.next();
@@ -191,7 +192,7 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 		entry.setId(getLmfId(LexicalEntry.class, getEntryId(wktEntry)));
 		EPartOfSpeech pos = WiktionaryLMFMap.mapPos(wktEntry);
 		entry.setPartOfSpeech(pos);
-		
+
 		// Lemma
 		String word = convert(wktEntry.getWord(), 1000);
 		Lemma lemma = new Lemma();
@@ -207,15 +208,16 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 			}
 		}
 		entry.setSenses(senses);
-		
+
 		// Related forms.
 		List<IWiktionaryRelation> relations = wktEntry.getRelations();
 		if (relations != null) {
 			List<RelatedForm> relatedForms = new ArrayList<RelatedForm>();
 			for (IWiktionaryRelation relation : relations) {
 				ERelTypeMorphology relType = WiktionaryLMFMap.mapMorphologicalRelation(relation.getRelationType());
-				if (relType == null)
-					continue;
+				if (relType == null) {
+                    continue;
+                }
 
 				RelatedForm form = new RelatedForm();
 				form.setRelType(relType);
@@ -224,10 +226,10 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 			}
 			entry.setRelatedForms(relatedForms);
 		}
-		
+
 		// Word forms.
 		List<WordForm> wordForms = new ArrayList<WordForm>();
-		
+
 		// Word forms: Inflected forms.
 		/*List<IWiktionaryWordForm> wktWordForms = wktEntry.getWordForms();
 		if (wktWordForms != null) {
@@ -242,24 +244,27 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 				wordForms.add(wordForm);
 			}
 		}*/
-		
+
 		// Word forms: Pronunciations.
-		List<IPronunciation> pronunciations = wktEntry.getPronunciations(); 
+		List<IPronunciation> pronunciations = wktEntry.getPronunciations();
 		if (pronunciations != null) {
 			for (IPronunciation pronunciation : pronunciations) {
 				// Only save IPA pronunciations
-				if (pronunciation.getType() != PronunciationType.IPA)
-					continue;
-					
+				if (pronunciation.getType() != PronunciationType.IPA) {
+                    continue;
+                }
+
 				// Don't save empty pronunciations.
 				String text = pronunciation.getText();
 				if (text == null || "".equals(text)
-						|| "...".equals(text) || "…".equals(text))
-					continue;
-				
+						|| "...".equals(text) || "…".equals(text)) {
+                    continue;
+                }
+
 				String writtenForm = null; //TODO: merge with inflection table result!
-				if (pronunciation.getNote() == null || pronunciation.getNote().isEmpty())
-					writtenForm = wktEntry.getWord();
+				if (pronunciation.getNote() == null || pronunciation.getNote().isEmpty()) {
+                    writtenForm = wktEntry.getWord();
+                }
 				WordForm wordForm = new WordForm();
 				List<FormRepresentation> formRep = createFormRepresentationList(
 						writtenForm, wktEntry.getWordLanguage());
@@ -267,41 +272,49 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 				wordForm.setFormRepresentations(formRep);
 				if ("Pl.".equals(pronunciation.getNote())
 						|| "Pl.1".equals(pronunciation.getNote())
-						|| "Pl.2".equals(pronunciation.getNote()))
-					wordForm.setGrammaticalNumber(EGrammaticalNumber.plural);
-				if ("Gen.".equals(pronunciation.getNote()))
-					wordForm.setCase(ECase.genitive);
-				else
-				if ("Dat.".equals(pronunciation.getNote()))
-					wordForm.setCase(ECase.dative);
-				else
-				if ("Akk.".equals(pronunciation.getNote()))
-					wordForm.setCase(ECase.accusative);
-				if ("Prät.".equals(pronunciation.getNote()))
-					wordForm.setTense(ETense.past);
-				if ("Komp.".equals(pronunciation.getNote()))
-					wordForm.setDegree(EDegree.comparative);
-				else
-				if ("Sup.".equals(pronunciation.getNote()))
-					wordForm.setDegree(EDegree.superlative);
+						|| "Pl.2".equals(pronunciation.getNote())) {
+                    wordForm.setGrammaticalNumber(EGrammaticalNumber.plural);
+                }
+				if ("Gen.".equals(pronunciation.getNote())) {
+                    wordForm.setCase(ECase.genitive);
+                }
+                else
+				if ("Dat.".equals(pronunciation.getNote())) {
+                    wordForm.setCase(ECase.dative);
+                }
+                else
+				if ("Akk.".equals(pronunciation.getNote())) {
+                    wordForm.setCase(ECase.accusative);
+                }
+				if ("Prät.".equals(pronunciation.getNote())) {
+                    wordForm.setTense(ETense.past);
+                }
+				if ("Komp.".equals(pronunciation.getNote())) {
+                    wordForm.setDegree(EDegree.comparative);
+                }
+                else
+				if ("Sup.".equals(pronunciation.getNote())) {
+                    wordForm.setDegree(EDegree.superlative);
+                }
 				if ("Part.".equals(pronunciation.getNote())) {
 					wordForm.setVerbFormMood(EVerbFormMood.participle);
 					wordForm.setTense(ETense.past); // Partizip II
 				}
 				wordForms.add(wordForm);
 			}
-		}		
+		}
 
-		if (!wordForms.isEmpty())
-			entry.setWordForms(wordForms);
-		
+		if (!wordForms.isEmpty()) {
+            entry.setWordForms(wordForms);
+        }
+
 		currentEntryNr++;
 		return entry;
 	}
 
 	/** Returns true if this sense should be used for the UBY database. */
 	protected boolean considerSense(final IWiktionarySense wktSense) {
-		return (wktSense.getGloss() != null);
+		return wktSense.getGloss() != null;
 	}
 
 	/**
@@ -318,8 +331,8 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 
 		// Monolingual external reference.
 		MonolingualExternalRef monolingualExternalRef = new MonolingualExternalRef();
-		monolingualExternalRef.setExternalSystem("Wiktionary_" 
-				+ jwktlVersion + "_" + wktDate + "_" 
+		monolingualExternalRef.setExternalSystem("Wiktionary_"
+				+ jwktlVersion + "_" + wktDate + "_"
 				+ wktLang.getISO639_2T() + "_sense");
 		monolingualExternalRef.setExternalReference(wktSense.getKey());
 		List<MonolingualExternalRef> monolingualExternalRefs = new LinkedList<MonolingualExternalRef>();
@@ -338,14 +351,16 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 
 		// Semantic Labels.
 		List<SemanticLabel> semanticLabels = createSemanticLabels(entry, sense, wktSense);
-		if (semanticLabels != null && semanticLabels.size() > 0)
-			sense.setSemanticLabels(semanticLabels);
-		
+		if (semanticLabels != null && semanticLabels.size() > 0) {
+            sense.setSemanticLabels(semanticLabels);
+        }
+
 		// Etymology (Statement class; type etymology).
 		IWikiString etymology = null;
-		if (wktEntry.getWordEtymology() != null)
-			etymology = wktEntry.getWordEtymology();
-		
+		if (wktEntry.getWordEtymology() != null) {
+            etymology = wktEntry.getWordEtymology();
+        }
+
 		if (etymology != null && definition != null) {
 			List<Statement> statements = new LinkedList<Statement>();
 			Statement statement = new Statement();
@@ -355,7 +370,7 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 			statements.add(statement);
 			definition.setStatements(statements);
 		}
-	
+
 		// Sense examples (SenseExample class; type senseInstance).
 		List<SenseExample> examples = new ArrayList<SenseExample>();
 		if (wktSense.getExamples() != null) {
@@ -387,8 +402,9 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 				));
 				if (quotation.getSource() != null) {
 					String source = quotation.getSource().getPlainText();
-					if (source.length() > 255)
-						source = source.substring(0, 255);
+					if (source.length() > 255) {
+                        source = source.substring(0, 255);
+                    }
 					context.setSource(source);
 				}
 				contexts.add(context);
@@ -415,7 +431,7 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 				FormRepresentation targetFormRepresentation = new FormRepresentation();
 				targetFormRepresentation.setWrittenForm(convert(wktRelation.getTarget(),1000));
 				targetFormRepresentation.setLanguageIdentifier(WiktionaryLMFMap.mapLanguage(wktEntry.getWordLanguage()));
-				senseRelation.setFormRepresentation(targetFormRepresentation); 
+				senseRelation.setFormRepresentation(targetFormRepresentation);
 				senseRelations.add(senseRelation);
 			}
 		}
@@ -433,10 +449,10 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 				if (language == null) {
 					continue; // Do not save translations to unknown languages.
 				}
-				
+
 				String transliteration = trans.getTransliteration();
 				if (transliteration != null) {
-					transliteration = convert(transliteration, 255);					
+					transliteration = convert(transliteration, 255);
 				}
 				String additionalInformation = trans.getAdditionalInformation();
 				if (additionalInformation != null) {
@@ -445,7 +461,7 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 					additionalInformation = additionalInformation.replace("{{n}}", "neuter");
 					additionalInformation = convert(additionalInformation, 255);
 				}
-				
+
 				Equivalent equivalent = new Equivalent();
 				equivalent.setWrittenForm(targetForm);
 				equivalent.setLanguageIdentifier(language);
@@ -459,14 +475,15 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 	}
 
 	protected List<SemanticLabel> createSemanticLabels(
-			final LexicalEntry entry, final Sense sense, 
+			final LexicalEntry entry, final Sense sense,
 			final IWiktionarySense wktSense) {
 		List<SemanticLabel> result = new ArrayList<SemanticLabel>();
-		
+
 		// Create semantic labels from part of speech tags.
 		for (PartOfSpeech p : wktSense.getEntry().getPartsOfSpeech()) {
-			if (p == null)
-				continue;
+			if (p == null) {
+                continue;
+            }
 			ELabelTypeSemantics semanticLabelType;
 			String semanticLabelName;
 			switch (p) {
@@ -482,7 +499,7 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 					semanticLabelType = ELabelTypeSemantics.semanticNounClass;
 					semanticLabelName = ELabelNameSemantics.SEMANTIC_NOUN_CLASS_ONLY_PLURAL;
 					break;
-					
+
 				case SALUTATION:
 					semanticLabelType = ELabelTypeSemantics.interjectionClass;
 					semanticLabelName = ELabelNameSemantics.INTERJECTION_SALUTATION;
@@ -491,7 +508,7 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 					semanticLabelType = ELabelTypeSemantics.interjectionClass;
 					semanticLabelName = ELabelNameSemantics.INTERJECTION_ONOMATOPOEIA;
 					break;
-					
+
 				case IDIOM:
 					semanticLabelType = ELabelTypeSemantics.phrasemeClass;
 					semanticLabelName = ELabelNameSemantics.PHRASEME_CLASS_IDIOM;
@@ -508,7 +525,7 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 					semanticLabelType = ELabelTypeSemantics.phrasemeClass;
 					semanticLabelName = ELabelNameSemantics.PHRASEME_CLASS_MNEMONIC;
 					break;
-					
+
 				case MODAL_PARTICLE:
 					semanticLabelType = ELabelTypeSemantics.discourseFunction;
 					semanticLabelName = ELabelNameSemantics.DISCOURSE_FUNCTION_MODAL_PARTICLE;
@@ -521,54 +538,57 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 					semanticLabelType = ELabelTypeSemantics.discourseFunction;
 					semanticLabelName = ELabelNameSemantics.DISCOURSE_FUNCTION_INTENSIFYING_PARTICLE;
 					break;
-				
+
 				default:
 					continue;
 			}
-			
+
 			SemanticLabel semanticLabel = new SemanticLabel();
 			semanticLabel.setType(semanticLabelType);
 			semanticLabel.setLabel(semanticLabelName);
 			result.add(semanticLabel);
 		}
-		
+
 		// Create semantic labels from the sense definition.
 		IWikiString senseDefinition = wktSense.getGloss();
 		List<PragmaticLabel> labels = labelManager.parseLabels(
 				senseDefinition.getText(), wktSense.getEntry().getWord());
-		if (labels != null) {			
+		if (labels != null) {
 			for (PragmaticLabel label : labels) {
 				String labelGroup = label.getLabelGroup();
-				if (labelGroup == null || labelGroup.length() == 0)
-					continue;
+				if (labelGroup == null || labelGroup.length() == 0) {
+                    continue;
+                }
 
 				if (labelManager.isWordFormLabel(label)) {
 					// Morphological labels.
-					String targetWord = labelManager.extractTargetWordForm(senseDefinition.getText()); 
+					String targetWord = labelManager.extractTargetWordForm(senseDefinition.getText());
 					IWiktionaryEntry wktEntry = wktSense.getEntry();
 					WordForm wordForm = new WordForm();
 					List<FormRepresentation> formRepresentations = new ArrayList<FormRepresentation>();
 					FormRepresentation formRepresentation = new FormRepresentation();
-					formRepresentation.setWrittenForm(StringUtils.replaceNonUtf8(wktEntry.getWord(), 1000));						
-					formRepresentations.add(formRepresentation);	
+					formRepresentation.setWrittenForm(StringUtils.replaceNonUtf8(wktEntry.getWord(), 1000));
+					formRepresentations.add(formRepresentation);
 					wordForm.setFormRepresentations(formRepresentations);
 
 					for (IWiktionaryEntry targetEntry : wkt.getEntriesForWord(targetWord)) {
 						// Ignore entries of a different language.
-						if (targetEntry.getWordLanguage() == null 
-								|| !targetEntry.getWordLanguage().equals(wktEntry.getWordLanguage()))
-							continue;
+						if (targetEntry.getWordLanguage() == null
+								|| !targetEntry.getWordLanguage().equals(wktEntry.getWordLanguage())) {
+                            continue;
+                        }
 
 						// Ignore entries of a different part of speech.
-						if (targetEntry.getPartOfSpeech() == null 
-								|| !targetEntry.getPartOfSpeech().equals(wktEntry.getPartOfSpeech()))
-							continue;
+						if (targetEntry.getPartOfSpeech() == null
+								|| !targetEntry.getPartOfSpeech().equals(wktEntry.getPartOfSpeech())) {
+                            continue;
+                        }
 
 						String entryId = getLmfId(LexicalEntry.class, getEntryId(targetEntry));
 						LexicalEntry lexEntry = (LexicalEntry) getLmfObjectById(LexicalEntry.class, entryId);
-						if (lexEntry != null) { 
+						if (lexEntry != null) {
 							// If the entry already exists then save directly to it
-							List<WordForm> wordForms = lexEntry.getWordForms(); 
+							List<WordForm> wordForms = lexEntry.getWordForms();
 							if (wordForm == null) {
 								wordForms = new ArrayList<WordForm>();
 								lexEntry.setWordForms(wordForms);
@@ -576,7 +596,7 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 							wordForms.add(wordForm);
 							saveList(lexEntry, lexEntry.getWordForms());
 						} else {
-							// If the lexical entry does not yet exist, then 
+							// If the lexical entry does not yet exist, then
 							// save the wordForms temporarily.
 							if (wordForms.containsKey(entryId)) {
 								wordForms.get(entryId).add(wordForm);
@@ -587,9 +607,9 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 							}
 						}
 					}
-				} else				
+				} else
 					if (labelGroup.startsWith("syntax:gram")) {
-						// Grammatical labels.				
+						// Grammatical labels.
 						SubcategorizationFrame subcatFrame = new SubcategorizationFrame();
 						subcatFrame.setSubcatLabel(label.getLabel());
 						subcatFrame.setId(getResourceAlias() + "_SubcatFrame_" + (subcatFrameIdx++));
@@ -603,27 +623,33 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 							entry.setSyntacticBehaviours(new LinkedList<SyntacticBehaviour>());
 						}
 						entry.getSyntacticBehaviours().add(sb);
-						
+
 					} else {
 						// Semantic labels.
 						SemanticLabel semanticLabel = new SemanticLabel();
 						semanticLabel.setLabel(StringUtils.replaceNonUtf8(label.getLabel()));
-						if (labelGroup.startsWith("dom"))
-							semanticLabel.setType(ELabelTypeSemantics.domain);
-						else
-						if (labelGroup.startsWith("reg") || labelGroup.startsWith("dia"))
-							semanticLabel.setType(ELabelTypeSemantics.regionOfUsage);
-						else
-						if (labelGroup.startsWith("phas") || labelGroup.startsWith("strat") || labelGroup.startsWith("eval"))
-							semanticLabel.setType(ELabelTypeSemantics.register);
-						else
-						if (labelGroup.startsWith("temp"))
-							semanticLabel.setType(ELabelTypeSemantics.timePeriodOfUsage);
-						else
-						if (labelGroup.startsWith("freq") || labelGroup.startsWith("norm"))
-							semanticLabel.setType(ELabelTypeSemantics.usage);
-						else
-							continue;
+						if (labelGroup.startsWith("dom")) {
+                            semanticLabel.setType(ELabelTypeSemantics.domain);
+                        }
+                        else
+						if (labelGroup.startsWith("reg") || labelGroup.startsWith("dia")) {
+                            semanticLabel.setType(ELabelTypeSemantics.regionOfUsage);
+                        }
+                        else
+						if (labelGroup.startsWith("phas") || labelGroup.startsWith("strat") || labelGroup.startsWith("eval")) {
+                            semanticLabel.setType(ELabelTypeSemantics.register);
+                        }
+                        else
+						if (labelGroup.startsWith("temp")) {
+                            semanticLabel.setType(ELabelTypeSemantics.timePeriodOfUsage);
+                        }
+                        else
+						if (labelGroup.startsWith("freq") || labelGroup.startsWith("norm")) {
+                            semanticLabel.setType(ELabelTypeSemantics.usage);
+                        }
+                        else {
+                            continue;
+                        }
 
 						result.add(semanticLabel);
 					}
@@ -632,7 +658,7 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 		}
 		return result;
 	}
-	
+
 	protected List<TextRepresentation> createTextRepresentationList(
 			final String writtenText, final ILanguage language) {
 		List<TextRepresentation> result = new ArrayList<TextRepresentation>();
@@ -642,7 +668,7 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 		result.add(textRepresentation);
 		return result;
 	}
-	
+
 	protected List<FormRepresentation> createFormRepresentationList(
 			final String writtenForm, final ILanguage language) {
 		List<FormRepresentation> result = new ArrayList<FormRepresentation>();
@@ -708,7 +734,7 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 	protected String getSenseId(IWiktionarySense sense){
 		return getSenseId(sense.getKey());
 	}
-	
+
 	protected String getSenseId(final String senseKey){
 		return "s" + senseKey;
 	}
@@ -717,7 +743,7 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 		return StringUtils.replaceNonUtf8(
 				StringUtils.replaceHtmlEntities(text));
 	}
-	
+
 	private static String convert(final String text, int maxLength) {
 		return StringUtils.replaceNonUtf8(
 				StringUtils.replaceHtmlEntities(text), maxLength);
@@ -730,13 +756,13 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 	protected static final Pattern REFERENCES_PATTERN = Pattern.compile("<ref[^>]*>.+?</ref>");
 	protected static final Pattern HTML_PATTERN = Pattern.compile("<[^>]+>");
 	protected static final Pattern WHITESPACE_PATTERN = Pattern.compile("\\s\\s+");
-	
+
 	/** @deprecated Replace by WikiString.makePlainText in JWKTL 1.0.0. */
 	@Deprecated
 	private static String makePlainText(final String wikiText) {
 		String result = wikiText;
 		result = result.replace("\t", " ");
-		result = COMMENT_PATTERN.matcher(result).replaceAll("");	
+		result = COMMENT_PATTERN.matcher(result).replaceAll("");
 		result = QUOTES_PATTERN.matcher(result).replaceAll("");
 		result = WIKILINK_PATTERN.matcher(result).replaceAll("$2");
 		result = REFERENCES_PATTERN.matcher(result).replaceAll("");
@@ -746,11 +772,12 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 		result = result.replace("�", "'");
 		result = result.replace("°", "");
 		result = WHITESPACE_PATTERN.matcher(result).replaceAll(" ");
-		while (result.length() > 0 && "*: ".contains(result.substring(0, 1)))
-			result = result.substring(1);
+		while (result.length() > 0 && "*: ".contains(result.substring(0, 1))) {
+            result = result.substring(1);
+        }
 		return result.trim();
 	}
-	
+
 	protected String convertEtymology(final IWikiString etymology) {
 		String result = TemplateParser.parse(etymology.getText(), new EtymologyTemplateHandler());
 		//return WikiString.makePlainText(result);

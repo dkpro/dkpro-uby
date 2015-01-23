@@ -57,7 +57,7 @@ public class GlossSimilarityCalculator
 
 			OneResourceBuilder bg_1 = new OneResourceBuilder("uby_release_1_0","root","fortuna", prefix1,language,synset1,usePos1);
 
-			final int chunksize1 = 2000;
+//			final int chunksize1 = 2000;
 
 //			bg_1.createGlossFile(false);
 //			bg_1.lemmatizePOStagGlossFileInChunks(chunksize1);
@@ -69,7 +69,7 @@ public class GlossSimilarityCalculator
 			boolean usePos2 = true;
 			final int prefix2 = Global.WKT_EN_prefix;
 
-			final int chunksize2 = 1000;
+//			final int chunksize2 = 1000;
 
 			OneResourceBuilder bg_2 = new OneResourceBuilder("uby_release_1_0","root","fortuna",prefix2,language,synset2,usePos2);
 
@@ -88,7 +88,7 @@ public class GlossSimilarityCalculator
 			boolean onlyGreaterZero = true;
 
             createAlignmentFromSimilarityFileUnsupervised(bg_1, bg_2,useTaggedGloss, tfidf, onlyGreaterZero);
-			boolean extRef = true;
+//			boolean extRef = true;
 	//		Global.mapAlignmentToUby(bg_1,bg_2,"target/"+bg_1.prefix_string+"_"+bg_2.prefix_string+"_alignment_similarity_"+(bg_2.pos ? "Pos": "noPos")+(tfidf ? "_tfidf": "")+(onlyGreaterZero ? "_nonZero"  :"")+".txt", extRef);
 
 		}

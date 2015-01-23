@@ -23,7 +23,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -93,7 +92,6 @@ public class CreateClusteringFromAlignment
 		}
 
 		String line;
-		int i =0;
 		 while((line =input.readLine())!=null)
 		 {
 			String[] elements = line.split("\t");
@@ -160,7 +158,7 @@ public class CreateClusteringFromAlignment
 		PrintStream p;
 		outstream = new FileOutputStream(infile+"_cleaned");
 		p = new PrintStream( outstream );
-		FileReader in = new FileReader(infile);;
+		FileReader in = new FileReader(infile);
 		String line;
 		Statement statement = bg_1.connection.createStatement();
 		HashMap<String,String> extRefLemmaMap= new HashMap<String, String>();
@@ -376,7 +374,7 @@ public class CreateClusteringFromAlignment
 			String[] ids = line.split("\t");
 			for(String id : ids)
 			{
-				out+=(id.split("] ")[1]+"\t");
+				out+=id.split("] ")[1]+"\t";
 				
 			}
 			p.println(out.trim());

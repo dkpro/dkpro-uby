@@ -447,7 +447,7 @@ public class OntoWiktionaryTransformer extends LMFDBTransformer {
 
 	/** Returns true if this sense should be used for the UBY database. */
 	protected boolean considerSense(final IWiktionarySense wktSense) {
-		return (wktSense.getGloss() != null);
+		return wktSense.getGloss() != null;
 	}
 
 	/** Converts Wiktionary Sense to LMF Sense. */
