@@ -23,7 +23,6 @@ import de.tudarmstadt.ukp.lmf.model.core.GlobalInformation;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
-import de.tudarmstadt.ukp.wikipedia.api.MetaData;
 import de.tudarmstadt.ukp.wikipedia.api.Wikipedia;
 import de.tudarmstadt.ukp.wikipedia.api.exception.WikiApiException;
 
@@ -36,7 +35,7 @@ import de.tudarmstadt.ukp.wikipedia.api.exception.WikiApiException;
 public class WikipediaENTransformer extends WikipediaLMFTransformer {
 
 	public WikipediaENTransformer(final DBConfig dbConfig,
-			final Wikipedia wiki, String resourceVersion, 
+			final Wikipedia wiki, String resourceVersion,
 			final String dtd, boolean createEquivalents) throws WikiApiException, FileNotFoundException {
 		super(dbConfig, wiki, resourceVersion, dtd, createEquivalents);
 	}
@@ -50,7 +49,7 @@ public class WikipediaENTransformer extends WikipediaLMFTransformer {
 	protected String getResourceAlias() {
 		return "WikiEN";
 	}
-	
+
 	@Override
 	protected LexicalResource createLexicalResource() {
 		LexicalResource resource = new LexicalResource();
@@ -61,7 +60,7 @@ public class WikipediaENTransformer extends WikipediaLMFTransformer {
 		resource.setDtdVersion(dtd_version);
 		return resource;
 	}
-	
+
 	@Override
 	protected Lexicon createNextLexicon() {
 		if(!pageIterator.hasNext() /*|| currentEntryNr > 100*/) {
