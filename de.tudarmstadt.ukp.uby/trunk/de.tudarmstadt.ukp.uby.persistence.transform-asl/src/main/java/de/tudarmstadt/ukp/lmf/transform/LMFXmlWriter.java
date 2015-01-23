@@ -49,6 +49,18 @@ public class LMFXmlWriter extends UBYXMLTransformer {
 		writeStartDocument(outputStream, dtdPath);
 	}
 
+	// Increases visibility of parent method
+	@Override
+	public void writeElement(Object lmfObject) throws SAXException {
+		super.writeElement(lmfObject);
+	}
+
+    // Increases visibility of parent method
+	@Override
+	public void writeEndDocument() throws SAXException {
+		super.writeEndDocument();
+	}
+
 	@Override
 	protected String getResourceAlias() {
 		return null;
