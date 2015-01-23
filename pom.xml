@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	Copyright 2013
+	Copyright 2015
 	Ubiquitous Knowledge Processing (UKP) Lab
 	Technische Universität Darmstadt
 
@@ -277,7 +277,7 @@
 							<failIfMissing>true</failIfMissing>
 							<strictCheck>true</strictCheck>
 							<properties>
-								<year>2013</year>
+								<year>2015</year>
 							</properties>
 							<excludes>
 								<exclude>release.properties</exclude>
