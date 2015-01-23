@@ -19,7 +19,6 @@ package de.tudarmstadt.ukp.uby.uima.annotator;
 
 import static org.apache.uima.fit.util.JCasUtil.select;
 
-import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.descriptor.ExternalResource;
@@ -27,7 +26,6 @@ import org.apache.uima.fit.descriptor.TypeCapability;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceAccessException;
-import org.apache.uima.resource.ResourceInitializationException;
 
 import de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
@@ -42,22 +40,22 @@ import de.tudarmstadt.ukp.uby.resource.UbySemanticFieldResource;
 				"de.tudarmstadt.ukp.dkpro.core.api.semantics.type.SemanticField"})
 
 /**
- * 
+ *
  * This Analysis Engine annotates English or German
- * common nouns, main verbs and adjectives with semantic field information 
+ * common nouns, main verbs and adjectives with semantic field information
  * from WordNet or GermaNet.
  * The annotation is stored in the SemanticField annotation type
- *     
+ *
  * @author Judith Eckle-Kohler
- * 
+ *
  */
 public class UbySemanticFieldAnnotator extends JCasAnnotator_ImplBase
 {
 
 	public static final String PARAM_UBY_SEMANTIC_FIELD_RESOURCE = "ubySemanticFieldResource";
-	@ExternalResource(key = PARAM_UBY_SEMANTIC_FIELD_RESOURCE)	
+	@ExternalResource(key = PARAM_UBY_SEMANTIC_FIELD_RESOURCE)
 	private UbySemanticFieldResource ubySemanticFieldResource;
-	
+
 	@Override
 	public void process(JCas aJCas) throws AnalysisEngineProcessException {
 		for (POS pos : select(aJCas, POS.class)) {
@@ -72,10 +70,10 @@ public class UbySemanticFieldAnnotator extends JCasAnnotator_ImplBase
 				}
 
 			}
-			
+
 		}
-		
+
 	}
 
-	
+
 }
