@@ -21,7 +21,6 @@ import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -98,7 +97,7 @@ public class Uby
 
     /**
      * Using this empty constructor, you have to set Value for parameter dbConfig afterwards.
-     * 
+     *
      * @deprecated marked for deletion, use {@link #Uby(DBConfig)} instead.
      */
 	@Deprecated
@@ -598,7 +597,7 @@ public class Uby
     /**
      * Returns the {@link Synset} instance contained in the database accessed by this {@link Uby}
      * instance.
-     * 
+     *
      * @param externalSys
      *            the {@link String} representing the name of external system such as:
      *            OmegaWiki_2010-01-03_eng_definedMeaning WordNet_3.0_eng_synsetOffset
@@ -615,7 +614,7 @@ public class Uby
 				Restrictions.and(
 						Restrictions.eq("externalSystem", externalSys),
 						Restrictions.eq("externalReference", externalRef)));
-		
+
 		return (Synset) criteria.uniqueResult();
 
 	}
@@ -624,7 +623,7 @@ public class Uby
      * Returns the {@link Sense} instance contained in the database accessed by this {@link Uby}
      * instance. The returned senses are filtered by the given name of the external system, external
      * reference and lexicon.
-     * 
+     *
      * @return a {@link List} of all senses filtered by the given arguments or an empty list if one
      *         of the given arguments is null or the accessed database does not contain any senses
      *         matching both constraints.
@@ -790,10 +789,11 @@ public class Uby
 		Criteria criteria = session.createCriteria(Sense.class).add(
 				Restrictions.eq("id", senseId));
 		List<?> result = criteria.list();
-		if (result.size() < 0)
-			throw new IllegalArgumentException(
+		if (result.size() < 0) {
+            throw new IllegalArgumentException(
 					"Sense with this ID does not exist");
-		
+        }
+
 		return (Sense) result.get(0);
 	}
 
@@ -810,10 +810,11 @@ public class Uby
 		Criteria criteria = session.createCriteria(Synset.class).add(
 				Restrictions.eq("id", synsetId));
 		List<?> result = criteria.list();
-		if (result.size() < 0)
-			throw new IllegalArgumentException(
+		if (result.size() < 0) {
+            throw new IllegalArgumentException(
 					"Synset with the ID " +synsetId +" does not exist");
-		
+        }
+
 		return (Synset) result.get(0);
 	}
 
@@ -1145,7 +1146,7 @@ public class Uby
 
     /**
      * Return the semantic predicate with the given Id
-     * 
+     *
      * @param predicateId
      *            the id of the predicate
      * @return semantic predicate

@@ -26,7 +26,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.hibernate.cfg.Configuration;
-import org.hibernate.dialect.H2Dialect;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
@@ -34,7 +33,7 @@ import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 
 /**
  * This class offers methods for conecting to a database.
- * 
+ *
  * @author Yevgen Chebotar
  * @author Zijad Maksuti
  *
@@ -46,10 +45,10 @@ public class HibernateConnect
     /**
      * Creates Hibernate {@link Configuration} and adds all files from Hibernate mapping folder to
      * the model.
-     * 
+     *
      * @param dbConfig
      *            database configuration holder
-     * 
+     *
      * @return the created Hibernate Configuration
      */
     public static Configuration getConfiguration(DBConfig dbConfig)
@@ -82,7 +81,7 @@ public class HibernateConnect
 
     /**
      * This method creates and returns Hibernate Properties.
-     * 
+     *
      * @param jdbc_url
      *            Host_to_the_database/database_name
      * @param jdbc_driver_class
@@ -95,9 +94,9 @@ public class HibernateConnect
      *            password
      * @param showSQL
      *            set to true in order to print all SQL-queries to the console
-     * 
+     *
      * @return hibernate properties based on the consumed parameters
-     * 
+     *
      * @see Properties
      */
     public static Properties getProperties(String jdbc_url, String jdbc_driver_class,
@@ -108,7 +107,7 @@ public class HibernateConnect
          *         <property name="driverClassName" value="org.h2.Driver"/>
         <property name="url" value="jdbc:h2:mem:test;DB_CLOSE_DELAY=-1"/>
     </bean>
- 
+
     <bean id="jpaAdaptor" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
         <property name="showSql" value="false" />
         <!-- Let Hibernate generate the DDL for the schema -->
@@ -124,7 +123,7 @@ public class HibernateConnect
         p.setProperty("hibernate.connection.charSet", "UTF-8");
         p.setProperty("hibernate.connection.username", user);
         p.setProperty("hibernate.connection.password", password);
-        
+
         // connection url
         if (!jdbc_url.startsWith("jdbc:")) {
 	        if (db_vendor.equals("mysql")) {
@@ -184,14 +183,14 @@ public class HibernateConnect
 		}
 
         // Do only update schema on changes e.g. validate | update | create | create-drop
-//        p.setProperty("hibernate.hbm2ddl.auto","update"); 
-        
+//        p.setProperty("hibernate.hbm2ddl.auto","update");
+
         // JEK see http://stackoverflow.com/questions/3179765/how-to-turn-off-hbm2ddl
         p.setProperty("hibernate.hbm2ddl.auto","validate");
 //        if (db_vendor.equals("mysql")) {
 //        	p.setProperty("hibernate.hbm2ddl.auto","validate");
 //        } else if (db_vendor.equals("h2")) {
-//        	p.setProperty("hibernate.hbm2ddl.auto","update"); 
+//        	p.setProperty("hibernate.hbm2ddl.auto","update");
 //        }
         // p.setProperty("hibernate.hbm2ddl.auto","none");
 
@@ -200,7 +199,7 @@ public class HibernateConnect
 
     /**
      * Returns all files from the folder and its subfolders
-     * 
+     *
      * @deprecated this method is marked for deletion
      */
 	@Deprecated

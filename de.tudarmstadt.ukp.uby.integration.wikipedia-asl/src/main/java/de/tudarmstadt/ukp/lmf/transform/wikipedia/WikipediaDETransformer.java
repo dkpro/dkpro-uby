@@ -23,7 +23,6 @@ import de.tudarmstadt.ukp.lmf.model.core.GlobalInformation;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
-import de.tudarmstadt.ukp.wikipedia.api.MetaData;
 import de.tudarmstadt.ukp.wikipedia.api.Wikipedia;
 import de.tudarmstadt.ukp.wikipedia.api.exception.WikiApiException;
 
@@ -36,7 +35,7 @@ import de.tudarmstadt.ukp.wikipedia.api.exception.WikiApiException;
 public class WikipediaDETransformer extends WikipediaLMFTransformer {
 
 	public WikipediaDETransformer(final DBConfig dbConfig,
-			final Wikipedia wiki, String resourceVersion, final String dtd, 
+			final Wikipedia wiki, String resourceVersion, final String dtd,
 			boolean createEquivalents) throws WikiApiException, FileNotFoundException {
 		super(dbConfig, wiki, resourceVersion, dtd,createEquivalents);
 	}

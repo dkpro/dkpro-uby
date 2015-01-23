@@ -2,13 +2,13 @@
  * Copyright 2015
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,7 +17,6 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.transform.imslex;
 
-import java.awt.event.InputMethodListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -42,9 +41,9 @@ import de.tudarmstadt.ukp.lmf.model.enums.ECase;
 import de.tudarmstadt.ukp.lmf.model.enums.EComplementizer;
 import de.tudarmstadt.ukp.lmf.model.enums.EDeterminer;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalFunction;
+import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalNumber;
 import de.tudarmstadt.ukp.lmf.model.enums.ELabelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
-import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalNumber;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
 import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticCategory;
 import de.tudarmstadt.ukp.lmf.model.enums.ESyntacticProperty;
@@ -75,40 +74,40 @@ public class IMSlexExtractor {
 
 	public static final String SENSE = "sense";
 	public Lexicon lexicon = new Lexicon();
-	
-	private List<SynSemCorrespondence> synSemCorrespondences = new LinkedList<SynSemCorrespondence>();
-	private List<SemanticPredicate> semanticPredicates = new LinkedList <SemanticPredicate>();
-	private List<LexicalEntry> lexicalEntries = new LinkedList<LexicalEntry>();
-	
+
+	private final List<SynSemCorrespondence> synSemCorrespondences = new LinkedList<SynSemCorrespondence>();
+	private final List<SemanticPredicate> semanticPredicates = new LinkedList <SemanticPredicate>();
+	private final List<LexicalEntry> lexicalEntries = new LinkedList<LexicalEntry>();
+
 	private File lexiconInputFile; // The File containing the preprocessed Input lexicon
 	private String resourceName; // name of the LMF lexicon, i.e. "IMSLexSubcat"
 
 	// running numbers for IDs
-	private static int lexicalEntryNumber = 0; 
-	private static int senseNumber = 0; 
-	private static int syntacticBehaviourNumber = 0; 
-	private static int subcatFrameSetNumber = 0; 
-	private static int subcatFrameNumber = 0; 
-	private static int syntacticArgumentNumber = 0; 
-	private static int semanticPredicateNumber = 0; 
-	private static int semanticArgumentNumber = 0; 
-	private static int synSemCorrespondenceNumber = 0; 
-	
+	private static int lexicalEntryNumber = 0;
+	private static int senseNumber = 0;
+	private static int syntacticBehaviourNumber = 0;
+	private static int subcatFrameSetNumber = 0;
+	private static int subcatFrameNumber = 0;
+	private static int syntacticArgumentNumber = 0;
+	private static int semanticPredicateNumber = 0;
+	private static int semanticArgumentNumber = 0;
+	private static int synSemCorrespondenceNumber = 0;
+
 	private final String resourceVersion;
 
-	
+
 	// Mapping between lemmas and their corresponding IMSlex senses
 	private static Map<String, Set<IMSlexSense>> verbLemmaIMSlexSenseMappings = new TreeMap<String, Set<IMSlexSense>>();
 	private static Map<String, Set<IMSlexSense>> adjLemmaIMSlexSenseMappings = new TreeMap<String, Set<IMSlexSense>>();
-	private static Map<String, Set<IMSlexSense>> nounLemmaIMSlexSenseMappings = new TreeMap<String, Set<IMSlexSense>>();	
+	private static Map<String, Set<IMSlexSense>> nounLemmaIMSlexSenseMappings = new TreeMap<String, Set<IMSlexSense>>();
 	// Mapping between syntactic/semantic arguments (containing sem. role information) and purely syntactic arguments
-	private static Map<String, String> synSemArgSynArgMapping  = new TreeMap<String, String>();	
+	private static Map<String, String> synSemArgSynArgMapping  = new TreeMap<String, String>();
 	// Mapping between LMF-Code of purely syntactic SC-Frame and SubcategorizationFrame
-	private static Map<String, SubcategorizationFrame> synargsSubcatFrameMap  = new TreeMap<String, SubcategorizationFrame>();	
+	private static Map<String, SubcategorizationFrame> synargsSubcatFrameMap  = new TreeMap<String, SubcategorizationFrame>();
 	// Mapping between className and SubcategorizationFrameSet
 	private static Map<String, SubcategorizationFrameSet> classSubcatFrameSetMap  = new TreeMap<String, SubcategorizationFrameSet>();
 	// Mapping between className and set of SubcategorizationFrames
-	private static Map<String, Set<SubcategorizationFrame>> classSCframeElementsMap  = new TreeMap<String, Set<SubcategorizationFrame>>();	
+	private static Map<String, Set<SubcategorizationFrame>> classSCframeElementsMap  = new TreeMap<String, Set<SubcategorizationFrame>>();
 	// Mapping between IMSlexSense and SubcategorizationFrameSet
 	private static Map<IMSlexSense, SubcategorizationFrameSet> senseSubcatFrameSetMap;
 	// Mapping between IMSlexSense and SemanticPredicate
@@ -116,15 +115,15 @@ public class IMSlexExtractor {
 
 	// Mapping between IMSlex syntactic information and semantic class information
 	private static Map<String, String> syntaxSemClassMap  = new TreeMap<String, String>();
-	
+
 	private static List<IMSlexSense> listOfIMSlexSenses = new LinkedList <IMSlexSense>();
-	
+
 	/**
 	 * Constructs a IMSlexExtractor
 	 * @param preprocessedLexicon path of the File containing the preprocessed version of IMSlex
 	 * @param resourceName name of the LMF Lexicon instance: "IMSLexSubcat"
 	 * @return IMSlexExtractor
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public IMSlexExtractor(File preprocessedLexicon, String resourceName, String resourceVersion) throws IOException {
 		Comparator<IMSlexSense> comparator = new Comparator<IMSlexSense>() {
@@ -144,11 +143,11 @@ public class IMSlexExtractor {
 		parsePreprocessedIMSlex();
 		convertIMSlex();
 	}
-	
+
 	/**
 	 * This method parses the document containing the lexicon Input
 	 * Input has the form: <lemma>%<pos>%<Arg>:...:<Arg>%classInformation
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	private void parsePreprocessedIMSlex() throws IOException {
@@ -184,7 +183,7 @@ public class IMSlexExtractor {
 						String pureSynArgs = imsLexSense.synArgs.replaceFirst(",role=[a-z]+", "");
 						synSemArgSynArgMapping.put(imsLexSense.synArgs, pureSynArgs);
 					} else {
-						synSemArgSynArgMapping.put(imsLexSense.synArgs, imsLexSense.synArgs);	
+						synSemArgSynArgMapping.put(imsLexSense.synArgs, imsLexSense.synArgs);
 					}
 				}
 			}
@@ -238,49 +237,49 @@ public class IMSlexExtractor {
 			r.close();
 		}
 	}
-	
+
 	/**
 	 * This method creates LMF classes and
 	 * fills in the extracted lexical information
-	 * 
+	 *
 	 */
 	private  void convertIMSlex() {
 		lexicon.setLanguageIdentifier(ELanguageIdentifier.GERMAN);
 		lexicon.setId("IMSLexSubcat_Lexicon_0");
 		lexicon.setName(resourceName);
-		
+
 		// Create subclasses of Lexicon that are independent of particular lexemes
 		List<SubcategorizationFrame> subcategorizationFrames = new LinkedList <SubcategorizationFrame>();
 		List<SubcategorizationFrameSet> subcategorizationFramesSets = new LinkedList <SubcategorizationFrameSet>();
-		
+
 		for	(IMSlexSense imsLexSense : listOfIMSlexSenses) {
 			if (!imsLexSense.synArgs.equals("null")) {
 				// Create SubcatFrames and SemanticPredicates
 				String synArgs = synSemArgSynArgMapping.get(imsLexSense.synArgs);
-	
+
 				if (!synargsSubcatFrameMap.containsKey(synArgs)) {
 					SubcategorizationFrame subcategorizationFrame = new SubcategorizationFrame();
 					subcategorizationFrame.setId("IMSLexSubcat_SubcategorizationFrame_".concat(Integer.toString(subcatFrameNumber)));
-					subcatFrameNumber++;	
+					subcatFrameNumber++;
 					subcategorizationFrame = parseArguments(imsLexSense,subcategorizationFrame);
-					
-					synargsSubcatFrameMap.put(synArgs,subcategorizationFrame);	
+
+					synargsSubcatFrameMap.put(synArgs,subcategorizationFrame);
 					if (imsLexSense.synArgs.contains("role")) { //only few IMSLexSubcat-frames specify a semantic role
 						SemanticPredicate semanticPredicate = new SemanticPredicate();
 						semanticPredicate = parseSemanticArguments(imsLexSense,subcategorizationFrame);
-						semanticPredicates.add(semanticPredicate);		
-						
+						semanticPredicates.add(semanticPredicate);
+
 						senseSemPredicateMap.put(imsLexSense, semanticPredicate);
-					} 
+					}
 				} else {
 					SubcategorizationFrame subcategorizationFrame = synargsSubcatFrameMap.get(synArgs);
 					if (imsLexSense.synArgs.contains("role")) { //only few IMSlexSubcat-frames specify a semantic role
 						SemanticPredicate semanticPredicate = new SemanticPredicate();
 						semanticPredicate = parseSemanticArguments(imsLexSense,subcategorizationFrame);
-						semanticPredicates.add(semanticPredicate);	
-						
+						semanticPredicates.add(semanticPredicate);
+
 						senseSemPredicateMap.put(imsLexSense, semanticPredicate);
-					} 				
+					}
 				}
 			}
 		}
@@ -292,15 +291,15 @@ public class IMSlexExtractor {
 					SubcategorizationFrameSet subcategorizationFrameSet = new SubcategorizationFrameSet();
 					subcategorizationFrameSet.setId("IMSLexSubcat_SubcategorizationFrameSet_".concat(Integer.toString(subcatFrameSetNumber)));
 					subcategorizationFrameSet.setName(imsLexSense.classInformation);
-					subcatFrameSetNumber++;	
-	
+					subcatFrameSetNumber++;
+
 					classSubcatFrameSetMap.put(imsLexSense.classInformation,subcategorizationFrameSet);
 					senseSubcatFrameSetMap.put(imsLexSense, subcategorizationFrameSet);
-					
+
 					if (classSCframeElementsMap.get(imsLexSense.classInformation) == null) {
 						Set<SubcategorizationFrame> scFrames = new LinkedHashSet<SubcategorizationFrame>();
 						scFrames.add(synargsSubcatFrameMap.get(synSemArgSynArgMapping.get(imsLexSense.synArgs)));
-						
+
 						classSCframeElementsMap.put(imsLexSense.classInformation, scFrames);
 					} else {
 						Set<SubcategorizationFrame> scFrames = classSCframeElementsMap.get(imsLexSense.classInformation);
@@ -312,7 +311,7 @@ public class IMSlexExtractor {
 					if (classSCframeElementsMap.get(imsLexSense.classInformation) == null) {
 						Set<SubcategorizationFrame> scFrames = new LinkedHashSet<SubcategorizationFrame>();
 						scFrames.add(synargsSubcatFrameMap.get(synSemArgSynArgMapping.get(imsLexSense.synArgs)));
-						
+
 						classSCframeElementsMap.put(imsLexSense.classInformation, scFrames);
 					} else {
 						Set<SubcategorizationFrame> scFrames = classSCframeElementsMap.get(imsLexSense.classInformation);
@@ -322,47 +321,47 @@ public class IMSlexExtractor {
 				}
 			}
 		}
-		
+
 		if(classSubcatFrameSetMap != null ) {
-			// Add SubcatFrameElements to SubcategorizationFrameSet	
+			// Add SubcatFrameElements to SubcategorizationFrameSet
 			Iterator<String> classIterator = classSubcatFrameSetMap.keySet().iterator();
 			while (classIterator.hasNext()) {
 				String classKey = classIterator.next();
 				SubcategorizationFrameSet subcatFrameSet = classSubcatFrameSetMap.get(classKey);
 				if (classSCframeElementsMap.get(classKey) != null) {
 					List<SubcatFrameSetElement> subcatFrameSetElements = new LinkedList<SubcatFrameSetElement>();
-	
+
 					Iterator<SubcategorizationFrame> frameIterator = classSCframeElementsMap.get(classKey).iterator();
 					while (frameIterator.hasNext()) {
 						SubcategorizationFrame scFrame = frameIterator.next();
 						SubcatFrameSetElement subcatFrameSetElement = new SubcatFrameSetElement();
 						subcatFrameSetElement.setElement(scFrame);
 						subcatFrameSetElements.add(subcatFrameSetElement);
-					}		
+					}
 					subcatFrameSet.setSubcatFrameSetElements(subcatFrameSetElements);
 					classSubcatFrameSetMap.put(classKey, subcatFrameSet);
 				}
 			}
 		}
-		
-				
+
+
 		subcategorizationFrames.addAll(synargsSubcatFrameMap.values());
 		Collections.sort(subcategorizationFrames);
 		lexicon.setSubcategorizationFrames(subcategorizationFrames);
-		
+
 		subcategorizationFramesSets.addAll(classSubcatFrameSetMap.values());
 		lexicon.setSubcategorizationFrameSets(subcategorizationFramesSets); // might be null
-		
+
 		lexicon.setSemanticPredicates(semanticPredicates); // might be null
-		
+
 		lexicon.setSynSemCorrespondences(synSemCorrespondences); // might be null
 
 		createLexicalEntries(verbLemmaIMSlexSenseMappings.keySet().iterator(),"verb");
 		createLexicalEntries(adjLemmaIMSlexSenseMappings.keySet().iterator(),"adj");
 		createLexicalEntries(nounLemmaIMSlexSenseMappings.keySet().iterator(),"noun");
-		
+
 		lexicon.setLexicalEntries(lexicalEntries);
-		
+
 		System.out.println("Statistics");
 		System.out.println(lexicalEntryNumber+" LexicalEntries");
 		System.out.println(senseNumber+" Senses");
@@ -373,30 +372,30 @@ public class IMSlexExtractor {
 		System.out.println(synSemCorrespondenceNumber+" SynSemCorrespondences");
 		System.out.println(semanticArgumentNumber+" SemanticArguments");
 }
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * This method creates LexicalEntries and
 	 * fills in lexical information
-	 * 
-	 */	
+	 *
+	 */
 	private void createLexicalEntries(Iterator<String> iterator, String pos)
 	{
 		Iterator<IMSlexSense> senseIterator;
 
 		while (iterator.hasNext()) {
 			String sourceLemma = iterator.next();
-			
+
 			LexicalEntry lexicalEntry = new LexicalEntry();
 			// Create ID
 			lexicalEntry.setId("IMSLexSubcat_LexicalEntry_".concat(Integer.toString(lexicalEntryNumber)));
-			lexicalEntryNumber++;		
+			lexicalEntryNumber++;
 			// Set partOfSpeech
-			lexicalEntry.setPartOfSpeech(mapPOS(pos));	
-			// Create Lemma 
-			Lemma lemma = new Lemma();		
+			lexicalEntry.setPartOfSpeech(mapPOS(pos));
+			// Create Lemma
+			Lemma lemma = new Lemma();
 			// Create FormRepresentation
 			List<FormRepresentation> formReps = new ArrayList<FormRepresentation>();
 			FormRepresentation formRep = new FormRepresentation();
@@ -407,24 +406,24 @@ public class IMSlexExtractor {
 				String newVerbLemma = prefix.concat(parts[1]);
 				formRep.setWrittenForm(newVerbLemma);
 			} else {
-				formRep.setWrittenForm(sourceLemma);	
+				formRep.setWrittenForm(sourceLemma);
 			}
-																							
-			formReps.add(formRep);				// Save FormRepresentation		
-			lemma.setFormRepresentations(formReps);	// Save FormRepresentations		
+
+			formReps.add(formRep);				// Save FormRepresentation
+			lemma.setFormRepresentations(formReps);	// Save FormRepresentations
 			lexicalEntry.setLemma(lemma);			// Save Lemma
 
 			// Create Senses
 			List <Sense> senses = new ArrayList<Sense>();
-			// Create SyntacticBehavior 
+			// Create SyntacticBehavior
 			List<SyntacticBehaviour> syntacticBehaviours = new LinkedList <SyntacticBehaviour>();
-			
+
 			if (pos.equals("verb")) {
 				senseIterator = verbLemmaIMSlexSenseMappings.get(sourceLemma).iterator();
 			} else if (pos.equals("adj")) {
-				senseIterator = adjLemmaIMSlexSenseMappings.get(sourceLemma).iterator();				
+				senseIterator = adjLemmaIMSlexSenseMappings.get(sourceLemma).iterator();
 			} else {
-				senseIterator = nounLemmaIMSlexSenseMappings.get(sourceLemma).iterator();								
+				senseIterator = nounLemmaIMSlexSenseMappings.get(sourceLemma).iterator();
 			}
 			while (senseIterator.hasNext()) {
 				IMSlexSense imsLexSense = senseIterator.next();
@@ -433,7 +432,7 @@ public class IMSlexExtractor {
 				sense.setId("IMSLexSubcat_Sense_".concat(Integer.toString(senseNumber)));
 				sense.setIndex(senseNumber);
 				senseNumber++;
-				
+
 				MonolingualExternalRef monolingualExternalRef = new MonolingualExternalRef();
 				monolingualExternalRef.setExternalSystem(resourceVersion + "_" + SENSE);
 				monolingualExternalRef.setExternalReference(imsLexSense.lemma);
@@ -441,7 +440,7 @@ public class IMSlexExtractor {
 				monolingualExternalRefs.add(monolingualExternalRef);
 				sense.setMonolingualExternalRefs(monolingualExternalRefs);
 
-				
+
 				if (!imsLexSense.classInformation.equals("null")) {
 					List<SemanticLabel> semanticLabels = new ArrayList<SemanticLabel>();
 					SemanticLabel semanticLabel = new SemanticLabel();
@@ -450,44 +449,44 @@ public class IMSlexExtractor {
 					semanticLabels.add(semanticLabel);
 					sense.setSemanticLabels(semanticLabels);
 				}
-					
+
 				if (!imsLexSense.synArgs.equals("null")) {
 					// Creating SyntacticBehaviour (one for each sense)
 					SyntacticBehaviour syntacticBehaviour = new SyntacticBehaviour();
 					// Generating an ID
 					syntacticBehaviour.setId("IMSLexSubcat_SyntacticBehaviour_".concat(Integer.toString(syntacticBehaviourNumber)));
 					syntacticBehaviourNumber++;
-					
+
 					syntacticBehaviour.setSense(sense);
 					syntacticBehaviour.setSubcategorizationFrame(synargsSubcatFrameMap.get(synSemArgSynArgMapping.get(imsLexSense.synArgs)));
 					syntacticBehaviour.setSubcategorizationFrameSet(senseSubcatFrameSetMap.get(imsLexSense));
 					syntacticBehaviours.add(syntacticBehaviour);
-					
+
 					if (senseSemPredicateMap.containsKey(imsLexSense)) {
-						// Creating Predicative Representation 
+						// Creating Predicative Representation
 						List<PredicativeRepresentation> predicativeRepresentations = new LinkedList <PredicativeRepresentation>();
 						PredicativeRepresentation predicativeRepresentation = new PredicativeRepresentation();
 						predicativeRepresentation.setPredicate(senseSemPredicateMap.get(imsLexSense));
-					
-						predicativeRepresentations.add(predicativeRepresentation);				
+
+						predicativeRepresentations.add(predicativeRepresentation);
 						sense.setPredicativeRepresentations(predicativeRepresentations);// Save PredicativeRepresentations
 					}
 				}
-				
+
 				senses.add(sense);// Save Sense
 
 			}
-			lexicalEntry.setSenses(senses);	
+			lexicalEntry.setSenses(senses);
 			if (syntacticBehaviours != null) {
-				lexicalEntry.setSyntacticBehaviours(syntacticBehaviours);	
+				lexicalEntry.setSyntacticBehaviours(syntacticBehaviours);
 			}
-			
-			lexicalEntries.add(lexicalEntry);// Save LexicalEntry			
+
+			lexicalEntries.add(lexicalEntry);// Save LexicalEntry
 		}
-		
+
 	}
 
-	
+
 	private ELabelTypeSemantics getTypeOfSemanticLabel(String classInformation)
 	{
 		if (classInformation.contains("Noun")) {
@@ -499,8 +498,8 @@ public class IMSlexExtractor {
 
 	/**
 	 * This method maps POS information to EPartOfSpeech
-	 * 
-	 */	
+	 *
+	 */
 	private EPartOfSpeech mapPOS(String pos)
 	{
 		EPartOfSpeech result = null;
@@ -524,11 +523,11 @@ public class IMSlexExtractor {
 		SubcategorizationFrame scFrame = subcatFrame;
 		List<SyntacticArgument> synArgs = new LinkedList<SyntacticArgument>();
 		String[] args = IMSlexSubcatSense.synArgs.split(":");
-		for(String arg : args) {			
-			if (!arg.contains("syntacticProperty")) {			
+		for(String arg : args) {
+			if (!arg.contains("syntacticProperty")) {
 				SyntacticArgument syntacticArgument = new SyntacticArgument();
 				syntacticArgument.setId("IMSLexSubcat_SyntacticArgument_".concat(Integer.toString(syntacticArgumentNumber)));
-				syntacticArgumentNumber++;	
+				syntacticArgumentNumber++;
 				String[] atts = arg.split(",");
 				for(String att : atts){
 					String [] splits = att.split("=");
@@ -536,7 +535,7 @@ public class IMSlexExtractor {
 					if (attName.equals("grammaticalFunction")){
 						String gf = splits[1];
 						if (gf.equals("object")) {
-							gf = gf.replaceAll("object", "directObject");							
+							gf = gf.replaceAll("object", "directObject");
 						}
 						syntacticArgument.setGrammaticalFunction(EGrammaticalFunction.valueOf(gf));
 					}
@@ -561,7 +560,7 @@ public class IMSlexExtractor {
 					if(attName.equals("lexeme")) {
 						syntacticArgument.setLexeme(splits[1]);
 					}
-					if(attName.equals("verbForm")) {						
+					if(attName.equals("verbForm")) {
 						syntacticArgument.setVerbForm(EVerbForm.valueOf(splits[1]));
 					}
 					if(attName.equals("tense")) {
@@ -569,24 +568,24 @@ public class IMSlexExtractor {
 					}
 					if(attName.equals("complementizer")) {
 						syntacticArgument.setComplementizer(EComplementizer.valueOf(splits[1]));
-					}																	
+					}
 				}
-				synArgs.add(syntacticArgument);								
+				synArgs.add(syntacticArgument);
 			} else {
 				String [] splits = arg.split("=");
 				String sp = splits[1];
 				if (sp.equals("raising")) {
-					sp = sp.replaceAll("raising", "subjectRaising");							
+					sp = sp.replaceAll("raising", "subjectRaising");
 				}
 				LexemeProperty lexemeProperty = new LexemeProperty();
 				lexemeProperty.setSyntacticProperty(ESyntacticProperty.valueOf(sp));
 				scFrame.setLexemeProperty(lexemeProperty);
-			} 	
+			}
 		}
-		scFrame.setSyntacticArguments(synArgs);		
+		scFrame.setSyntacticArguments(synArgs);
 		return scFrame;
-	}	
-	
+	}
+
 	/**
 	 * This method creates semantic predicates and
 	 * establishes a mapping between semantic arguments
@@ -601,13 +600,13 @@ public class IMSlexExtractor {
 		semanticPredicate.setId("IMSLexSubcat_SemanticPredicate_".concat(Integer.toString(semanticPredicateNumber)));
 		semanticPredicateNumber++;
 		List<SemanticArgument> semanticArguments = new LinkedList<SemanticArgument>();
-		List<SynSemArgMap> synSemArgMaps = new LinkedList<SynSemArgMap>();	
+		List<SynSemArgMap> synSemArgMaps = new LinkedList<SynSemArgMap>();
 		SynSemArgMap synSemArgMap = new SynSemArgMap();
-		
+
 		String[] args = IMSlexSubcatSense.synArgs.split(":");
 		int index = 0;
 		// iterate over syntactic Arguments
-		for (SyntacticArgument synArg: subcategorizationFrame.getSyntacticArguments()) {			
+		for (SyntacticArgument synArg: subcategorizationFrame.getSyntacticArguments()) {
 			String synsemArg = args[index];
 			if (synsemArg.contains("syntacticProperty")) {
 				index++;
@@ -624,16 +623,16 @@ public class IMSlexExtractor {
 					semanticArgumentNumber++;
 					semanticArgument.setSemanticRole(splits[1]);
 					semanticArguments.add(semanticArgument);
-					// Generate SynSemArgMapping	
+					// Generate SynSemArgMapping
 					synSemArgMap.setSyntacticArgument(synArg);
 					synSemArgMap.setSemanticArgument(semanticArgument);
 					synSemArgMaps.add(synSemArgMap);
-				}																									
+				}
 			}
-			index++;									
-		}	
+			index++;
+		}
 		semanticPredicate.setSemanticArguments(semanticArguments);
-		
+
 		SynSemCorrespondence synSemCorrespondence = new SynSemCorrespondence();
 		synSemCorrespondence.setId("IMSLexSubcat_SynSemCorrespondence_".concat(Integer.toString(synSemCorrespondenceNumber)));
 		synSemCorrespondenceNumber++;
