@@ -59,14 +59,6 @@ public class UbySemanticFieldAnnotator extends JCasAnnotator_ImplBase
 	private UbySemanticFieldResource ubySemanticFieldResource;
 	
 	@Override
-	public void initialize(final UimaContext context)
-			throws ResourceInitializationException
-	{
-		super.initialize(context);
-	}
-
-
-	@Override
 	public void process(JCas aJCas) throws AnalysisEngineProcessException {
 		for (POS pos : select(aJCas, POS.class)) {
 			for (Token token : JCasUtil.selectCovered(aJCas, Token.class, pos)) {

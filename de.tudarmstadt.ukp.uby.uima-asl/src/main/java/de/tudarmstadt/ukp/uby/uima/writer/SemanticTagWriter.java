@@ -1,6 +1,5 @@
 package de.tudarmstadt.ukp.uby.uima.writer;
 
-
 import static de.tudarmstadt.ukp.uby.resource.UbyResourceUtils.getMostFrequentSense;
 
 import java.io.BufferedWriter;
@@ -39,7 +38,7 @@ import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticBehaviour;
 
 /**
  * @author Eckle-Kohler
- *
+ * 
  */
 public class SemanticTagWriter
     extends org.apache.uima.fit.component.JCasAnnotator_ImplBase
@@ -58,8 +57,7 @@ public class SemanticTagWriter
     private BufferedWriter writer;
 
     private static ArrayList<String> auxiliariesAndModals = new ArrayList<String>(
-    	    Arrays.asList("be", "do", "have", "can", "will", "should", "must"));
-    
+            Arrays.asList("be", "do", "have", "can", "will", "should", "must"));
 
     @Override
     public void initialize(UimaContext context)
@@ -71,7 +69,7 @@ public class SemanticTagWriter
         }
         catch (IOException ex) {
             throw new ResourceInitializationException(ex);
-		}
+        }
 
     }
 
@@ -89,12 +87,11 @@ public class SemanticTagWriter
             	// Uby provides lexical information mainly for content words: nouns, main verbs, adjectives;
             	// auxiliary and modal verbs are contained in Uby, but in running text they are rarely used as main verbs,
             	// but mostly as function words (to form particular tense and voice constructions) or as modality markers
-                if (token.getPos().getType().getShortName().equals("V") || 			
+                if ((token.getPos().getType().getShortName().equals("V") || 			
                 		token.getPos().getType().getShortName().matches("N.*") || 
-                		token.getPos().getType().getShortName().equals("ADJ")  ) {
-                    if ((!auxiliariesAndModals.contains(token.getLemma().getValue()))) {
+                		token.getPos().getType().getShortName().equals("ADJ"))  &&
+                        !auxiliariesAndModals.contains(token.getLemma().getValue()) {
                         mfs = getMostFrequentSense(uby.getLexicalEntries(token.getLemma().getValue(), null, null));
-                    }
                 }                
 
                 // write lemma, POS annotations and results of Uby lookup to the output file:
@@ -112,8 +109,8 @@ public class SemanticTagWriter
                     	semFieldValue = semanticField.getValue();
                     }
                     
-                	if  (!(mfs == null) && !(mfs.getSynset() == null) 
-                    			&& (!auxiliariesAndModals.contains(token.getLemma().getValue()))) {
+                	if  (mfs != null && mfs.getSynset() != null 
+                    			&& !auxiliariesAndModals.contains(token.getLemma().getValue())) {
                    		
                         writeTokenAndSemanticField(token.getCoveredText() + "\t"
                                 + token.getLemma().getValue() + "\t"
@@ -142,68 +139,90 @@ public class SemanticTagWriter
     }
 
     /*
-     * This method groups the complex subcat frames into four classes: 
-     * transitive, intransitive, transitive with to-infinitive, intransitive with to-infinitive 
-     * this four-way classification could be useful in many (linguistic or text classification) contexts, 
-     * because all four classes have a distinct lexical semantics
+     * This method groups the complex subcat frames into four classes:
+     * transitive, intransitive, transitive with to-infinitive, intransitive
+     * with to-infinitive this four-way classification could be useful in many
+     * (linguistic or text classification) contexts, because all four classes
+     * have a distinct lexical semantics
      */
-    private String getSyntacticBehaviour(String pos, List<LexicalEntry> lexicalEntries) {
-    	String result = "---";
-    	int numberOfTransitiveFrames = 0;
-    	int numberOfIntransitiveFrames = 0;
-    	boolean withToInfinitive = false;
-    	if (pos.equals("V")) {
-	        for (LexicalEntry lexicalEntry : lexicalEntries) {
-	            for (SyntacticBehaviour sb : lexicalEntry.getSyntacticBehaviours()) {
-	        		try {
-		            	SubcategorizationFrame scf = sb.getSubcategorizationFrame();
-		            	List<SyntacticArgument> synArgs = scf.getSyntacticArguments();
-	            		for (SyntacticArgument synArg : synArgs) {
-	            			if (synArg.getSyntacticCategory().equals(ESyntacticCategory.verbPhrase) &&
-	            					synArg.getVerbForm().equals(EVerbForm.toInfinitive)) {
-	            				withToInfinitive = true;
-	            			}
-	            		}	
+    private String getSyntacticBehaviour(String pos,
+            List<LexicalEntry> lexicalEntries)
+    {
+        String result = "---";
+        int numberOfTransitiveFrames = 0;
+        int numberOfIntransitiveFrames = 0;
+        boolean withToInfinitive = false;
+        if (pos.equals("V")) {
+            for (LexicalEntry lexicalEntry : lexicalEntries) {
+                for (SyntacticBehaviour sb : lexicalEntry
+                        .getSyntacticBehaviours()) {
+                    try {
+                        SubcategorizationFrame scf = sb
+                                .getSubcategorizationFrame();
+                        List<SyntacticArgument> synArgs = scf
+                                .getSyntacticArguments();
+                        for (SyntacticArgument synArg : synArgs) {
+                            if (synArg.getSyntacticCategory().equals(
+                                    ESyntacticCategory.verbPhrase)
+                                    && synArg.getVerbForm().equals(
+                                            EVerbForm.toInfinitive)) {
+                                withToInfinitive = true;
+                            }
+                        }
 
-		            	if (synArgs.size() == 1) {
-		            		numberOfIntransitiveFrames++;
-		            	} 
-		            	if (synArgs.size() >= 2) {
-			            	if (synArgs.get(0).getSyntacticCategory().equals(ESyntacticCategory.nounPhrase) &&
-			            			synArgs.get(1).getSyntacticCategory().equals(ESyntacticCategory.nounPhrase)) {
-			            		numberOfTransitiveFrames++;			            		
-			            	} else if (synArgs.get(0).getSyntacticCategory().equals(ESyntacticCategory.nounPhrase) &&
-			            			synArgs.get(1).getSyntacticCategory().equals(ESyntacticCategory.prepositionalPhrase)) {
-			            		numberOfIntransitiveFrames++;
-			            	}
-		            	} 
-	    			} catch (NullPointerException e) {
-	    				// sth wrong with subcat frame
-	    			}
-	            }
-	        }  
-    	}
+                        if (synArgs.size() == 1) {
+                            numberOfIntransitiveFrames++;
+                        }
+                        if (synArgs.size() >= 2) {
+                            if (synArgs.get(0).getSyntacticCategory()
+                                    .equals(ESyntacticCategory.nounPhrase)
+                                    && synArgs
+                                            .get(1)
+                                            .getSyntacticCategory()
+                                            .equals(ESyntacticCategory.nounPhrase)) {
+                                numberOfTransitiveFrames++;
+                            }
+                            else if (synArgs.get(0).getSyntacticCategory()
+                                    .equals(ESyntacticCategory.nounPhrase)
+                                    && synArgs
+                                            .get(1)
+                                            .getSyntacticCategory()
+                                            .equals(ESyntacticCategory.prepositionalPhrase)) {
+                                numberOfIntransitiveFrames++;
+                            }
+                        }
+                    }
+                    catch (NullPointerException e) {
+                        // sth wrong with subcat frame
+                    }
+                }
+            }
+        }
         if (numberOfTransitiveFrames == 0 && numberOfIntransitiveFrames == 0) {
-        	result = "---";
-        } else if (numberOfTransitiveFrames > 0) {
-        	if (withToInfinitive) {
-        		result = "transitive/with_to-infinitive";
-        	} else {
-        		result = "transitive";
-        	}
-        } else if (numberOfTransitiveFrames == 0 && numberOfIntransitiveFrames > 0) {
-        	if (withToInfinitive) {
-        		result = "intransitive/with_to-infinitive";
-        	} else {
-        		result = "intransitive";
-        	}
+            result = "---";
+        }
+        else if (numberOfTransitiveFrames > 0) {
+            if (withToInfinitive) {
+                result = "transitive/with_to-infinitive";
+            }
+            else {
+                result = "transitive";
+            }
+        }
+        else if (numberOfTransitiveFrames == 0
+                && numberOfIntransitiveFrames > 0) {
+            if (withToInfinitive) {
+                result = "intransitive/with_to-infinitive";
+            }
+            else {
+                result = "intransitive";
+            }
 
-        }        
-		return result;
-	}
+        }
+        return result;
+    }
 
-    
-	private void writeTokenAndSemanticField(String string)
+    private void writeTokenAndSemanticField(String string)
     {
         try {
             writer.write(string);
@@ -213,77 +232,92 @@ public class SemanticTagWriter
             e.printStackTrace();
         }
     }
-    
+
     private String getSemanticallyRelatedWords(Synset synset)
     {
-    	String result = null;
-    	HashSet<String> semanticallyRelatedWords = new HashSet<String>();
-    	for (SynsetRelation synsetRel : synset.getSynsetRelations()) {
-    		try {
-    			for (Sense s : synsetRel.getTarget().getSenses()) {   				
-    				if (s.getIndex() == 1) {
-    					semanticallyRelatedWords.add(s.getLexicalEntry().getLemmaForm());
-    				}
-    			}
-			} catch (NullPointerException e) {
-				// sth wrong with target of synset relation
-			}
-    	}
-    	if (semanticallyRelatedWords.isEmpty()) {
-    		result = "---";
-    	} else {
-    		result = semanticallyRelatedWords.toString().replaceAll("\\[", "").replaceAll("\\]", "");
-    	}
-        return result;
-    }
-    
-    private String getSynonymousWords(String lemma, Synset synset)
-    {
-    	String result = null;
-    	HashSet<String> synonymousWords = new HashSet<String>();
-    	for (Sense sense : synset.getSenses()) {
-       		try {
-	    		if (!lemma.equals(sense.getLexicalEntry().getLemmaForm())) {
-	    			synonymousWords.add(sense.getLexicalEntry().getLemmaForm());
-	    		}
-			} catch (NullPointerException e) {
-				// sth wrong with target of synset relation
-			}
-    	}
-    	if (synonymousWords.isEmpty()) {
-    		result = "---";
-    	} else {
-    		result = synonymousWords.toString().replaceAll("\\[", "").replaceAll("\\]", "");
-    	}
+        String result = null;
+        HashSet<String> semanticallyRelatedWords = new HashSet<String>();
+        for (SynsetRelation synsetRel : synset.getSynsetRelations()) {
+            try {
+                for (Sense s : synsetRel.getTarget().getSenses()) {
+                    if (s.getIndex() == 1) {
+                        semanticallyRelatedWords.add(s.getLexicalEntry()
+                                .getLemmaForm());
+                    }
+                }
+            }
+            catch (NullPointerException e) {
+                // sth wrong with target of synset relation
+            }
+        }
+        if (semanticallyRelatedWords.isEmpty()) {
+            result = "---";
+        }
+        else {
+            result = semanticallyRelatedWords.toString().replaceAll("\\[", "")
+                    .replaceAll("\\]", "");
+        }
         return result;
     }
 
+    private String getSynonymousWords(String lemma, Synset synset)
+    {
+        String result = null;
+        HashSet<String> synonymousWords = new HashSet<String>();
+        for (Sense sense : synset.getSenses()) {
+            try {
+                if (!lemma.equals(sense.getLexicalEntry().getLemmaForm())) {
+                    synonymousWords.add(sense.getLexicalEntry().getLemmaForm());
+                }
+            }
+            catch (NullPointerException e) {
+                // sth wrong with target of synset relation
+            }
+        }
+        if (synonymousWords.isEmpty()) {
+            result = "---";
+        }
+        else {
+            result = synonymousWords.toString().replaceAll("\\[", "")
+                    .replaceAll("\\]", "");
+        }
+        return result;
+    }
 
     private String getSemanticLabels(List<LexicalEntry> lexicalEntries)
     {
-       	String result = null;
-    	HashSet<String> semanticLabelValues = new HashSet<String>();
+        String result = null;
+        HashSet<String> semanticLabelValues = new HashSet<String>();
         for (LexicalEntry lexicalEntry : lexicalEntries) {
             for (Sense s : lexicalEntry.getSenses()) {
-            	try {
-	                for (SemanticLabel sl : s.getSemanticLabels()) {
-	                	if (!sl.getType().equals(ELabelTypeSemantics.verbnetClass) && !sl.getType().equals(ELabelTypeSemantics.semanticField)) {
-	                		semanticLabelValues.add(sl.getLabel());
-	                	}               	
-	                }	           		
-	                for (PredicativeRepresentation pr : s.getPredicativeRepresentations()) {
-	                	semanticLabelValues.add(pr.getPredicate().getLabel().toLowerCase());
-	                }
-    			} catch (NullPointerException e) {
-    				// no SemanticLabel type or label of SemanticPredicate is missing
-    			}
+                try {
+                    for (SemanticLabel sl : s.getSemanticLabels()) {
+                        if (!sl.getType().equals(
+                                ELabelTypeSemantics.verbnetClass)
+                                && !sl.getType().equals(
+                                        ELabelTypeSemantics.semanticField)) {
+                            semanticLabelValues.add(sl.getLabel());
+                        }
+                    }
+                    for (PredicativeRepresentation pr : s
+                            .getPredicativeRepresentations()) {
+                        semanticLabelValues.add(pr.getPredicate().getLabel()
+                                .toLowerCase());
+                    }
+                }
+                catch (NullPointerException e) {
+                    // no SemanticLabel type or label of SemanticPredicate is
+                    // missing
+                }
             }
         }
-    	if (semanticLabelValues.isEmpty()) {
-    		result = "---";
-    	} else {
-    		result = semanticLabelValues.toString().replaceAll("\\[", "").replaceAll("\\]", "");
-    	}
+        if (semanticLabelValues.isEmpty()) {
+            result = "---";
+        }
+        else {
+            result = semanticLabelValues.toString().replaceAll("\\[", "")
+                    .replaceAll("\\]", "");
+        }
         return result;
     }
 

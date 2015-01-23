@@ -268,7 +268,6 @@ public class Global
 	 FileReader in = new FileReader(alignment_file);
 	 BufferedReader input_reader =  new BufferedReader(in);
 		 String line;
-		 StringBuilder sb = new StringBuilder();
 		 HashMap<String,String> extRefs1 = new HashMap<String, String>();
 		 HashMap<String,String> extRefs2 = new HashMap<String, String>();
 		 Statement statement= gb1.connection.createStatement();
@@ -370,7 +369,6 @@ public class Global
 	 FileReader in = new FileReader(alignment_file);
 	 BufferedReader input_reader =  new BufferedReader(in);
 		 String line;
-		 StringBuilder sb = new StringBuilder();
 		 HashMap<String,String> extRefs1 = new HashMap<String, String>();
 		 HashMap<String,String> extRefs2 = new HashMap<String, String>();
 		 Statement statement= gb1.connection.createStatement();

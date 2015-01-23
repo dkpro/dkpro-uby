@@ -20,7 +20,6 @@ package de.tudarmstadt.ukp.lmf.transform;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -58,38 +57,38 @@ public class DBToXMLTransformer extends UBYHibernateTransformer {
 
 	protected LexicalResource lexicalResource;
 	protected DBConfig dbConfig;
-	
-	/** Constructs a new {@link DBToXMLTransformer} instance which is used to 
+
+	/** Constructs a new {@link DBToXMLTransformer} instance which is used to
 	 *  convert UBY from a database to an XML file.
 	 *  @param dbConfig {@link DBConfig} instance used to access the database.
 	 *  @param outputPath the file path of the resulting XML file.
 	 *  @param dtdPath the file path of the DTD file. */
-	public DBToXMLTransformer(final DBConfig dbConfig, final String outputPath, 
+	public DBToXMLTransformer(final DBConfig dbConfig, final String outputPath,
 			String dtdPath) throws FileNotFoundException, SAXException {
 		this(dbConfig, new FileOutputStream(outputPath), dtdPath);
 		this.dbConfig = dbConfig;
 	}
 
-	/** Constructs a new {@link DBToXMLTransformer} instance which is used to 
+	/** Constructs a new {@link DBToXMLTransformer} instance which is used to
 	 *  convert UBY from a database to an XML file.
 	 *  @param dbConfig {@link DBConfig} instance used to access the database.
 	 *  @param outputStream the (file) stream of the resulting XML data.
 	 *  @param dtdPath the file path of the DTD file. */
-	public DBToXMLTransformer(final DBConfig dbConfig, 
-			final OutputStream outputStream, final String dtdPath) 
+	public DBToXMLTransformer(final DBConfig dbConfig,
+			final OutputStream outputStream, final String dtdPath)
 			throws SAXException {
 		super(dbConfig);
 		writeStartDocument(outputStream, dtdPath);
 	}
-	
+
 	/**
 	 * Transforms a {@link LexicalResource} instance retrieved from a database
 	 * to a XML file.
-	 * 
-	 * @param lexicalResource the lexical resource retrived from the database 
-	 * 
+	 *
+	 * @param lexicalResource the lexical resource retrived from the database
+	 *
 	 * @throws SAXException if a severe error occurs when writing to a file
-	 * 
+	 *
 	 * @since UBY 0.1.0
 	 */
 	public void transform(final LexicalResource lexicalResource) throws SAXException {
@@ -98,14 +97,14 @@ public class DBToXMLTransformer extends UBYHibernateTransformer {
 			String lexicalResourceName = lexicalResource.getName();
 			this.lexicalResource = (LexicalResource)session.get(LexicalResource.class, lexicalResourceName);
 			logger.log(Level.INFO, "Started writing lexicalResource " +  lexicalResourceName);
-			
+
 			doTransform(true, (Lexicon[]) null);
 		} finally {
 			closeSession();
 		}
 	}
-	
-	public void transform(final LexicalResource lexicalResource, 
+
+	public void transform(final LexicalResource lexicalResource,
 			final Lexicon lexicon) throws SAXException {
 		this.lexicalResource = lexicalResource;
 		openSession();
@@ -120,19 +119,19 @@ public class DBToXMLTransformer extends UBYHibernateTransformer {
 	 * Transforms a {@link LexicalResource} instance retrieved from a database
 	 * to a XML file. The created XML only contains {@link Lexicon} instances which
 	 * names are specified in the consumed {@link Set}. {@link SenseAxis} instances are omitted.
-	 * 
+	 *
 	 * @param lexicalResource the lexical resource retrieved from the database
-	 * 
+	 *
 	 * @param lexicons the set of names of lexicons which should be written to XML file
-	 * 
+	 *
 	 * @throws SAXException if a severe error occurs when writing to a file
-	 * 
+	 *
 	 * @since UBY 0.2.0
-	 * 
+	 *
 	 * @see #transform(LexicalResource)
 	 * @see #transformSenseAxes(LexicalResource)
 	 */
-	public void transformLexicons(final LexicalResource lexicalResource, 
+	public void transformLexicons(final LexicalResource lexicalResource,
 			final Set<String> lexicons) throws SAXException {
 		this.lexicalResource = lexicalResource;
 		openSession();
@@ -142,22 +141,22 @@ public class DBToXMLTransformer extends UBYHibernateTransformer {
 			closeSession();
 		}
 	}
-	
+
 	/**
 	 * Transforms a {@link LexicalResource} instance retrieved from a database
 	 * to a XML file. The created XML only contains {@link SenseAxis} contained in the
 	 * consumed lexical resource.
-	 * 
+	 *
 	 * @param lexicalResource the lexical resource retrieved from the database
-	 * 
+	 *
 	 * @throws SAXException if a severe error occurs when writing to a file
-	 * 
+	 *
 	 * @since UBY 0.2.0
-	 * 
+	 *
 	 * @see #transform(LexicalResource)
 	 * @see #transformLexicons(LexicalResource, List)
 	 */
-	public void transformSenseAxes(final LexicalResource lexicalResource) 
+	public void transformSenseAxes(final LexicalResource lexicalResource)
 			throws SAXException {
 		this.lexicalResource = lexicalResource;
 		openSession();
@@ -167,36 +166,38 @@ public class DBToXMLTransformer extends UBYHibernateTransformer {
 			closeSession();
 		}
 	}
-	
+
 	// lexicons = null (all lexicons), lexicons.length = 0 (no lexicons).
-	protected void doTransform(boolean includeSenseAxes, 
+	protected void doTransform(boolean includeSenseAxes,
 			final Lexicon... includeLexicons) throws SAXException {
 		final int bufferSize = 100;
 		commitCounter = 1;
-		
+
 		writeStartElement(lexicalResource);
-		
+
 		// Iterate over all lexicons
 		if (includeLexicons == null || includeLexicons.length > 0) {
 			for (Lexicon lexicon : lexicalResource.getLexicons()) {
 				String lexiconName = lexicon.getName();
-				
+
 				// Check if we want to include this lexicon.
 				if (includeLexicons != null) {
 					boolean found = false;
-					for (Lexicon l : includeLexicons)
-						if (lexiconName.equals(l.getName())) {
+					for (Lexicon l : includeLexicons) {
+                        if (lexiconName.equals(l.getName())) {
 							found = true;
 							break;
 						}
-					if (!found)
-						continue;
+                    }
+					if (!found) {
+                        continue;
+                    }
 				}
-						
+
 				logger.info("Processing lexicon: " + lexiconName);
 				writeStartElement(lexicon);
 
-				// Iterate over all possible sub-elements of this Lexicon and 
+				// Iterate over all possible sub-elements of this Lexicon and
 				// write them to the XML
 				Class<?>[] lexiconClassesToSave = {
 						LexicalEntry.class,
@@ -223,13 +224,15 @@ public class DBToXMLTransformer extends UBYHibernateTransformer {
 							logger.info("progress: " + commitCounter  + " class instances written to file");
 					}*/
 					Session lookupSession = sessionFactory.openSession();
-					Query query = lookupSession.createQuery("FROM " + clazz.getSimpleName() 
+					Query query = lookupSession.createQuery("FROM " + clazz.getSimpleName()
 							+ " WHERE lexiconId = '" + lexicon.getId() + "' ORDER BY id");
 					query.setReadOnly(true);
-					if (DBConfig.MYSQL.equals(dbConfig.getDBType()))
-						query.setFetchSize(Integer.MIN_VALUE); // MIN_VALUE gives hint to JDBC driver to stream results
-					else
-						query.setFetchSize(1000); 
+					if (DBConfig.MYSQL.equals(dbConfig.getDBType())) {
+                        query.setFetchSize(Integer.MIN_VALUE); // MIN_VALUE gives hint to JDBC driver to stream results
+                    }
+                    else {
+                        query.setFetchSize(1000);
+                    }
 					ScrollableResults results = query.scroll(ScrollMode.FORWARD_ONLY);
 					while (results.next()) {
 						// For streamed query results, no further queries are allowed (incl. lazy proxy queries!)
@@ -244,8 +247,9 @@ public class DBToXMLTransformer extends UBYHibernateTransformer {
 						session.evict(row);
 						row = null;
 						commitCounter++;
-						if (commitCounter % 1000 == 0)
-							logger.info("progress: " + commitCounter  + " class instances written to file");
+						if (commitCounter % 1000 == 0) {
+                            logger.info("progress: " + commitCounter  + " class instances written to file");
+                        }
 						if (commitCounter % 10000 == 0) {
 							closeSession();
 							openSession();
@@ -257,10 +261,10 @@ public class DBToXMLTransformer extends UBYHibernateTransformer {
 				writeEndElement(lexicon);
 			}
 		}
-		
-		// Iterate over SenseAxes and write them to XMLX when not only 
+
+		// Iterate over SenseAxes and write them to XMLX when not only
 		// lexicons should be converted
-		if (includeSenseAxes) {	
+		if (includeSenseAxes) {
 			logger.info("Processing sense axes");
 			DetachedCriteria criteria = DetachedCriteria.forClass(SenseAxis.class)
 					.add(Restrictions.sqlRestriction("lexicalResourceId = '" + lexicalResource.getName() + "'"));
@@ -270,18 +274,19 @@ public class DBToXMLTransformer extends UBYHibernateTransformer {
 				writeElement(obj);
 				session.evict(obj);
 				commitCounter++;
-				if (commitCounter % 1000 == 0)
-					logger.info("progress: " + commitCounter  + " class instances written to file");
+				if (commitCounter % 1000 == 0) {
+                    logger.info("progress: " + commitCounter  + " class instances written to file");
+                }
 			}
 		}
 		writeEndElement(lexicalResource);
-		
+
 		writeEndDocument();
 	}
-	
+
 	@Override
 	protected String getResourceAlias() {
 		return lexicalResource.getName();
 	}
-	
+
 }

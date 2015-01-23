@@ -112,7 +112,7 @@ public class SynsetRelationGenerator {
 		Map<DefinedMeaning,Integer> targets = dm.getDefinedMeaningLinksAllLang(GlobalLanguage);
 		//Handle invalid relations
 		DefinedMeaning dummy;
-		if(((dummy = dm.getSubject())!=null)) {
+		if ((dummy = dm.getSubject()) != null) {
 			targets.put(dummy, -1);
 		}
 
@@ -128,7 +128,7 @@ public class SynsetRelationGenerator {
 	}
 
 	private DatabaseStatements dbStatements;
-	
+
 	/**
 	 * This method consumes two  DMs  plus relationtype as int and generates the corresponding SynsetRelation for it
 	 *
@@ -147,13 +147,14 @@ public class SynsetRelationGenerator {
 		if(type >0)
 		{
 //			rel = ow.getDefinedMeaningById(type);
-			//TODO: Dirty hack! Return to old code as soon as https://code.google.com/p/jowkl/issues/detail?id=2 is fixed and released. 
-			if (dbStatements == null)
-				try {
+			//TODO: Dirty hack! Return to old code as soon as https://code.google.com/p/jowkl/issues/detail?id=2 is fixed and released.
+			if (dbStatements == null) {
+                try {
 					dbStatements = new DatabaseStatements(ow.getDatabaseConfiguration());
 				} catch (SQLException e) {
 					throw new RuntimeException(e);
 				}
+            }
 			rel = new DefinedMeaning(type, dbStatements);
 		Set<SynTrans> sta = rel.getSynTranses(OWLanguage.English);
 		for (SynTrans st : sta)
