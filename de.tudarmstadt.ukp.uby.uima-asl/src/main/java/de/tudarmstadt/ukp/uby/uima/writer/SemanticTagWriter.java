@@ -38,7 +38,7 @@ import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticBehaviour;
 
 /**
  * @author Eckle-Kohler
- * 
+ *
  */
 public class SemanticTagWriter
     extends org.apache.uima.fit.component.JCasAnnotator_ImplBase
@@ -83,49 +83,49 @@ public class SemanticTagWriter
             for (int i = 0; i < sentenceTokens.size(); i++) {
                 Token token = sentenceTokens.get(i);
                 Sense mfs = null;
-                
+
             	// Uby provides lexical information mainly for content words: nouns, main verbs, adjectives;
             	// auxiliary and modal verbs are contained in Uby, but in running text they are rarely used as main verbs,
             	// but mostly as function words (to form particular tense and voice constructions) or as modality markers
-                if ((token.getPos().getType().getShortName().equals("V") || 			
-                		token.getPos().getType().getShortName().matches("N.*") || 
+                if ((token.getPos().getType().getShortName().equals("V") ||
+                		token.getPos().getType().getShortName().matches("N.*") ||
                 		token.getPos().getType().getShortName().equals("ADJ"))  &&
-                        !auxiliariesAndModals.contains(token.getLemma().getValue()) {
+                        !auxiliariesAndModals.contains(token.getLemma().getValue())) {
                         mfs = getMostFrequentSense(uby.getLexicalEntries(token.getLemma().getValue(), null, null));
-                }                
+                }
 
                 // write lemma, POS annotations and results of Uby lookup to the output file:
-                String syntacticBehaviour = getSyntacticBehaviour(token.getPos().getType().getShortName(),uby.getLexicalEntries(token.getLemma().getValue(), 
-                		EPartOfSpeech.verb, null));              
+                String syntacticBehaviour = getSyntacticBehaviour(token.getPos().getType().getShortName(),uby.getLexicalEntries(token.getLemma().getValue(),
+                		EPartOfSpeech.verb, null));
                 List<SemanticField> semanticFieldAnnotations = JCasUtil.selectCovering(jcas,
                         SemanticField.class, token.getBegin(), token.getEnd());
                 for (int j = 0; j < semanticFieldAnnotations.size(); j++) {
                     SemanticField semanticField = semanticFieldAnnotations.get(j);
                     String semFieldValue = "---";
-                    
+
                     if (semanticField.getValue().equals("UNKNOWN")) {
                     	semFieldValue = "---";
                     } else {
                     	semFieldValue = semanticField.getValue();
                     }
-                    
-                	if  (mfs != null && mfs.getSynset() != null 
+
+                	if  (mfs != null && mfs.getSynset() != null
                     			&& !auxiliariesAndModals.contains(token.getLemma().getValue())) {
-                   		
+
                         writeTokenAndSemanticField(token.getCoveredText() + "\t"
                                 + token.getLemma().getValue() + "\t"
                                 + token.getPos().getType().getShortName() + "\n"
                                 + "\t syntax: " +syntacticBehaviour + "\n"
-                                
+
                                 // for retrieving semantic field, synonyms and semantically related words, the word is disambiguated
                                 // according to the MFS heuristic
-                                + "\t semantic field: " +semFieldValue + "\n"                                
+                                + "\t semantic field: " +semFieldValue + "\n"
                                 + "\t synonyms: " +getSynonymousWords(token.getLemma().getValue(), mfs.getSynset()) + "\n"
                                 + "\t related: " +getSemanticallyRelatedWords(mfs.getSynset()) + "\n"
-                                
+
                                 // "associated topics" means something like creatively associating topics with a given word
                                 // for constructing creative associations, disambiguation is not necessary (it actually limits association links)
-                                + "\t associated: " +getSemanticLabels(uby.getLexicalEntries(token.getLemma().getValue(), null, null)) + "\n"                                
+                                + "\t associated: " +getSemanticLabels(uby.getLexicalEntries(token.getLemma().getValue(), null, null)) + "\n"
                         		);
                     } else {
                         writeTokenAndSemanticField(token.getCoveredText() + "\t"
