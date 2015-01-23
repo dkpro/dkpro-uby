@@ -157,10 +157,9 @@ public class SynsetRelationGenerator {
             }
 			rel = new DefinedMeaning(type, dbStatements);
 		Set<SynTrans> sta = rel.getSynTranses(OWLanguage.English);
-		for (SynTrans st : sta)
-			{relationName = st.getSyntrans().getSpelling();
-			break;
-			}
+		if (!sta.isEmpty()) {
+            relationName = sta.iterator().next().getSyntrans().getSpelling();
+        }
 		}
 		else {
 			relationName="subject";
@@ -242,16 +241,12 @@ public class SynsetRelationGenerator {
 	 * @throws UnsupportedEncodingException
 	 */
 	private String getSemanticLabel(DefinedMeaning targetDM) throws UnsupportedEncodingException, OmegaWikiException {
-		String lemma = "";
 
-		for (SynTrans st : targetDM.getSynTranses(GlobalLanguage))
-		{
-			lemma = st.getSyntrans().getSpelling();
-			break;
-		}
-
-
-		return lemma;
+		Set<SynTrans> st = targetDM.getSynTranses(GlobalLanguage);
+		if (!st.isEmpty()) {
+            return st.iterator().next().getSyntrans().getSpelling();
+        }
+		return "";
 	}
 
 	/**
