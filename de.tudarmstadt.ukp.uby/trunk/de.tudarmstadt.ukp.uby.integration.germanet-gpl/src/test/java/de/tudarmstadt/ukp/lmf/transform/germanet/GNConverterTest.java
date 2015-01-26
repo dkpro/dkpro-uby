@@ -31,8 +31,6 @@ import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
 
-import net.sf.extjwnl.JWNLException;
-
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -77,7 +75,7 @@ import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 	 * @since 0.2.0
 	 */
 	@BeforeClass
-	public static void setUpClass() throws FileNotFoundException, XMLStreamException, IOException, JWNLException {
+	public static void setUpClass() throws FileNotFoundException, XMLStreamException, IOException {
 		if(gnet == null || wordNetLexicon == null) {
             TestSuite.setUpClass();
         }

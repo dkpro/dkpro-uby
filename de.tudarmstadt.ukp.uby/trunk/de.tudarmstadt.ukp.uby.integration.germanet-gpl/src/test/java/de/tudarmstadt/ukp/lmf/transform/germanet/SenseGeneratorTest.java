@@ -31,8 +31,6 @@ import java.util.Set;
 
 import javax.xml.stream.XMLStreamException;
 
-import net.sf.extjwnl.JWNLException;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -67,7 +65,7 @@ import de.tuebingen.uni.sfs.germanet.api.LexUnit;
 	 * @since 0.2.0
 	 */
 	@BeforeClass
-	public static void setUpClass() throws FileNotFoundException, XMLStreamException, IOException, JWNLException{
+	public static void setUpClass() throws FileNotFoundException, XMLStreamException, IOException {
 		if(gnet == null) {
             TestSuite.setUpClass();
         }
