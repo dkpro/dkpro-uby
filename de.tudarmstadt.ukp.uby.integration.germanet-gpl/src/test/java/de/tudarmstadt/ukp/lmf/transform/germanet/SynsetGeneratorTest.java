@@ -29,8 +29,6 @@ import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
 
-import net.sf.extjwnl.JWNLException;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -65,7 +63,7 @@ private static SynsetGenerator synsetGenerator;
 	 * @since 0.2.0
 	 */
 	@BeforeClass
-	public static void setUpClass() throws FileNotFoundException, XMLStreamException, IOException, JWNLException{
+	public static void setUpClass() throws FileNotFoundException, XMLStreamException, IOException {
 		if(gnet == null) {
             TestSuite.setUpClass();
         }

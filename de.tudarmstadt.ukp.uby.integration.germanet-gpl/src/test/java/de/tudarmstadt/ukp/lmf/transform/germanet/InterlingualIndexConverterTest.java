@@ -35,8 +35,6 @@ import java.util.Map;
 
 import javax.xml.stream.XMLStreamException;
 
-import net.sf.extjwnl.JWNLException;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -68,7 +66,7 @@ import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 	private static Field fieldSynsetMappings;
 
 	@BeforeClass
-	public static void setUpClass() throws JWNLException, NoSuchFieldException, SecurityException, XMLStreamException, IOException{
+	public static void setUpClass() throws NoSuchFieldException, SecurityException, XMLStreamException, IOException{
 		if(gnet == null || wordNetLexicon == null) {
             TestSuite.setUpClass();
         }

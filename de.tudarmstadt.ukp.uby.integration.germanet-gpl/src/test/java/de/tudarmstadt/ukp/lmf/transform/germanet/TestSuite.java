@@ -19,14 +19,10 @@
 package de.tudarmstadt.ukp.lmf.transform.germanet;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.xml.stream.XMLStreamException;
-
-import net.sf.extjwnl.JWNLException;
-import net.sf.extjwnl.dictionary.Dictionary;
 
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -34,9 +30,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
-import de.tudarmstadt.ukp.lmf.transform.wordnet.WNConverter;
 import de.tuebingen.uni.sfs.germanet.api.GermaNet;
 
 /**
@@ -76,7 +70,7 @@ public class TestSuite {
 	 * @since UBY 0.2.0
 	 */
 	@BeforeClass
-	public static void setUpClass() throws FileNotFoundException, XMLStreamException, IOException, JWNLException {
+	public static void setUpClass() throws FileNotFoundException, XMLStreamException, IOException {
 		String UBY_HOME = System.getenv("UBY_HOME");
 		File gnetDir = new File(UBY_HOME+"/GermaNet/GN_V70/GN_V70/GN_V70_XML");
 
@@ -86,16 +80,17 @@ public class TestSuite {
 		/*
 		 * Prepare wordNetLexicon
 		 */
-
+		// TODO use embedded Uby DB with WordNet and retrieve the WordNet lexicon from there
+/*
 		String extJWNL_configuration = UBY_HOME+"/WordNet/extJWNL/file_properties.xml";
 		Dictionary extWordnet = Dictionary.getInstance(new FileInputStream(extJWNL_configuration));
 		String dtd_version = "dtd_version_test";
 		File dictionaryPath = new File(UBY_HOME + "/WordNet/wordnet3/dict/");
-		WNConverter converterWN = new WNConverter(dictionaryPath, extWordnet, new LexicalResource(), 
+		WNConverter converterWN = new WNConverter(dictionaryPath, extWordnet, new LexicalResource(),
 				"GermaNet_7.0_deu", dtd_version, UBY_HOME+"/WordNet/cache/ExampleSentenceLexemeMapping.xml");
 		converterWN.toLMF();
 		wordNetLexicon = converterWN.getLexicalResource().getLexicons().get(0);
-
+*/
 
 	}
 
