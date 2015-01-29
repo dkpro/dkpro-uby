@@ -131,6 +131,11 @@ public class InterlingualIndexConverter {
 				offsetString = temp[0];
 
 				EPartOfSpeech pos = getUbyPosFromKey(temp[1]);
+				if(offsetString.contains("null")) {
+					logger.warning("offsetString contains null-string for " + iliRecord);
+					continue; // skip
+				}
+
 
 				long offset = Long.valueOf(offsetString);
 
@@ -159,7 +164,6 @@ public class InterlingualIndexConverter {
 					senseAxisSynset.setId("GN_WN_Synset_Alignment_Interlingual_Index_"+synsetAlignmentCounter++);
 					senseAxes.add(senseAxisSynset);
 				 }
-
 
 				/*
 				 * Create SenseAxis for Sense
@@ -234,6 +238,11 @@ public class InterlingualIndexConverter {
 			EPartOfSpeech pos = getUbyPosFromLabel(temp[0].split(" ")[1]);
 
 			String stringOffset = temp[1].trim();
+			if(stringOffset.contains("null")) {
+				logger.warning("stringOffset contains null-string");
+				continue; // skip
+			}
+
 			long offset = Long.valueOf(stringOffset);
 			Map<Long, Synset> mapping = synsetMappings.get(pos);
 			mapping.put(offset, synset);
