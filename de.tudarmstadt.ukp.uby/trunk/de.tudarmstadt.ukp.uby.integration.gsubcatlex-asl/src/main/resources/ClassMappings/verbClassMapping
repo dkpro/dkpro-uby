@@ -20,7 +20,7 @@
 111100refl	apologize	evaluative_factive	subjective_factual	wh_factual
 111100subj	please	evaluative_factive	subjective_factual	wh_factual
 111101	confess	evaluative_factive	subjective_factual	wh_factual
-111101objektc	suspect	desiderative_hypothetical	desiderative_hypothetical	wh_factual
+111101objektc	blame	desiderative_hypothetical	desiderative_hypothetical	wh_factual
 110100	neglect	evaluative_aspectual	subjective_actional	future-oriented_factual
 110100objektc	prescribe	evaluative_aspectual	subjective_actional	future-oriented_factual
 110101	praise	evaluative_aspectual	subjective_actional	future-oriented_factual
@@ -41,6 +41,6 @@
 111000subj	be-useful	evaluative_factive	subjective_factual	non-factual
 100000	apply	idiosyncratic	idiosyncratic	idiosyncratic
 100001	declare	idiosyncratic	idiosyncratic	idiosyncratic
-100100	admire	idiosyncratic	idiosyncratic	idiosyncratic
+100100	applaude	idiosyncratic	idiosyncratic	idiosyncratic
 111111rel	mean	idiosyncratic	idiosyncratic	idiosyncratic
 111111	tell	communication	communication	communication
