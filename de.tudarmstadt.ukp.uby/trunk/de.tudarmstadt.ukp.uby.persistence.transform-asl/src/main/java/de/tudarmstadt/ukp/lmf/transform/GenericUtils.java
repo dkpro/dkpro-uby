@@ -18,6 +18,11 @@
 
 package de.tudarmstadt.ukp.lmf.transform;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 
 public class GenericUtils {
 
@@ -67,4 +72,18 @@ public class GenericUtils {
 		else return null;
 	}
 
+	/**
+	 * Return Date value of a string
+	 * @param value
+	 * @return
+	 */
+	public static Date getDate(String value){
+		SimpleDateFormat df = new SimpleDateFormat("EEE MMM dd kk:mm:ss zzz yyyy", Locale.ENGLISH);
+		Date date = null;
+		try {
+			date = df.parse(value);
+		} catch (ParseException e) {}
+		
+		return date;
+	}
 }

@@ -246,6 +246,10 @@ public class XMLToDBTransformer extends UBYHibernateTransformer
 						if (fieldMeta.isEnum()) {
                             newValue = GenericUtils.getEnum(fieldType, attrValue);
                         }
+						else
+						if (fieldMeta.isDate()){
+							newValue = GenericUtils.getDate(attrValue);
+						}
 						break;
 
 					case CHILD:
