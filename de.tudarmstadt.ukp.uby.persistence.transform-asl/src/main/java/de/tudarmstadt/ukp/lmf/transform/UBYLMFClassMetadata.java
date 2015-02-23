@@ -22,6 +22,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -155,6 +156,11 @@ public class UBYLMFClassMetadata {
 			return type.isEnum();
 		}
 
+		/** Returns true if, and only if, the field represents the Date type. */
+		public boolean isDate() {
+			return type == Date.class;
+		}
+		
 		/** Returns the generic parameter of the field. That is, if the
 		 *  field is not a raw type, the actual type parameter will be
 		 *  returned (e.g., Number for List&lt;Number&gt;). */
