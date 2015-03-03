@@ -20,7 +20,7 @@ package de.tudarmstadt.ukp.integration.alignment.xml.model;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
-public class Resource {
+public class ResourceXml {
 
 	@XmlAttribute
 	public String id;
@@ -28,7 +28,7 @@ public class Resource {
 	@XmlElement(name="description")
 	public String description;
 	@XmlElement(name="identifiertype")
-	public String type;
+	public String identifiertype;
 	@XmlElement(name="language")
 	public String language;
 }
