@@ -56,10 +56,10 @@ public class XmlMeta {
 	public String rights;
 	
 	@XmlElement(name="sourceresource")
-	public Resource sourceResource;
+	public ResourceXml sourceResource;
 	
 	@XmlElement(name="targetresource")
-	public Resource targetResource;
+	public ResourceXml targetResource;
 	
 	@XmlElementWrapper(name="scoretypes")
 	@XmlElement(name="scoretype")

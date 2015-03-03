@@ -38,8 +38,6 @@ import de.tudarmstadt.ukp.integration.alignment.xml.model.XmlMeta;
 
 /**
  * Read relevant information sources from alignment.xml file
- * 
- *
  */
 public class AlignmentXmlReader implements Closeable {
 
@@ -55,13 +53,11 @@ public class AlignmentXmlReader implements Closeable {
 			xmlEventReader = xmlInputFactory.createXMLEventReader(fs);
 			
 			JAXBContext context;
-			context = JAXBContext.newInstance(XmlMeta.class, Alignments.class); //Source.class
+			context = JAXBContext.newInstance(XmlMeta.class, Alignments.class); 
 			
 			unmarshaller = context.createUnmarshaller();
-		} catch (JAXBException e1) { 
+		} catch (JAXBException | XMLStreamException e1) { 
 			throw new IOException(e1);
-		} catch (XMLStreamException e) {
-			throw new IOException(e);
 		} 
 
 	}
@@ -106,25 +102,6 @@ public class AlignmentXmlReader implements Closeable {
     	return alignments;
      }	 
      
-     //informatino retrieved as part of readAlignments
-//     public Source readNextSource() throws IOException {
-//    	 Source source = null;
-//    		 try {
-//    			XMLEvent e = xmlEventReader.peek();
-//    			while (e!=null && !isStartElement(e,"source")){
-//    				xmlEventReader.next();
-//    				e = xmlEventReader.peek();
-//    			}
-//    			if (e!=null){
-//    				source = unmarshaller.unmarshal(xmlEventReader, Source.class).getValue();
-//    			} 
-//			} catch (XMLStreamException | JAXBException e1) {
-//				e1.printStackTrace();
-//				throw new IOException(e1);
-//			}
-//    	return source;
-//     }
-	
     public static boolean isStartElement(XMLEvent aEvent, String aElement)
     {
         return aEvent.isStartElement()
