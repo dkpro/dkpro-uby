@@ -49,7 +49,7 @@ public class AlignmentXmlWriterTest {
 		assertEquals(m.rights.trim(),"Released into the public domain by the creator.");
 		assertEquals(m.sourceResource.id,"WordNet_2.1");
 		assertEquals(m.targetResource.id,"GermaNet_1.0");
-		assertEquals(m.targetResource.type.trim(),"lexical unit ID");
+		assertEquals(m.targetResource.identifiertype.trim(),"lexical unit ID");
 		assertEquals(m.scoretypes.iterator().next().type, "manual");
 		assertEquals(alignments.source.size(), 1);
 		Source s = alignments.source.iterator().next();
