@@ -49,6 +49,9 @@ public class Global
 	public static final int GN_Synset_prefix =  22;
 	public static final int GN_Sense_prefix =  23;
 	public static final int IMS_prefix =  24;
+	public static final int OntoWKT_DE_Synset_prefix =  25;
+	public static final int OntoWKT_DE_Sense_prefix =  26;
+	
 
 	public static  HashMap<Integer, String> prefixTableLong = new HashMap<Integer, String>();
 	public static  HashMap<Integer, String> prefixTable = new HashMap<Integer, String>();
@@ -70,6 +73,9 @@ public class Global
 		prefixTableLong.put(Global.FN_prefix, "FN_Sense_");
 		prefixTableLong.put(Global.VN_prefix, "VN_Sense_");
 		prefixTableLong.put(Global.IMS_prefix, "IMSLexSubcat_Sense_");
+		prefixTableLong.put(Global.OntoWKT_DE_Synset_prefix, "OntoWktDE_synset_");
+		prefixTableLong.put(Global.OntoWKT_DE_Sense_prefix, "OntoWktDE_sense_");
+
 
 		prefixTable.put(Global.GN_Synset_prefix, "GN");
 		prefixTable.put(Global.GN_Sense_prefix, "GN");
@@ -86,6 +92,9 @@ public class Global
 		prefixTable.put(Global.FN_prefix, "FN");
 		prefixTable.put(Global.VN_prefix, "VN");
 		prefixTable.put(Global.IMS_prefix, "IMSLex");
+		prefixTable.put(Global.OntoWKT_DE_Synset_prefix, "OntoWktDE");
+		prefixTable.put(Global.OntoWKT_DE_Sense_prefix, "OntoWktDE");
+
 	}
 
 	public static void mergeTwoGraphs(String infile1,String infile2, String outfile ) throws ClassNotFoundException,  IOException
@@ -248,7 +257,7 @@ public class Global
 
 	}
 	/**
-	 * This method streamlines proprieatary alignment gold standard files
+	 * This method streamlines proprietary alignment gold standard files
 	 * 
 	 * @param graph states whether numerical ids for the graph should be created
 	 * 
