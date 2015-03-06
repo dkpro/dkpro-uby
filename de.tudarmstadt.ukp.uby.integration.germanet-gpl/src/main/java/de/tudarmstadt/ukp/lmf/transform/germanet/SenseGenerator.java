@@ -26,8 +26,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import de.tudarmstadt.ukp.lmf.model.core.Definition;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
+import de.tudarmstadt.ukp.lmf.model.core.TextRepresentation;
 import de.tudarmstadt.ukp.lmf.model.enums.ELabelTypeSemantics;
+import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.enums.ERelNameSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.ERelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
@@ -39,6 +42,7 @@ import de.tuebingen.uni.sfs.germanet.api.GermaNet;
 import de.tuebingen.uni.sfs.germanet.api.LexRel;
 import de.tuebingen.uni.sfs.germanet.api.LexUnit;
 import de.tuebingen.uni.sfs.germanet.api.Synset;
+import de.tuebingen.uni.sfs.germanet.api.WiktionaryParaphrase;
 
 /**
  * This class offers methods for generating instances of {@link Sense} class from
@@ -49,7 +53,7 @@ import de.tuebingen.uni.sfs.germanet.api.Synset;
  */
 public class SenseGenerator {
 	public final static String LEXICAL_UNIT = "lexicalUnit";
-	
+
 	private final String resourceVersion;
 	private final SynsetGenerator synsetGenerator; // SynsetGenerator
 	private final SemanticClassLabelExtractor semanticClassLabelExtractor; // for extraction of semantic class labels
@@ -107,7 +111,28 @@ public class SenseGenerator {
 			sense.setSenseExamples(senseExamples);
 
 			//*** Setting Definitions ***//
-			sense.setDefinitions(lmfSynset.getDefinitions());
+			//JEK synset glosses should not be duplicated
+			// TODO check for uniform behavior of GermaNet, WordNet and the other resources with synsets
+			//sense.setDefinitions(lmfSynset.getDefinitions());
+
+			List<WiktionaryParaphrase> paraphraseList = lu.getWiktionaryParaphrases();
+			List<Definition> definitions = new LinkedList<Definition>();
+			for (WiktionaryParaphrase paraphrase : paraphraseList) {
+				String[] paraphraseString = paraphrase.toString().split("Wiktionary sense definition:");
+				String writtenText = paraphraseString[1].replaceAll(", edited:.*", "");
+				if (writtenText != null && !writtenText.equals("") && !writtenText.equals(" ")) {
+					Definition definition = new Definition();
+					List<TextRepresentation> textRepresentations = new LinkedList<TextRepresentation>();
+					TextRepresentation textRepresentation = new TextRepresentation();
+					textRepresentation.setLanguageIdentifier(ELanguageIdentifier.GERMAN);
+					textRepresentation.setWrittenText(writtenText);
+					textRepresentations.add(textRepresentation);
+					definition.setTextRepresentations(textRepresentations);
+					definitions.add(definition);
+				}
+			}
+			sense.setDefinitions(definitions);
+
 
 			// *** Generating Monolingual ExternalRef**//
 			MonolingualExternalRef mer = new MonolingualExternalRef();
