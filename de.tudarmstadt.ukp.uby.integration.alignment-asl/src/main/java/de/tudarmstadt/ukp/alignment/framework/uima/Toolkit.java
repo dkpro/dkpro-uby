@@ -315,7 +315,7 @@ public class Toolkit
 		try {
 			seg = createEngineDescription(OpenNlpSegmenter.class);
 				AnalysisEngineDescription sw = createEngineDescription(StopWordRemover.class,
-					StopWordRemover.PARAM_STOP_WORD_LIST_FILE_NAMES, new String[]{"src/main/resource/snowball_german_stopwords.txt"}
+					StopWordRemover.PARAM_STOP_WORD_LIST_FILE_NAMES, new String[]{"src/main/resources/snowball_german_stopwords.txt"}
 				);
 
 				AnalysisEngineDescription pos = createEngineDescription(OpenNlpPosTagger.class,
