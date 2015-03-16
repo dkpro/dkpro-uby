@@ -20,6 +20,7 @@ package de.tudarmstadt.ukp.integration.alignment.xml;
 import static org.apache.commons.io.IOUtils.closeQuietly;
 
 import java.io.Closeable;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,7 +46,7 @@ public class AlignmentXmlReader implements Closeable {
 	Unmarshaller unmarshaller;
 	InputStream fs;
 	
-	public AlignmentXmlReader(String inputLocation) throws IOException {
+	public AlignmentXmlReader(File inputLocation) throws IOException {
 		fs = null; 
 		try {
 			fs = new FileInputStream(inputLocation);
@@ -61,7 +62,7 @@ public class AlignmentXmlReader implements Closeable {
 		} 
 
 	}
-            
+
 	 public XmlMeta readMetaData() throws IOException {
     	 XmlMeta meta = null;
 		 try {

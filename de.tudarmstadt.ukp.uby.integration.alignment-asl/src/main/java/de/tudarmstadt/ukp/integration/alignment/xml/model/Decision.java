@@ -26,10 +26,10 @@ public class Decision {
 	public String src;
 	
 	@XmlAttribute
-	public String value;
+	public boolean value;
 	
 	@XmlAttribute
-	public double confidence;
+	public Double confidence;
 	
 }
 

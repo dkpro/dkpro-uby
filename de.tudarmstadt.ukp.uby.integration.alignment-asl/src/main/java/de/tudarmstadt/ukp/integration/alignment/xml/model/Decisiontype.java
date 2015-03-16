@@ -19,12 +19,29 @@ package de.tudarmstadt.ukp.integration.alignment.xml.model;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlType;
 
 public class Decisiontype {
 
+	@XmlType(name="")
+	@XmlEnum
+	public enum Decision {
+		AUTOMATIC, 
+		MANUAL;
+		
+		public String value() {
+			return name();
+		}
+		
+		public static Decisiontype.Decision fromValue(String v){
+			return valueOf(v);
+		}
+	};
+	
 	@XmlAttribute
 	public String id;
-	public String type;
+	public Decision type; //automatic or manual
 	
 	@XmlElement(name="name")
 	public String name;

@@ -25,7 +25,6 @@ import javax.xml.bind.annotation.XmlElement;
 
 public class Target {
 
-//	@XmlID
 	@XmlAttribute
 	public String ref;
 	

@@ -19,6 +19,7 @@ package de.tudarmstadt.integration.alignment.xml;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.io.FileOutputStream;
 
 import org.junit.Ignore;
@@ -38,7 +39,7 @@ public class AlignmentXmlWriterTest {
 		//System.err.println("testing: " + JAXBContext.newInstance(AlignmentXmlReader.class).getClass().getName());
 
 		// read xml information
-		AlignmentXmlReader reader = new AlignmentXmlReader("src/test/resources/ResourceAlignmentDraft_v1.2nn.xml");
+		AlignmentXmlReader reader = new AlignmentXmlReader(new File("src/test/resources/ResourceAlignmentDraft_v1.2nn.xml"));
 
 		XmlMeta m = reader.readMetaData();
 		Alignments alignments = reader.readAlignments();				
