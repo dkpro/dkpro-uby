@@ -449,7 +449,11 @@ public class OneResourceBuilder
 		if(createLexicalFieldIfEmpty)
 		{
 			HashMap<String,HashSet<String>> idMap = new HashMap<String, HashSet<String>>();
-			rs =	statement.executeQuery("SELECT SenseRelation.senseId, writtenForm FROM SenseRelation join Sense join LexicalEntry join FormRepresentation_Lemma where Sense.lexicalEntryId = LexicalEntry.lexicalEntryId and SenseRelation.target =Sense.senseId and Sense.senseID like '"+prefix_string+"%' and FormRepresentation_Lemma.lemmaId = LexicalEntry.lemmaId and (relName like 'hyperynym' or relName like 'hyponym' or relName like 'synonym')");
+			rs =	statement.executeQuery("SELECT SenseRelation.senseId, writtenForm FROM SenseRelation "
+					+ "join Sense join LexicalEntry join FormRepresentation_Lemma "
+					+ "where Sense.lexicalEntryId = LexicalEntry.lexicalEntryId and SenseRelation.target =Sense.senseId "
+					+ "and Sense.senseID like '"+prefix_string+"%' and FormRepresentation_Lemma.lemmaId = LexicalEntry.lemmaId "
+							+ "and (relName like 'hyperynym' or relName like 'hyponym' or relName like 'synonym')");
 			while(rs.next())
 			{
 				String id1 = rs.getString(1);
@@ -469,7 +473,8 @@ public class OneResourceBuilder
 				lf.trim();
 				lf =  CLEANUP.matcher(lf).replaceAll(" ");
 				lf = lf.replace("\n", "").replace("\r", "").replace("\t", " ").trim();
-				p.println(s+"\t"+lf);
+				String id = prefix+s.split("ense_")[1];
+				p.println(id+"\t"+lf);
 				 String[] result=lf.split(" ");
 				 for(String r : result) {
 						if(!lemmaFreqInGlosses.containsKey(r))
@@ -631,7 +636,7 @@ public class OneResourceBuilder
 
 			sb.append(line.replace("\t","TABULATOR ")+" ENDOFLINE ");
 
-				System.out.println("lines appended "+i++);
+				//System.out.println("lines appended "+i++);
 		 }
 		 input_reader.close();
 
@@ -665,7 +670,8 @@ public class OneResourceBuilder
 		resultline = resultline.replaceAll("endofline#\\S*\\s", Global.LF);
 		resultline = resultline.replaceAll("TABULATOR#\\S*\\s", "\t");
 		resultline = resultline.replaceAll("ENDOFLINE#\\S*\\s", Global.LF);
-		p.print(resultline);
+		p.print(resultline); System.out.println("resultline "+resultline);
+		 
 		 p.flush();
 		 p.close();
 		 for(String lexeme : lexemeFreqInGlosses.keySet())
@@ -890,6 +896,7 @@ public class OneResourceBuilder
 			 while((line =input_reader.readLine())!=null)
 			 {
 				 String id1 = line.split("\t")[0];
+				 System.out.println("id1 :" +id1);
 				 if((line.split("\t")).length<2) { //empty gloss
 					continue;
 				}
@@ -910,9 +917,10 @@ public class OneResourceBuilder
 						 {
 
 							 String id2= lemmaPosSenses.get(lexeme).iterator().next();
+							 System.out.println("id2 :" +id2);
 							 count+=2;
-							int id1_num = Integer.parseInt(id1);
-							int id2_num = Integer.parseInt(id2);
+							int id1_num = Integer.parseInt(id1); System.out.println("parsed id1 :" +id1);
+							int id2_num = Integer.parseInt(id2); System.out.println("parsed id2 :" +id2);
 							if(id1_num > max_id) {
 								max_id = id1_num;
 							}
