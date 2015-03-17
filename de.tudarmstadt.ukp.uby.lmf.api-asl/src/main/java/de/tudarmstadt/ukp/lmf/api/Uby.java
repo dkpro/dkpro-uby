@@ -262,6 +262,28 @@ public class Uby
 	}
 
     /**
+     * Fetches a {@link Lexicon} with the specified name from the database accessed by this
+     * {@link Uby} instance.
+     *
+     * @param lexiconId
+     *            the id of the Lexicon to be fetched. 
+     * @return the lexicon with the specified lexiconId
+     * @throws UbyInvalidArgumentException
+     *             if no lexicon with the given name is found
+     * @see Lexicon#getId()
+     */
+	public Lexicon getLexiconById(String lexiconId) throws IllegalArgumentException
+	{
+		Criteria criteria = session.createCriteria(Lexicon.class);
+		criteria = criteria.add(Restrictions.eq("id", lexiconId));
+		Lexicon result = (Lexicon) criteria.uniqueResult();
+		if (result==null) {
+			throw new IllegalArgumentException("Database does not contain a lexicon with id " +lexiconId);
+		}
+		return result;
+
+	}
+    /**
      * Fetches a {@link List} of {@link LexicalEntry} instances which written representation is the
      * specified word.
      *
