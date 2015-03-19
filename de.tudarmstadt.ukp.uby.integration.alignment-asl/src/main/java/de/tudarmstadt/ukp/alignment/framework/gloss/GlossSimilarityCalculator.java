@@ -218,36 +218,38 @@ public class GlossSimilarityCalculator
 			 {
 				 p.println("f "+gb1.prefix_string+"_"+gb2.prefix_string+"_candidates_"+(gb2.pos ? "Pos": "noPos")+" "+"Cosine similarity");
 				 continue;
-			 }
-			 String id1 = line.split("\t")[0];
-			 String id2 = line.split("\t")[1];
-//			 String id1 = line.split(" ")[0];
-//			 String id2 = line.split(" ")[1];
-			 String gloss1 = "";
-			 String gloss2 = "";
-			 if(pos)
+			 } else if(line.startsWith("q"))
 			 {
-				 gloss1 = gb1.senseIdGlossPos.get(id1);
-				 gloss2 = gb2.senseIdGlossPos.get(id2);
-			 }
-			 else
-			 {
-				 gloss1 = gb1.senseIdGloss.get(id1);
-				 gloss2 = gb2.senseIdGloss.get(id2);
-			 }
 
-
-			 if(gloss1 == null || gloss2 ==null) {
-				p.println(id1+"\t"+id2+"\t"+0.0);
-			 }
-			 else
-			 {
-				 String [] gloss_arr1 = gloss1.split(" ");
-				 List<String> gloss_set1 =Arrays.asList(gloss_arr1);
-				 String [] gloss_arr2 = gloss2.split(" ");
-				 List<String> gloss_set2 =Arrays.asList(gloss_arr2);
-				 double similarity = measure.getSimilarity(gloss_set1, gloss_set2);
-				 p.println(id1+"\t"+id2+"\t"+similarity);
+				 String id1 = line.split(" ")[1]; 
+				 String id2 = line.split(" ")[2]; 
+	
+				 String gloss1 = "";
+				 String gloss2 = "";
+				 if(pos)
+				 {
+					 gloss1 = gb1.senseIdGlossPos.get(id1);
+					 gloss2 = gb2.senseIdGlossPos.get(id2);
+				 }
+				 else
+				 {
+					 gloss1 = gb1.senseIdGloss.get(id1);
+					 gloss2 = gb2.senseIdGloss.get(id2);
+				 }
+	
+	
+				 if(gloss1 == null || gloss2 ==null) {
+					p.println(id1+"\t"+id2+"\t"+0.0);
+				 }
+				 else
+				 {
+					 String [] gloss_arr1 = gloss1.split(" ");
+					 List<String> gloss_set1 =Arrays.asList(gloss_arr1);
+					 String [] gloss_arr2 = gloss2.split(" ");
+					 List<String> gloss_set2 =Arrays.asList(gloss_arr2);
+					 double similarity = measure.getSimilarity(gloss_set1, gloss_set2);
+					 p.println(id1+"\t"+id2+"\t"+similarity);
+				 }
 			 }
 		 }
 		input_reader.close();
