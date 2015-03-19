@@ -63,7 +63,7 @@ public class CreateAlignmentFromGraphOutput
 		boolean alignSingle = false; //allow instant alignment in case of only ine candidate
  
 		boolean backoff=false;  //use a similarity-based backoff file in case no alignment can be found
-		String backoff_file = "WN_OW_en_alignment_similarity_Pos_tfidf_nonZero.txt";
+		String backoff_file = "target/"+"WN_OW_en_alignment_similarity_Pos_tfidf_nonZero.txt";
 
 		createAlignment(bg_1,bg_2,monoLinkThreshold1,monoLinkThreshold2, depth, allowMultiple,alignSingle, backoff, backoff_file);
 
@@ -350,7 +350,7 @@ public class CreateAlignmentFromGraphOutput
 
 					if(backoff) // We add the alignment from the backoff for this which were not aligned using DWSA
 					{
-						in2 = new FileReader("target/"+backoff_file) ;
+						in2 = new FileReader(backoff_file) ;
 						input2 =  new BufferedReader(in2);
 						while((line2 = input2.readLine())!=null)
 						{
