@@ -60,14 +60,14 @@ After the tables have been created, you can import resources as described in the
 . Try to start with the larger resources (e.g. Wikipedia) as they take most time, and make a backup of the database once an import run for a single resource is complete. By doing this, you don't have to restart the whole conversion process in case one import fails.
 . The database contains a set of constraints, which makes sure that deletion of a single resource from the database does not leave it in an inconsistent state. These can be turned off at the beginning of each database import and turned on afterwards by a boolean parameter. If you plan to just import several resources in a row, you should just leave the constraints turned off, as it saves a lot of time.
 
-=== !FrameNet-converter
+=== FrameNet
 
-==== Prerequisites for using !FrameNet-converter
+==== Prerequisites
 
 . For using this converter, you need a modified version of the Java !FrameNet API: `JFN_042_recompiled`, available from our public Maven repository.
 . You also need the FN Data Release 1.5, available here: https://framenet.icsi.berkeley.edu/fndrupal/framenet_request_data
 
-==== Using !FrameNet-converter
+==== Usage
 
 After satisfying the prerequisites mentioned above, you can start converting !FrameNet:
 
@@ -97,15 +97,15 @@ After the conversion has finished, you can obtain the resulting !LexicalResource
 
 At this point, you can right away start using the instance of !LexicalResource to access the converted information, or you can write it to a xml-file using `LMFXmlWriter`.
 
-=== Wikpedia-converter
+=== Wikpedia
 
-==== Prerequisites for using Wikipedia-converter
+==== Prerequisites
 
 . For using this converter, you need the JWPL-API, also avaliable on Google Code: http://code.google.com/p/jwpl/
 . You also need a preprocessed Wikipedia database dump, available here: http://uby.ukp.informatik.tu-darmstadt.de/wikipedia/
 ** Make sure the Wikipedia dump has properly been imported into a DB before you start
 
-==== Using Wikipedia-converter ===
+==== Usage
 
 After satisfying the prerequisites mentioned above, you can start converting Wikipedia: Open a connection to the  Wikipedia DB and create a new Wikipedia object, which will be used by the Converter to obtain the information from the DB.  Note that you can set the language when creating the Database, and that they are also two slighty different Converters for different language editions of Wikipedia. Currently, English(EN) and German(DE) are supported for the conversion process.
 
@@ -122,14 +122,14 @@ Initialize the Converter and call `transform()` method in order to start the con
 
 Note that, unlike for most other Converters, there is no XML output or directly available Java object as Wikipedia is too large. Instead, the data is written directly into the database and can be accessed via the API.
 
-=== Wiktionary-converter
+=== Wiktionary
 
-==== Prerequisites for using Wiktionary-converter
+==== Prerequisites-converter
 
 . For using this converter, you need the JWKTL-API version 0.15.2, available here: http://www.ukp.tu-darmstadt.de/software/jwktl/
 . You also need a preprocessed Wiktionary XML dump, available here: http://uby.ukp.informatik.tu-darmstadt.de/wiktionary/
 
-==== Using Wiktionary-converter
+==== Usage
 
 After satisfying the prerequisites mentioned above, you can start converting Wiktionary: Create a new Wiktionary object using the path to the Wiktionary XML dump, which will be used by the Converter.  Note that you can set the language when creating the Database, and that they are also two slighty different Converters for different language editions of Wiktionary. Currently, English(EN) and German(DE) are supported for the conversion process. 
 
@@ -157,13 +157,13 @@ In both cases, the `transform()` method starts the conversion.
 Note that, unlike for most other Converters, there is no XML output or directly available Java object as Wiktionary is too large. Instead, the data is written directly into the database and can be accessed via the API.
 
 
-=== !VerbNet-converter
+=== VerbNet
 
-==== Prerequisites for using !VerbNet-converter
+==== Prerequisites
 
 You need a preprocessed version of !VerbNet, available here: http://uby.ukp.informatik.tu-darmstadt.de/verbnet/
 
-==== Using !VerbNet-converter
+==== Usage
 
 After satisfying the prerequisites mentioned above, you can start converting !VerbNet: Initialize an instance of `VerbNetExtractor` which will be used by the `VNConverter` to obtain the information from the (single) !VerbNet file.
 
@@ -187,7 +187,7 @@ At this point, you can right away start using the instance of !LexicalResource t
 
 IMSlexSubset (verbs taking clausal and verb phrase complements) and IMSlex-Subcat (verbs, nouns, adjectives) converter
 
-==== Prerequisites for using IMSlexSubset-converter
+==== Prerequisites
 
 You need a preprocessed version of IMSlexSubset, available from our website: http://www.ukp.tu-darmstadt.de/data/uby/, see "Supplementary Data and Tools" of this EACL 2012 paper:
 
@@ -246,16 +246,16 @@ After the conversion has finished, you can obtain the resulting !LexicalResource
 
 At this point, you can right away start using the instance of !LexicalResource to access the converted information, or you can write it to a xml-file using `LMFXmlWriter`.
 
-=== !GermaNet-converter
+=== GermaNet
 
-==== Prerequisites for using !GermaNet-converter
+==== Prerequisites
 
 . You need the GN-API version 7.0.1, available here: http://www.sfs.uni-tuebingen.de/lsd/tools.shtml
 . You also need the GN Data, release 7.0. GN is free for academic users but you have to sign a licence, available here: http://www.sfs.uni-tuebingen.de/lsd/licenses.shtml
 . If you want to include the Interlingual Index, you also need the converted !WordNet 3.0, see !WordNet-converter. *It is not possible to import the !GermaNet with the Interlingual Index into an existing openly distributed UBY database which already contains !WordNet. You have to create a new database where you import GermaNet with the Interlingual Index (and also the !WordNet created during conversion, if required). *
 
 
-==== !GermaNet-converter
+==== Usage
 
 After satisfying the prerequisites mentioned above, you can start converting !GermaNet: Initialize an instance of !GermaNet -gnet- which will be used by the GNConverter to obtain the information from the !GermaNet files.
 
@@ -297,14 +297,14 @@ After the conversion has finished, you can obtain the resulting !LexicalResource
 
 At this point, you can right away start using the instance of !LexicalResource to access the converted information, or you can write it to an XML-file using `LMFXmlWriter`.
 
-=== !WordNet-converter
+=== WordNet
 
-==== Prerequisites for using !WordNet-converter
+==== Prerequisites
 
 . For using this converter, you need the extJWNL-API, avaliable on !SourceForge: http://extjwnl.sourceforge.net/
 . You also need the !WordNet 3.0 files available here: http://wordnet.princeton.edu/wordnet/download/current-version/
 
-==== Correctly setting up the  !WordNet-converter
+==== Setup
 
    * Make sure you have set UBY's home directory `UBY_HOME`
    * Download !WordNet files and extract them to `.../UBY_HOME/WordNet/`
@@ -325,7 +325,8 @@ At this point, you can right away start using the instance of !LexicalResource t
    * In `file_properties.xml` change the value of the dictionary_path variable (at the bottom of the file). It should point to `UBY_HOME/WordNet/wordnet3/dict`, where `UBY_HOME` is the absolute path of `UBY_HOME`.
    * Done
 
-=== Using !WordNet-converter ===
+=== Usage
+
 After satisfying the prerequisites mentioned above, you can start converting !WordNet: Initialize an instance of !WordNet's Dictionary -wordnet- which will be used by the WNConverter to obtain the information from the !WordNet files.
 
 [source,java]
@@ -344,15 +345,15 @@ After the conversion has finished, you can obtain the resulting !LexicalResource
 
 At this point, you can right away start using the instance of !LexicalResource to access the converted information, or you can write it to a xml-file using `LMFXmlWriter`.
 
-=== !OmegaWiki-converter
+=== OmegaWiki
 
-==== Prerequisites for using !WordNet-converter
+==== Prerequisites 
 
 . For using this converter, you need the !OmegaWiki-API, also avaliable on Google Code: http://code.google.com/p/jowkl/ or as a Maven dependency from our public repository.
 . You also need an !OmegaWiki database dump, available here: http://www.omegawiki.org/Help:Downloading_the_data
 ** Make sure the OW dump has properly been imported into a DB before you start
 
-==== Using !OmegaWiki-converter
+==== Usage
 
 After satisfying the prerequisites mentioned above, you can start converting !OmegaWiki: Open a connection to the  !OmegaWiki DB and create a new !OmegaWiki object, which will be used by the OWConverter to obtain the information from the DB.  Note that you can set the language when creating the Converter. Currently, English and German are supported for the conversion process.
 
