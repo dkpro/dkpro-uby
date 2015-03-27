@@ -20,6 +20,8 @@ package de.tudarmstadt.ukp.lmf.transform.framenet;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -290,13 +292,16 @@ public class SemanticPredicateGenerator {
 					semanticLabel.setLabel(semanticType.getName());
 					semanticLabel.setType(ELabelTypeSemantics.selectionalPreference);
 
-					// creating MonolingualExternalRef
-					List<MonolingualExternalRef> monolingualExternalRefs = new LinkedList<MonolingualExternalRef>();
-					MonolingualExternalRef monolingualExternalRef = new MonolingualExternalRef();
-					monolingualExternalRef.setExternalReference(semanticType.getId());
-					monolingualExternalRef.setExternalSystem("FrameNet 1.5 semantic type ID");
-					monolingualExternalRefs.add(monolingualExternalRef);
-					semanticLabel.setMonolingualExternalRefs(monolingualExternalRefs);
+					// creating MonolingualExternalRef. Avoid having NULL and random ids.
+					String semanticTypeId = semanticType.getId();
+					if (semanticTypeId != null && semanticTypeId.indexOf(".") < 0) {
+						List<MonolingualExternalRef> monolingualExternalRefs = new LinkedList<MonolingualExternalRef>();
+						MonolingualExternalRef monolingualExternalRef = new MonolingualExternalRef();
+						monolingualExternalRef.setExternalReference(semanticTypeId);
+						monolingualExternalRef.setExternalSystem("FrameNet 1.5 semantic type ID");
+						monolingualExternalRefs.add(monolingualExternalRef);
+						semanticLabel.setMonolingualExternalRefs(monolingualExternalRefs);
+					}
 					semanticLabels.add(semanticLabel);
 				}
 			}
@@ -571,6 +576,13 @@ public class SemanticPredicateGenerator {
 				result.add(predicateRelation);
 			}
 		}
+		
+		Collections.sort(result, new Comparator<PredicateRelation>() {
+			@Override
+			public int compare(PredicateRelation arg0, PredicateRelation arg1) {
+				return arg0.getTarget().getId().compareTo(arg1.getTarget().getId());
+			}
+		});
 		return result;
 	}
 
