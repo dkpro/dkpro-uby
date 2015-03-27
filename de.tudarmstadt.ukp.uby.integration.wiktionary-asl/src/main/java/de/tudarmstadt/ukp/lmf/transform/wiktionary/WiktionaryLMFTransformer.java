@@ -20,9 +20,10 @@ package de.tudarmstadt.ukp.lmf.transform.wiktionary;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.regex.Pattern;
 
 import de.tudarmstadt.ukp.lmf.model.core.Definition;
@@ -106,7 +107,7 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 	// Handler for Wiktionary's pragmatic labels.
 	protected WiktionaryLabelManager labelManager;
 	// Cache of unsaved word forms defined by Wiktionary word form labels.
-	protected final HashMap<String, List<WordForm>> wordForms;
+	protected final Map<String, List<WordForm>> wordForms;
 	// Cache of unsaved subcategorization frames.
 	protected final List<SubcategorizationFrame> subcatFrames;
 
@@ -130,7 +131,7 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 		this.wktLang = wktLang;
 		this.wktDate = wktDate;
 		this.entryIterator = wkt.getAllEntries();
-		this.wordForms = new HashMap<String, List<WordForm>>();
+		this.wordForms = new TreeMap<String, List<WordForm>>();
 		this.subcatFrames = new LinkedList<SubcategorizationFrame>();
 		this.labelManager = WiktionaryLMFMap.createLabelManager();
 		jwktlVersion = JWKTL.getVersion();
@@ -157,9 +158,8 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 
 	@Override
 	protected Lexicon createNextLexicon() {
-		if(!entryIterator.hasNext()/* || currentEntryNr > 1000*/) {
-            return null;
-        }
+		if (lexicon != null)
+			return null;
 
 		lexicon = new Lexicon();
 		String lmfLang = WiktionaryLMFMap.mapLanguage(wktLang);
@@ -206,6 +206,7 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 				Sense sense = wktSenseToLMFSense(wktSense, wktEntry, entry);
 				senses.add(sense);
 			}
+			wktSense = null;
 		}
 		entry.setSenses(senses);
 
@@ -450,23 +451,23 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 					continue; // Do not save translations to unknown languages.
 				}
 
+				Equivalent equivalent = new Equivalent();
+				equivalent.setWrittenForm(targetForm);
+				equivalent.setLanguageIdentifier(language);
+
 				String transliteration = trans.getTransliteration();
-				if (transliteration != null) {
+				if (transliteration != null && !transliteration.isEmpty()) {
 					transliteration = convert(transliteration, 255);
+					equivalent.setTransliteration(transliteration);
 				}
 				String additionalInformation = trans.getAdditionalInformation();
-				if (additionalInformation != null) {
+				if (additionalInformation != null && !additionalInformation.isEmpty()) {
 					additionalInformation = additionalInformation.replace("{{m}}", "masculine");
 					additionalInformation = additionalInformation.replace("{{f}}", "feminine");
 					additionalInformation = additionalInformation.replace("{{n}}", "neuter");
 					additionalInformation = convert(additionalInformation, 255);
+					equivalent.setUsage(additionalInformation);
 				}
-
-				Equivalent equivalent = new Equivalent();
-				equivalent.setWrittenForm(targetForm);
-				equivalent.setLanguageIdentifier(language);
-				equivalent.setTransliteration(transliteration);
-				equivalent.setUsage(additionalInformation);
 				equivalents.add(equivalent);
 			}
 			sense.setEquivalents(equivalents);
@@ -673,7 +674,7 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 			final String writtenForm, final ILanguage language) {
 		List<FormRepresentation> result = new ArrayList<FormRepresentation>();
 		FormRepresentation formRepresentation = new FormRepresentation();
-		formRepresentation.setWrittenForm(writtenForm);
+		formRepresentation.setWrittenForm(convert(writtenForm, 255));
 		formRepresentation.setLanguageIdentifier(WiktionaryLMFMap.mapLanguage(language));
 		result.add(formRepresentation);
 		return result;
@@ -745,8 +746,11 @@ public class WiktionaryLMFTransformer extends LMFDBTransformer {
 	}
 
 	private static String convert(final String text, int maxLength) {
-		return StringUtils.replaceNonUtf8(
-				StringUtils.replaceHtmlEntities(text), maxLength);
+		if (text == null)
+			return null;
+		else
+			return StringUtils.replaceNonUtf8(
+					StringUtils.replaceHtmlEntities(text), maxLength);
 	}
 
 	protected static final Pattern COMMENT_PATTERN = Pattern.compile("<!--.+?-->");
