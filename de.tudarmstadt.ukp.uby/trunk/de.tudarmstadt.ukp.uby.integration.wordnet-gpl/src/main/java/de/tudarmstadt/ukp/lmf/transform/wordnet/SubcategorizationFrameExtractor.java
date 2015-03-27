@@ -29,8 +29,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import de.tudarmstadt.ukp.lmf.model.enums.ECase;
 import de.tudarmstadt.ukp.lmf.model.enums.EComplementizer;
@@ -80,7 +81,7 @@ public class SubcategorizationFrameExtractor {
 
 	private final Map<String, SynSemCorrespondence> synsemargsSynSemCorrMap  = new TreeMap<String, SynSemCorrespondence>();
 
-	private final Logger logger = Logger.getLogger(WNConverter.class.getName());
+	private final Log logger = LogFactory.getLog(getClass());
 
 	private final TreeSet<SubcategorizationFrame> allSubcategorizationFrames = new TreeSet<SubcategorizationFrame>();
 
@@ -157,7 +158,7 @@ public class SubcategorizationFrameExtractor {
 	 * This method parses the file containing the SubcategorizationFrame-mappings
 	 */
 	private void parseSubcatMappings() {
-		logger.log(Level.INFO, "Parsing SubcatMappings...");
+		logger.info("Parsing SubcatMappings...");
 		try{
 			BufferedReader input = new BufferedReader(new InputStreamReader(this.subcatStream));
 			String line;
@@ -173,10 +174,10 @@ public class SubcategorizationFrameExtractor {
 			StringBuffer sb = new StringBuffer(256);
 			sb.append("Error on reading subcat-mappings file!").append(this.subcatStream.toString()).append('\n');
 			sb.append("closing vm!");
-			logger.log(Level.SEVERE, sb.toString());
+			logger.error(sb.toString());
 			System.exit(1);
 		}
-		logger.log(Level.INFO, "done");
+		logger.info("done");
 
 		// first, create SubcategorizationFrames
 		Iterator<String> codeIterator = codeSynSemArgMapping.keySet().iterator();

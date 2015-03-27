@@ -29,10 +29,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
@@ -50,8 +50,8 @@ public class FramenetWordnetAlignment extends SenseAlignment {
 
 	static String UBY_HOME = System.getenv("UBY_HOME");
 	static String DKPRO_HOME = System.getenv("DKPRO_HOME");
-	protected static Logger logger = Logger
-			.getLogger(FramenetWordnetAlignment.class.getName());
+	protected static Log logger = LogFactory.getLog
+			(FramenetWordnetAlignment.class);
 	protected SenseAlignmentUtils saUtils;
 	ArrayList<String> notfoundWn = null;
 	ArrayList<String> notfoundFn = null;
@@ -102,7 +102,7 @@ public class FramenetWordnetAlignment extends SenseAlignment {
 		List<String[]> data = null;
 		data = readAlignmentFile();
 		if (ubySource == null) {
-			logger.log(Level.WARNING, "uby source is empty");
+			logger.warn("uby source is empty");
 		}
 		int counter = 0; // input sense pairs
 		int found = 0; // output sense pairs
@@ -139,7 +139,7 @@ public class FramenetWordnetAlignment extends SenseAlignment {
 			counter++;
 			// show progress:
 			if ((counter % 1000) == 0) {
-				logger.log(Level.INFO, "# processed alignments: " + counter);
+				logger.info("# processed alignments: " + counter);
 			}
 
 			List<String> wnSenses;
@@ -159,10 +159,10 @@ public class FramenetWordnetAlignment extends SenseAlignment {
 						addDestSense(wns);
 						found++;
 					} else if (wnSenses.size() == 0) { // no WN sense
-						logger.log(Level.WARNING, "WN sense not found: " + d[1]
+						logger.warn("WN sense not found: " + d[1]
 								+ " " + d[2].replace("_", " "));
 					} else { // more than one WN sense
-						logger.log(Level.INFO,
+						logger.info(
 								"More than one WN sense for this key: " + d[1]
 										+ " " + d[2].replace("_", " "));
 						for (String sid : wnSenses) {
@@ -172,17 +172,17 @@ public class FramenetWordnetAlignment extends SenseAlignment {
 						}
 					}
 				} else if (fnSenses.size() == 0) {
-					logger.log(Level.WARNING, "No FN sense for this key: "
+					logger.warn("No FN sense for this key: "
 							+ d[0]);
 				} else {
-					logger.log(Level.WARNING,
+					logger.warn(
 							"More than one FN sense for this key: " + d[0]);
 				}
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
 		}
-		logger.log(Level.INFO, "Alignments in: " + counter + "Alignments out: " + found);
+		logger.info("Alignments in: " + counter + "Alignments out: " + found);
 	}
 
 	/**

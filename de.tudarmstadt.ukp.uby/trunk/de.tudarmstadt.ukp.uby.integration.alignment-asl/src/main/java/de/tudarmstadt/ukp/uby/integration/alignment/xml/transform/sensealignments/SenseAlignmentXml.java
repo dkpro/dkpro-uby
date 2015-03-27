@@ -20,7 +20,6 @@ package de.tudarmstadt.ukp.uby.integration.alignment.xml.transform.sensealignmen
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import de.tudarmstadt.ukp.integration.alignment.xml.AlignmentXmlWriter;
 import de.tudarmstadt.ukp.integration.alignment.xml.model.XmlMeta;
@@ -35,7 +34,6 @@ public abstract class SenseAlignmentXml {
 	protected static String LF = System.getProperty("line.separator");
 	protected String alignmentFile;
 	protected AlignmentXmlWriter writer;
-	protected Logger logger;
 	protected StringBuilder logString;
 
 	public SenseAlignmentXml(String alignmentFile, String outFile) {

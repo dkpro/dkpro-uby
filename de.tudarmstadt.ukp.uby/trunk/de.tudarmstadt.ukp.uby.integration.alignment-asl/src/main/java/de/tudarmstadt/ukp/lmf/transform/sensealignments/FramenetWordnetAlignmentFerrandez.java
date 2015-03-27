@@ -23,7 +23,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -129,9 +128,9 @@ public class FramenetWordnetAlignmentFerrandez extends FramenetWordnetAlignment 
 			}
 		}
 		writeLines(outFile, output);
-		logger.log(Level.INFO, "# entries in original file " + inFile + ": "
+		logger.info("# entries in original file " + inFile + ": "
 				+ entries.getLength());
-		logger.log(Level.INFO, "# output entries (written to " + outFile
+		logger.info("# output entries (written to " + outFile
 				+ "): " + output.size());
 	}
 }

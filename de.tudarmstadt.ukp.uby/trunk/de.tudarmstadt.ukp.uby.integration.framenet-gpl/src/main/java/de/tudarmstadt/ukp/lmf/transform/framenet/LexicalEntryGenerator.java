@@ -27,10 +27,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import de.saar.coli.salsa.reiter.framenet.FrameNet;
 import de.saar.coli.salsa.reiter.framenet.Lexeme;
@@ -106,7 +107,7 @@ public class LexicalEntryGenerator {
 	// directory where FrameNet's files are located
 	private final String fnhome;
 
-	private final Logger logger = Logger.getLogger(FNConverter.class.getName());
+	private final Log logger = LogFactory.getLog(getClass());
 
     /**
      * Constructs an instance of LexicalEntryGenerator, which provides methods for creating
@@ -227,7 +228,7 @@ public class LexicalEntryGenerator {
 				sbErr.append(lu.getFrame());
 				sbErr.append('\n');
 				sbErr.append("Aborting all operations!");
-				logger.log(Level.SEVERE, sbErr.toString());
+				logger.error(sbErr.toString());
 				System.exit(1);
 			}
 			PredicativeRepresentation predicativeRepresentation = new PredicativeRepresentation();
@@ -238,7 +239,7 @@ public class LexicalEntryGenerator {
 
 			// SETTING incorporatedSemArg
 			// Parse the corpus in order to get more information about the lu
-			ac = new AnnotationCorpus15(fn, logger);//works
+			ac = new AnnotationCorpus15(fn, Logger.getLogger(getClass().getName()));//works
 			ac.parse(new File(fnhome+File.separator+"lu"), "lu"+lu.getId()+".xml");
 			AnnotatedLexicalUnit alu = ac.getAnnotation(lu);
 			if(alu != null){
@@ -274,7 +275,7 @@ public class LexicalEntryGenerator {
 					try {
 						t = fn.getSemanticType(s);
 					} catch (SemanticTypeNotFoundException e) {
-						logger.log(Level.WARNING, "Did not find semantic type in FN: " + s);
+						logger.warn("Did not find semantic type in FN: " + s);
 					}
 					if (s.matches("^[0-9]+")){// ID
 						System.err.println("ID: " + s);
@@ -401,7 +402,7 @@ public class LexicalEntryGenerator {
 			sb.append(" already exists!");
 			sb.append("\n");
 			sb.append("Aborting all operations!");
-			logger.log(Level.SEVERE, sb.toString());
+			logger.error(sb.toString());
 			System.exit(1);
 		}
 
@@ -477,7 +478,7 @@ public class LexicalEntryGenerator {
 							sb.append("LexicalEntryGenerator: Error on updating Components!");
 							sb.append("No lexical entry for luGroup: ").append(luGroup).append(" found");
 							sb.append('\n').append("Aborting all operations!");
-							logger.log(Level.SEVERE, sb.toString());
+							logger.error(sb.toString());
 							System.exit(1);
 						}
 					}
@@ -575,7 +576,7 @@ public class LexicalEntryGenerator {
 		StringBuffer sb = new StringBuffer(128);
         sb.append("LexicalEntryGenerator: FNUtils returned null for PartOfSpeech: ").append(pos)
                 .append(" Aborting all operations.");
-		logger.log(Level.SEVERE, sb.toString());
+		logger.error(sb.toString());
 		System.exit(1);
 	}
 

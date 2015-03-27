@@ -32,10 +32,10 @@ import java.io.Reader;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
@@ -53,7 +53,7 @@ public class FrameNetWiktionaryAlignment
 	private String debug;
 	public StringBuilder logString;
 	public int nullAlignment;
-	protected static Logger logger = Logger.getLogger(FrameNetWiktionaryAlignment.class.getName());
+	protected static Log logger = LogFactory.getLog(FrameNetWiktionaryAlignment.class);
 	private final SenseAlignmentUtils saUtils;
 
 	public FrameNetWiktionaryAlignment(String sourceUrl, String destUrl, String dbDriver, String dbVendor,
@@ -186,7 +186,7 @@ public class FrameNetWiktionaryAlignment
 			System.out.println(scoreLines.size());
 			System.out.println(idLines.size());
 			if (scoreLines.size()!=idLines.size()){// 
-				logger.log(Level.WARNING,"files do not agree");
+				logger.warn("files do not agree");
 			}
 			int positive = 0;
 			int negative = 0;
@@ -203,8 +203,8 @@ public class FrameNetWiktionaryAlignment
 			 		negative++;
 			 	}
 			 }
-			 logger.log(Level.INFO, "positive class-->added as alignment: " + positive);
-			 logger.log(Level.INFO, "negative class-->no alignment: " + negative);
+			 logger.info("positive class-->added as alignment: " + positive);
+			 logger.info("negative class-->no alignment: " + negative);
 			 System.out.println("write positive class to file");
 			 FileWriter  fw = new FileWriter(new File(tsvFile));
 			 for (String r: res){

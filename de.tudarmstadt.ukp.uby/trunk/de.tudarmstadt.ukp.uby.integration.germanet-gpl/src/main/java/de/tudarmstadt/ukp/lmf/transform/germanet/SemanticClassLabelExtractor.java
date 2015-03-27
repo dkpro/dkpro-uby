@@ -22,9 +22,8 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -49,7 +48,7 @@ public class SemanticClassLabelExtractor {
 	private final Map<Integer, String> luMappings = new HashMap<Integer, String>(); // luID <-> filename mappings
 	private final Map<Integer, String> synsetMappings = new HashMap<Integer, String>(); // synsetID <-> filename mappings
 
-	private final Logger logger = Logger.getLogger(GNConverter.class.getName());
+	private final Log logger = LogFactory.getLog(getClass());
 
 	/**
 	 * Constructs an instance of {@link SemanticClassLabelExtractor}
@@ -99,7 +98,7 @@ public class SemanticClassLabelExtractor {
 	 */
 	private void initialize() {
 		if(luMappings.isEmpty()){
-			logger.log(Level.INFO, "Initializing SemanticClassLabelExtractor... ");
+			logger.info("Initializing SemanticClassLabelExtractor... ");
 
 			String[] fileNames = gnData.list(); // Names of all files in GermaNet's directory
 
@@ -117,7 +116,7 @@ public class SemanticClassLabelExtractor {
 						sb.append('\n').append("Aborting all operations!").append('\n');
 						sb.append("cause").append('\n');
 						sb.append(e.getMessage());
-						logger.log(Level.SEVERE, sb.toString());
+						logger.error(sb.toString());
 						System.exit(1);
 					}
 					Element root = document.getRootElement();
@@ -139,7 +138,7 @@ public class SemanticClassLabelExtractor {
 					}
 				}
 			}
-			logger.log(Level.INFO, "Initializing SemanticClassLabelExtractor done");
+			logger.info("Initializing SemanticClassLabelExtractor done");
 		}
 	}
 }

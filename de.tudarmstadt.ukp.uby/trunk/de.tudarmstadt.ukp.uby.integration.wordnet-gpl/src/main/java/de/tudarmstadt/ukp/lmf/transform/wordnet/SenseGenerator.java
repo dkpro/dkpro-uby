@@ -26,10 +26,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import net.sf.extjwnl.data.Word;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.core.TextRepresentation;
@@ -71,7 +73,7 @@ public class SenseGenerator {
 
 	private final String resourceVersion;
 	
-	private final Logger logger = Logger.getLogger(WNConverter.class.getName());
+	private final Log logger = LogFactory.getLog(getClass());
 
 	/**
 	 * Constructs a {@link SenseGenerator} based on the consumed parameters
@@ -133,7 +135,7 @@ public class SenseGenerator {
 				sb.append("IndexSenseReader did not provide sense number for senseKey ");
 				sb.append(lexeme.getSenseKey()).append('\n');
 				sb.append("adding a dummy value of sense number");
-				logger.log(Level.WARNING, sb.toString());
+				logger.warn(sb.toString());
 			}
 
 			net.sf.extjwnl.data.Synset lexemeSynset = lexeme.getSynset(); // lexemes Synset
@@ -145,7 +147,7 @@ public class SenseGenerator {
 				sb.append("Synset generator did not provide Uby-LMF Synset for WordNet's Synset ");
 				sb.append(lexemeSynset).append('\n');
 				sb.append("Closing VM");
-				logger.log(Level.SEVERE, sb.toString());
+				logger.error(sb.toString());
 				System.exit(1);
 			}
 
@@ -255,7 +257,7 @@ public class SenseGenerator {
 				sb.append("IndexSenseReader did not provide sense number for senseKey ");
 				sb.append(lexeme.getSenseKey()).append('\n');
 				sb.append("adding a dummy value of sense number");
-				logger.log(Level.WARNING, sb.toString());
+				logger.warn(sb.toString());
 			}
 
 			net.sf.extjwnl.data.Synset lexemeSynset = lexeme.getSynset(); // lexemes Synset
@@ -267,7 +269,7 @@ public class SenseGenerator {
 				sb.append("Synset generator did not provide Uby-LMF Synset for WordNet's Synset ");
 				sb.append(lexemeSynset).append('\n');
 				sb.append("Closing VM");
-				logger.log(Level.SEVERE, sb.toString());
+				logger.error(sb.toString());
 				System.exit(1);
 			}
 

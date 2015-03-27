@@ -25,8 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import de.tudarmstadt.ukp.lmf.model.core.GlobalInformation;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
@@ -67,7 +67,7 @@ public class GNConverter {
 
 	private final String dtd_version;
 
-	private final Logger logger = Logger.getLogger(GNConverter.class.getName());
+	private final Log logger = LogFactory.getLog(getClass());
 
 	private final String resourceVersion;
 	
@@ -89,7 +89,7 @@ public class GNConverter {
 			subcategorizationFrameExtractor = new SubcategorizationFrameExtractor(subcatStream);
 		}
 		catch (Exception e) {
-			logger.log(Level.SEVERE, "GNConverter: unable to load subcat mapping file. Aborting all operations");
+			logger.error("GNConverter: unable to load subcat mapping file. Aborting all operations");
 			System.exit(1);
 		}
 
@@ -121,7 +121,7 @@ public class GNConverter {
 		lexicalResource.setLexicons(lexicons);
 
 		// *** Creating LexicalEntries *** //
-		logger.log(Level.INFO, "Generating LexicalEntries...");
+		logger.info("Generating LexicalEntries...");
 		this.groupLUs();
 		LexicalEntryGenerator leGen = new LexicalEntryGenerator(this, resourceVersion);
 		List<LexicalEntry> lexicalEntries = new LinkedList<LexicalEntry>();
@@ -137,7 +137,7 @@ public class GNConverter {
 		lexicon.setLexicalEntries(lexicalEntries);
 		StringBuffer sb = new StringBuffer(64);
 		sb.append("Generated LexicalEntries: ").append(lexicalEntries.size());
-		logger.log(Level.INFO, sb.toString());
+		logger.info(sb.toString());
 		int noVerbs = 0;
 		int noVerbSenses = 0;
 		for (LexicalEntry le : lexicalEntries) {
@@ -149,7 +149,7 @@ public class GNConverter {
 		sb = new StringBuffer(128);
 		sb.append("Generated verb lemmas: ").append(noVerbs).append('\n');
 		sb.append("Generated verb senses: ").append(noVerbSenses);
-		logger.log(Level.INFO, sb.toString());
+		logger.info(sb.toString());
 
 		// *** Appending SubcategorizationFrames *** //
 		lexicon.setSubcategorizationFrames(subcategorizationFrameExtractor.getSubcategorizationFrames());
@@ -163,7 +163,7 @@ public class GNConverter {
 		lexicon.setSynsets(synsets);
 		sb = new StringBuffer(64);
 		sb.append("Generated synsets: ").append(synsets.size());
-		logger.log(Level.INFO, sb.toString());
+		logger.info(sb.toString());
 
 		// *** Appending SynSemCorrespondences *** //
 		lexicon.setSynSemCorrespondences(subcategorizationFrameExtractor.getSynSemCorrespondences());

@@ -24,11 +24,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.dom4j.DocumentException;
 import org.xml.sax.SAXException;
 
@@ -74,7 +73,7 @@ public class LexicalEntryGenerator {
 	// Mappings between LexUnit-groups and their' corresponding LexicalEntries
 	private final Map<Set<LexUnit>, LexicalEntry> luGroupLEMappings = new HashMap<Set<LexUnit>, LexicalEntry>();
 
-	private final Logger logger = Logger.getLogger(GNConverter.class.getName());
+	private final Log logger = LogFactory.getLog(getClass());
 
 
 	/**
@@ -191,7 +190,7 @@ public class LexicalEntryGenerator {
 			sb.append("is setRelatedForms() invoked to soon?");
 			sb.append("\n");
 			sb.append("Aborting all operations!");
-			logger.log(Level.SEVERE, sb.toString());
+			logger.error(sb.toString());
 			System.exit(1);
 		}
 
@@ -242,7 +241,7 @@ public class LexicalEntryGenerator {
 			sb.append("LexicalEntryGenerator, no group for LexUnit with id: ").append(lexUnit.getId());
 			sb.append(" found").append('\n');
 			sb.append("Aborting all operations!");
-			logger.log(Level.SEVERE, sb.toString());
+			logger.error(sb.toString());
 			System.exit(1);
 		}
 
@@ -276,7 +275,7 @@ public class LexicalEntryGenerator {
             }
             else
 				 if(orthForm2 != null && !orthForm.equals(orthForm2)){
-					 logger.log(Level.WARNING, "conflict, diffrent orthForm in same luGroup!");
+					 logger.warn("conflict, diffrent orthForm in same luGroup!");
 				 }
 
 			 // Extracting orthVar
@@ -286,7 +285,7 @@ public class LexicalEntryGenerator {
             }
             else
 				 if(orthVar2 != null && !orthVar.equals(orthVar2)){
-					 logger.log(Level.WARNING, "conflict, diffrent orthVar in same luGroup!");
+					 logger.warn("conflict, diffrent orthVar in same luGroup!");
 				 }
 
 			 // Extracting oldOrthForm
@@ -296,7 +295,7 @@ public class LexicalEntryGenerator {
             }
             else
 				 if(oldOrthForm2 != null && !oldOrthForm.equals(oldOrthForm2)){
-					 logger.log(Level.WARNING, "LexicalEntryGenerator: conflict, diffrent oldOrthForm in same luGroup!");
+					 logger.warn("LexicalEntryGenerator: conflict, diffrent oldOrthForm in same luGroup!");
 				 }
 
 			 // Extracting oldOrthVar
@@ -306,7 +305,7 @@ public class LexicalEntryGenerator {
             }
             else
 				 if(oldOrthVar2 != null && !oldOrthVar.equals(oldOrthVar2)){
-					 logger.log(Level.WARNING, "LexicalEntryGenerator: conflict, diffrent oldOrthVar in same luGroup!");
+					 logger.warn("LexicalEntryGenerator: conflict, diffrent oldOrthVar in same luGroup!");
 				 }
 		 }
 
@@ -353,7 +352,7 @@ public class LexicalEntryGenerator {
 								StringBuffer sb = new StringBuffer(128);
 								sb.append("LexicalEntryGeneraError: orthographic form of LexUnit is not recognized!");
 								sb.append('\n').append("Aborting all operations!");
-								logger.log(Level.SEVERE, sb.toString());
+								logger.error(sb.toString());
 								System.exit(1);
 							}
 
@@ -443,7 +442,7 @@ public class LexicalEntryGenerator {
 			StringBuffer sb = new StringBuffer(128);
 			sb.append("filter removed all related forms!").append('\n');
 			sb.append("Aborting all operations!");
-			logger.log(Level.SEVERE, sb.toString());
+			logger.error(sb.toString());
 			System.exit(1);
 		}
 	}

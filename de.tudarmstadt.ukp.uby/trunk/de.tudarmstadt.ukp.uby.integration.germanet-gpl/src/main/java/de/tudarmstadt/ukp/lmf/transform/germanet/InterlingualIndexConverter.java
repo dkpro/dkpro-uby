@@ -22,7 +22,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
@@ -81,7 +83,7 @@ public class InterlingualIndexConverter {
 	}
 
 
-	private final Logger logger = Logger.getLogger(InterlingualIndexConverter.class.getName());
+	private final Log logger = LogFactory.getLog(getClass());
 
 	/**
 	 * Constructs an instance of {@link InterlingualIndexConverter} based on the consumed
@@ -132,7 +134,7 @@ public class InterlingualIndexConverter {
 
 				EPartOfSpeech pos = getUbyPosFromKey(temp[1]);
 				if(offsetString.contains("null")) {
-					logger.warning("offsetString contains null-string for " + iliRecord);
+					logger.warn("offsetString contains null-string for " + iliRecord);
 					continue; // skip
 				}
 
@@ -150,7 +152,7 @@ public class InterlingualIndexConverter {
 				 Synset wnUBYSynset = synsetMappings.get(pos).get(offset);
 
 				 if(wnUBYSynset == null){
-					logger.warning("Synset for the given WordNet word could not be found. SenseAxis will not be generated." + iliRecord);
+					logger.warn("Synset for the given WordNet word could not be found. SenseAxis will not be generated." + iliRecord);
 					continue; // skip
 				 }
 				 else{
@@ -174,7 +176,7 @@ public class InterlingualIndexConverter {
 				Sense wnUBYSense = getSense(wnUBYSynset, pwnWord);
 
 				if(wnUBYSense == null){
-					logger.warning("Sense for the given WordNet word ##" +pwnWord +"## could not be found. SenseAxis will not be generated." + iliRecord);
+					logger.warn("Sense for the given WordNet word ##" +pwnWord +"## could not be found. SenseAxis will not be generated." + iliRecord);
 					continue; // skip
 				}
 				else{
@@ -239,7 +241,7 @@ public class InterlingualIndexConverter {
 
 			String stringOffset = temp[1].trim();
 			if(stringOffset.contains("null")) {
-				logger.warning("stringOffset contains null-string");
+				logger.warn("stringOffset contains null-string");
 				continue; // skip
 			}
 

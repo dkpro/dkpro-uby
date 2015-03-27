@@ -23,9 +23,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
@@ -42,8 +43,7 @@ public class GermaNetWiktionaryDeAlignment extends SenseAlignment{
 	private String debug;
 	public StringBuilder logString;
 	public int nullAlignment;
-	protected static Logger logger = Logger
-			.getLogger(FrameNetWiktionaryAlignment.class.getName());
+    protected static Log logger = LogFactory.getLog(FrameNetWiktionaryAlignment.class);
 	private final SenseAlignmentUtils saUtils;
 
 	public GermaNetWiktionaryDeAlignment(String sourceUrl, String destUrl, String dbDriver,String dbVendor,

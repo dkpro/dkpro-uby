@@ -20,10 +20,10 @@ package de.tudarmstadt.ukp.lmf.transform;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
@@ -53,7 +53,7 @@ import de.tudarmstadt.ukp.lmf.model.syntax.SubcategorizationFrameSet;
  */
 public class DBToXMLTransformer extends UBYHibernateTransformer {
 
-	private static final Logger logger = Logger.getLogger(DBToXMLTransformer.class.getSimpleName());
+	private static final Log logger = LogFactory.getLog(DBToXMLTransformer.class);
 
 	protected LexicalResource lexicalResource;
 	protected DBConfig dbConfig;
@@ -96,7 +96,7 @@ public class DBToXMLTransformer extends UBYHibernateTransformer {
 		try {
 			String lexicalResourceName = lexicalResource.getName();
 			this.lexicalResource = (LexicalResource)session.get(LexicalResource.class, lexicalResourceName);
-			logger.log(Level.INFO, "Started writing lexicalResource " +  lexicalResourceName);
+			logger.info("Started writing lexicalResource " +  lexicalResourceName);
 
 			doTransform(true, (Lexicon[]) null);
 		} finally {

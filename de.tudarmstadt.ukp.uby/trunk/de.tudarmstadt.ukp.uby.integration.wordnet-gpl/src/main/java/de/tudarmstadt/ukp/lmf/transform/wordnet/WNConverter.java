@@ -21,8 +21,9 @@ package de.tudarmstadt.ukp.lmf.transform.wordnet;
 import java.io.File;
 import java.io.InputStream;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import net.sf.extjwnl.dictionary.Dictionary;
 import de.tudarmstadt.ukp.lmf.model.core.GlobalInformation;
@@ -52,7 +53,7 @@ public class WNConverter {
 	private final String dtd_version;
 	private final String resourceVersion;
 	
-	private final Logger logger = Logger.getLogger(WNConverter.class.getName());
+	private final Log LOG = LogFactory.getLog(getClass());
 
 
 	/**
@@ -76,7 +77,7 @@ public class WNConverter {
 			this.subcatStream = getClass().getClassLoader().getResource("WordNetSubcatMappings/wnFrameMapping.txt").openStream();
 		}
 		catch (Exception e) {
-			logger.log(Level.SEVERE, "Unable to load subcat mapping file. Aborting all operations");
+			LOG.error("Unable to load subcat mapping file. Aborting all operations");
 			System.exit(1);
 		}
 
@@ -84,7 +85,7 @@ public class WNConverter {
 			exMapping = new File(exMappingPath);
 		}
 		catch (Exception e) {
-			logger.log(Level.SEVERE,
+			LOG.error(
 					"Unable to load the file containing manually entered mappings of example sentences. Aborting all operations");
 			System.exit(1);
 		}
@@ -96,7 +97,7 @@ public class WNConverter {
 	 * The result of the conversion can be obtained by calling {@link WNConverter#getLexicalResource()}
 	 */
 	public void toLMF(){
-		logger.log(Level.INFO, "Started converting WordNet to LMF...");
+		LOG.info("Started converting WordNet to LMF...");
 		SubcategorizationFrameExtractor subcategorizationFrameExtractor = new SubcategorizationFrameExtractor(subcatStream);
 
 		// Setting attributes of LexicalResource
@@ -119,38 +120,38 @@ public class WNConverter {
 		lexicalResource.setLexicons(lexicons);
 
 		// *** Creating Synsets *** //
-		logger.log(Level.INFO, "Generating Synsets...");
+		LOG.info("Generating Synsets...");
 		SynsetGenerator synsetGenerator = new SynsetGenerator(extWordnet, exMapping, resourceVersion);
 		synsetGenerator.initialize();
 		// Setting Synsets
 		lexicon.setSynsets(synsetGenerator.getSynsets());
-		logger.log(Level.INFO, "Generating Synsets done");
+		LOG.info("Generating Synsets done");
 
 		// *** Creating LexicalEntries *** //
-		logger.log(Level.INFO, "Generating LexicalEntries...");
+		LOG.info("Generating LexicalEntries...");
 		LexicalEntryGenerator lexicalEntryGenerator = new LexicalEntryGenerator(dictionaryPath, extWordnet, 
 				synsetGenerator, subcategorizationFrameExtractor, resourceVersion);
 		lexicon.setLexicalEntries(lexicalEntryGenerator.getLexicalEntries());
-		logger.log(Level.INFO, "Generating LexicalEntries done");
+		LOG.info("Generating LexicalEntries done");
 
 		// *** Creating SynsetRelations *** //
-		logger.log(Level.INFO, "Generating SynsetRelations...");
+		LOG.info("Generating SynsetRelations...");
 		SynsetRelationGenerator synsetRelationGenerator = new SynsetRelationGenerator(synsetGenerator, lexicalEntryGenerator);
 		// Update the relatios of previously extracted (and generated) Synsets
 		synsetRelationGenerator.updateSynsetRelations();
-		logger.log(Level.INFO, "Generating SynsetRelations done");
+		LOG.info("Generating SynsetRelations done");
 
 		// *** Creating RelatedForms of LexicalEntries *** //
-		logger.log(Level.INFO, "Generating RelatedForms...");
+		LOG.info("Generating RelatedForms...");
 		RelatedFormGenerator relatedFormGenerator = new RelatedFormGenerator(lexicalEntryGenerator);
 		relatedFormGenerator.updateRelatedForms();
-		logger.log(Level.INFO, "Generating RelatedForms done");
+		LOG.info("Generating RelatedForms done");
 
 		// *** Creating SenseRelations *** //
-		logger.log(Level.INFO, "Generating SenseRelations...");
+		LOG.info("Generating SenseRelations...");
 		SenseRelationGenerator senseRelationGenerator = new SenseRelationGenerator(lexicalEntryGenerator);
 		senseRelationGenerator.updateSenseRelations();
-		logger.log(Level.INFO, "Generating SenseRelations done");
+		LOG.info("Generating SenseRelations done");
 
 		// *** Setting SubcategorizationFrames ***//
 		lexicon.setSubcategorizationFrames(subcategorizationFrameExtractor.getSubcategorizationFrames());

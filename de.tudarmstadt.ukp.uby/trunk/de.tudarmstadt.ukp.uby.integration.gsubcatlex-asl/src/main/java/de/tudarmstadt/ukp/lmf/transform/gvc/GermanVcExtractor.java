@@ -32,8 +32,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
@@ -82,8 +83,7 @@ public class GermanVcExtractor {
 	private final String resourceName; // name of the LMF lexicon, i.e. "IMSlexSubset"
 	private final String resourceVersion;
 
-	private final Logger logger = Logger.getLogger(GermanVcExtractor.class.getName());
-
+	private final Log logger = LogFactory.getLog(getClass());
 
 	// running numbers for IDs
 	private static int lexicalEntryNumber = 0;
@@ -402,7 +402,7 @@ public class GermanVcExtractor {
 			}
 			input.close();
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, "GermanVcExtractor: unable to load class mapping file. Aborting all operations");
+			logger.error("GermanVcExtractor: unable to load class mapping file. Aborting all operations");
 			System.exit(1);
 		}
 	}
