@@ -30,14 +30,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import net.sf.extjwnl.JWNLException;
 import net.sf.extjwnl.data.POS;
 import net.sf.extjwnl.data.Synset;
 import net.sf.extjwnl.data.Word;
 import net.sf.extjwnl.dictionary.Dictionary;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
@@ -95,7 +97,7 @@ public class LexicalEntryGenerator {
 	 */
 	private final Map<String, SyntacticBehaviour> syntBeh = new TreeMap<String, SyntacticBehaviour>();
 
-	private final Logger logger = Logger.getLogger(WNConverter.class.getName());
+	private final Log logger = LogFactory.getLog(getClass());
 
 	/**
 	 * Constructs a {@link LexicalEntryGenerator} used for generating LexicalEntries
@@ -135,11 +137,11 @@ public class LexicalEntryGenerator {
 	 */
 	private void groupLexemes() {
 		byte percentage = 0;
-		logger.log(Level.INFO, " grouping lexemes...");
+		logger.info(" grouping lexemes...");
 		lexemeGroupLexicalEntryMaping= new LinkedHashMap<Set<Word>, LexicalEntry>();
 		Iterator<Synset> synsetIter = null; // synset iterator
 		for(POS pos : POS.getAllPOS()){ // Iterate over all POSes
-			logger.log(Level.INFO, percentage+"%");
+			logger.info(percentage+"%");
 			Map<String, Set<Word>>lemmaLexemeGroup = new TreeMap<String, Set<Word>>();
 			try {
 				synsetIter = extWordnet.getSynsetIterator(pos);
@@ -171,7 +173,7 @@ public class LexicalEntryGenerator {
 			lexemeGroups.addAll(lemmaLexemeGroup.values());
 			percentage +=25;
 		}
-		logger.log(Level.INFO, "100%");
+		logger.info("100%");
 	}
 
 	/**
@@ -180,7 +182,7 @@ public class LexicalEntryGenerator {
 	 * @see LexicalEntry
 	 */
 	private void createLexicalEntries(){
-		logger.log(Level.INFO, "transforming lexeme groups... 0% ");
+		logger.info("transforming lexeme groups... 0% ");
 		int size = lexemeGroups.size();
 		int tenPercent = size/10;
 		int percentageCounter=0;
@@ -192,10 +194,10 @@ public class LexicalEntryGenerator {
 			if(percentageCounter++ == tenPercent){
 				percentage +=10;
 				percentageCounter = 0;
-				logger.log(Level.INFO, percentage+"%");
+				logger.info(percentage+"%");
 			}
 		}
-		logger.log(Level.INFO, "100%");
+		logger.info("100%");
 	}
 
 	/**

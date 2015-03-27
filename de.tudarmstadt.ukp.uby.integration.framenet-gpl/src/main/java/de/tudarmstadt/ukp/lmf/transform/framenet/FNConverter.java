@@ -21,8 +21,9 @@ package de.tudarmstadt.ukp.lmf.transform.framenet;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import de.saar.coli.salsa.reiter.framenet.FrameNet;
 import de.tudarmstadt.ukp.lmf.model.core.GlobalInformation;
@@ -47,7 +48,7 @@ public class FNConverter {
 
 	private final String resourceVersion;
 	
-	private final Logger logger = Logger.getLogger(FNConverter.class.getName());
+	private final Log logger = LogFactory.getLog(getClass());
 
     /**
      * Constructs a {@link FNConverter} based on the consumed parameters
@@ -96,19 +97,19 @@ public class FNConverter {
 		lexicalResource.setLexicons(lexicons);
 
 		// *** Creating SemanticPredicates *** //
-		logger.log(Level.INFO, "Generating SemanticPredicates...");
+		logger.info("Generating SemanticPredicates...");
 		SemanticPredicateGenerator semanticPredicateGenerator = new SemanticPredicateGenerator(fn, resourceVersion);
 		List<SemanticPredicate> semanticPredicates = new ArrayList<SemanticPredicate>();
 		semanticPredicates.addAll(semanticPredicateGenerator.getSemanticPredicates());
 		lexicon.setSemanticPredicates(semanticPredicates);
-		logger.log(Level.INFO, "Generating SemanticPredicates done");
+		logger.info("Generating SemanticPredicates done");
 
 		// *** Creating LexicalEntries *** //
-		logger.log(Level.INFO, "Generating LexicalEntries...");
+		logger.info("Generating LexicalEntries...");
 		LexicalEntryGenerator lexicalEntryGenerator = new LexicalEntryGenerator(fn, 
 				semanticPredicateGenerator, resourceVersion);
 		lexicon.setLexicalEntries(lexicalEntryGenerator.getLexicalEntries());
-		logger.log(Level.INFO, "Generating LexicalEntries done");
+		logger.info("Generating LexicalEntries done");
 	}
 
 

@@ -22,9 +22,9 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.cfg.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -40,7 +40,7 @@ import de.tudarmstadt.ukp.lmf.transform.DBConfig;
  */
 public class HibernateConnect
 {
-	private static Logger logger = Logger.getLogger(HibernateConnect.class.getName());
+	private static Log logger = LogFactory.getLog(HibernateConnect.class.getName());
 
     /**
      * Creates Hibernate {@link Configuration} and adds all files from Hibernate mapping folder to
@@ -71,7 +71,7 @@ public class HibernateConnect
 			}
 
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, "Hibernate mappings not found!");
+			logger.error("Hibernate mappings not found!");
 			e.printStackTrace();
 		}
 

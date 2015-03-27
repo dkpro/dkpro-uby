@@ -25,13 +25,14 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeMap;
-import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -59,7 +60,8 @@ import de.tudarmstadt.ukp.lmf.transform.DBConfig;
  * alignment xml Requires UBY lookup for VerbNet external reference
  */
 public class VnFnSenseAlignmentXml extends SenseAlignmentXml {
-
+    private final Log logger = LogFactory.getLog(VnFnSenseAlignmentXml.class);
+    
 	private Uby ubySource;
 	private String lexiconName = "VerbNet";
 
@@ -70,7 +72,6 @@ public class VnFnSenseAlignmentXml extends SenseAlignmentXml {
 	public VnFnSenseAlignmentXml(String alignmentFile, String outFile,
 			DBConfig dbConfig) throws FileNotFoundException {
 		super(alignmentFile, outFile);
-		logger = Logger.getLogger(VnWnSenseAlignmentXml.class.getName());
 		// notAdded = new ArrayList<String>();
 		ubySource = new Uby(dbConfig);
 	}
@@ -83,7 +84,8 @@ public class VnFnSenseAlignmentXml extends SenseAlignmentXml {
 	 * @throws SAXException
 	 * @throws IOException
 	 */
-	public void toAlignmentXml(XmlMeta metadata) throws IOException {
+	@Override
+    public void toAlignmentXml(XmlMeta metadata) throws IOException {
 
 		Lexicon vn = ubySource.getLexiconByName(lexiconName);
 		TreeMap<String, Source> sourceMap = new TreeMap<>();

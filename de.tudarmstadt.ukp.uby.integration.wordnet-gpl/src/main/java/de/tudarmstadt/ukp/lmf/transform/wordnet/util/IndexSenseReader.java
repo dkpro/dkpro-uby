@@ -25,10 +25,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import de.tudarmstadt.ukp.lmf.transform.wordnet.WNConverter;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Intstance of this class parses index.sense file of
@@ -42,7 +41,7 @@ public class IndexSenseReader {
 
 	private Map<String, String> senseKeySenseNumberMpg; // mappings between sense keys and sense numbers
 
-	private final Logger logger = Logger.getLogger(WNConverter.class.getName());
+	private final Log logger = LogFactory.getLog(getClass());
 
 	/**
 	 * Initializes this instance of {@link IndexSenseReader} by parsing the index.sense file
@@ -67,7 +66,7 @@ public class IndexSenseReader {
 			sb.append("Could not open index.sense file at ");
 			sb.append(indexSense).append('\n');
 			sb.append("closing vm");
-			logger.log(Level.SEVERE, sb.toString());
+			logger.error(sb.toString());
 			System.exit(1);
 		}
 
@@ -82,7 +81,7 @@ public class IndexSenseReader {
 			sb.append("Error while reading a line of index.sense file located at ");
 			sb.append(indexSense).append('\n');
 			sb.append("closing vm");
-			logger.log(Level.SEVERE, sb.toString());
+			logger.error(sb.toString());
 			System.exit(1);
 		}
 	}

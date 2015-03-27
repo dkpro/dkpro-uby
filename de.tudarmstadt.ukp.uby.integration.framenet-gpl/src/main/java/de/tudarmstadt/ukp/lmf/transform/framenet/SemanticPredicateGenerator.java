@@ -29,8 +29,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import de.saar.coli.salsa.reiter.framenet.Frame;
 import de.saar.coli.salsa.reiter.framenet.FrameElement;
@@ -81,7 +82,7 @@ public class SemanticPredicateGenerator {
 	// all frame relations in FrameNet, used for creating PredicateRelations
 	private Set<String> frameRelations;
 
-	private final Logger logger = Logger.getLogger(FNConverter.class.getName());
+	private final Log logger = LogFactory.getLog(getClass());
 
 	private final String resourceVersion;
 
@@ -263,7 +264,7 @@ public class SemanticPredicateGenerator {
 				sb.append(fe);
 				sb.append('\n');
 				sb.append("Aborting all operations!");
-				logger.log(Level.SEVERE, sb.toString());
+				logger.error(sb.toString());
 				System.exit(1);
 			}
 			semanticArgument.setCoreType(coreType);
@@ -566,7 +567,7 @@ public class SemanticPredicateGenerator {
 					sb.append(child);
 					sb.append('\n');
 					sb.append("Aborting all operations!");
-					logger.log(Level.SEVERE, sb.toString());
+					logger.error(sb.toString());
 					System.exit(1);
 				}
 				// relevantSemanticPredicate for "precedes"
@@ -618,7 +619,7 @@ public class SemanticPredicateGenerator {
 		sb.append("SemanticPredicateGenerator could not find SemanticArgument for FrameElement: ");
 		sb.append(fe).append('\n');
 		sb.append("Aborting all operations!");
-		logger.log(Level.SEVERE, sb.toString());
+		logger.error(sb.toString());
 		System.exit(1);
 	}
 }

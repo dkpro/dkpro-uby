@@ -27,8 +27,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import de.tudarmstadt.ukp.lmf.model.enums.ECase;
 import de.tudarmstadt.ukp.lmf.model.enums.EComplementizer;
@@ -76,7 +77,7 @@ public class SubcategorizationFrameExtractor {
 	// Mapping between LMF-Code of arguments (syntactic + semantic roles) and SynSemCorrespondence
 	private final Map<String, SynSemCorrespondence> synsemargsSynSemCorrMap  = new HashMap<String, SynSemCorrespondence>();
 
-	private final Logger logger = Logger.getLogger(GNConverter.class.getName());
+	private final Log logger = LogFactory.getLog(getClass());
 
 	/**
 	 * Constructs a {@link SubcategorizationFrameExtractor}
@@ -144,7 +145,7 @@ public class SubcategorizationFrameExtractor {
 	 * This method parses the file containing the SubcategorizationFrame-mappings
 	 */
 	private void parseSubcatMappings(){
-		logger.log(Level.INFO, "Parsing subcategorization mappings...");
+		logger.info("Parsing subcategorization mappings...");
 
 		BufferedReader input;
 		try {
@@ -161,11 +162,11 @@ public class SubcategorizationFrameExtractor {
 			StringBuffer sb = new StringBuffer(128);
 			sb.append("Error on reading subcategorization mapping file").append('\n');
 			sb.append("Aborting all operations!");
-			logger.log(Level.SEVERE, sb.toString());
+			logger.error(sb.toString());
 			System.exit(1);
 		}
 
-		logger.log(Level.INFO, "Parsing subcategorization mappings done");
+		logger.info("Parsing subcategorization mappings done");
 
 		// create SubcategorizationFrames
 		Iterator<String> codeIterator = codeSynSemArgMapping.keySet().iterator();

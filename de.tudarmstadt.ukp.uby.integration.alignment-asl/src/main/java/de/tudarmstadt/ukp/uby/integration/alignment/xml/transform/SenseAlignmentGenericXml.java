@@ -29,11 +29,10 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.xml.transform.TransformerException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.dom4j.DocumentException;
 import org.xml.sax.SAXException;
 
@@ -82,8 +81,8 @@ public class SenseAlignmentGenericXml {
 	private List<Source> alignments;
 	private XmlMeta metadata;
 
-	protected static Logger logger = Logger
-			.getLogger(SenseAlignmentGenericXml.class.getName());
+	protected final static Log logger = LogFactory
+			.getLog(SenseAlignmentGenericXml.class);
 
 	public SenseAlignmentGenericXml(String sourceUrl, String dbDriver,
 			String dbVendor, String alignmentFile, String user, String pass) {
@@ -246,7 +245,7 @@ public class SenseAlignmentGenericXml {
 		}
 		logString.append("So many input id pairs could not be aligned: "
 				+ nullAlignment);
-		logger.log(Level.INFO, logString.toString());
+		logger.info(logString.toString());
 	}
 
 	private List<Sense> getSenses(String sourceType, String sourceID,
@@ -261,7 +260,7 @@ public class SenseAlignmentGenericXml {
 					sourceID, sourceLexicon);
 		}
 		if (senses.size() == 0) {
-			logger.log(Level.WARNING, "Could not find sense for " + sourceType
+			logger.warn("Could not find sense for " + sourceType
 					+ " " + sourceID + " " + sourceLexicon.getName());
 		}
 		return senses;

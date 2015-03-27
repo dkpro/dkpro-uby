@@ -28,11 +28,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import net.sf.extjwnl.data.POS;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.uima.analysis_engine.AnalysisEngine;
 import org.apache.uima.fit.factory.JCasFactory;
 import org.apache.uima.jcas.JCas;
@@ -49,7 +49,8 @@ import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
  *
  */
 public class WNConvUtil {
-
+    private static final Log LOG = LogFactory.getLog(WNConvUtil.class);
+    
 	private static JCas jcas;
 	private static AnalysisEngine ae;
 
@@ -103,7 +104,7 @@ public class WNConvUtil {
 			sb.append("##########################");
 			sb.append(sentence);
 			sb.append("##########################");
-			Logger.getLogger(WNConvUtil.class.getName()).log(Level.SEVERE, sb.toString());
+			LOG.error(sb.toString());
 			e.printStackTrace();
 			System.exit(1);
 		}

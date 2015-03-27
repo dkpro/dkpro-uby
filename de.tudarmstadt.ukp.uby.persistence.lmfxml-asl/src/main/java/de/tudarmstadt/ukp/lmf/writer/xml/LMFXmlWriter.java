@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -38,6 +37,8 @@ import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
@@ -63,7 +64,7 @@ class LMFXmlWriter extends LMFWriter{
 	private TransformerHandler th; // Transform Handler
 	private String outputPath;
 	
-	private static Logger logger = Logger.getLogger(LMFXmlWriter.class.getName());
+	private static Log logger = LogFactory.getLog(LMFXmlWriter.class);
 
 	/**
 	 * Constructs a LMFXmlWriter, XML will be saved to file in outputPath
@@ -93,7 +94,8 @@ class LMFXmlWriter extends LMFWriter{
 	 * @param lmfObject
 	 * @throws LMFWriterException
 	 */
-	public void writeStartElement(Object lmfObject) throws LMFWriterException{		
+	@Override
+    public void writeStartElement(Object lmfObject) throws LMFWriterException{		
 		try{
 			doTransform(lmfObject, false);
 		}catch(Exception ex){
@@ -106,7 +108,8 @@ class LMFXmlWriter extends LMFWriter{
 	 * @param lmfObject
 	 * @throws LMFWriterException
 	 */
-	public void writeEndElement(Object lmfObject) throws LMFWriterException{
+	@Override
+    public void writeEndElement(Object lmfObject) throws LMFWriterException{
 		try{
 			String elementName = lmfObject.getClass().getSimpleName();
 			th.endElement("", "", elementName);
@@ -118,7 +121,8 @@ class LMFXmlWriter extends LMFWriter{
 	 * Ends the Document
 	 * @throws LMFWriterException
 	 */
-	public void writeEndDocument() throws LMFWriterException{
+	@Override
+    public void writeEndDocument() throws LMFWriterException{
 		try{
 			th.endDocument();
 		}catch(SAXException ex){
@@ -131,7 +135,8 @@ class LMFXmlWriter extends LMFWriter{
 	 * @param lmfObject
 	 * @throws LMFWriterException
 	 */
-	public void writeElement(Object lmfObject) throws LMFWriterException{
+	@Override
+    public void writeElement(Object lmfObject) throws LMFWriterException{
 		//System.out.print("Transforimng to XML...");
 		try{
 			doTransform(lmfObject, true);
@@ -215,7 +220,7 @@ class LMFXmlWriter extends LMFWriter{
 					getMethod = something.getMethod(getFuncName);
 					retObj = getMethod.invoke(lmfObject); // Run the Get-Method
 				} catch (Exception e) {
-					logger.log(Level.WARNING, "There was an error on accessing the method " + getFuncName + " in "+ elementName +" class. Falling back to field access");
+					logger.warn("There was an error on accessing the method " + getFuncName + " in "+ elementName +" class. Falling back to field access");
 					field.setAccessible(true);
 					retObj = field.get(lmfObject);
 				}

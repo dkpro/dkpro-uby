@@ -30,14 +30,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import net.sf.extjwnl.JWNLException;
 import net.sf.extjwnl.data.POS;
 import net.sf.extjwnl.data.Word;
 import net.sf.extjwnl.dictionary.Dictionary;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -89,7 +88,7 @@ public class SynsetGenerator {
 	// set of synsets with manually mapped example sentences
 	private final Set<net.sf.extjwnl.data.Synset> manuallyMapped = new HashSet<net.sf.extjwnl.data.Synset>();
 
-	private final Logger logger = Logger.getLogger(WNConverter.class.getName());
+	private final Log logger = LogFactory.getLog(getClass());
 
 	/**
 	 * This method constructs a {@link SynsetGenerator} based on the consumed parameters
@@ -112,13 +111,13 @@ public class SynsetGenerator {
 			sb.append("File contianing manually entered example sentence mappings does not exist or corrupt. ");
 			sb.append("New one will be created. ");
 			sb.append("This will reduce performance of the SynsetGenerator. ");
-			logger.log(Level.WARNING, sb.toString());
+			logger.warn(sb.toString());
 			lexemeMappingFile.delete();
 			readFile = false;
 			try {
 				lexemeMappingFile.createNewFile();
 			} catch (IOException e) {
-				logger.severe("Error on creating new file!");
+				logger.error("Error on creating new file!");
 			}
 			lexemeMapping = DocumentHelper.createDocument();
 			lexemeMapping.addElement("ExampleSentenceLexemeMapping");
@@ -128,7 +127,7 @@ public class SynsetGenerator {
 			/**
 			 * Parsing the lexemeMapping-file
 			 */
-			logger.log(Level.INFO, "parsing lexeme mappings file...");
+			logger.info("parsing lexeme mappings file...");
 			Element root = lexemeMapping.getRootElement();
 			List<Element> synsets = root.elements("Synset");
 			for(Element eSynset : synsets){
@@ -139,7 +138,7 @@ public class SynsetGenerator {
 					StringBuffer sb = new StringBuffer(256);
 					sb.append("Error on retriving WordNet's synset").append('\n');
 					sb.append("printing stack trace and closing vm!");
-					logger.log(Level.SEVERE, sb.toString());
+					logger.error(sb.toString());
 					e.printStackTrace();
 					System.exit(1);
 				}
@@ -162,7 +161,7 @@ public class SynsetGenerator {
 					}
 				}
 			}
-			logger.log(Level.INFO, "done parsing");
+			logger.info("done parsing");
 			}
 	}
 
@@ -181,7 +180,7 @@ public class SynsetGenerator {
 			} catch (JWNLException e) {
 				e.printStackTrace();
 			}
-			logger.log(Level.INFO, "processing " + pos.getLabel());
+			logger.info("processing " + pos.getLabel());
 			while(synIter.hasNext()){
 				net.sf.extjwnl.data.Synset wnSynset = synIter.next();
 				Synset lmfSynset = new Synset();
@@ -223,7 +222,7 @@ public class SynsetGenerator {
 		/*
 		 * Rewriting the xml file containain manually entered mappings of example sentences
 		 */
-		logger.log(Level.INFO, "rewriting lexeme mapping file...");
+		logger.info("rewriting lexeme mapping file...");
 		OutputFormat format = OutputFormat.createPrettyPrint();
 		format.setEncoding("UTF-8");
 		XMLWriter output;
@@ -236,10 +235,10 @@ public class SynsetGenerator {
 			StringBuffer sb = new StringBuffer(256);
 			sb.append("Error on rewriting lexeme mapping file ").append(lexemeMappingXML).append('\n');
 			sb.append("printing stack trace");
-			logger.log(Level.WARNING, sb.toString());
+			logger.warn(sb.toString());
 			e.printStackTrace();
 		}
-		logger.log(Level.INFO, "done");
+		logger.info("done");
 		initialized = true;
 		}
 	}
@@ -518,7 +517,7 @@ public class SynsetGenerator {
 		StringBuffer sb = new StringBuffer(128);
 		sb.append("Synset needs manual entering of the example-sentence mappings: ").append(synset).append('\n');
 		sb.append("The synset will be logged for manual entering of the correspondences");
-		logger.log(Level.INFO,sb.toString());
+		logger.info(sb.toString());
 	}
 
 

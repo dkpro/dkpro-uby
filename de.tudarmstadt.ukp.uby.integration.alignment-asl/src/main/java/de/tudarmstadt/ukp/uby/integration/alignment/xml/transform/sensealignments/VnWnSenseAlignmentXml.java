@@ -7,8 +7,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import de.tudarmstadt.ukp.integration.alignment.xml.model.Alignments;
 import de.tudarmstadt.ukp.integration.alignment.xml.model.Decision;
@@ -23,12 +24,14 @@ import de.tudarmstadt.ukp.integration.alignment.xml.model.XmlMeta;
  */
 public class VnWnSenseAlignmentXml extends SenseAlignmentXml {
 
+    private final Log logger = LogFactory.getLog(getClass());
+    
 	public VnWnSenseAlignmentXml(String alignmentFile, String outFile) {
 		super(alignmentFile, outFile);
-		logger = Logger.getLogger(VnWnSenseAlignmentXml.class.getName());
 	}
 
-	public void toAlignmentXml(XmlMeta metadata) {
+	@Override
+    public void toAlignmentXml(XmlMeta metadata) {
 		String decisionSrc = metadata.decisiontypes.get(0).id;
 		BufferedReader reader = null;
 		List<Source> sources = new ArrayList<>();
@@ -85,9 +88,9 @@ public class VnWnSenseAlignmentXml extends SenseAlignmentXml {
 				}
 				lineNumber++;
 			}
-			logger.log(Level.INFO, logString.toString());
-			logger.log(Level.INFO, "number of input lines:" + lineNumber);
-			logger.log(Level.INFO, "number of alignment pairs:" + paircount);
+			logger.info(logString.toString());
+			logger.info("number of input lines:" + lineNumber);
+			logger.info("number of alignment pairs:" + paircount);
 
 			writer.writeMetaData(metadata);
 			Alignments alignments = new Alignments();
@@ -99,7 +102,8 @@ public class VnWnSenseAlignmentXml extends SenseAlignmentXml {
 		}
 	}
 
-	public XmlMeta getDefaultXmlMeta() {
+	@Override
+    public XmlMeta getDefaultXmlMeta() {
 		/*
 		 * Generate Metadata
 		 */

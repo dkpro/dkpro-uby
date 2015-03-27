@@ -24,12 +24,13 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import net.sf.extjwnl.data.POS;
 import net.sf.extjwnl.data.Pointer;
 import net.sf.extjwnl.data.Word;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.enums.ERelTypeMorphology;
 import de.tudarmstadt.ukp.lmf.model.morphology.RelatedForm;
@@ -54,7 +55,7 @@ public class RelatedFormGenerator {
 	 */
 	private final static Map<String, ERelTypeMorphology[]> pointerTypeRelTypeMappings = new TreeMap<String, ERelTypeMorphology[]>();
 
-	private final Logger logger = Logger.getLogger(WNConverter.class.getName());
+	private final Log logger = LogFactory.getLog(getClass());
 
 	/**
 	 * Constructs a {@link RelatedFormGenerator} based on consumed {@link LexicalEntryGenerator}
@@ -138,7 +139,7 @@ public class RelatedFormGenerator {
 			StringBuffer sb = new StringBuffer(512);
 			sb.append("LexicalEntryGenerator did not provide a LexicalEntry for lexeme: ").append(targetLexeme);
 			sb.append('\n').append("closing virtual machine");
-			logger.log(Level.SEVERE, sb.toString());
+			logger.error(sb.toString());
 			System.exit(1);
 		}
 		relatedForm.setTargetLexicalEntry(targetLexicalEntry);
