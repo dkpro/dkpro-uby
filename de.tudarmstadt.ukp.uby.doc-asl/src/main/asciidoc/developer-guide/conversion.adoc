@@ -325,7 +325,7 @@ At this point, you can right away start using the instance of !LexicalResource t
    * In `file_properties.xml` change the value of the dictionary_path variable (at the bottom of the file). It should point to `UBY_HOME/WordNet/wordnet3/dict`, where `UBY_HOME` is the absolute path of `UBY_HOME`.
    * Done
 
-=== Usage
+==== Usage
 
 After satisfying the prerequisites mentioned above, you can start converting !WordNet: Initialize an instance of !WordNet's Dictionary -wordnet- which will be used by the WNConverter to obtain the information from the !WordNet files.
 
