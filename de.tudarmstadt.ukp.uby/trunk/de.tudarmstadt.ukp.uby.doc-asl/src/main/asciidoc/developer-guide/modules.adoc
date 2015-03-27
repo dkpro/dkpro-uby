@@ -19,7 +19,7 @@
 UBY is a Maven multi-module project and should be used with Apache Maven.
 See also *[http://uby.googlecode.com/svn/de.tudarmstadt.ukp.uby/tags/de.tudarmstadt.ukp.uby-0.3.0/apidocs/index.html the JavaDoc]*.
 
-|----
+|====
 | Module | Description | Remark* |
 
 | de.tudarmstadt.ukp.uby.distribution 
@@ -81,4 +81,4 @@ See also *[http://uby.googlecode.com/svn/de.tudarmstadt.ukp.uby/tags/de.tudarmst
 | de.tudarmstadt.ukp.uby.uima-asl 
 | Provides functionality for using UBY as a UIMA resource in UIMA Analysis Engines 
 | Usage described in http://www.ukp.tu-darmstadt.de/fileadmin/user_upload/Group_UKP/publikationen/2013/ubyTutorial_GSCL2013.pdf and in http://code.google.com/p/dkpro-tutorials/wiki/UbyTutorial2013
-|----
+|====
