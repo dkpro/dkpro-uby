@@ -28,6 +28,7 @@ import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.uima.fit.component.Resource_ImplBase;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.descriptor.ExternalResourceLocator;
@@ -193,7 +194,8 @@ public class UbyResource extends Resource_ImplBase implements ExternalResourceLo
                 getLogger().info("uby.driver: " + meta.getProperty(UBY_DRIVER));
                 getLogger().info("uby.dialect: " + meta.getProperty(UBY_DIALECT));
                 getLogger().info("uby.username: " + meta.getProperty(UBY_USERNAME));
-                getLogger().info("uby.password: " + meta.getProperty(UBY_PASSWORD));
+                getLogger().info("uby.password: " + (StringUtils.isNotEmpty(
+                        meta.getProperty(UBY_PASSWORD)) ? "<set>" : "<unset>"));
 
                 DBConfig dbConfig = new DBConfig(meta.getProperty(UBY_URL),
                         meta.getProperty(UBY_DRIVER), meta.getProperty(UBY_DIALECT),
