@@ -29,7 +29,7 @@ public enum ERelTypeSemantics {
 	taxonomic, // e.g. hyponym
 	partWhole, // e.g. metonym
 	association, // e.g. see also
-	label,	// e.g. region, topc, but also capital, currency
+	label,	// e.g. region, topic, but also capital, currency
 	predicative, // e.g. is played by, flows through
 	complementary, // e.g. antonym
 	frameRelation, // e.g. subframe, relation between semantic predicates
