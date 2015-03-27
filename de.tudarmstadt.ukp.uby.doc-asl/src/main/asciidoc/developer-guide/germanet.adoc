@@ -20,7 +20,7 @@
 
 ==== Informations of  an ILIRecord (each record mapped to !SenseAxis)
 
-|----
+|====
 | GermaNet identifier | Remark | Mapped to | Implemented? |
 
 | lexUnitId 
@@ -67,7 +67,7 @@
 | source of the record (!EuroWordNet or Tübingen University) 
 | not mapped 
 | -
-|----
+|====
 
 
 NOTE: Currently, only ILI Records with ewnRelation "synonym" are processed by the !GNConverter. Conversion of records with ewnRelation other than "synonym" will be implemented in a future UBY release.
