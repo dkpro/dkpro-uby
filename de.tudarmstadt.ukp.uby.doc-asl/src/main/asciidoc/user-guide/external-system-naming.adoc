@@ -1,0 +1,25 @@
+== Naming Convention
+
+  * FrameNet_1.5_eng_lexicalUnit
+  * FrameNet_1.5_eng_semanticType
+  * VerbNet_3.1_eng_sense
+  * WordNet_3.0_eng_senseKey
+  * WordNet_3.0_eng_synsetOffset
+  * GermaNet_7.0_deu_lexicalUnit
+  * GermaNet_7.0_deu_synset
+
+OmegaWiki, Wiktionary, Wikipedia: version = [YYYY]-[MM]-[DD]
+
+----
+  OmegaWiki_<version>_<language>_synTrans
+  OmegaWiki_<version>_<language>_definedMeaning
+----
+
+An OmegaWiki multilingual synset is a "defined meaning". A "synTrans" is a combination of "synonym" and "translation", they are treated internally as the same thing in OmegaWiki(a synonym is a translation in the same language), and in UBY-LMF it translates to either a "Sense" if it's in the same language or an "Equivalent" otherwise.
+
+----
+  Wiktionary_<version>_<language>_sense
+  Wikipedia_<version>_<language>_articleTitle
+----
+
+Wiktionary: e.g., Wiktionary_1.0.0_2013-02-04_deu_sense

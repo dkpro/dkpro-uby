@@ -1,0 +1,87 @@
+[[db-import]]
+== UBY databases for Download
+
+The UBY databases we offer for download *contain only resources with an open license*. 
+
+The compressed SQL database dumps and H2 databases are available from the link:http://uby.ukp.informatik.tu-darmstadt.de/uby[UBY homepage]. 
+
+The largest database dump uby_open_XXX contains the following resources:
+
+* !FrameNet
+* !WordNet
+* !OmegaWiki German
+* !OmegaWiki English
+* Wikipedia English
+* Wikipedia German
+* !VerbNet
+* Wiktionary English
+* Wiktionary German
+* !OntoWiktionary English
+* !OntoWiktionary German 
+* Monolingual Sense Alignments between
+** Wikipedia EN and !WordNet
+** Wiktionary EN and !WordNet
+** !WordNet and  !VerbNet
+** !WordNet and !FrameNet
+** !FrameNet and  !VerbNet
+** !FrameNet and Wiktionary EN
+** Wiktionary EN and !OmegaWiki EN
+** !OmegaWiki DE and Wikipedia DE
+** !OmegaWiki EN and Wikipedia EN
+* Crosslingual Sense Alignments between
+** !OmegaWiki DE and !WordNet
+** !OmegaWiki DE and !OmegaWiki EN
+** Wikipedia EN and  Wikipedia DE
+
+Databases marked as _medium_ do not contain Wikipedia (DE and EN) and !OntoWiktionary (DE and EN), but the other resources and links listed above.
+
+The H2 database marked _lite_ only contains !WordNet, !FrameNet, !VerbNet and the alignments between them.
+
+The suffixes in the names of the UBY databases correspond to a version number of UBY. These numbers should agree. For instance, the uby_medium_0_6_0 dump is compatible with the UBY-API 0.6.0
+
+The databases were automatically created by running the respective converters for each resource and import routines for the sense alignments.
+
+=== How to use a UBY H2 database
+
+Just uncompress the UBY H2 database and put it into a folder of your choice. 
+
+In order to connect to this database you have to specify the path:
+
+----
+DB_URL =  "jdbc:h2:file:YOUR_PATH/ubymedium060";
+----
+
+and the other configuration parameters as follows:
+
+[source,java]
+----
+DB_DRIVER = "org.h2.Driver";
+DB_DRIVER_NAME = "h2";
+	
+DB_USERNAME = "sa";
+DB_PASSWORD = "";
+
+DBConfig db = new DBConfig(
+	            DB_URL,
+	            DB_DRIVER,
+	            DB_DRIVER_NAME,
+	            DB_USERNAME,
+	            DB_PASSWORD,
+	            false
+	    );
+----
+
+=== How to import the UBY MySQL dump
+
+*This assumes that you have installed MySQL-Server*
+
+After downloading and uncompressing the SQL dump, just import the file into a newly created, empty database. Note that the dump was created from a MySQL database. While it should work on any other SQL database, we have only tested it on MySQL.
+
+Step-by-step instructions for importing the dump into a MySQL database under Linux:
+
+----
+mysql -u yourUserName -p < pathToUbyDump/ubyDump.sql
+----
+
+After the import is finished, you are ready to use the UBY-API.
+For the medium-sized UBY dump, the import takes ca. 30 min. The import of the large UBY dump takes several hours.
