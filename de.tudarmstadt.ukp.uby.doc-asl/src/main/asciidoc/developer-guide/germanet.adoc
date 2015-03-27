@@ -21,7 +21,7 @@
 ==== Informations of  an ILIRecord (each record mapped to !SenseAxis)
 
 |====
-| GermaNet identifier | Remark | Mapped to | Implemented? |
+| GermaNet identifier | Remark | Mapped to | Implemented?
 
 | lexUnitId 
 | id of !GermaNets lexical unit 

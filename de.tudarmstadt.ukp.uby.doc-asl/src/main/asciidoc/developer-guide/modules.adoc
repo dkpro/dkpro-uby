@@ -20,7 +20,7 @@ UBY is a Maven multi-module project and should be used with Apache Maven.
 See also *[http://uby.googlecode.com/svn/de.tudarmstadt.ukp.uby/tags/de.tudarmstadt.ukp.uby-0.3.0/apidocs/index.html the JavaDoc]*.
 
 |====
-| Module | Description | Remark* |
+| Module | Description | Remark
 
 | de.tudarmstadt.ukp.uby.distribution 
 | Used for distribution purposes 
