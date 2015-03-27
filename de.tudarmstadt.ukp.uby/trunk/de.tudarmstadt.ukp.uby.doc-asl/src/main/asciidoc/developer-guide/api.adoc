@@ -26,7 +26,6 @@ After setting up everything, you can connect to UBY in your Java program with th
 
 [source,java]
 ----
-{{{
 DBConfig db = new DBConfig("localhost/uby_database","com.mysql.jdbc.Driver","mysql","user", "password", false);
 Uby uby = new Uby(db);
 ----
