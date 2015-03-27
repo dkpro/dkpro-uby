@@ -1,0 +1,84 @@
+// Copyright 2015
+// Ubiquitous Knowledge Processing (UKP) Lab
+// Technische Universität Darmstadt
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+== UBY modules
+
+UBY is a Maven multi-module project and should be used with Apache Maven.
+See also *[http://uby.googlecode.com/svn/de.tudarmstadt.ukp.uby/tags/de.tudarmstadt.ukp.uby-0.3.0/apidocs/index.html the JavaDoc]*.
+
+|----
+| Module | Description | Remark* |
+
+| de.tudarmstadt.ukp.uby.distribution 
+| Used for distribution purposes 
+| Does not contain any java-code
+
+| de.tudarmstadt.ukp.uby.integration.framenet-gpl 
+| Converts !FrameNet to UBY-LMF (java object model) 
+| Usage described in ConversionTutorial 
+
+| de.tudarmstadt.ukp.uby.integration.germanet-gpl
+| Converts !GermaNet to UBY-LMF (java object model)
+| Usage described in ConversionTutorial
+
+| de.tudarmstadt.ukp.uby.integration.gsubcatlex-asl 
+| Converts IMSlex to UBY-LMF (java object model) 
+| Usage described in ConversionTutorial
+
+| de.tudarmstadt.ukp.uby.integration.omegawiki-asl 
+| Converts !OmegaWiki to UBY-LMF (java object model) 
+| Usage described in ConversionTutorial
+
+| de.tudarmstadt.ukp.uby.integration.verbnet-asl 
+| Converts !VerbNet to UBY-LMF (java object model) 
+| Usage described in ConversionTutorial
+
+| de.tudarmstadt.ukp.uby.integration.wikipedia-asl 
+| Converts (German or English) Wikipedia to UBY-LMF (java object model) and writes it to UBY database 
+| Requires existing UBY database. Usage described in ConversionTutorial
+
+| de.tudarmstadt.ukp.uby.integration.wiktionary-asl 
+| Converts (German or English) Wiktionary to UBY-LMF (java object model) and writes it to UBY database. 
+| Requires existing UBY database. _Setting UBY_HOME environment varbiable recommended._ Usage described in ConversionTutorial.
+
+| de.tudarmstadt.ukp.uby.integration.wordnet-gpl 
+| Converts !WordNet to UBY-LMF (java object model) 
+| _Setting UBY_HOME environment variable recommended._ Usage described in ConversionTutorial.
+
+| de.tudarmstadt.ukp.uby.lmf.api-asl 
+| Allows unified access to different resources contained in UBY database  
+| Requires UBY database. Usage described in ApiTutorial.
+
+| de.tudarmstadt.ukp.uby.lmf.model-asl 
+| Java object representation of UBY-LMF 
+| Needed for all kinds of processing with UBY
+
+| de.tudarmstadt.ukp.uby.lmf.persistence.lmfxml-asl 
+| Used for writing UBY-LMF (java object model) to a xml file 
+| Usage described in ConversionTutorial
+
+| de.tudarmstadt.ukp.uby.lmf.persistence.transform-asl 
+| Used for writing UBY-LMF (represented by an xml file) to UBY database and and vice versa 
+| Usage described in ConversionTutorial
+
+| de.tudarmstadt.ukp.uby.testing-asl 
+| Used for testing UBY API methods based on in-memory test database 
+| Usage not yet described 
+
+| de.tudarmstadt.ukp.uby.uima-asl 
+| Provides functionality for using UBY as a UIMA resource in UIMA Analysis Engines 
+| Usage described in http://www.ukp.tu-darmstadt.de/fileadmin/user_upload/Group_UKP/publikationen/2013/ubyTutorial_GSCL2013.pdf and in http://code.google.com/p/dkpro-tutorials/wiki/UbyTutorial2013
+|----

@@ -1,0 +1,73 @@
+// Copyright 2015
+// Ubiquitous Knowledge Processing (UKP) Lab
+// Technische Universität Darmstadt
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+== Implementation details of germanet-gpl module
+
+=== Conversion of !GermaNets Interlingual index to !SenseAxes
+
+==== Informations of  an ILIRecord (each record mapped to !SenseAxis)
+
+|----
+| GermaNet identifier | Remark | Mapped to | Implemented? |
+
+| lexUnitId 
+| id of !GermaNets lexical unit 
+| not directly mapped, but used for obtaining the corresponding UBY-LMF !LexicalEntry and determining values of !SenseAxis.synsetOne and !SenseAxis.senseOne 
+| Yes
+
+| ewnRelation 
+| the relation of the record to the corresponding !WordNets synset 
+| Not directly mapped, but used for determining which record should be converted to !SenseAxis instance(s). 
+| Yes
+
+| pwnWord 
+| string representation of the word in !WordNets synset pointed by the record 
+| already mapped and implemented in WNConverter to !LexicalEntry.Lemma.!FormRepresentation.writtenForm 
+| -
+
+| pwn20Sense 
+| position of the word in !WordNets 2.0 synset pointed by the record 
+| already mapped and implemented in !WNConverter to Sense.index 
+| -
+
+| pwn20Id 
+| identifier of the !WordNets 2.0 synset that corresponds to this record (offset+POS) 
+| not mapped 
+| -
+
+| pwn30Id 
+| identifier of the !WordNets 3.0 synset that corresponds to this record (offset+POS) 
+| not directly mapped, but used for obtaining the corresponding UBY-LMF synset and mapping its UBY-LMF ID to !SenseAxis.synsetTwo 
+| Yes
+
+| pwn20paraphrase 
+| gloss of the targeted synset 
+| already mapped and implemented in WNConverter 
+| -
+
+| pwn20Synonyms 
+| words of !WordNets synset, that corresponds to this record 
+| !SenseAxis.senseTwo 
+| Yes
+
+| source 
+| source of the record (!EuroWordNet or Tübingen University) 
+| not mapped 
+| -
+|----
+
+
+NOTE: Currently, only ILI Records with ewnRelation "synonym" are processed by the !GNConverter. Conversion of records with ewnRelation other than "synonym" will be implemented in a future UBY release.

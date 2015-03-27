@@ -1,0 +1,455 @@
+// Copyright 2015
+// Ubiquitous Knowledge Processing (UKP) Lab
+// Technische Universität Darmstadt
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+== Tutorial for using the UBY-Converters
+
+NOTE: Outdated - needs to be revised
+
+This tutorial explains the usage of UBY's converters, in order to convert different lexical-semantic resources to the unified UBY-LMF model.
+
+=== General Prerequisites
+
+==== Setting global parameters and creating the DB 
+
+The only thing you have to do before you start importing is creating a new, empty database on an SQL server you have write access to.
+
+In the beginning of your program, you can set the parameters for the database you just created as well as the parameters for the different resources you want to import. The use of the `UBY_HOME` variable (which points to UBY's home directory, containing files used by the converters) is not mandatory, but it helps to keep things clean as we recommend to store all required resources there. 
+
+[source,java]
+----
+String UBY_HOME = System.getenv("UBY_HOME");
+String dtd_version = "0_3_0";
+String db_driver = "com.mysql.jdbc.Driver";  // Just an example
+String db_vendor = "mysql";
+String uby_url = "localhost/uby_database";
+String uby_user = "user";
+String uby_pass = "pwd";
+----
+
+The actual conversion starts like this:
+
+[source,java]
+----
+Class.forName(db_driver);
+DBConfig dbConfig = new DBConfig(uby_url,db_driver,db_vendor,uby_user,uby_pass , false);
+LMFDBUtils.createTables(dbConfig);
+----
+
+Here, the DB tables are created according to the hibernate map file contained in _lmf.api-asl_ module. For creating XML from the resources, you will need the DTD-file which is in [http://code.google.com/p/uby/source/browse/de.tudarmstadt.ukp.uby/trunk/de.tudarmstadt.ukp.uby.lmf.model-asl/src/main/resources/dtd/UBY_LMF.dtd the module lmf.model] (the development version in the trunk is linked).
+
+Now you are set up for importing resources. 
+
+=== Importing
+
+After the tables have been created, you can import resources as described in the corresponding tutorials. However, here is some advice on how the process can be optimized:
+
+. Although it is possible to import several resources in a row (i.e. during one run of the main method), it is advisable to stick to one resource at a time. A failed database connection or other errors might lead to an interruption of the import process and (in the worst case) an inconsistent database, so that all previously successful imports would need to be redone.
+. Try to start with the larger resources (e.g. Wikipedia) as they take most time, and make a backup of the database once an import run for a single resource is complete. By doing this, you don't have to restart the whole conversion process in case one import fails.
+. The database contains a set of constraints, which makes sure that deletion of a single resource from the database does not leave it in an inconsistent state. These can be turned off at the beginning of each database import and turned on afterwards by a boolean parameter. If you plan to just import several resources in a row, you should just leave the constraints turned off, as it saves a lot of time.
+
+=== !FrameNet-converter
+
+==== Prerequisites for using !FrameNet-converter
+
+. For using this converter, you need a modified version of the Java !FrameNet API: `JFN_042_recompiled`, available from our public Maven repository.
+. You also need the FN Data Release 1.5, available here: https://framenet.icsi.berkeley.edu/fndrupal/framenet_request_data
+
+==== Using !FrameNet-converter
+
+After satisfying the prerequisites mentioned above, you can start converting !FrameNet:
+
+Initialize an instance of !FrameNet -fn- which will be used by the FNConverter to obtain the information from the !FrameNet files.
+
+[source,java]
+----
+String UBY_HOME = System.getenv("UBY_HOME");
+File fnetDir = new File(UBY_HOME+"/FrameNet/fndata-1.5/");
+FrameNet fn = new FrameNet();
+DatabaseReader reader = FNDatabaseReader.createInstance(fnetDir, FrameNetVersion.V15);
+fn.readData(reader);
+----
+
+Initialize the FNConverter and call the `toLMF()` method in order to start the conversion:
+
+[source,java]
+----
+FNConverter converter = new FNConverter(fn, new LexicalResource(), dtd_version);
+converter.toLMF();
+----
+
+The last argument of the constructor is the DTD-version of the UBY-LMF that will be written to the resulting instance of !LexicalResource class. Depending on your system, the conversion may take up to one day.
+
+After the conversion has finished, you can obtain the resulting !LexicalResource by calling the following method: 
+`LexicalResource fnLexicalResource = converter.getLexicalResource();`
+
+At this point, you can right away start using the instance of !LexicalResource to access the converted information, or you can write it to a xml-file using `LMFXmlWriter`.
+
+=== Wikpedia-converter
+
+==== Prerequisites for using Wikipedia-converter
+
+. For using this converter, you need the JWPL-API, also avaliable on Google Code: http://code.google.com/p/jwpl/
+. You also need a preprocessed Wikipedia database dump, available here: http://uby.ukp.informatik.tu-darmstadt.de/wikipedia/
+** Make sure the Wikipedia dump has properly been imported into a DB before you start
+
+==== Using Wikipedia-converter ===
+
+After satisfying the prerequisites mentioned above, you can start converting Wikipedia: Open a connection to the  Wikipedia DB and create a new Wikipedia object, which will be used by the Converter to obtain the information from the DB.  Note that you can set the language when creating the Database, and that they are also two slighty different Converters for different language editions of Wikipedia. Currently, English(EN) and German(DE) are supported for the conversion process.
+
+[source,java]
+----
+DatabaseConfiguration wikiDBConfig = new de.tudarmstadt.ukp.wikipedia.api.DatabaseConfiguration(wp_host, wp_db, wp_user, wp_pass, Language.english);
+Wikipedia wiki = new Wikipedia(wikiDBConfig);
+----
+
+
+Initialize the Converter and call `transform()` method in order to start the conversion: 
+`WikipediaLMFTransformer wikiTransformer = new WikipediaENTransformer(dbConfig, wiki, dtd_version);`
+`wikiTransformer.transform();`
+
+Note that, unlike for most other Converters, there is no XML output or directly available Java object as Wikipedia is too large. Instead, the data is written directly into the database and can be accessed via the API.
+
+=== Wiktionary-converter
+
+==== Prerequisites for using Wiktionary-converter
+
+. For using this converter, you need the JWKTL-API version 0.15.2, available here: http://www.ukp.tu-darmstadt.de/software/jwktl/
+. You also need a preprocessed Wiktionary XML dump, available here: http://uby.ukp.informatik.tu-darmstadt.de/wiktionary/
+
+==== Using Wiktionary-converter
+
+After satisfying the prerequisites mentioned above, you can start converting Wiktionary: Create a new Wiktionary object using the path to the Wiktionary XML dump, which will be used by the Converter.  Note that you can set the language when creating the Database, and that they are also two slighty different Converters for different language editions of Wiktionary. Currently, English(EN) and German(DE) are supported for the conversion process. 
+
+
+[source,java]
+----
+/* Wiktionary English */
+
+		IWiktionaryEdition wkt = Wiktionary.open(new File(wktEnPath));
+		WiktionaryLMFTransformer wktTransformer = new WiktionaryENTransformer(dbConfig, wkt, 
+de.tudarmstadt.ukp.wiktionary.api.util.ILanguage.ENGLISH, dtd_version);
+		WiktionaryLMFMap.loadLanguageCodes();
+		wktTransformer.transform();
+
+/* Wiktionary German */
+
+		IWiktionaryEdition wktDe = Wiktionary.open(new File(wktDePath));
+		WiktionaryLMFTransformer wktDeTransformer = new WiktionaryDETransformer(dbConfig, wktDe, 				de.tudarmstadt.ukp.wiktionary.api.util.ILanguage.GERMAN, dtd_version);
+		WiktionaryLMFMap.loadLanguageCodes();
+		wktDeTransformer.transform();
+----
+
+In both cases, the `transform()` method starts the conversion.
+
+Note that, unlike for most other Converters, there is no XML output or directly available Java object as Wiktionary is too large. Instead, the data is written directly into the database and can be accessed via the API.
+
+
+=== !VerbNet-converter
+
+==== Prerequisites for using !VerbNet-converter
+
+You need a preprocessed version of !VerbNet, available here: http://uby.ukp.informatik.tu-darmstadt.de/verbnet/
+
+==== Using !VerbNet-converter
+
+After satisfying the prerequisites mentioned above, you can start converting !VerbNet: Initialize an instance of `VerbNetExtractor` which will be used by the `VNConverter` to obtain the information from the (single) !VerbNet file.
+
+[source,java]
+----
+String UBY_HOME = System.getenv("UBY_HOME");
+String vnPath = UBY_HOME + "/VerbNet/verbNetConverterInput";
+VNConverter converterVerbNet = new VNConverter(new LexicalResource(),dtd_version);
+VerbNetExtractor verbNetExtractor = new VerbNetExtractor(new File(vnPath),"VerbNet");
+----
+
+Call the `toLMF()` method with the extractor as parameter in order to start the conversion:
+
+`converterVerbNet.toLMF(verbNetExtractor);`
+
+After the conversion has finished, you can obtain the resulting !LexicalResource by calling the following method `LexicalResource vnLexicalResource = converter.getLexicalResource();`
+
+At this point, you can right away start using the instance of !LexicalResource to access the converted information, or you can write it to a xml-file using `LMFXmlWriter`.
+
+=== IMSlexSubset and IMSlex-Subcat
+
+IMSlexSubset (verbs taking clausal and verb phrase complements) and IMSlex-Subcat (verbs, nouns, adjectives) converter
+
+==== Prerequisites for using IMSlexSubset-converter
+
+You need a preprocessed version of IMSlexSubset, available from our website: http://www.ukp.tu-darmstadt.de/data/uby/, see "Supplementary Data and Tools" of this EACL 2012 paper:
+
+* Judith Eckle-Kohler and Iryna Gurevych: Subcat-LMF – Fleshing out a standardized format for subcategorization frame interoperability, in: Proceedings of the 13th Conference of the European Chapter of the Association for Computational Linguistics (EACL), (to appear), April 2012. Avignon, France.
+
+==== Prerequisites for using IMSlex-Subcat converter
+
+First, you need to ask for the IMSlex-Subcat data (subcategorization frames of verbs, nouns and adjectives) by writing an email to  clarin-resources@ims.uni-stuttgart.de. IMSlex-Subcat is available under an academic research license only.
+
+Then, a couple of preprocessing steps are necessary - these are described in <<imslex>>.
+The result of these preprocessing steps is a preprocessed version of IMSlex-Subcat to be used as input for the Java converter. You should put this version into a subdirectory of UBY_HOME, e.g. 
+
+----
+UBY_HOME/IMSlex/imsLexConverterInput
+----
+
+==== Using IMSlexSubset converter
+
+After satisfying the prerequisites mentioned above, you can start converting the preprocessed version of IMSlexSubset: Initialize an instance of `GermanVcExtractor` which will be used by the `GermanVcConverter` to obtain the information from the IMSlexSubset file.
+
+[source,java]
+----
+String UBY_HOME = System.getenv("UBY_HOME");
+String ilsPath = UBY_HOME + "/ILS/imsLexSubsetConverterInput";
+GermanVcConverter converterILS = new GermanVcConverter(new LexicalResource(),dtd_version);
+GermanVcExtractor ilsExtractor = new GermanVcExtractor(new File(ilsPath),"IMSlexSubset");
+----
+
+Call the `toLMF()` method with the extractor as parameter in order to start the conversion: 
+
+`converterILS.toLMF(ilsExtractor);`
+
+After the conversion has finished, you can obtain the resulting !LexicalResource by calling the following method:
+`LexicalResource ilsLexicalResource = converter.getLexicalResource();`
+
+At this point, you can right away start using the instance of !LexicalResource to access the converted information, or you can write it to a xml-file using `LMFXmlWriter`.
+
+==== Using IMSlex-Subcat converter
+
+After satisfying the prerequisites mentioned above, you can start converting the preprocessed version of IMSlex-subcat: Initialize an instance of `IMSlexExtractor` which will be used by the `IMSlexConverter` to obtain the information from the IMSlex-Subcatfile.
+
+[source,java]
+----
+String UBY_HOME = System.getenv("UBY_HOME");
+String imsLexPath = UBY_HOME + "/IMSlex/imsLexConverterInput";
+IMSlexConverter converter = new IMSlexConverter(new LexicalResource(),dtd_version);
+IMSlexExtractor extractor = new IMSlexExtractor(new File(imsLexPath),"IMSlex-Subcat");
+----
+
+Call the `toLMF()` method with the extractor as parameter in order to start the conversion: 
+
+`converter.toLMF(extractor);`
+
+After the conversion has finished, you can obtain the resulting !LexicalResource by calling the following method:
+`LexicalResource lexicalResource = converter.getLexicalResource();`
+
+At this point, you can right away start using the instance of !LexicalResource to access the converted information, or you can write it to a xml-file using `LMFXmlWriter`.
+
+=== !GermaNet-converter
+
+==== Prerequisites for using !GermaNet-converter
+
+. You need the GN-API version 7.0.1, available here: http://www.sfs.uni-tuebingen.de/lsd/tools.shtml
+. You also need the GN Data, release 7.0. GN is free for academic users but you have to sign a licence, available here: http://www.sfs.uni-tuebingen.de/lsd/licenses.shtml
+. If you want to include the Interlingual Index, you also need the converted !WordNet 3.0, see !WordNet-converter. *It is not possible to import the !GermaNet with the Interlingual Index into an existing openly distributed UBY database which already contains !WordNet. You have to create a new database where you import GermaNet with the Interlingual Index (and also the !WordNet created during conversion, if required). *
+
+
+==== !GermaNet-converter
+
+After satisfying the prerequisites mentioned above, you can start converting !GermaNet: Initialize an instance of !GermaNet -gnet- which will be used by the GNConverter to obtain the information from the !GermaNet files.
+
+[source,java]
+----
+String UBY_HOME = System.getenv("UBY_HOME");
+File gnetDir = new File(UBY_HOME+"/GermaNet/GN_V70/");
+GermaNet gnet = new GermaNet(gnetDir);
+----
+
+Initialize the GNConverter:
+
+[source,java]
+----
+GNConverter converter = new GNConverter(gnet, new LexicalResource(),dtd_version);
+----
+
+The last argument of the constructor is the DTD-version of the Uby-LMF that will be written to the resulting instance of !LexicalResource  class.
+
+Evoke `toLMF()` method in order to start the conversion without !GermaNets Interlingual Index:
+
+[source,java]
+----
+converter.toLMF();
+----
+
+*or*
+
+Evoke `toLMF(wordNetLexicon)` method in order to start the conversion with !GermaNets Interlingual Index:
+
+[source,java]
+----
+converter.toLMF(wordNetLexicon);
+----
+
+The argument `wordNetLexicon` is an instance of !Lexicon class, containing WordNet 3.0 in UBY-LMF format. It is required for creating the !SenseAxis.
+
+After the conversion has finished, you can obtain the resulting !LexicalResource by calling the following method `LexicalResource lexicalResource = converter.getLexicalResource();`
+
+At this point, you can right away start using the instance of !LexicalResource to access the converted information, or you can write it to an XML-file using `LMFXmlWriter`.
+
+=== !WordNet-converter
+
+==== Prerequisites for using !WordNet-converter
+
+. For using this converter, you need the extJWNL-API, avaliable on !SourceForge: http://extjwnl.sourceforge.net/
+. You also need the !WordNet 3.0 files available here: http://wordnet.princeton.edu/wordnet/download/current-version/
+
+==== Correctly setting up the  !WordNet-converter
+
+   * Make sure you have set UBY's home directory `UBY_HOME`
+   * Download !WordNet files and extract them to `.../UBY_HOME/WordNet/`
+   * Create a folder `.../UBY_HOME/WordNet/extJWNL` and copy `file_properties.xml` (can be obtained from http://uby.ukp.informatik.tu-darmstadt.de/wordnet/) to it.
+   * Create a folder `/UBY_HOME/WordNet/cache` and copy the file `ExampleSentenceLexemeMapping.xml` (can be obtained from http://uby.ukp.informatik.tu-darmstadt.de/wordnet/) to it.
+   * Folder structure should look like this:
+----
+.../UBY_HOME/
+`- !WordNet/
+  `- wordnet3/
+    `- dict/
+      `- wordnet's files
+  `- extJWNL/
+    `- file_properties.xml
+  `- cache/
+    `- !ExampleSentenceLexemeMapping.xml
+----
+   * In `file_properties.xml` change the value of the dictionary_path variable (at the bottom of the file). It should point to `UBY_HOME/WordNet/wordnet3/dict`, where `UBY_HOME` is the absolute path of `UBY_HOME`.
+   * Done
+
+=== Using !WordNet-converter ===
+After satisfying the prerequisites mentioned above, you can start converting !WordNet: Initialize an instance of !WordNet's Dictionary -wordnet- which will be used by the WNConverter to obtain the information from the !WordNet files.
+
+[source,java]
+----
+String extJWNL_configuration = UBY_HOME+"/WordNet/extJWNL/file_properties.xml";
+Dictionary extWordnet = Dictionary.getInstance(new FileInputStream(extJWNL_configuration));
+WNConverter converterWN = new WNConverter(extWordnet, new LexicalResource(), dtd_version, UBY_HOME+"/WordNet/cache/ExampleSentenceLexemeMapping.xml");
+----
+
+Initialize the WNConverter and call `toLMF()` method in order to start the conversion:
+
+`converterWN.toLMF();`
+
+After the conversion has finished, you can obtain the resulting !LexicalResource by calling the following method:
+`LexicalResource wnLexicalResource = converterWN.getLexicalResource()`
+
+At this point, you can right away start using the instance of !LexicalResource to access the converted information, or you can write it to a xml-file using `LMFXmlWriter`.
+
+=== !OmegaWiki-converter
+
+==== Prerequisites for using !WordNet-converter
+
+. For using this converter, you need the !OmegaWiki-API, also avaliable on Google Code: http://code.google.com/p/jowkl/ or as a Maven dependency from our public repository.
+. You also need an !OmegaWiki database dump, available here: http://www.omegawiki.org/Help:Downloading_the_data
+** Make sure the OW dump has properly been imported into a DB before you start
+
+==== Using !OmegaWiki-converter
+
+After satisfying the prerequisites mentioned above, you can start converting !OmegaWiki: Open a connection to the  !OmegaWiki DB and create a new !OmegaWiki object, which will be used by the OWConverter to obtain the information from the DB.  Note that you can set the language when creating the Converter. Currently, English and German are supported for the conversion process.
+
+[source,java]
+----
+DatabaseConfiguration dbConfig_ow = new DatabaseConfiguration(ow_host,ow_db,db_driver,db_vendor, ow_user, ow_pass, ow_language);
+OmegaWiki ow = new OmegaWiki(dbConfig_ow);
+OWConverter converter = new OWConverter(new LexicalResource(),ow_language,dtd_version);
+converter.omegawiki = ow;
+----
+
+Call `toLMF()` method in order to start the conversion:
+
+`converter.toLMF();`
+
+After the conversion has finished, you can obtain the resulting !LexicalResource by calling the following method:
+`LexicalResource owLexicalResource = converter.getLexicalResource();`
+
+At this point, you can right away start using the instance of !LexicalResource to access the converted information, or you can write it to a xml-file using `LMFXmlWriter`.
+
+=== LMFXmlWriter / XmlToDBTransformer
+
+After the resources have been transformed into LMF, the !LexicalResource object can be written into an XML file. In this example we do this for !WordNet, but it's the same procedure for all resources which are not directly written into the DB. Note that you need the DTD-file right now available from our homepage and the Downloads section.
+
+[source,java]
+----
+LMFXmlWriter xmlWriter = new LMFXmlWriter(UBY_HOME + "/target/wnInLMF.xml", UBY_HOME + "/resources/dtd/DTD_unifiedModel_"+dtd_version+".dtd");
+xmlWriter.writeElement(converterWN.getLexicalResource());
+xmlWriter.writeEndDocument();
+----
+
+After that, the XML file can be imported into the DB like this, using the same dbConfig object which was used to create the DB:
+
+[source,java]
+----
+XMLToDBTransformer xmlToDB = new XMLToDBTransformer(dbConfig);
+File xmlFile = new File(UBY_HOME + "/target/wnInLMF.xml");
+xmlToDB.transform(xmlFile, "WordNet",false,false);
+----
+
+The two boolean parameters specifiy if the constraints should be turned off / on for the import ("false" is faster) and if a possibly existing resource with the same name should be deleted.
+
+=== Postprocessing
+
+After all the resources (or just a subset thereof) have been imported into a database, they all sit in the database next to each other, without any connection. In order to connect the databases and to create the final UBY resource, a couple of postprocessing steps need to be performed. The following code snippet shows an example implementation of the required postprocessing:
+
+[source,java]
+----
+Connection connection = DriverManager.getConnection("jdbc:"+db_vendor+"://"+uby_url,uby_user, uby_pass);
+java.sql.Statement statement = connection.createStatement();
+int newID = 0;
+ResultSet rs = statement.executeQuery("Select globalInformationId from LexicalResource where lexicalResourceId = 'UBY';");
+if(rs.next())
+{
+	System.out.println("Uby already exists");
+	newID = rs.getInt(1);
+}
+else
+{
+	rs = statement.executeQuery("Select max(globalInformationId) from GlobalInformation");
+	while (rs.next()) 
+        {
+		newID = rs.getInt(1) + 1;
+	}
+	String createGlobalInformation = "Insert into GlobalInformation(globalInformationId, label) values("+ newID + ", 'UBY unified')";
+	String createUby = "Insert into LexicalResource(lexicalResourceId,globalInformationId,dtdVersion) values('UBY',"+ newID + ",'" + dtd_version + "')";
+	statement.executeUpdate(createUby);
+	statement.executeUpdate(createGlobalInformation);
+}
+String updateLexicons = "Update Lexicon set lexicalResourceId='UBY'";
+String updateSenseAxes = "Update SenseAxis set lexicalResourceId='UBY'";
+String cleanUp1 = "Delete from LexicalResource where lexicalResourceId != 'UBY'";
+String cleanUp2 = "Delete from GlobalInformation where globalInformationId != "+ newID;
+String rebuildLexiconIndices1 = "ALTER TABLE Lexicon DROP COLUMN idx";
+String rebuildLexiconIndices2 = "ALTER TABLE Lexicon ADD COLUMN idx INTEGER AUTO_INCREMENT, ADD KEY(idx)";
+String rebuildLexiconIndices3 = "UPDATE Lexicon SET idx=idx-1";
+String rebuildLexiconIndices4 = "ALTER TABLE Lexicon MODIFY COLUMN idx INTEGER DEFAULT NULL, DROP INDEX idx"
+String rebuildSenseAxisIndices1 = "ALTER TABLE SenseAxis DROP COLUMN idx";
+String rebuildSenseAxisIndices2 = "ALTER TABLE SenseAxis ADD COLUMN idx INTEGER AUTO_INCREMENT, ADD KEY(idx)";
+String rebuildSenseAxisIndices3 = "UPDATE SenseAxis SET idx=idx-1";
+String rebuildSenseAxisIndices4 = "ALTER TABLE SenseAxis MODIFY COLUMN idx INTEGER DEFAULT NULL, DROP INDEX idx"
+statement.executeUpdate(updateLexicons);
+statement.executeUpdate(updateSenseAxes);
+statement.executeUpdate(cleanUp1);
+statement.executeUpdate(cleanUp2);
+statement.executeUpdate(rebuildLexiconIndices1);
+statement.executeUpdate(rebuildLexiconIndices2);
+statement.executeUpdate(rebuildLexiconIndices3);
+statement.executeUpdate(rebuildLexiconIndices4);
+statement.executeUpdate(rebuildSenseAxisIndices1);
+statement.executeUpdate(rebuildSenseAxisIndices2);
+statement.executeUpdate(rebuildSenseAxisIndices3);
+statement.executeUpdate(rebuildSenseAxisIndices4);
+connection.close();
+statement.close();
+----
+
+What happens here, is that a new !LexicalResource with the correspondong !GlobalInformation is created with an ID larger than that of all existing resources. This new !LexicalResource becomes the parent of all Lexicons and !SenseAxis. Then, the "old" !LexicalResource entries are deleted. If a UBY instance already exist (e.g. because you are adding a resource later on) the creation of the new UBY is skipped.
+
+The database is now ready for usage with the API!

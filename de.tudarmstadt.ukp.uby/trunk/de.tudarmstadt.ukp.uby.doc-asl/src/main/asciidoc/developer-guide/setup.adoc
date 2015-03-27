@@ -1,0 +1,48 @@
+// Copyright 2015
+// Ubiquitous Knowledge Processing (UKP) Lab
+// Technische Universität Darmstadt
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+== Setting up Eclipse and Maven for UBY development
+
+=== Basic Setup (of Eclipse and Maven)
+
+* Follow the [http://code.google.com/p/dkpro-core-asl/wiki/UserSetup user setup] instructions
+* If you are in Eclipse, restart it  
+
+If you do not have _settings.xml_ file in your _.m2_ directory, just create one with exactly the same content as in the [http://code.google.com/p/dkpro-core-asl/wiki/UkpMavenRepository Maven setup instructions]. You can also use the _settings.xml_ provided in [http://code.google.com/p/uby/downloads/list Downloads section] and copy it to your _.m2_ folder.
+
+=== Checking out
+
+* Open the *SVN Repositories perspective* in Eclipse (Menu -> Window -> Show View -> Other... -> SVN -> SVN Repositories)
+* *Add* a SVN repository with the URL http://uby.googlecode.com/svn/de.tudarmstadt.ukp.uby
+* *Expand* the new repository node in the SVN Repositories view
+* Right-click on *trunk* and select *Check out as Maven project*
++
+NOTE: if you do not see this menu item, make sure you have installed the Maven SCM handler for Subclipse. 
++
+* (optional) Eclipse will create some projects now. We recommend to group these projects into a working set:
+** Select *Next*
+** Check *Add project(s) to working set*
+** Click *More...*
+** Click *New...*
+** Double-click *Java*
+** Enter the working set name Uby
+** Click *Finish*
+** Click *OK*
+** Select the working set Uby from the working set drop-down box
++
+NOTE: when you are completely through with these and the following steps, remember to go to the Package Explorer view. There is a small triangular icon in its top right corner. Click on that and select Top Level Elements -> Working Sets. 
++
+* Click *Finish.* 
