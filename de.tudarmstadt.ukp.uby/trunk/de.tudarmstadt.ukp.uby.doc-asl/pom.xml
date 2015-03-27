@@ -49,6 +49,9 @@
                             </attributes>
                         </configuration>
                     </execution>
+                    <!-- 
+                      - For some reason doesn't build on Jenkins:
+                      - (NotImplementedError) fstat unimplemented unsupported or native support failed to load
                     <execution>
                         <id>user-guide-pdf</id>
                         <phase>generate-resources</phase>
@@ -66,6 +69,7 @@
                             </attributes>
                         </configuration>
                     </execution>
+                    -->
                     <execution>
                         <id>developer-guide-html</id>
                         <phase>generate-resources</phase>
@@ -83,6 +87,9 @@
                             </attributes>
                         </configuration>
                     </execution>
+                    <!-- 
+                      - For some reason doesn't build on Jenkins:
+                      - (NotImplementedError) fstat unimplemented unsupported or native support failed to load
                     <execution>
                         <id>developer-guide-pdf</id>
                         <phase>generate-resources</phase>
@@ -100,6 +107,7 @@
                             </attributes>
                         </configuration>
                     </execution>
+                    -->
                 </executions>
             </plugin>
         </plugins>
