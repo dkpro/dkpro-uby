@@ -22,3 +22,26 @@ UBY Developer Guide
 
 This guide summarizes the functionality of UBY from the developer's perspective.
 
+<<<
+
+include::{include-dir}setup.adoc[]
+
+<<<
+
+include::{include-dir}conversion.adoc[]
+
+<<<
+
+include::{include-dir}imslex.adoc[]
+
+<<<
+
+include::{include-dir}germanet.adoc[]
+
+<<<
+
+include::{include-dir}api.adoc[]
+
+<<<
+
+include::{include-dir}modules.adoc[]
