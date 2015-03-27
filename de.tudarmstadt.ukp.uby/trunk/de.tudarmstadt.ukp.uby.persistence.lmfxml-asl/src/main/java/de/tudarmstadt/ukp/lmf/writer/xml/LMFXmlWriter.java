@@ -27,8 +27,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
-
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -285,7 +283,7 @@ class LMFXmlWriter extends LMFWriter{
 		try {
 			th = tf.newTransformerHandler();
 		} catch (TransformerConfigurationException e) {
-			logger.log(Level.SEVERE, "Error on initiating TransformerHandler");
+			logger.error("Error on initiating TransformerHandler");
 			e.printStackTrace();
 		}
 		Transformer serializer = th.getTransformer();
