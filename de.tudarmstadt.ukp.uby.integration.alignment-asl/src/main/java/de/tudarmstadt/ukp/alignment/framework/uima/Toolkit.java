@@ -315,7 +315,7 @@ public class Toolkit
 		try {
 			seg = createEngineDescription(OpenNlpSegmenter.class);
 				AnalysisEngineDescription sw = createEngineDescription(StopWordRemover.class,
-					StopWordRemover.PARAM_STOP_WORD_LIST_FILE_NAMES, new String[]{"src/main/resources/snowball_german_stopwords.txt"}
+					StopWordRemover.PARAM_MODEL_LOCATION , new String[]{"src/main/resources/snowball_german_stopwords.txt"}
 				);
 
 				AnalysisEngineDescription pos = createEngineDescription(OpenNlpPosTagger.class,
@@ -367,7 +367,7 @@ public class Toolkit
 					HashSet<String> swords = new HashSet<String>();
 					 swords.add("src/main/resources/stopwords_english_punctuation.txt");
 			AnalysisEngineDescription sw = createEngineDescription(StopWordRemover.class,
-				StopWordRemover.PARAM_STOP_WORD_LIST_FILE_NAMES,  swords
+				StopWordRemover.PARAM_MODEL_LOCATION ,  swords
 					//StopWordRemover.PARAM_STOP_WORD_LIST_FILE_NAMES, new String[]{"/home/matuschek/UBY_HOME/resources/snowball_english_stopwords.txt"}
 						);
 //					AnalysisEngineDescription pos = createEngineDescription(TreeTaggerPosLemmaTT4J.class,
