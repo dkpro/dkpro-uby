@@ -2,13 +2,13 @@
  * Copyright 2015
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,13 +44,12 @@ import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
  *
  */
 public class Context extends HasMonolingualExternalRefs implements IHasTextRepresentations {
-	
 
 	// Source of this Context, required for contextType=citation
 	// not replaced by MonolingualExternalRef
 	@VarType(type = EVarType.ATTRIBUTE)
 	private String source;
-	
+
 	// Context Type of this Context
 	@VarType(type = EVarType.ATTRIBUTE)
 	private EContextType contextType;
@@ -62,7 +61,7 @@ public class Context extends HasMonolingualExternalRefs implements IHasTextRepre
 	/**
 	 * Returns the {@link List} of all {@link TextRepresentation} instances associated with
 	 * this {@link Context} instance.
-	 * 
+	 *
 	 * @return the list of all text representations instance associated with this
 	 * context or an empty list, if the context does not have any text representations
 	 * associated
@@ -80,14 +79,24 @@ public class Context extends HasMonolingualExternalRefs implements IHasTextRepre
 		this.textRepresentations = textRepresentations;
 	}
 
+	public String getText() {
+		StringBuilder result = new StringBuilder();
+		for (TextRepresentation textRep : getTextRepresentations()) {
+			if (result.length() > 0)
+				result.append("\n");
+			result.append(textRep.getWrittenText());
+		}
+		return result.toString();
+	}
+
 	/**
 	 * Returns the complete citation of the bibliographic information
 	 * pertaining to a document or other resource used when creating {@link TextRepresentation}
 	 * instances associated with this {@link Context}.
-	 * 
+	 *
 	 * @return the source used for creating text representations of this context or null
 	 * if the source is not set
-	 * 
+	 *
 	 * @see #getTextRepresentations()
 	 */
 	public String getSource() {
@@ -98,9 +107,9 @@ public class Context extends HasMonolingualExternalRefs implements IHasTextRepre
 	 * Sets the complete citation of the bibliographic information
 	 * pertaining to a document or other resource used when creating {@link TextRepresentation}
 	 * instances associated with this {@link Context}.
-	 * 
+	 *
 	 * @param source the source used for creating text representations of this context
-	 * 
+	 *
 	 * @see #setTextRepresentations()
 	 */
 	public void setSource(String source) {
@@ -110,11 +119,12 @@ public class Context extends HasMonolingualExternalRefs implements IHasTextRepre
 	/**
 	 * Sets the {@link List} of {@link MonolingualExternalRef} instances which represent
 	 * the relationship of this {@link Context} instance to an external system.
-	 * 
+	 *
 	 * @param externalReferences the list of external references to set
-	 * 
+	 *
 	 * @see #setSource(String)
 	 */
+	@Override
 	public void setMonolingualExternalRefs(List<MonolingualExternalRef> externalReferences) {
 		this.monolingualExternalRefs = externalReferences;
 	}
@@ -122,19 +132,20 @@ public class Context extends HasMonolingualExternalRefs implements IHasTextRepre
 	/**
 	 * Returns the {@link List} of {@link MonolingualExternalRef} instances which
 	 * represent the relationship of this {@link Context} instance to an external system.
-	 * 
+	 *
 	 * @return the list of all external references of this context to external system or
 	 * an empty list, if the context does not have any references set
 	 */
+	@Override
 	public List<MonolingualExternalRef> getMonolingualExternalRefs() {
 		return monolingualExternalRefs;
 	}
 
 	/**
 	 * Returns the type of this {@link Context} instance.
-	 * 
+	 *
 	 * @return the type of this context or null, if the type is not set
-	 * 
+	 *
 	 * @see EContextType
 	 */
 	public EContextType getContextType() {
@@ -143,13 +154,13 @@ public class Context extends HasMonolingualExternalRefs implements IHasTextRepre
 
 	/**
 	 * Sets the type of this {@link Context} instance.
-	 * 
+	 *
 	 * @param contextType the type of the context to set
-	 * 
+	 *
 	 * @see EContextType
 	 */
 	public void setContextType(EContextType contextType) {
 		this.contextType = contextType;
 	}
-	
+
 }

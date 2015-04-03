@@ -18,7 +18,6 @@
  */
 package de.tudarmstadt.ukp.lmf.transform.wordnet;
 
-import static de.tudarmstadt.ukp.lmf.transform.wordnet.TestSuite.UBY_HOME;
 import static de.tudarmstadt.ukp.lmf.transform.wordnet.TestSuite.wordNet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -83,8 +82,9 @@ import de.tudarmstadt.ukp.lmf.transform.wordnet.util.IndexSenseReader;
 	 */
 	@Test
 	public final void testGenerateSensesSetOfWordLexicalEntry() throws JWNLException {
-		SynsetGenerator synsetGenerator = new SynsetGenerator(wordNet, 
-				new File(UBY_HOME +"/WordNet/cache/ExampleSentenceLexemeMapping.xml"), "WordNet_3.0_eng");
+//		SynsetGenerator synsetGenerator = new SynsetGenerator(wordNet,
+//				new File(UBY_HOME +"/WordNet/cache/ExampleSentenceLexemeMapping.xml"), "WordNet_3.0_eng");
+		SynsetGenerator synsetGenerator = new SynsetGenerator(wordNet, "WordNet_3.0_eng");
 		synsetGenerator.initialize();
 		String UBY_HOME = System.getenv("UBY_HOME");
 

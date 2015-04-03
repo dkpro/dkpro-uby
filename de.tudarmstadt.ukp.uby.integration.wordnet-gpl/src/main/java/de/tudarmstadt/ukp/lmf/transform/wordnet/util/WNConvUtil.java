@@ -19,27 +19,11 @@
 package de.tudarmstadt.ukp.lmf.transform.wordnet.util;
 
 
-import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngine;
-import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
-import static org.apache.uima.fit.util.JCasUtil.select;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import net.sf.extjwnl.data.POS;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.uima.analysis_engine.AnalysisEngine;
-import org.apache.uima.fit.factory.JCasFactory;
-import org.apache.uima.jcas.JCas;
-
-import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Lemma;
-import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordLemmatizer;
-import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
+import de.tudarmstadt.ukp.lmf.model.core.TextRepresentation;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
 
 /**
@@ -49,81 +33,6 @@ import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
  *
  */
 public class WNConvUtil {
-    private static final Log LOG = LogFactory.getLog(WNConvUtil.class);
-    
-	private static JCas jcas;
-	private static AnalysisEngine ae;
-
-	//  mappings between part of speech, encoded in WordNet, part of speech specified by Uby-LMF
-	private static final Map<String, EPartOfSpeech> _posMappings = new HashMap<String, EPartOfSpeech>();
-
-	static{
-		// Put the POS mappings posKey <-> EPartOfSpeech
-		_posMappings.put("n", EPartOfSpeech.noun);
-		_posMappings.put("v", EPartOfSpeech.verb);
-		_posMappings.put("a", EPartOfSpeech.adjective);
-		_posMappings.put("r", EPartOfSpeech.adverb);
-	}
-	/**
-	 * Consumes a sentence and returns the list of all lemmas in the Sentence
-	 * @param sentence a sentence for which a list of lemmas should be returned
-	 * @return the list of lemmas contained in the consumed sentence
-	 */
-	public static List<String> lemmatize(String sentence) {
-		try {
-
-			if (jcas == null) {
-				jcas = JCasFactory.createJCas();
-			}
-			else {
-				jcas.reset();
-			}
-
-			sentence = sentence.replace("-", " ");
-			jcas.setDocumentLanguage("en");
-			jcas.setDocumentText(sentence);
-
-			if (ae == null) {
-				ae = createEngine(createEngineDescription(
-						createEngineDescription(BreakIteratorSegmenter.class),
-						createEngineDescription(StanfordLemmatizer.class)
-						));
-			}
-
-			ae.process(jcas);
-
-			List<String> lemmas = new ArrayList<String>();
-			for (Lemma l : select(jcas, Lemma.class)) {
-				lemmas.add(l.getValue());
-			}
-
-			return lemmas;
-
-		} catch (Exception e) {
-			StringBuffer sb = new StringBuffer(512);
-			sb.append("##########################");
-			sb.append(sentence);
-			sb.append("##########################");
-			LOG.error(sb.toString());
-			e.printStackTrace();
-			System.exit(1);
-		}
-		return null;
-	}
-
-	/**
-	 * Consumes a sentence and returns the list of all tokens of the Sentence
-	 * @param sentence a sentence for which the list of tokens should be returned
-	 * @return the list of tokens of the consumed sentence
-	 */
-	public static List<String> tokens(String sentence) {
-		String temp = sentence.replaceAll("\\.", "");
-		temp = temp.replaceAll("\\,", "");
-		temp = temp.replaceAll("\\:", "");
-		temp = temp.toLowerCase();
-		return Arrays.asList(temp.split(" "));
-
-	}
 
 	/**
 	 * This method consumes a {@link POS}
@@ -133,7 +42,26 @@ public class WNConvUtil {
 	 * @since 0.2.0
 	 */
 	public static EPartOfSpeech getPOS(POS pos) {
-		EPartOfSpeech result = _posMappings.get(pos.getKey());
+		switch (pos) {
+			case NOUN:
+				return EPartOfSpeech.noun;
+			case VERB:
+				return EPartOfSpeech.verb;
+			case ADJECTIVE:
+				return EPartOfSpeech.adjective;
+			case ADVERB:
+				return EPartOfSpeech.adverb;
+		}
+		return null;
+	}
+
+	public static List<TextRepresentation> makeTextRepresentationList(
+			final String text, final String language) {
+		List<TextRepresentation> result = new LinkedList<TextRepresentation>();
+		TextRepresentation textRepresentation = new TextRepresentation();
+		textRepresentation.setLanguageIdentifier(language);
+		textRepresentation.setWrittenText(text);
+		result.add(textRepresentation);
 		return result;
 	}
 

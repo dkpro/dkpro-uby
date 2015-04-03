@@ -45,4 +45,9 @@ public interface IHasTextRepresentations {
 	 */
 	void setTextRepresentations(List<TextRepresentation> textRepresentations);
 
+	/** Returns the written text of all text representations. If there are
+	 *  multiple text representations then a line break is used to separate
+	 *  the individual written texts. */
+	String getText();
+
 }

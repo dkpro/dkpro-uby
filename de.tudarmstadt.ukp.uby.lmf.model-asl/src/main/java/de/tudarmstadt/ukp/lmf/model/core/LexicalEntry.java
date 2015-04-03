@@ -2,13 +2,13 @@
  * Copyright 2015
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,14 +36,14 @@ import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticBehaviour;
 
 
 /**
- * LexicalEntry is a class representing a lexeme in a given language. The LexicalEntry is a 
+ * LexicalEntry is a class representing a lexeme in a given language. The LexicalEntry is a
  * container for managing the {@link RelatedForm}, {@link WordForm} and {@link Sense} classes.
  * Therefore, the LexicalEntry manages the relationship between the forms and their related senses.
  * <p> A  LexicalEntry instance can have from zero to many different senses.
- * 
+ *
  * @see RelatedForm
  * @see WordForm
- * 
+ *
  * @author Zijad Maksuti
  *
  */
@@ -51,66 +51,66 @@ public class LexicalEntry extends HasFrequencies implements IHasID, Comparable<L
 	// Id of this LexicalEntry
 	@VarType(type = EVarType.ATTRIBUTE)
 	private String id;
-	
+
 	// Part-of-Speech of this LexicalEntry
 	@VarType(type = EVarType.ATTRIBUTE)
 	private EPartOfSpeech partOfSpeech;
-		
+
 	// Separable Particle of this LexicalEntry
 	@VarType(type = EVarType.ATTRIBUTE)
 	private String separableParticle;
-	
+
 	// Lemma of this LexicalEntry
 	@VarType(type = EVarType.CHILD)
 	private Lemma lemma;
-	
+
 	// Word Forms of this LexicalEntry
 	@VarType(type = EVarType.CHILDREN)
 	private List<WordForm> wordForms = new ArrayList<WordForm>();
-	
+
 	// Related Forms of this LexicalEntry
 	@VarType(type = EVarType.CHILDREN)
 	private List<RelatedForm> relatedForms = new ArrayList<RelatedForm>();
-	
+
 	// Senses of this LexicalEntry
 	@VarType(type = EVarType.CHILDREN)
 	private List<Sense> senses = new ArrayList<Sense>();
-	
+
 	// Syntactic Behaviours of this LexicalEntry
 	@VarType(type = EVarType.CHILDREN)
 	private List<SyntacticBehaviour> syntacticBehaviours = new ArrayList<SyntacticBehaviour>();
-	
+
 	// List of components of this LexicalEntry
 	@VarType(type = EVarType.CHILD)
 	private ListOfComponents listOfComponents;
-	
+
 	// Backlink to Lexicon added for convenience
 	@VarType(type = EVarType.NONE)
 	private Lexicon lexicon;
-	
+
 	/**
 	 * Constructs a {@link LexicalEntry} instance with the specified
 	 * identifier.
-	 *  
+	 *
 	 * @param identifier the unique identifier of the lexical entry
-	 * 
+	 *
 	 * @since 0.2.0
 	 */
 	public LexicalEntry(String identifier){
 		this.id = identifier;
 	}
-	
+
 	/**
 	 * Constructs an empty {@link LexicalEntry} instance.
-	 * 
+	 *
 	 * @see #LexicalEntry(String)
 	 */
 	public LexicalEntry(){
 		// nothing to do here
 	}
 
-	
-	/** 
+
+	/**
 	 * Returns the unique identifier of this {@link LexicalEntry} instance.
 	 * @return the id of this LexicalEntry instance, or null if the id is not set
 	 */
@@ -163,7 +163,7 @@ public class LexicalEntry extends HasFrequencies implements IHasID, Comparable<L
 		this.separableParticle = separableParticle;
 	}
 
-	/** 
+	/**
 	 * Returns this LexicalEntrys {@link Lemma}.
 	 * @return the lemma of this LexicalEntry or null, if the lemma is not set
 	 * @see LexicalEntry
@@ -182,7 +182,7 @@ public class LexicalEntry extends HasFrequencies implements IHasID, Comparable<L
 
 	/**
 	 * Returns a {@link List} of all {@link WordForm} instances of this {@link LexicalEntry}
-	 * @return all word forms of this lexical entry, or an empty list if the LexicalEntry has no word forms 
+	 * @return all word forms of this lexical entry, or an empty list if the LexicalEntry has no word forms
 	 */
 	public List<WordForm> getWordForms() {
 		return wordForms;
@@ -199,7 +199,7 @@ public class LexicalEntry extends HasFrequencies implements IHasID, Comparable<L
 
 	/**
 	 * Returns a {@link List} of all {@link RelatedForm} instances of this {@link LexicalEntry}
-	 * @return all related forms of this lexical entry, or an empty list if the LexicalEntry has no related forms 
+	 * @return all related forms of this lexical entry, or an empty list if the LexicalEntry has no related forms
 	 */
 	public List<RelatedForm> getRelatedForms() {
 		return relatedForms;
@@ -234,7 +234,7 @@ public class LexicalEntry extends HasFrequencies implements IHasID, Comparable<L
 	/**
 	 * Returns a {@link List}  of all {@link SyntacticBehaviour} instances of this {@link LexicalEntry}
 	 * @return a list of syntactic behaviors of this lexical entry or an empty list, if this lexical entry has no
-	 * syntactic behaviors set 
+	 * syntactic behaviors set
 	 */
 	public List<SyntacticBehaviour> getSyntacticBehaviours() {
 		return syntacticBehaviours;
@@ -248,8 +248,8 @@ public class LexicalEntry extends HasFrequencies implements IHasID, Comparable<L
 	public void setSyntacticBehaviours(List<SyntacticBehaviour> syntacticBehaviours) {
 		this.syntacticBehaviours = syntacticBehaviours;
 	}
-	
-	
+
+
 	/**
 	 * Returns the {@link Lexicon} containing this {@link LexicalEntry} instance. <p>
 	 * <i>This backlink is not a part of Uby-LMF model and exists for convenience.</i>
@@ -267,8 +267,8 @@ public class LexicalEntry extends HasFrequencies implements IHasID, Comparable<L
 	public void setLexicon(Lexicon lexicon) {
 		this.lexicon = lexicon;
 	}
-	
-	
+
+
 	/**
 	 * Returns all {@link Synset} instances of this {@link LexicalEntry} by aggregating them from lexical entry's {@link Sense} instances
 	 * @return a {@link List} of all synsets of this lexical entry or an empty list, if none of lexical entry's senses has a synset
@@ -281,19 +281,19 @@ public class LexicalEntry extends HasFrequencies implements IHasID, Comparable<L
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Returns the written form of this {@link LexicalEntry}'s {@link Lemma} first {@link FormRepresentation}.
 	 * @return the written form of the first form representation of this lexical entry's lemma or null, if the lemma has no form representations
 	 */
 	public String getLemmaForm(){
 		List<FormRepresentation> temp = lemma.getFormRepresentations();
-		if(temp.isEmpty())			
+		if(temp.isEmpty())
 			return null;
 		else
 			return temp.get(0).getWrittenForm();
 	}
-		
+
 	/**
 	 * Sets the list of components of this {@link LexicalEntry} instance.
 	 * @param listOfComponents the list of components to set
@@ -318,6 +318,7 @@ public class LexicalEntry extends HasFrequencies implements IHasID, Comparable<L
 	 * @param frequencies the frequencies to set
 	 * @see LexicalEntry
 	 */
+	@Override
 	public void setFrequencies(List<Frequency> frequencies) {
 		super.setFrequencies(frequencies);
 	}
@@ -327,10 +328,11 @@ public class LexicalEntry extends HasFrequencies implements IHasID, Comparable<L
 	 * @return a list of all frequencies of this lexical entry or an empty list, if this lexical entry has no frequencies set
 	 * @see LexicalEntry
 	 */
+	@Override
 	public List<Frequency> getFrequencies() {
 		return super.getFrequencies();
-	}	
-	
+	}
+
 	@Override
 	public String toString(){
 		return this.id == null?"":this.id.toString();
@@ -347,13 +349,14 @@ public class LexicalEntry extends HasFrequencies implements IHasID, Comparable<L
 	    if (!(other instanceof LexicalEntry))
 	      return false;
 	    LexicalEntry otherLexicalEntry = (LexicalEntry) other;
-	    return this.id==null ? otherLexicalEntry.id==null : this.id.equals(otherLexicalEntry.id);	   
+	    return this.id==null ? otherLexicalEntry.id==null : this.id.equals(otherLexicalEntry.id);
 	 }
 	@Override
-	public int hashCode() { 
-	    int hash = 1;
-	    hash = hash * 31 + this.id==null?0:this.id.hashCode();
-	    return hash;
+	public int hashCode() {
+		return 31 + (id == null ? 0 : id.hashCode());
+//	    int hash = 1;
+//	    hash = hash * 31 + this.id==null?0:this.id.hashCode(); <-- ChM: ???
+//	    return hash;
 	}
 
 

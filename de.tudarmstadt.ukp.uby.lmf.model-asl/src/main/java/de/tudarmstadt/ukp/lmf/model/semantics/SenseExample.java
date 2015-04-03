@@ -2,13 +2,13 @@
  * Copyright 2015
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,34 +20,35 @@ package de.tudarmstadt.ukp.lmf.model.semantics;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.tudarmstadt.ukp.lmf.model.abstracts.HasTextRepresentations;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.core.TextRepresentation;
 import de.tudarmstadt.ukp.lmf.model.enums.EExampleType;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
-import de.tudarmstadt.ukp.lmf.model.interfaces.IHasTextRepresentations;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
 /**
  * SenseExample is a class used to illustrate the particular meaning of a {@link Sense} instance.
- * A Sense can have zero to many examples. 
- * 
+ * A Sense can have zero to many examples.
+ *
  * @author Zijad Maksuti
  */
-public class SenseExample implements IHasID, IHasTextRepresentations, Comparable<SenseExample> {
-	
+public class SenseExample extends HasTextRepresentations
+		implements IHasID, Comparable<SenseExample> {
+
 	// Unique Id of this SenseExample
 	@VarType(type = EVarType.ATTRIBUTE)
 	private String id;
-	
+
 	// TextRepresentation of this SenseExample
 	@VarType(type = EVarType.CHILDREN)
 	private List<TextRepresentation> textRepresentations = new ArrayList<TextRepresentation>();
-	
+
 	// Example type of this Sense Example
 	@VarType(type = EVarType.ATTRIBUTE)
 	private EExampleType exampleType;
-	
+
 	/**
 	 * Returns the type of this {@link SenseExample} instance.
 	 * @return the type of this sense example or null the type is not set.
@@ -81,7 +82,8 @@ public class SenseExample implements IHasID, IHasTextRepresentations, Comparable
 	public void setTextRepresentations(List<TextRepresentation> textRepresentations) {
 		this.textRepresentations = textRepresentations;
 	}
-	
+
+	@Override
 	public String toString(){
 		return this.id.toString();
 	}
@@ -90,7 +92,8 @@ public class SenseExample implements IHasID, IHasTextRepresentations, Comparable
 	public int compareTo(SenseExample o) {
 		return this.toString().compareTo(o.toString());
 	}
-	
+
+	@Override
 	public boolean equals(Object other) {
 	    if (this == other)
 	      return true;
@@ -98,12 +101,14 @@ public class SenseExample implements IHasID, IHasTextRepresentations, Comparable
 	      return false;
 	    SenseExample otherSenseExample = (SenseExample) other;
 	    return this.id.equals(otherSenseExample.id);
-	   
 	  }
-	
-	public int hashCode() { 
-	    int hash = 1;
-	    hash = hash * 31 + this.id.hashCode();
-	    return hash;
-	  }	
+
+	@Override
+	public int hashCode() {
+		return 31 + (id == null ? 0 : id.hashCode());
+//	    int hash = 1;
+//	    hash = hash * 31 + this.id.hashCode(); <-- ChM: ???
+//	    return hash;
+	}
+
 }

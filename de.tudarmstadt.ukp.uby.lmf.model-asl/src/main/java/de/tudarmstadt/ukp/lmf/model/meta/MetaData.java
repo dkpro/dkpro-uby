@@ -19,6 +19,7 @@ package de.tudarmstadt.ukp.lmf.model.meta;
 
 import java.util.Date;
 
+import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
@@ -47,6 +48,10 @@ public class MetaData implements IHasID{
 
 	@VarType(type = EVarType.ATTRIBUTE)
 	private Boolean automatic;
+
+	// Backlink to LexicalResource added for convenience
+	@VarType(type = EVarType.NONE)
+	private LexicalResource lexicalResource;
 	
 	/**
 	 * @return the id
@@ -120,5 +125,23 @@ public class MetaData implements IHasID{
 	public void setAutomatic(Boolean automatic) {
 		this.automatic = automatic;
 	}
-	
+
+	/**
+	 * Returns the {@link LexicalResource} containing this {@link MetaData} instance. <p>
+	 * <i>This backlink is not a part of Uby-LMF model and exists for convenience.</i>
+	 * @return the lexical resource containing this meta data or null if the backlink is not set
+	 */
+	public LexicalResource getLexicalResource() {
+		return lexicalResource;
+	}
+
+	/**
+	 * Sets the {@link LexicalResource} containing this {@link MetaData} instance.<p>
+	 * <i> This backlink is not a part of Uby-LMF model and exists for convenience.</i>
+	 * @param lexicon the lexicon to set
+	 */
+	public void setLexicalResource(LexicalResource lexicalResource) {
+		this.lexicalResource = lexicalResource;
+	}
+
 }

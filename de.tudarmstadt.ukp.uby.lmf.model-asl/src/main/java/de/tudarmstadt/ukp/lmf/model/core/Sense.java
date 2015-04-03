@@ -499,6 +499,7 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 	public int compareTo(Sense o) {
 		return this.toString().compareTo(o.toString());
 	}
+
 	@Override
 	public boolean equals(Object other) {
 	    if (this == other) {
@@ -510,10 +511,13 @@ public class Sense extends HasMonolingualExternalRefs implements IHasID, IHasDef
 	    Sense otherSense = (Sense) other;
 	    return this.id==null ? otherSense.id==null : this.id.equals(otherSense.id);
 	 }
+
 	@Override
 	public int hashCode() {
-	    int hash = 1;
-	    hash = hash * 31 + this.id==null?0:this.id.hashCode();
-	    return hash;
+		return 31 + (id == null ? 0 : id.hashCode());
+//	    int hash = 1;
+//	    hash = hash * 31 + this.id==null?0:this.id.hashCode(); <-- ChM: ???
+//	    return hash;
 	}
+
 }

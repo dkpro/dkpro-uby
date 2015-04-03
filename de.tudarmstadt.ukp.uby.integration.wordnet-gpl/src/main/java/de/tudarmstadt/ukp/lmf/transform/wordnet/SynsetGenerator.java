@@ -18,77 +18,94 @@
  */
 package de.tudarmstadt.ukp.lmf.transform.wordnet;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.regex.Pattern;
+
 import net.sf.extjwnl.JWNLException;
 import net.sf.extjwnl.data.POS;
 import net.sf.extjwnl.data.Word;
 import net.sf.extjwnl.dictionary.Dictionary;
+import net.sf.extjwnl.dictionary.MorphologicalProcessor;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.SAXReader;
-import org.dom4j.io.XMLWriter;
 
 import de.tudarmstadt.ukp.lmf.model.core.Definition;
-import de.tudarmstadt.ukp.lmf.model.core.TextRepresentation;
+import de.tudarmstadt.ukp.lmf.model.core.Statement;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
+import de.tudarmstadt.ukp.lmf.model.enums.EStatementType;
 import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
 import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 import de.tudarmstadt.ukp.lmf.transform.wordnet.util.WNConvUtil;
 
 /**
- * Instance of this class offers methods for creating {@link Synset} instances out of WordNet's data
- * @author Zijad Maksuti
- * @author Judith Eckle-Kohler
- *
+ * Instance of this class offers methods for creating {@link Synset} instances
+ * out of WordNet's data.
  */
 public class SynsetGenerator {
 
-	public final static String SYNSET_OFFSET = "synsetOffset";
+	protected static class ExampleMapping {
+
+		protected String senseKey;
+		protected String lemma;
+		protected int score;
+
+		public ExampleMapping(final String senseKey, final String lemma) {
+			this.senseKey = senseKey;
+			this.lemma = lemma;
+		}
+
+		public String getSenseKey() {
+			return senseKey;
+		}
+
+		public String getLemma() {
+			return lemma;
+		}
+
+		public int getScore() {
+			return score;
+		}
+
+		public void setScore(int score) {
+			this.score = score;
+		}
+
+		public void addScore(final int increment) {
+			this.score += increment;
+		}
+
+	}
+
+	public final static String EXTERNAL_SYSTEM_SYNSET_OFFSET = "synsetOffset";
+
+	private final Log logger = LogFactory.getLog(getClass());
 
 	private final Dictionary wordnet; // WordNet Dictionary
+	private MorphologicalProcessor morphProcessor;
+	private final String resourceVersion;
+	private boolean initialized = false;
 
+	private final List<Synset> synsets = new ArrayList<Synset>();
 	private int lmfSynsetNumber = 0; // running number used for creating IDs of Synsets
-
-	// Mappings between Uby-LMF synsets and WordNet's synsets
-	private final Map<Synset, net.sf.extjwnl.data.Synset>
-		lmfSynsetWNSynsetMappings = new HashMap<Synset, net.sf.extjwnl.data.Synset>();
 
 	// Mappings betweenWordNet's synsets and Uby-LMF synsets
 	private final Map<net.sf.extjwnl.data.Synset, Synset>
 		wnSynsetLMFSynsetMappings = new HashMap<net.sf.extjwnl.data.Synset, Synset>();
 
 	// Mappings between lexemes and associated example sentences (extracted from WordNet's glosses)
-	private final Map<Word, List<String>> examples = new HashMap<Word, List<String>>();
-	
-	private final String resourceVersion;
+	private final Map<String, List<String>> examples = new TreeMap<String, List<String>>();
 
-	private boolean initialized = false;
-
-	private final File lexemeMappingXML;
-
-	private Document lexemeMapping;
-
-	// set of synsets with manually mapped example sentences
-	private final Set<net.sf.extjwnl.data.Synset> manuallyMapped = new HashSet<net.sf.extjwnl.data.Synset>();
-
-	private final Log logger = LogFactory.getLog(getClass());
+	protected List<String> annotationList;
+	protected int[] annotationCounter = new int[10];
 
 	/**
 	 * This method constructs a {@link SynsetGenerator} based on the consumed parameters
@@ -97,176 +114,402 @@ public class SynsetGenerator {
 	 * @param resourceVersion Version of the resource
 	 * @return SynsetGenerator
 	 */
-	@SuppressWarnings("unchecked")
-	public SynsetGenerator(Dictionary wordnet, File lexemeMappingFile, String resourceVersion) {
+	public SynsetGenerator(final Dictionary wordnet, final String resourceVersion) {
 		this.wordnet = wordnet;
-		this.lexemeMappingXML = lexemeMappingFile;
 		this.resourceVersion = resourceVersion;
-		boolean readFile = true;
-		SAXReader reader = new SAXReader();
-		try {
-			lexemeMapping = reader.read(lexemeMappingXML);
-		} catch (DocumentException e1) {
-			StringBuffer sb = new StringBuffer(256);
-			sb.append("File contianing manually entered example sentence mappings does not exist or corrupt. ");
-			sb.append("New one will be created. ");
-			sb.append("This will reduce performance of the SynsetGenerator. ");
-			logger.warn(sb.toString());
-			lexemeMappingFile.delete();
-			readFile = false;
-			try {
-				lexemeMappingFile.createNewFile();
-			} catch (IOException e) {
-				logger.error("Error on creating new file!");
-			}
-			lexemeMapping = DocumentHelper.createDocument();
-			lexemeMapping.addElement("ExampleSentenceLexemeMapping");
-		}
-
-		if(readFile){
-			/**
-			 * Parsing the lexemeMapping-file
-			 */
-			logger.info("parsing lexeme mappings file...");
-			Element root = lexemeMapping.getRootElement();
-			List<Element> synsets = root.elements("Synset");
-			for(Element eSynset : synsets){
-				net.sf.extjwnl.data.Synset synset = null;
-				try {
-					synset = wordnet.getSynsetAt(POS.getPOSForLabel(eSynset.attributeValue("pos")), Long.parseLong(eSynset.attributeValue("offset")));
-				} catch (Exception e) {
-					StringBuffer sb = new StringBuffer(256);
-					sb.append("Error on retriving WordNet's synset").append('\n');
-					sb.append("printing stack trace and closing vm!");
-					logger.error(sb.toString());
-					e.printStackTrace();
-					System.exit(1);
-				}
-
-				manuallyMapped.add(synset);
-				if(eSynset.attributeValue("approved").equalsIgnoreCase("yes")){
-					/*
-					 * iterate over all example sentences and record the correspondences
-					 */
-					List<Element> eExampleSentences = eSynset.elements("ExampleSentence");
-					for(Element eExampleSentence : eExampleSentences){
-						String exampleSentence = eExampleSentence.attributeValue("text");
-						Word lexeme = synset.getWords().get(Integer.parseInt(eExampleSentence.attributeValue("index")));
-						List<String> temp = examples.get(lexeme);
-						if(temp == null) {
-                            temp = new ArrayList<String>();
-                        }
-						temp.add(exampleSentence);
-						examples.put(lexeme, temp);
-					}
-				}
-			}
-			logger.info("done parsing");
-			}
 	}
 
+	/** Transforms WordNet synsets to UBY synsets and stores the result in
+	 *  member variables. Initialization is done only once. */
+	public void initialize() throws JWNLException {
+		if (initialized)
+			return;
 
-
-	/**
-	 * This method initializes the {@link SynsetGenerator}.
-	 */
-	public void initialize(){
-		if(!initialized){
-		// extract all WordNet's synsets and create the associated Uby-LMF synset for each of them
-		for(POS pos : POS.getAllPOS()){
-			Iterator<net.sf.extjwnl.data.Synset> synIter = null;
-			try {
-				synIter = wordnet.getSynsetIterator(pos);
-			} catch (JWNLException e) {
-				e.printStackTrace();
-			}
+		// Create UBY-LMF synsets.
+		for (POS pos : POS.getAllPOS()) {
 			logger.info("processing " + pos.getLabel());
-			while(synIter.hasNext()){
+
+			Iterator<net.sf.extjwnl.data.Synset> synIter = wordnet.getSynsetIterator(pos);
+			while (synIter.hasNext()) {
 				net.sf.extjwnl.data.Synset wnSynset = synIter.next();
+
+				// Synset.
 				Synset lmfSynset = new Synset();
-				lmfSynset.setId(getNewID());
-				lmfSynsetWNSynsetMappings.put(lmfSynset, wnSynset);
+				lmfSynset.setId("WN_Synset_" + lmfSynsetNumber);
+				lmfSynsetNumber++;
+				synsets.add(lmfSynset);
 				wnSynsetLMFSynsetMappings.put(wnSynset, lmfSynset);
 
-				List<Definition> definitions = new LinkedList<Definition>();
-
-				// Generating Definition(s) of the Synset
-				for(String definitionString : getDefinitions(wnSynset)){
+				// Definition.
+				List<String> statementTexts = new ArrayList<String>();
+				String senseDefinition = processGloss(wnSynset, lmfSynset, statementTexts);
+				if (senseDefinition != null && !senseDefinition.isEmpty()) {
+					List<Definition> definitions = new LinkedList<Definition>();
 					Definition definition = new Definition();
-					TextRepresentation textRepresentation = new TextRepresentation();
-					textRepresentation.setLanguageIdentifier(ELanguageIdentifier.ENGLISH);
-					textRepresentation.setWrittenText(definitionString);
-					List<TextRepresentation> textRepresentations = new LinkedList<TextRepresentation>();
-					textRepresentations.add(textRepresentation);
-					definition.setTextRepresentations(textRepresentations);
+					definition.setTextRepresentations(
+							WNConvUtil.makeTextRepresentationList(senseDefinition,
+									ELanguageIdentifier.ENGLISH));
 					definitions.add(definition);
+					lmfSynset.setDefinitions(definitions);
+
+					// Statement.
+					if (statementTexts.size() > 0) {
+						List<Statement> statements = new ArrayList<Statement>();
+						for (String statementText : statementTexts) {
+							Statement statement = new Statement();
+							statement.setStatementType(EStatementType.usageNote);
+							statement.setTextRepresentations(
+									WNConvUtil.makeTextRepresentationList(statementText,
+											ELanguageIdentifier.ENGLISH));
+							statements.add(statement);
+						}
+						definition.setStatements(statements);
+					}
 				}
 
-				lmfSynset.setDefinitions(definitions);
-
-				// *** Creating MonolingualExternalRef ***//
+				// MonolingualExternalRef.
 				MonolingualExternalRef monolingualExternalRef = new MonolingualExternalRef();
-				// Generating MonolingualExternalRef ID
-				monolingualExternalRef.setExternalSystem(resourceVersion + "_" + SYNSET_OFFSET);
-				StringBuffer sb = new StringBuffer(16);
-				sb.append(wnSynset.getPOS());
-				sb.append(" ");
-				sb.append(wnSynset.getOffset());
-				monolingualExternalRef.setExternalReference(sb.toString());
+				monolingualExternalRef.setExternalSystem(resourceVersion + "_" + EXTERNAL_SYSTEM_SYNSET_OFFSET);
+				monolingualExternalRef.setExternalReference(wnSynset.getPOS() + " " + wnSynset.getOffset());
+//TODO: implications?				monolingualExternalRef.setExternalReference(wnSynset.getOffset() + "-" + wnSynset.getPOS().getKey());
 				List<MonolingualExternalRef> monolingualExternalRefs = new LinkedList<MonolingualExternalRef>();
 				monolingualExternalRefs.add(monolingualExternalRef);
 				lmfSynset.setMonolingualExternalRefs(monolingualExternalRefs);
 			}
+		}
+
+		// Write out missing annotations.
+		/** /
+		if (annotationList != null) {
+			for (int i = 0; i < 10; i++)
+				System.out.println(i + "\t" + annotationCounter[i]);
+
+			try {
+				logger.warn("Example disambiguation missing. Check annotations.txt");
+				PrintWriter writer = new PrintWriter("annotations.txt");
+				for (String annotLine : annotationList)
+					writer.println(annotLine);
+				writer.close();
+			} catch (FileNotFoundException e) {
+				throw new RuntimeException(e);
 			}
-
-		/*
-		 * Rewriting the xml file containain manually entered mappings of example sentences
-		 */
-		logger.info("rewriting lexeme mapping file...");
-		OutputFormat format = OutputFormat.createPrettyPrint();
-		format.setEncoding("UTF-8");
-		XMLWriter output;
-		try {
-
-			output = new XMLWriter(new FileWriter(lexemeMappingXML), format);
-			output.write(lexemeMapping);
-			output.close();
-		} catch (IOException e) {
-			StringBuffer sb = new StringBuffer(256);
-			sb.append("Error on rewriting lexeme mapping file ").append(lexemeMappingXML).append('\n');
-			sb.append("printing stack trace");
-			logger.warn(sb.toString());
-			e.printStackTrace();
 		}
-		logger.info("done");
+		/**/
+
 		initialized = true;
-		}
 	}
 
-	/**
-	 * Returns the sorted list of all synsets generated by this generator
-	 * @return a sorted list of all synsets generated by this generator
-	 * @see Synset
-	 */
-	public List<Synset> getSynsets(){
-		List<Synset> result = new LinkedList<Synset>();
-		result.addAll(lmfSynsetWNSynsetMappings.keySet());
-		Collections.sort(result);
+	protected String processGloss(final net.sf.extjwnl.data.Synset wnSynset,
+			final Synset lmfSynset, final List<String> statements)
+			throws JWNLException {
+		// Split gloss into sense definition and sense examples.
+		if (wnSynset.getOffset() == 3129222L)
+			System.out.println();
+		String gloss = wnSynset.getGloss();
+		String senseDefinition = "";
+		String senseExamples = null;
+		boolean endsWithDelim = false;
+		do {
+			int idx = gloss.indexOf("\"");
+			if (idx >= 0) {
+				senseDefinition = senseDefinition + gloss.substring(0, idx);
+				gloss = gloss.substring(idx + 1);
+				senseExamples = gloss;
+			} else
+				senseDefinition = senseDefinition + gloss + ";";
+			String tmp = senseDefinition.trim();
+			endsWithDelim = (";:.,)".indexOf(tmp.charAt(tmp.length() - 1)) >= 0);
+			if (!endsWithDelim)
+				senseDefinition = senseDefinition + "\"";
+		} while (!endsWithDelim);
+		senseDefinition = senseDefinition.trim();
+		if (!senseDefinition.isEmpty())
+			senseDefinition = senseDefinition.substring(0, senseDefinition.length() - 1).trim();
+
+		// Separate sense examples.
+		if (senseExamples != null) {
+			int idx;
+			do {
+				idx = senseExamples.indexOf("\"");
+				if (idx >= 0) {
+					String senseExample = senseExamples.substring(0, idx);
+					processExample(wnSynset, senseExample, statements);
+					senseExamples = senseExamples.substring(idx + 1);
+
+					idx = senseExamples.indexOf("\"");
+					if (idx >= 0)
+						senseExamples = senseExamples.substring(idx + 1);
+				}
+			} while (idx >= 0);
+		}
+		return senseDefinition;
+	}
+
+	protected String cleanText(final String text) {
+		StringBuilder result = new StringBuilder();
+		boolean wasWhitespace = false;
+		for (char c : text.toCharArray())
+			if (" \t\n\r.,!?:;()`'-".indexOf(c) >= 0) {
+				if (!wasWhitespace)
+					result.append(' ');
+				wasWhitespace = true;
+			} else {
+				result.append(Character.toLowerCase(c));
+				wasWhitespace = false;
+			}
+		return result.toString().trim();
+	}
+
+	protected void processExample(final net.sf.extjwnl.data.Synset wnSynset,
+			final String senseExample, final List<String> statements)
+			throws JWNLException {
+		// Clean example and sense lemmas.
+		String example = " " + cleanText(senseExample) + " ";
+		List<ExampleMapping> mappings = new ArrayList<ExampleMapping>();
+		for (Word word : wnSynset.getWords())
+			mappings.add(new ExampleMapping(word.getSenseKey(), cleanText(word.getLemma())));
+
+		// Step 1: Check if there is a manual disambiguation.
+//		String senseKey = manualDisambiguation.get(wnSynset.getOffset() + wnSynset.getPOS().getKey());
+//		if (senseKey != null)
+//			saveExampleMapping(senseExample, senseKey);
+
+		// Step 2: Check whether the lemma is a substring.
+		boolean hasExactWordMatch = false;
+		boolean hasPrefixMatch = false;
+		for (ExampleMapping mapping : mappings) {
+			String lemma = mapping.getLemma();
+			int idx = example.indexOf(" " + lemma + " ");
+			if (idx >= 0) {
+				// Found exact or prefix match.
+				mapping.setScore(3);
+				hasExactWordMatch = true;
+				continue;
+			}
+			idx = example.indexOf(" " + lemma);
+			if (idx >= 0) {
+				mapping.setScore(2);
+				hasPrefixMatch = true;
+				continue;
+			}
+
+			// Check for prefix matches for the full list of lemma tokens.
+			String regEx = lemma.replace(" ", "\\S*? ") + "\\S*?";
+			if (Pattern.compile(regEx).matcher(example).find()) {
+				mapping.setScore(1);
+				hasPrefixMatch = true;
+			}
+			/*boolean hasPrefixTokenMatch = true;
+			List<String> lemmaTokens = segmentTokens(lemma);
+			for (String lemmaToken : lemmaTokens) {
+				if (example.indexOf(" " + lemmaToken) < 0) {
+					hasPrefixTokenMatch = false;
+					break;
+				}
+			}
+			if (hasPrefixTokenMatch) {
+				mapping.setScore(1);
+				hasPrefixMatch = true;
+			}*/
+		}
+
+		if (hasExactWordMatch) {
+			saveExampleMappings(senseExample, mappings, 3, true);
+			annotationCounter[0]++;
+			return;
+		}
+		annotationCounter[1]++;
+		if (hasPrefixMatch) {
+			saveExampleMappings(senseExample, mappings, 1, true);
+			annotationCounter[2]++;
+			return;
+		}
+		annotationCounter[3]++;
+
+		// Step 3: Match single word lemmas with all base forms.
+		Set<String> baseForms = makeBaseFormList(example);
+		boolean hasBaseFormMatch = false;
+		for (ExampleMapping mapping : mappings) {
+			String lemma = mapping.getLemma();
+			if (baseForms.contains(lemma)) {
+				mapping.addScore(1);
+				hasBaseFormMatch = true;
+			}
+		}
+
+		if (hasBaseFormMatch) {
+			saveExampleMappings(senseExample, mappings, 1, true);
+			annotationCounter[4]++;
+			return;
+		}
+		annotationCounter[5]++;
+
+		// Step 4: Match multi-word lemmas with all base forms.
+		hasBaseFormMatch = false;
+		for (ExampleMapping mapping : mappings) {
+			String lemma = mapping.getLemma();
+			List<String> lemmaTokens = segmentTokens(lemma);
+			boolean hasMultiWordBaseFormMatch = true;
+			for (String lemmaToken : lemmaTokens)
+				if (!baseForms.contains(lemmaToken)) {
+					hasMultiWordBaseFormMatch = false;
+					break;
+				}
+			if (hasMultiWordBaseFormMatch) {
+				mapping.addScore(1);
+				hasBaseFormMatch = true;
+			}
+		}
+
+		if (hasBaseFormMatch) {
+			saveExampleMappings(senseExample, mappings, 1, false);
+			annotationCounter[6]++;
+			return;
+		}
+		annotationCounter[7]++;
+
+		// Step 4: Find the longest prefix matches of all lemma tokens.
+		int maxScore1 = 0;
+		int maxScore2 = 0;
+		for (ExampleMapping mapping : mappings) {
+			String lemma = mapping.getLemma();
+			List<String> lemmaTokens = segmentTokens(lemma);
+			for (String lemmaToken : lemmaTokens) {
+				// Trim each lemma token letter by letter and check for the longest
+				// prefix match in the example sentence.
+				int tokenLen = lemmaToken.length();
+				for (int i = 0; i < tokenLen - 2; i++) {
+					String lemmaPrefix = " " + lemmaToken.substring(0, tokenLen - i);
+					if (example.indexOf(lemmaPrefix) >= 0) {
+						mapping.addScore(lemmaPrefix.length() - 1);
+						break;
+					}
+				}
+
+			}
+
+			int score = mapping.getScore();
+			if (score >= maxScore1) {
+				maxScore2 = maxScore1;
+				maxScore1 = score;
+			} else
+			if (score >= maxScore2)
+				maxScore2 = score;
+		}
+
+		if (maxScore1 > 0 && maxScore2 == 0) {
+			saveExampleMappings(senseExample, mappings, maxScore1, false);
+			annotationCounter[8]++;
+			return;
+		}
+		annotationCounter[9]++;
+
+		// Step 5: This example requires manual disambiguation. Add it to the
+		// 	annotation list.
+		if (annotationList == null)
+			annotationList = new ArrayList<String>();
+		annotationList.add(wnSynset.getOffset() + wnSynset.getPOS().getKey() + "\t" + senseExample);
+		for (Word word : wnSynset.getWords())
+			annotationList.add("\t\t" + word.getSenseKey() + "\t" + word.getLemma());
+		annotationList.add("");
+
+		// Step 6: If we still have no clue about the example, add it to the
+		// 	statement class.
+		statements.add(senseExample);
+	}
+
+	protected List<String> segmentTokens(String text) {
+		List<String> result = new ArrayList<String>();
+		int idx;
+		String remainingString = text;
+		do {
+			idx = remainingString.indexOf(' ');
+			String token;
+			if (idx >= 0) {
+				token = remainingString.substring(0, idx);
+				remainingString = remainingString.substring(idx + 1);
+			} else
+				token = remainingString;
+			result.add(token);
+		} while (idx >= 0);
 		return result;
 	}
 
+	protected Set<String> makeBaseFormList(final String example)
+			throws JWNLException {
+		if (morphProcessor == null)
+			morphProcessor = wordnet.getMorphologicalProcessor();
 
+		Set<String> result = new TreeSet<String>();
+		int idx;
+		String remainingString = example;
+		do {
+			idx = remainingString.indexOf(' ');
+			String token;
+			if (idx >= 0) {
+				token = remainingString.substring(0, idx);
+				remainingString = remainingString.substring(idx + 1);
+			} else
+				token = remainingString;
 
-	/**
-	 * Generates a Synset-ID.<br>
-	 * The running number used for the creation of the id is incremented each time thie method is called.
-	 * @return an ID of a {@link Synset}
-	 */
-	private String getNewID() {
-		StringBuffer sb = new StringBuffer(64);
-		sb.append("WN_Synset_").append(lmfSynsetNumber);
-		lmfSynsetNumber++;
-		return sb.toString();
+			// Generate base forms for all POS to avoid POS tagging errors.
+			if (!token.isEmpty())
+				result.add(token);
+			for (POS pos : POS.values())
+				result.addAll(morphProcessor.lookupAllBaseForms(pos, token));
+		} while (idx >= 0);
+
+		return result;
+	}
+
+	protected void saveExampleMappings(final String example,
+			final List<ExampleMapping> mappings, final int minScore,
+			final boolean preferLongerLemmas) {
+		// Select all senses that scored at least the minimal score.
+		List<ExampleMapping> selection = new ArrayList<ExampleMapping>();
+		for (ExampleMapping mapping : mappings)
+			if (mapping.getScore() >= minScore)
+				selection.add(mapping);
+
+		// If there are ties, prefer the longer ones.
+		if (preferLongerLemmas) {
+			List<ExampleMapping> temp = new ArrayList<ExampleMapping>();
+			for (ExampleMapping mapping1 : selection) {
+				String lemma1 = mapping1.getLemma();
+				boolean select = true;
+				for (ExampleMapping mapping2 : selection) {
+					String lemma2 = mapping2.getLemma();
+					if (lemma1.equals(lemma2))
+						continue;
+
+					if (lemma2.contains(lemma1)) {
+						select = false;
+						break;
+					}
+				}
+				if (select)
+					temp.add(mapping1);
+			}
+			selection = temp;
+		}
+
+		// Save the selected example mappings.
+		for (ExampleMapping mapping : selection)
+			saveExampleMapping(example, mapping.getSenseKey());
+	}
+
+	protected void saveExampleMapping(String example, String senseKey) {
+		List<String> list = examples.get(senseKey);
+		if (list == null) {
+			list = new ArrayList<String>();
+			examples.put(senseKey, list);
+		}
+		list.add(example);
+	}
+
+	/** Returns the list of all UBY synsets generated by this generator. */
+	public List<Synset> getSynsets() {
+		return synsets;
 	}
 
 	/**
@@ -283,21 +526,6 @@ public class SynsetGenerator {
 		return wnSynsetLMFSynsetMappings.get(wnSynset);
 	}
 
-
-
-	/**
-	 * This method returns all mappings between WordNet's synsets, and corresponding Uby-LMF synsets,
-	 * with Uby-LMF synsets as keys.
-	 * @return synset mappings created by this generator
-	 * @see Synset
-	 * @see net.sf.extjwnl.data.Synset
-	 */
-	Map<Synset, net.sf.extjwnl.data.Synset> getLMFSynsetWNSynsetMappings() {
-		return lmfSynsetWNSynsetMappings;
-	}
-
-
-
 	/**
 	 * This method returns all mappings between WordNet's synsets, and corresponding Uby-LMF synsets,
 	 * with WordNet's synsets as keys.
@@ -310,219 +538,6 @@ public class SynsetGenerator {
 	}
 
 	/**
-	 * This method consumes WordNet's synset and returns a list of all definitions,
-	 * contained in synset's gloss.<br>
-	 * As a side-effect, the method also extracts the example sentences out of the gloss,
-	 * and mapps them to associated lexemes in the synset in {@link SynsetGenerator#examples}. <br>
-	 * If the algorithm, used in the method, does not succesfully map the found example sentences to lexemes of the synset,
-	 * an entry is created in the {@link SynsetGenerator#lexemeMapping}-document,<br>
-	 * used for entering manual mappings.
-	 * @param synset WordNet's synset
-	 * @return a {@link List} of definitions contained in synset's gloss
-	 * @see net.sf.extjwnl.data.Synset
-	 * @see Word
-	 */
-	private List<String> getDefinitions(net.sf.extjwnl.data.Synset synset){
-		String gloss = synset.getGloss();
-		List<String> result = new ArrayList<String>();
-		String[] parts = gloss.split(";");
-		List<Word> lexemes = synset.getWords();
-		Map<Word, String> lemmaCleaned = null;
-		List<String> foundExamples = new LinkedList<String>(); // found example sentences in this synset
-
-		// <Lexeme> <segments>, <lemmatized segments>
-		HashMap<Word, List<List<String>>> lemmaForms = null;
-
-		boolean needsManualEntering = false;
-
-		for(String part : parts) {
-            if(!part.contains("\"")) {
-                // definitions do not contain "
-				result.add(part.trim());
-            }
-            else
-				/*
-				 * Finding correspondences
-				 */
-				if(!manuallyMapped.contains(synset)){
-					// example sentences contain "
-					String example = part.replaceAll("\"", "").trim();
-					foundExamples.add(example);
-
-					if(needsManualEntering)
-                     {
-                        continue; // no need to do further disambiguation if the synset needs manual mapping
-                    }
-
-					if(lexemes.size() == 1){
-						// synset has only one lexeme
-						Word theLexeme = lexemes.get(0);
-						List<String> temp = examples.get(theLexeme);
-						if(temp == null) {
-                            temp = new ArrayList<String>();
-                        }
-						temp.add(example);
-
-						examples.put(theLexeme, temp);
-					}
-					else{
-						// synset has more than one lexeme - need to find the one that corresponds to the example
-
-						// initialize lemmaForms
-						if(lemmaForms == null){
-							lemmaForms = new HashMap<Word, List<List<String>>>();
-							for(Word lexeme : lexemes){
-								List<List<String>> aList= new ArrayList<List<String>>(2);
-								aList.add(0, null);
-								aList.add(1, null);
-								lemmaForms.put(lexeme, aList);
-							}
-						}
-
-						List<Word> correspondingLexemes = new ArrayList<Word>();
-
-						// PHASE 1 working with not-lemmatized tokens
-						List<String> tokenizedExample = WNConvUtil.tokens(example);
-						for(Word lexeme : lexemes){
-							// iterate over every lexeme and check if the example corresponds to it
-							List<String> lexemeTokens = lemmaForms.get(lexeme).get(0);
-
-							if(lexemeTokens == null){
-								// tokenize every lexeme
-								if(lemmaCleaned == null) {
-                                    lemmaCleaned = new HashMap<Word, String>();
-                                }
-
-								String lemma = lemmaCleaned.get(lexeme);
-								if(lemma == null){
-									lemma = lexeme.getLemma();
-									if(lexeme.getPOS().equals(POS.ADJECTIVE) && lemma.contains("("))
-                                     {
-                                        lemma = lemma.substring(0, lemma.indexOf("(")); // remove the syntactic marker
-                                    }
-									lemma = lemma.replaceAll("_", " ").trim();
-									lemmaCleaned.put(lexeme, lemma);
-								}
-									lexemeTokens = WNConvUtil.tokens(lemma);
-									lemmaForms.get(lexeme).set(0, lexemeTokens);
-							}
-
-							if(tokenizedExample.containsAll(lexemeTokens)) {
-                                correspondingLexemes.add(lexeme);
-                            }
-						}
-
-						// PHASE 2 working with lemmatized tokens if no corresponding lexemes found
-						List<String> lemmatizedExample = WNConvUtil.lemmatize(example);
-						if(correspondingLexemes.isEmpty()) {
-                            for(Word lexeme : lexemes){
-								List<String> lemmatizedTokens = lemmaForms.get(lexeme).get(1);
-								if(lemmatizedTokens == null){
-									lemmatizedTokens = WNConvUtil.lemmatize(lemmaCleaned.get(lexeme));
-									lemmaForms.get(lexeme).set(1, lemmatizedTokens);
-								}
-								if(lemmatizedExample.containsAll(lemmatizedTokens)) {
-                                    correspondingLexemes.add(lexeme);
-                                }
-							}
-                        }
-
-						// EVALUATE THE FINDINGS START
-
-						Word correspondingLexeme = null; // the corresponding lexeme of example
-
-
-						if(correspondingLexemes.size() == 1) {
-                            correspondingLexeme = correspondingLexemes.get(0);
-                        }
-                        else
-							if(correspondingLexemes.size() > 1){
-								// choose the right lexeme
-								// the lexeme with the highest number of tokens is the right one
-								boolean sameLength = false;
-								Word longestLexeme = null;
-								int longestLexemeNTokens = -1;
-								for(Word lexeme : correspondingLexemes){
-									int temp = lemmaForms.get(lexeme).get(0).size();
-									if(temp > longestLexemeNTokens){
-										longestLexeme = lexeme;
-										longestLexemeNTokens = temp;
-										sameLength = false;
-									}
-									else if(temp == longestLexemeNTokens) {
-                                        sameLength = true;
-                                    }
-								}
-								if(!sameLength && longestLexeme != null) {
-                                    correspondingLexeme = longestLexeme;
-                                }
-							}
-
-
-						if(correspondingLexeme == null) {
-                            needsManualEntering = true;
-                        }
-                        else{
-							List<String> previous = examples.get(correspondingLexeme);
-							if(previous == null) {
-                                previous = new ArrayList<String>();
-                            }
-							previous.add(example);
-							// add the record
-							examples.put(correspondingLexeme, previous);
-							}
-						}
-					}
-        }
-
-		if(needsManualEntering) {
-            /*
-			 * if unmapped examples occur
-			 * add the synset to the mapping file
-			 * for manually entering the correspondences
-			 */
-			addToMappingFile(synset, foundExamples);
-        }
-
-		return result;
-
-	}
-
-	/**
-	 * This method consumes a WordNet's synset and creates the appropriate record
-	 * in the {@link SynsetGenerator#lexemeMappingXML}-document,<br>
-	 * for manual entering the correspondences between example sentences and lexemes of the synset.
-	 * @param synset WordNet's synset for which lexemes the example sentences need manual entering
-	 * @param examples list of example sentences in the synset's gloss
-	 * @see net.sf.extjwnl.data.Synset
-	 */
-	private void addToMappingFile(net.sf.extjwnl.data.Synset synset, List<String> examples) {
-		Element root = lexemeMapping.getRootElement();
-		Element eSynset = root.addElement("Synset");
-		eSynset.addAttribute("approved", "no");
-		eSynset.addAttribute("pos", synset.getPOS().getLabel());
-		eSynset.addAttribute("offset", Long.toString(synset.getOffset()));
-		List<Word> lexemes = synset.getWords();
-		for(int i=0; i<lexemes.size(); i++){
-			Element eLexeme = eSynset.addElement("Lexeme");
-			eLexeme.addAttribute("index", Integer.toString(i));
-			eLexeme.addAttribute("lemma", lexemes.get(i).getLemma());
-		}
-
-		for(String example : examples){
-			Element eExampleSentence = eSynset.addElement("ExampleSentence");
-			eExampleSentence.addAttribute("index", "NULL");
-			eExampleSentence.addAttribute("text", example);
-		}
-		StringBuffer sb = new StringBuffer(128);
-		sb.append("Synset needs manual entering of the example-sentence mappings: ").append(synset).append('\n');
-		sb.append("The synset will be logged for manual entering of the correspondences");
-		logger.info(sb.toString());
-	}
-
-
-
-	/**
 	 * This method consumes a WordNet's lexeme and returns a list of lexeme's example-sentences, extracted by this generator<br>
 	 * from lexeme's synset.
 	 * @param lexeme a WordNet's lexeme which example sentences should be returned
@@ -531,15 +546,7 @@ public class SynsetGenerator {
 	 * @see net.sf.extjwnl.data.Synset
 	 */
 	public List<String> getExamples(Word lexeme){
-		return examples.get(lexeme);
-	}
-
-	/**
-	 * This method returns the WordNet-{@link Dictionary} used by this generator.
-	 * @return WordNet's-Dictionary instance used by this generator
-	 */
-	public Dictionary getWordnet() {
-		return wordnet;
+		return examples.get(lexeme.getSenseKey());
 	}
 
 }

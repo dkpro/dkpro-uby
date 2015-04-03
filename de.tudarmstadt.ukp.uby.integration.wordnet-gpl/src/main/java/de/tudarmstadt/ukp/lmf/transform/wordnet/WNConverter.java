@@ -22,10 +22,12 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.LinkedList;
 
+import net.sf.extjwnl.JWNLException;
+import net.sf.extjwnl.dictionary.Dictionary;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import net.sf.extjwnl.dictionary.Dictionary;
 import de.tudarmstadt.ukp.lmf.model.core.GlobalInformation;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
@@ -49,10 +51,10 @@ public class WNConverter {
 	private final LexicalResource lexicalResource;
 
 	private InputStream subcatStream; // subcat mapping file
-	private File exMapping; // the file containing manually entered mappings of the lexemes and example sentences
+
 	private final String dtd_version;
 	private final String resourceVersion;
-	
+
 	private final Log LOG = LogFactory.getLog(getClass());
 
 
@@ -65,101 +67,106 @@ public class WNConverter {
 	 * @param dtd_version specifies the version of the .dtd which will be written to lexicalResource
 	 * @param exMappingPath path of the file containing manually entered mappings of lexemes and example sentences
 	 */
-	public WNConverter(File dictionaryPath, Dictionary wordNet, LexicalResource lexicalResource, String resourceVersion, 
-			String dtd, String exMappingPath) {
+	public WNConverter(final File dictionaryPath, final Dictionary wordNet,
+			final LexicalResource lexicalResource, final String resourceVersion,
+			final String dtd) {
 		this.dictionaryPath = dictionaryPath;
 		this.extWordnet = wordNet;
 		this.lexicalResource = lexicalResource;
-		this.dtd_version = dtd;
 		this.resourceVersion = resourceVersion;
-
+		this.dtd_version = dtd;
 		try {
 			this.subcatStream = getClass().getClassLoader().getResource("WordNetSubcatMappings/wnFrameMapping.txt").openStream();
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			LOG.error("Unable to load subcat mapping file. Aborting all operations");
 			System.exit(1);
 		}
+	}
 
-		try {
-			exMapping = new File(exMappingPath);
-		}
-		catch (Exception e) {
+	/** @deprecated Use alternative constructor instead! */
+	@Deprecated
+	public WNConverter(File dictionaryPath, Dictionary wordNet, LexicalResource lexicalResource, String resourceVersion,
+			String dtd, String exMappingPath) {
+		this(dictionaryPath, wordNet, lexicalResource, resourceVersion, dtd);
+		/*try {
+			File exMapping = new File(exMappingPath);
+		} catch (Exception e) {
 			LOG.error(
 					"Unable to load the file containing manually entered mappings of example sentences. Aborting all operations");
 			System.exit(1);
-		}
-
+		}*/
 	}
 
 	/**
 	 * Converts the informations provided by the initialized WordNet-{@link Dictionary} instance to LMF-format. <br>
 	 * The result of the conversion can be obtained by calling {@link WNConverter#getLexicalResource()}
 	 */
-	public void toLMF(){
-		LOG.info("Started converting WordNet to LMF...");
-		SubcategorizationFrameExtractor subcategorizationFrameExtractor = new SubcategorizationFrameExtractor(subcatStream);
+	public void toLMF() {
+		try {
+			LOG.info("Started converting WordNet to LMF...");
+			SubcategorizationFrameExtractor subcategorizationFrameExtractor = new SubcategorizationFrameExtractor(subcatStream);
 
-		// Setting attributes of LexicalResource
-		lexicalResource.setName("WordNet");
-		lexicalResource.setDtdVersion(dtd_version);
+			// Setting attributes of LexicalResource
+			lexicalResource.setName("WordNet");
+			lexicalResource.setDtdVersion(dtd_version);
 
+			// *** Setting GlobalInformation *** //
+			GlobalInformation globalInformation = new GlobalInformation();
+			globalInformation.setLabel("LMF representation of WordNet 3.0");
+			lexicalResource.setGlobalInformation(globalInformation);
 
-		// *** Setting GlobalInformation *** //
-		GlobalInformation globalInformation = new GlobalInformation();
-		globalInformation.setLabel("LMF representation of WordNet 3.0");
-		lexicalResource.setGlobalInformation(globalInformation);
+			//*** Setting Lexicon (only one since WordNet is monolingual)***//
+			Lexicon lexicon = new Lexicon();
+			lexicon.setLanguageIdentifier(ELanguageIdentifier.ENGLISH);
+			lexicon.setId("WN_Lexicon_0");
+			lexicon.setName("WordNet");
+			LinkedList<Lexicon> lexicons = new LinkedList<Lexicon>();
+			lexicons.add(lexicon);
+			lexicalResource.setLexicons(lexicons);
 
-		//*** Setting Lexicon (only one since WordNet is monolingual)***//
-		Lexicon lexicon = new Lexicon();
-		lexicon.setLanguageIdentifier(ELanguageIdentifier.ENGLISH);
-		lexicon.setId("WN_Lexicon_0");
-		lexicon.setName("WordNet");
-		LinkedList<Lexicon> lexicons = new LinkedList<Lexicon>();
-		lexicons.add(lexicon);
-		lexicalResource.setLexicons(lexicons);
+			// *** Creating Synsets *** //
+			LOG.info("Generating Synsets...");
+			SynsetGenerator synsetGenerator = new SynsetGenerator(extWordnet, resourceVersion);
+			synsetGenerator.initialize();
+			// Setting Synsets
+			lexicon.setSynsets(synsetGenerator.getSynsets());
+			LOG.info("Generating Synsets done");
 
-		// *** Creating Synsets *** //
-		LOG.info("Generating Synsets...");
-		SynsetGenerator synsetGenerator = new SynsetGenerator(extWordnet, exMapping, resourceVersion);
-		synsetGenerator.initialize();
-		// Setting Synsets
-		lexicon.setSynsets(synsetGenerator.getSynsets());
-		LOG.info("Generating Synsets done");
+			// *** Creating LexicalEntries *** //
+			LOG.info("Generating LexicalEntries...");
+			LexicalEntryGenerator lexicalEntryGenerator = new LexicalEntryGenerator(dictionaryPath, extWordnet,
+					synsetGenerator, subcategorizationFrameExtractor, resourceVersion);
+			lexicon.setLexicalEntries(lexicalEntryGenerator.getLexicalEntries());
+			LOG.info("Generating LexicalEntries done");
 
-		// *** Creating LexicalEntries *** //
-		LOG.info("Generating LexicalEntries...");
-		LexicalEntryGenerator lexicalEntryGenerator = new LexicalEntryGenerator(dictionaryPath, extWordnet, 
-				synsetGenerator, subcategorizationFrameExtractor, resourceVersion);
-		lexicon.setLexicalEntries(lexicalEntryGenerator.getLexicalEntries());
-		LOG.info("Generating LexicalEntries done");
+			// *** Creating SynsetRelations *** //
+			LOG.info("Generating SynsetRelations...");
+			SynsetRelationGenerator synsetRelationGenerator = new SynsetRelationGenerator(synsetGenerator, lexicalEntryGenerator);
+			// Update the relatios of previously extracted (and generated) Synsets
+			synsetRelationGenerator.updateSynsetRelations();
+			LOG.info("Generating SynsetRelations done");
 
-		// *** Creating SynsetRelations *** //
-		LOG.info("Generating SynsetRelations...");
-		SynsetRelationGenerator synsetRelationGenerator = new SynsetRelationGenerator(synsetGenerator, lexicalEntryGenerator);
-		// Update the relatios of previously extracted (and generated) Synsets
-		synsetRelationGenerator.updateSynsetRelations();
-		LOG.info("Generating SynsetRelations done");
+			// *** Creating RelatedForms of LexicalEntries *** //
+			LOG.info("Generating RelatedForms...");
+			RelatedFormGenerator relatedFormGenerator = new RelatedFormGenerator(lexicalEntryGenerator);
+			relatedFormGenerator.updateRelatedForms();
+			LOG.info("Generating RelatedForms done");
 
-		// *** Creating RelatedForms of LexicalEntries *** //
-		LOG.info("Generating RelatedForms...");
-		RelatedFormGenerator relatedFormGenerator = new RelatedFormGenerator(lexicalEntryGenerator);
-		relatedFormGenerator.updateRelatedForms();
-		LOG.info("Generating RelatedForms done");
+			// *** Creating SenseRelations *** //
+			LOG.info("Generating SenseRelations...");
+			SenseRelationGenerator senseRelationGenerator = new SenseRelationGenerator(lexicalEntryGenerator);
+			senseRelationGenerator.updateSenseRelations();
+			LOG.info("Generating SenseRelations done");
 
-		// *** Creating SenseRelations *** //
-		LOG.info("Generating SenseRelations...");
-		SenseRelationGenerator senseRelationGenerator = new SenseRelationGenerator(lexicalEntryGenerator);
-		senseRelationGenerator.updateSenseRelations();
-		LOG.info("Generating SenseRelations done");
-
-		// *** Setting SubcategorizationFrames ***//
-		lexicon.setSubcategorizationFrames(subcategorizationFrameExtractor.getSubcategorizationFrames());
-		// setting SemanticPredicates
-		lexicon.setSemanticPredicates(subcategorizationFrameExtractor.getSemanticPredicates());
-		// setting SynSemCorrespondences
-		lexicon.setSynSemCorrespondences(subcategorizationFrameExtractor.getSynSemCorrespondences());
-
+			// *** Setting SubcategorizationFrames ***//
+			lexicon.setSubcategorizationFrames(subcategorizationFrameExtractor.getSubcategorizationFrames());
+			// setting SemanticPredicates
+			lexicon.setSemanticPredicates(subcategorizationFrameExtractor.getSemanticPredicates());
+			// setting SynSemCorrespondences
+			lexicon.setSynSemCorrespondences(subcategorizationFrameExtractor.getSynSemCorrespondences());
+		} catch (JWNLException e) {
+			throw new RuntimeException("UBY-LMF creation failed", e);
+		}
 	}
 
 	/**
