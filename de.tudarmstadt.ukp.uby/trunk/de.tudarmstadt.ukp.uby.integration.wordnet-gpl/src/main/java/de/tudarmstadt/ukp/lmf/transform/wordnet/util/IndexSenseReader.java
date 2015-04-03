@@ -20,69 +20,44 @@ package de.tudarmstadt.ukp.lmf.transform.wordnet.util;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 /**
- * Intstance of this class parses index.sense file of
- * <a href="URL#http://wordnet.princeton.edu/">WordNet 3.0</a>
- * @author Zijad Maksuti
- *
+ * Intstance of this class parses index.sense file of WordNet.
  */
 public class IndexSenseReader {
 
 	private File indexSense; // index.sense - file
-
 	private Map<String, String> senseKeySenseNumberMpg; // mappings between sense keys and sense numbers
-
-	private final Log logger = LogFactory.getLog(getClass());
 
 	/**
 	 * Initializes this instance of {@link IndexSenseReader} by parsing the index.sense file
 	 */
 	public void initialize(final File indexSenseFile) {
 		indexSense = indexSenseFile;
-
 		senseKeySenseNumberMpg = new HashMap<String, String>();
-
-		read();
+		try {
+			read();
+		} catch (IOException e) {
+			throw new RuntimeException("Could not read index.sense file at "
+					+ indexSenseFile, e);
+		}
 	}
 
-	/**
-	 * This method parses index.sense file
-	 */
-	private void read() {
-		BufferedReader br = null;
+	/** This method parses index.sense file */
+	protected void read() throws IOException {
+		BufferedReader reader = new BufferedReader(new FileReader(indexSense));
 		try {
-			br = new BufferedReader(new FileReader(indexSense));
-		} catch (FileNotFoundException e) {
-			StringBuffer sb = new StringBuffer(256);
-			sb.append("Could not open index.sense file at ");
-			sb.append(indexSense).append('\n');
-			sb.append("closing vm");
-			logger.error(sb.toString());
-			System.exit(1);
-		}
-
-		String line = null;
-		 try {
-			while ((line = br.readLine()) != null){
-				 String[] parts = line.split(" ");
-				 senseKeySenseNumberMpg.put(parts[0], parts[2]);
-			 }
-		} catch (IOException e) {
-			StringBuffer sb = new StringBuffer(256);
-			sb.append("Error while reading a line of index.sense file located at ");
-			sb.append(indexSense).append('\n');
-			sb.append("closing vm");
-			logger.error(sb.toString());
-			System.exit(1);
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				String[] parts = line.split(" ");
+				senseKeySenseNumberMpg.put(parts[0], parts[2]);
+			}
+		} finally {
+			reader.close();
 		}
 	}
 
@@ -91,7 +66,7 @@ public class IndexSenseReader {
 	 * @param senseKey the sense key of a lexeme, for which sense number should be returned
 	 * @return sense number of the lexeme associated to the consumed senseKey or null, <br> if index.sense file parsed by this instance of {@link IndexSenseReader} contains no entry for the consumed senseKey
 	 */
-	public String getSenseNumber(String senseKey){
+	public String getSenseNumber(String senseKey) {
 		return senseKeySenseNumberMpg.get(senseKey);
 	}
 

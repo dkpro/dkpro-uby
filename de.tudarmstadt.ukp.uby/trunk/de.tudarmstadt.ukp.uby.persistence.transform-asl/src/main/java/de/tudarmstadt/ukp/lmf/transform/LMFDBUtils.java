@@ -47,6 +47,7 @@ public class LMFDBUtils {
 		// public static  void createTables(DBConfig dbConfig/*, boolean constraints*/) 
 		System.out.println("CREATE TABLES");
 		Configuration cfg = HibernateConnect.getConfiguration(dbConfig);
+		cfg.setProperty("hibernate.hbm2ddl.auto", "none");
 		SchemaExport  se = new SchemaExport(cfg);
 		se.create(true, true);
 		
@@ -76,6 +77,7 @@ public class LMFDBUtils {
 	public static void dropTables(final DBConfig dbConfig) {
 		System.out.println("DROP TABLES");
 		Configuration cfg = HibernateConnect.getConfiguration(dbConfig);
+		cfg.setProperty("hibernate.hbm2ddl.auto", "none");
 		SessionFactory sf = cfg.buildSessionFactory(
 				new ServiceRegistryBuilder().applySettings(
 				cfg.getProperties()).buildServiceRegistry());

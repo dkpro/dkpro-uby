@@ -19,14 +19,18 @@ package de.tudarmstadt.ukp.lmf.model.semantics;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import de.tudarmstadt.ukp.lmf.model.abstracts.HasMonolingualExternalRefs;
 import de.tudarmstadt.ukp.lmf.model.core.Definition;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
+import de.tudarmstadt.ukp.lmf.model.core.Statement;
 import de.tudarmstadt.ukp.lmf.model.core.TextRepresentation;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
+import de.tudarmstadt.ukp.lmf.model.enums.EStatementType;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasDefinitions;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
@@ -64,8 +68,8 @@ public class Synset extends HasMonolingualExternalRefs implements IHasID, IHasDe
 	// Backlink to Lexicon added for convenience
 	@VarType(type = EVarType.NONE)
 	private Lexicon lexicon;
-	
-	
+
+
 	/**
 	 * Constructs an empty {@link Synset} instance.
 	 *
@@ -214,16 +218,37 @@ public class Synset extends HasMonolingualExternalRefs implements IHasID, IHasDe
 	 * text set
 	 */
 	public String getDefinitionText(){
-		if(definitions.isEmpty()) {
-			return "";
-		}
-		Definition firstDefinition = definitions.get(0);
-		if(firstDefinition.getTextRepresentations().isEmpty()) {
+		if (definitions.isEmpty()) {
 			return null;
 		}
-		else {
+
+		Definition firstDefinition = definitions.get(0);
+		if (firstDefinition.getTextRepresentations().isEmpty()) {
+			return null;
+		} else {
 			return firstDefinition.getTextRepresentations().get(0).getWrittenText();
 		}
+	}
+
+	/** Collects all written texts of {@link SenseExample}s attached to this
+	 *  synset's word senses and all written texts of {@link Statement}s
+	 *  with type {@link EStatementType#usageNote} of any of the the
+	 *  synset's definitions. This method is useful for obtaining the example
+	 *  part of a WordNet gloss (which consists of real sense examples and
+	 *  of additional notes that do not belong to a particular sense). */
+	public Set<String> getUsageExamples() {
+		Set<String> result = new TreeSet<String>();
+		for (Sense sense : senses)
+			if (sense.getSenseExamples() != null)
+				for (SenseExample example : sense.getSenseExamples())
+					result.add(example.getText());
+		if (definitions != null)
+			for (Definition definition : definitions)
+				if (definition.getStatements() != null)
+					for (Statement statement : definition.getStatements())
+						if (statement.getStatementType() == EStatementType.usageNote)
+							result.add(statement.getText());
+		return result;
 	}
 
 	/**
@@ -243,7 +268,7 @@ public class Synset extends HasMonolingualExternalRefs implements IHasID, IHasDe
 	public void setLexicon(Lexicon lexicon) {
 		this.lexicon = lexicon;
 	}
-	
+
 	@Override
 	public String toString(){
 		return this.id == null?"":this.id.toString();
@@ -266,8 +291,9 @@ public class Synset extends HasMonolingualExternalRefs implements IHasID, IHasDe
 	 }
 	@Override
 	public int hashCode() {
-	    int hash = 1;
-	    hash = hash * 31 + this.id==null?0:this.id.hashCode();
-	    return hash;
+		return 31 + (id == null ? 0 : id.hashCode());
+//	    int hash = 1;
+//	    hash = hash * 31 + this.id==null?0:this.id.hashCode(); <-- ChM: ???
+//	    return hash;
 	}
 }

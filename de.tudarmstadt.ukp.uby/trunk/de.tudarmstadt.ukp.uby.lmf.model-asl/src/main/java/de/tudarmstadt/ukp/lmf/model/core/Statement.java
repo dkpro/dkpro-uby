@@ -2,13 +2,13 @@
  * Copyright 2015
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,27 +18,24 @@
 package de.tudarmstadt.ukp.lmf.model.core;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import de.tudarmstadt.ukp.lmf.model.abstracts.HasTextRepresentations;
 import de.tudarmstadt.ukp.lmf.model.enums.EStatementType;
-import de.tudarmstadt.ukp.lmf.model.interfaces.IHasTextRepresentations;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
 /**
- * Statement is a class representing a narrative description and refines or complements
- * {@link Definition}.
- * 
- * @author Zijad Maksuti
- *
+ * Statement is a class representing a narrative description and refines
+ * or complements {@link Definition}.
  */
-public class Statement implements IHasTextRepresentations, Comparable<Statement> {
-	
+public class Statement extends HasTextRepresentations
+		implements Comparable<Statement> {
+
 	// Statement Type of this Statement
 	@VarType(type = EVarType.ATTRIBUTE)
 	private EStatementType statementType;
-	
+
 	// Text Representations of this Statement
 	@VarType(type = EVarType.CHILDREN)
 	private List<TextRepresentation> textRepresentations = new ArrayList<TextRepresentation>();
@@ -79,26 +76,27 @@ public class Statement implements IHasTextRepresentations, Comparable<Statement>
 	public void setTextRepresentations(List<TextRepresentation> textRepresentations) {
 		this.textRepresentations = textRepresentations;
 	}
-	
+
+	@Override
 	public String toString(){
 		StringBuffer sb = new StringBuffer(512);
 		sb.append("Statement ");
 		sb.append("statementType:").append(statementType);
 		sb.append(" textRepresentations:");
-		Collections.sort(textRepresentations);
 		sb.append(textRepresentations);
-		return sb.toString();	
+		return sb.toString();
 	}
 
 	@Override
 	public int compareTo(Statement o) {
 		return this.toString().compareTo(o.toString());
 	}
-	
+
+	@Override
 	public int hashCode(){
 		return this.toString().hashCode();
 	}
-	
+
 	@Override
 	public boolean equals(Object other) {
 	    if (this == other)
@@ -106,6 +104,7 @@ public class Statement implements IHasTextRepresentations, Comparable<Statement>
 	    if (!(other instanceof Statement))
 	      return false;
 	    Statement otherStatement = (Statement) other;
-	    return this.toString().equals(otherStatement.toString());	   
+	    return this.toString().equals(otherStatement.toString());
 	 }
+
 }
