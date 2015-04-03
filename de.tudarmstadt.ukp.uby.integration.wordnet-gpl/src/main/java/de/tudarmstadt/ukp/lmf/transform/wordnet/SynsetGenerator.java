@@ -203,8 +203,6 @@ public class SynsetGenerator {
 			final Synset lmfSynset, final List<String> statements)
 			throws JWNLException {
 		// Split gloss into sense definition and sense examples.
-		if (wnSynset.getOffset() == 3129222L)
-			System.out.println();
 		String gloss = wnSynset.getGloss();
 		String senseDefinition = "";
 		String senseExamples = null;
@@ -269,12 +267,12 @@ public class SynsetGenerator {
 		for (Word word : wnSynset.getWords())
 			mappings.add(new ExampleMapping(word.getSenseKey(), cleanText(word.getLemma())));
 
-		// Step 1: Check if there is a manual disambiguation.
+		// Step 0: Check if there is a manual disambiguation.
 //		String senseKey = manualDisambiguation.get(wnSynset.getOffset() + wnSynset.getPOS().getKey());
 //		if (senseKey != null)
 //			saveExampleMapping(senseExample, senseKey);
 
-		// Step 2: Check whether the lemma is a substring.
+		// Step 1: Check whether the lemma is a substring.
 		boolean hasExactWordMatch = false;
 		boolean hasPrefixMatch = false;
 		for (ExampleMapping mapping : mappings) {
@@ -326,7 +324,7 @@ public class SynsetGenerator {
 		}
 		annotationCounter[3]++;
 
-		// Step 3: Match single word lemmas with all base forms.
+		// Step 2: Match single word lemmas with all base forms.
 		Set<String> baseForms = makeBaseFormList(example);
 		boolean hasBaseFormMatch = false;
 		for (ExampleMapping mapping : mappings) {
@@ -344,7 +342,7 @@ public class SynsetGenerator {
 		}
 		annotationCounter[5]++;
 
-		// Step 4: Match multi-word lemmas with all base forms.
+		// Step 3: Match multi-word lemmas with all base forms.
 		hasBaseFormMatch = false;
 		for (ExampleMapping mapping : mappings) {
 			String lemma = mapping.getLemma();
