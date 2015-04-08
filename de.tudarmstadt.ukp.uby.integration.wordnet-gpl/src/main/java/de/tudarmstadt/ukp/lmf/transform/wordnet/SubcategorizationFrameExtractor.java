@@ -19,6 +19,7 @@
 package de.tudarmstadt.ukp.lmf.transform.wordnet;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -162,20 +163,13 @@ public class SubcategorizationFrameExtractor {
 		try{
 			BufferedReader input = new BufferedReader(new InputStreamReader(this.subcatStream));
 			String line;
-			while ((line = input.readLine()) != null)
-             {
-                if(!line.startsWith("#"))
-                 {
-                    parseLine(line); // skipping comments
-                }
-            }
-		}
-		catch (Exception e){
-			StringBuffer sb = new StringBuffer(256);
-			sb.append("Error on reading subcat-mappings file!").append(this.subcatStream.toString()).append('\n');
-			sb.append("closing vm!");
-			logger.error(sb.toString());
-			System.exit(1);
+			while ((line = input.readLine()) != null) {
+				if(!line.startsWith("#")) {
+					parseLine(line); // skipping comments
+				}
+			}
+		} catch (IOException e) {
+			throw new RuntimeException("Error reading from subcat mappings resource stream", e);
 		}
 		logger.info("done");
 

@@ -24,13 +24,10 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+
 import net.sf.extjwnl.data.POS;
 import net.sf.extjwnl.data.Pointer;
 import net.sf.extjwnl.data.Word;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.enums.ERelTypeMorphology;
 import de.tudarmstadt.ukp.lmf.model.morphology.RelatedForm;
@@ -41,7 +38,6 @@ import de.tudarmstadt.ukp.lmf.model.morphology.RelatedForm;
  * @author Judith Eckle-Kohler
  * @see RelatedForm
  * @see LexicalEntry
- *
  */
 public class RelatedFormGenerator {
 
@@ -54,8 +50,6 @@ public class RelatedFormGenerator {
 	 * The Mappings for different POS are as follows {NOUN, VERB, ADJECTIVE, ADVERB}
 	 */
 	private final static Map<String, ERelTypeMorphology[]> pointerTypeRelTypeMappings = new TreeMap<String, ERelTypeMorphology[]>();
-
-	private final Log logger = LogFactory.getLog(getClass());
 
 	/**
 	 * Constructs a {@link RelatedFormGenerator} based on consumed {@link LexicalEntryGenerator}
@@ -134,16 +128,10 @@ public class RelatedFormGenerator {
 
 		// setting targeted LexicalEntry
 		LexicalEntry targetLexicalEntry = lexicalEntryGenerator.getLexicalEntry(targetLexeme);
+		if (targetLexicalEntry == null)
+			throw new NullPointerException("Unable to find target lexical entry of related form for " + targetLexeme);
 
-		if(targetLexicalEntry == null){
-			StringBuffer sb = new StringBuffer(512);
-			sb.append("LexicalEntryGenerator did not provide a LexicalEntry for lexeme: ").append(targetLexeme);
-			sb.append('\n').append("closing virtual machine");
-			logger.error(sb.toString());
-			System.exit(1);
-		}
 		relatedForm.setTargetLexicalEntry(targetLexicalEntry);
-
 		return relatedForm;
 	}
 
@@ -160,4 +148,5 @@ public class RelatedFormGenerator {
 		// The relType also depends on the POS of the pointer's source
 		return pointerTypeRelTypeMappings.get(pointerSymbol)[posOrdinal];
 	}
+
 }
