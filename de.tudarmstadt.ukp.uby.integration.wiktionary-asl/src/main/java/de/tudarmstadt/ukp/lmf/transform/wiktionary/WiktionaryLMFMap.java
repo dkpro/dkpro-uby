@@ -39,14 +39,12 @@ import de.tudarmstadt.ukp.wiktionary.api.RelationType;
 import de.tudarmstadt.ukp.wiktionary.api.util.ILanguage;
 
 /**
- * Maps Wiktionary constants to LMF constants
- * @author Yevgen Chebotar
- * @author Christian M. Meyer
+ * Maps Wiktionary constants to UBY-LMF constants.
  */
 public class WiktionaryLMFMap {
 
 	private static final boolean PRINT_MISSING_POS = false;
-	private static final boolean PRINT_MISSING_LANGUAGES = true;
+	private static final boolean PRINT_MISSING_LANGUAGES = false;
 
 	private static final String LANGUAGE_CODES_RESOURCE = "uby-wiktionary/language_codes.txt";
 	private static final String PRAGMATIC_LABELS_RESOURCE = "uby-wiktionary/pragmatic_labels.txt";
@@ -426,12 +424,15 @@ public class WiktionaryLMFMap {
 	}
 
 	public static ETense mapTense(final IWiktionaryWordForm wordForm) {
+		if (wordForm.getAspect() == GrammaticalAspect.PERFECT)
+			return null;
+
 		if (wordForm.getTense() != null)
 			switch (wordForm.getTense()) {
 				case PRESENT:
-					return (wordForm.getAspect() == GrammaticalAspect.IMPERFECT ? ETense.present : null);
+					return ETense.present;
 				case PAST:
-					return (wordForm.getAspect() == GrammaticalAspect.IMPERFECT ? ETense.past : null);
+					return ETense.past;
 //				case FUTURE:
 //					return ETense.future;
 			}
