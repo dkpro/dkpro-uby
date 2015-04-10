@@ -2,13 +2,13 @@
  * Copyright 2015
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,39 +49,37 @@ import de.tudarmstadt.ukp.lmf.model.enums.ETense;
 import de.tudarmstadt.ukp.lmf.model.enums.EVerbFormMood;
 
 /**
- * Maps Wiktionary constants to LMF constants
- * @author Yevgen Chebotar
- * @author Christian M. Meyer
+ * Maps Wiktionary constants to UBY-LMF constants.
  */
 public class WiktionaryLMFMap {
-	
+
 	private static final boolean PRINT_MISSING_POS = false;
 	private static final boolean PRINT_MISSING_LANGUAGES = false;
-	
+
 	private static final String LANGUAGE_CODES_RESOURCE = "ontowiktionary/language_codes.txt";
 	private static final String PRAGMATIC_LABELS_RESOURCE = "ontowiktionary/pragmatic_labels.txt";
 	private static final String WORD_FORM_LABELS_RESOURCE = "ontowiktionary/form_labels.txt";
-	
+
 	private static Map<String, String> languageMap; // Language maps from Wiktionary to LMF
 	private static Set<String> missingLanguages;
-	
+
 	/** Loads the mapping of Wiktionary language codes to the ISO 639 codes
-	 *  used in UBY from an internal resource. 
+	 *  used in UBY from an internal resource.
 	 *  @throws IOException if the mapping file could not be loaded. */
 	public static void loadLanguageCodes() throws IOException {
 		loadLanguageCodes(WiktionaryLMFMap.class.getClassLoader()
 				.getResource(LANGUAGE_CODES_RESOURCE).openStream());
 	}
-	
+
 	/** Loads the mapping of Wiktionary language codes to the ISO 639 codes
-	 *  used in UBY from the given file. 
+	 *  used in UBY from the given file.
 	 *  @throws IOException if the mapping file could not be loaded. */
 	public static void loadLanguageCodes(final File file) throws IOException {
 		loadLanguageCodes(new FileInputStream(file));
 	}
 
 	/** Loads the mapping of Wiktionary language codes to the ISO 639 codes
-	 *  used in UBY from the given input stream. 
+	 *  used in UBY from the given input stream.
 	 *  @throws IOException if the mapping file could not be loaded. */
 	public static void loadLanguageCodes(final InputStream stream) throws IOException {
 		Map<String, String> languages = new TreeMap<String, String>();
@@ -90,13 +88,13 @@ public class WiktionaryLMFMap {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				// Skip empty lines and comments.
-				if (line.isEmpty() || line.startsWith("#")) 
+				if (line.isEmpty() || line.startsWith("#"))
 					continue;
-				
+
 				int idx = line.indexOf('\t');
 				if (idx < 0)
 					continue;
-				
+
 				String wktCode = line.substring(0, idx);
 				String ubyCode = line.substring(idx + 1);
 				languages.put(wktCode, ubyCode);
@@ -107,8 +105,8 @@ public class WiktionaryLMFMap {
 		missingLanguages = new TreeSet<String>();
 		languageMap  = languages;
 	}
-	
-	
+
+
 	/**
 	 * Maps Wiktionary Language to LMF LanguageIdentifier
 	 * http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
@@ -117,23 +115,23 @@ public class WiktionaryLMFMap {
 	public static String mapLanguage(final ILanguage lang) {
 		if (lang == null)
 			return null;
-		
+
 		if (languageMap == null)
 			try {
 				loadLanguageCodes();
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
-		
+
 		String result = languageMap.get(lang.getCode());
 		if (result == null) {
 			if (PRINT_MISSING_LANGUAGES && missingLanguages.add(lang.getCode()))
 				System.out.println("Language not found: " + lang.getCode() + "\t" + lang.getName());
-			return lang.getCode(); // return the original code. 
+			return lang.getCode(); // return the original code.
 		} else
 			return result;
 	}
-	
+
 	/**
 	 * Maps Wiktionary PartOfSpeech to LMF PartOfSpeech
 	 * @param pos
@@ -149,11 +147,11 @@ public class WiktionaryLMFMap {
 					return EPartOfSpeech.adjective;
 				case ADVERB:
 					return EPartOfSpeech.adverb;
-			
+
 				case NUMBER:
 				case NUMERAL:
 					return EPartOfSpeech.numeral;
-	
+
 				case AUXILIARY_VERB:
 					return EPartOfSpeech.verbAuxiliary;
 
@@ -171,7 +169,7 @@ public class WiktionaryLMFMap {
 				case SINGULARE_TANTUM: // further distinguished by Semantic Labels.
 				case PLURALE_TANTUM: // further distinguished by Semantic Labels.
 					return EPartOfSpeech.noun;
-				
+
 				case CONJUNCTION:
 					return EPartOfSpeech.conjunction;
 				case SUBORDINATOR:
@@ -181,11 +179,11 @@ public class WiktionaryLMFMap {
 					return EPartOfSpeech.adpositionPreposition;
 				case POSTPOSITION:
 					return EPartOfSpeech.adpositionPostposition;
-			
-				case INTERJECTION: 
+
+				case INTERJECTION:
 				case SALUTATION: // further distinguished by Semantic Labels.
 				case ONOMATOPOEIA: // further distinguished by Semantic Labels.
-					return EPartOfSpeech.interjection;				
+					return EPartOfSpeech.interjection;
 
 				case PHRASE:
 				case IDIOM: // further distinguished by Semantic Labels.
@@ -267,7 +265,7 @@ public class WiktionaryLMFMap {
 					if (PRINT_MISSING_POS)
 						System.out.println("Unknown POS: " + entry.getWord() + "/" + entry.getPartOfSpeech());
 					return null;
-				
+
 			}
 		return null;
 	}
@@ -275,8 +273,7 @@ public class WiktionaryLMFMap {
 	 * Maps Wiktionary Gender to LMF GrammaticalGender
 	 * @param gender
 	 */
-	public static EGrammaticalGender mapGender(GrammaticalGender gender){
-	//public static EGrammaticalGender mapGender(Gender gender){
+	public static EGrammaticalGender mapGender(GrammaticalGender gender) {
 		if (gender != null)
 			switch (gender) {
 				case MASCULINE:
@@ -285,12 +282,10 @@ public class WiktionaryLMFMap {
 					return EGrammaticalGender.feminine;
 				case NEUTER:
 					return EGrammaticalGender.neuter;
-//				case UNDEFINED:
-//					return null;
 			}
 		return null;
 	}
-	
+
 	/**
 	 * Maps Wiktionary relation type to LMF ERelTypeSemantics
 	 * @param relationType
@@ -307,7 +302,7 @@ public class WiktionaryLMFMap {
 			case MERONYM:
 			case HOLONYM:
 				return ERelTypeSemantics.partWhole;
-			
+
 			case TROPONYM:
 				return ERelTypeSemantics.taxonomic;
 			case COORDINATE_TERM:
@@ -317,7 +312,7 @@ public class WiktionaryLMFMap {
 			//TODO: other types?
 			default:
 				return null;
-		}		
+		}
 	}
 
 	/**
@@ -338,14 +333,14 @@ public class WiktionaryLMFMap {
 				return ERelNameSemantics.MERONYM;
 			case HOLONYM:
 				return ERelNameSemantics.HOLONYM;
-				
+
 			case COORDINATE_TERM:
 				return "cohyponym";
 			case TROPONYM:
 				return "troponym";
 			case SEE_ALSO:
 				return ERelNameSemantics.RELATED;
-				
+
 			default:
 				return null;
 		}
@@ -437,12 +432,15 @@ public class WiktionaryLMFMap {
 	}
 
 	public static ETense mapTense(final IWiktionaryWordForm wordForm) {
+		if (wordForm.getAspect() == GrammaticalAspect.PERFECT)
+			return null;
+
 		if (wordForm.getTense() != null)
 			switch (wordForm.getTense()) {
 				case PRESENT:
-					return (wordForm.getAspect() == GrammaticalAspect.IMPERFECT ? ETense.present : null);
+					return ETense.present;
 				case PAST:
-					return (wordForm.getAspect() == GrammaticalAspect.IMPERFECT ? ETense.past : null);
+					return ETense.past;
 //				case FUTURE:
 //					return ETense.future;
 			}
@@ -460,7 +458,7 @@ public class WiktionaryLMFMap {
 			return EVerbFormMood.subjunctive;
 		if (wordForm.getMood() == GrammaticalMood.INDICATIVE)
 			return EVerbFormMood.indicative;
-		
+
 		/*
 		GrammaticalMood.INDICATIVE;
 		GrammaticalMood.IMPERATIVE;
@@ -469,16 +467,16 @@ public class WiktionaryLMFMap {
 		NonFiniteForm.PARTICIPLE;
 		GrammaticalAspect.PERFECT;
 		GrammaticalAspect.IMPERFECT;
-		
+
 		infinitive,
 		infinitiveZu,
-		participle, // 
+		participle,
 		indicative,
 		subjunctive,
 		imperative,
-		ingForm // present participile?
+		ingForm
 		*/
 		return null;
 	}
-	
+
 }
