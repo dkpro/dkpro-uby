@@ -22,6 +22,8 @@ import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.abstracts.HasFrequencies;
 import de.tudarmstadt.ukp.lmf.model.core.Definition;
+import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
+import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasDefinitions;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasSemanticLabels;
@@ -73,6 +75,10 @@ public class SemanticPredicate extends HasFrequencies implements IHasID, IHasDef
 	// Semantic class information for this Sense
 	@VarType(type = EVarType.CHILDREN)
 	private List<SemanticLabel> semanticLabels = new ArrayList<SemanticLabel>();
+	
+	// Backlink to Lexicon added for convenience
+	@VarType(type = EVarType.NONE)
+	private Lexicon lexicon;
 	
 	/**
 	 * Returns the {@link List} of all {@link Definition} instances of this {@link SemanticPredicate} instance.
@@ -237,4 +243,23 @@ public class SemanticPredicate extends HasFrequencies implements IHasID, IHasDef
 	    hash = hash * 31 + this.id.hashCode();
 	    return hash;
 	  }
+	
+	/**
+	 * Returns the {@link Lexicon} containing this {@link LexicalEntry} instance. <p>
+	 * <i>This backlink is not a part of Uby-LMF model and exists for convenience.</i>
+	 * @return the lexicon containing this lexical entry or null if the backlink is not set
+	 */
+	public Lexicon getLexicon() {
+		return lexicon;
+	}
+
+	/**
+	 * Sets the {@link Lexicon} containing this {@link LexicalEntry} instance.<p>
+	 * <i> This backlink is not a part of Uby-LMF model and exists for convenience.</i>
+	 * @param lexicon the lexicon to set
+	 */
+	public void setLexicon(Lexicon lexicon) {
+		this.lexicon = lexicon;
+	}
+
 }

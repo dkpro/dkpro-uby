@@ -37,6 +37,7 @@ import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
+import de.tudarmstadt.ukp.lmf.model.multilingual.PredicateArgumentAxis;
 import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
 import de.tudarmstadt.ukp.lmf.model.semantics.SynSemCorrespondence;
@@ -168,7 +169,7 @@ public class DBToXMLTransformer extends UBYHibernateTransformer {
 	}
 
 	// lexicons = null (all lexicons), lexicons.length = 0 (no lexicons).
-	protected void doTransform(boolean includeSenseAxes,
+	protected void doTransform(boolean includeAxes, 
 			final Lexicon... includeLexicons) throws SAXException {
 		final int bufferSize = 100;
 		commitCounter = 1;
@@ -264,7 +265,7 @@ public class DBToXMLTransformer extends UBYHibernateTransformer {
 
 		// Iterate over SenseAxes and write them to XMLX when not only
 		// lexicons should be converted
-		if (includeSenseAxes) {
+		if (includeAxes) {
 			logger.info("Processing sense axes");
 			DetachedCriteria criteria = DetachedCriteria.forClass(SenseAxis.class)
 					.add(Restrictions.sqlRestriction("lexicalResourceId = '" + lexicalResource.getName() + "'"));
@@ -278,6 +279,21 @@ public class DBToXMLTransformer extends UBYHibernateTransformer {
                     logger.info("progress: " + commitCounter  + " class instances written to file");
                 }
 			}
+			
+			logger.info("Processing predicateargument axes");
+			DetachedCriteria criteria2 = DetachedCriteria.forClass(PredicateArgumentAxis.class)
+					.add(Restrictions.sqlRestriction("lexicalResourceId = '" + lexicalResource.getName() + "'"));
+			CriteriaIterator<Object> iter2 = new CriteriaIterator<Object>(criteria2, sessionFactory, bufferSize);
+			while (iter2.hasNext()) {
+				Object obj = iter2.next();
+				writeElement(obj);
+				session.evict(obj);
+				commitCounter++;
+				if (commitCounter % 1000 == 0) {
+                    logger.info("progress: " + commitCounter  + " class instances written to file");
+                }
+		}
+
 		}
 		writeEndElement(lexicalResource);
 

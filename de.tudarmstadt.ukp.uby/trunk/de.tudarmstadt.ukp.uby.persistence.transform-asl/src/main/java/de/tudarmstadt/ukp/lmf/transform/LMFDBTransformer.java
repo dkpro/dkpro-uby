@@ -148,7 +148,7 @@ public abstract class LMFDBTransformer extends UBYHibernateTransformer {
 	/** Returns next ConstraintSet that should be stored in LMF. */
 	protected abstract ConstraintSet getNextConstraintSet();
 
-	/** Returns next SesnseAxis that should be stored in LMF. */
+	/** Returns next SenseAxis that should be stored in LMF. */
 	protected abstract SenseAxis getNextSenseAxis();
 
 	/** Finalize the transformation. */

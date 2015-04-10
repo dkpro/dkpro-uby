@@ -18,6 +18,7 @@
 package de.tudarmstadt.ukp.lmf.model.multilingual;
 
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
+import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
 import de.tudarmstadt.ukp.lmf.model.meta.MetaData;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.EVarType;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
@@ -26,11 +27,11 @@ import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
 
 /**
  * PredicateArgumentAxis is a class representing the relationship between different closely related
- * {@link SemanticPrecicate} and {@link SemanticArgument} instances.
+ * {@link SemanticPredicate} and {@link SemanticArgument} instances.
  * @author Yevgen Chebotar
  *
  */
-public class PredicateArgumentAxis {
+public class PredicateArgumentAxis implements IHasID {
 
 	@VarType(type = EVarType.ATTRIBUTE)
 	private String id;
@@ -62,19 +63,6 @@ public class PredicateArgumentAxis {
 	@VarType(type = EVarType.IDREF)
 	private MetaData metaData;
 
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	/**
 	 * @return the semanticPredicateOne
@@ -200,5 +188,13 @@ public class PredicateArgumentAxis {
 	 */
 	public void setMetaData(MetaData metaData) {
 		this.metaData = metaData;
+	}
+
+	public String getId() {
+		return this.id;
+	}
+
+	public void setId(String id) {
+		this.id=id;
 	}
 }

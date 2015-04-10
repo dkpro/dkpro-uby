@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<!DOCTYPE corpus SYSTEM "resourcealignment.dtd">-->
+<resourceAlignment><!-- xmlns="http://example.org/myapp/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://example.org/myapp/ http://example.org/myapp/schema.xsd" xmlns:dc="http://purl.org/dc/elements/1.1/">-->
+  <!--
+    We can use Dublin Core to give basic metadata about the alignment,
+    such as its title, description, date, authors, licensing, and language,
+    as well as provide a unique identifier for it
+  -->
+  <metadata><!--NEW-->
+    <title>
+      Pafnuty's Amazing WordNet to GermaNet Mapping (PAWGM)
+    </title>
+    <description>
+      PAWGM is a mapping from WordNet 2.1 to GermaNet 1.0 produced automatically
+      by millions of carefully trained baby ferrets.  The technique is described
+      in R. Pafnuty's paper "Automatic Alignment of Lexical-Semantic Resources
+      by Exploiting Neonatal Mustelids" (Proc. COLING 2012).
+    </description>
+    <identifier>
+      PAWGM_3.0
+    </identifier>
+    <date>
+      2014-06-12
+    </date>
+    <version><!--NEW-->
+      1.0.0
+    </version>
+  <!--Remove language tag, is redundant with resource language
+  <language>
+    en
+  </language>
+  <language>
+    de
+  </language>
+  -->
+    <creator>
+      R. Pafnuty
+    </creator>
+    <publisher>
+      Ubiquitious Knowledge Processing Lab, Technische Universität Darmstadt
+    </publisher>
+    <rights>
+      Released into the public domain by the creator.
+    </rights>
+
+  <!--
+    Here is further metadata: we identify the source and target resources,
+    and describe the confidence values.  The confidence attributes describing
+    the numeric ranges are borrowed from HTML5.
+  -->
+  <!--<resources> -->
+    <sourceresource id="WordNet_2.1">
+      <description>Optional further description of resource</description>
+      <identifierType>sense key</identifierType>
+      <language>en</language><!-- new-->
+    </sourceresource>
+    <targetresource id="GermaNet_1.0">
+      <description>Optional further description of resource</description>
+      <identifiertype>lexical unit ID</identifiertype>
+      <language>de</language>
+    </targetresource>
+
+    
+  <!--</resources> -->
+    <scoretypes>
+      <scoretype id="headferret" min="-1.0" max="1.0" type="manual">
+        <name>Head ferret</name>
+        <description>The confidence assigned by the head ferret.</description>
+      </scoretype>
+      <scoretype id="vote" min="0" max="1" step="1" type="automatic">
+        <name>Votertron 2000</name>
+        <description>A binary decision on whether or not the alignment is valid
+        according to some complex voting scheme.</description>
+      </scoretype>
+    </scoretypes>
+    <decisiontypes>
+      <decisiontype id="ferretdecision" type="manual">
+        <name>Head ferret</name>
+        <description>Based on head ferret scores with a threshold of 0.5</description>
+      </decisiontype>
+    </decisiontypes>
+  </metadata>
+
+  <!--
+    And now we list the aligned tuples themselves:
+  -->
+  <alignments>
+    <source ref="close%2:00:01"><!--changed id to ref for consistency-->
+      <target ref="76639">
+	<score src="headferret" value="0.25"/>
+	<score src="vote" value="1"/>
+	<decision src="ferretdecision" value="true" confidence="0.7"/><!-- NEW: add confidence for decision-->
+      </target>
+      <target ref="12443">
+		<score src="headferret" value="1.0"/>
+      </target>
+    </source>
+  </alignments>
+</resourceAlignment>
