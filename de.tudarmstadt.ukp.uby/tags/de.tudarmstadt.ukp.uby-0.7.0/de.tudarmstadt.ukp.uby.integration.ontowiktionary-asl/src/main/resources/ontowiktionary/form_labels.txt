@@ -1,0 +1,102 @@
+abbreviation of	Sense							.
+ablative of		ablative						.
+ablative plural of		ablative	plural					.
+accusative dual of		accusative	dual					.
+accusative plural of	WordForm	accusative	plural					.
+accusative singular of	WordForm	accusative	singular					.
+acronym of	Sense							.
+agent noun of	Sense							.
+alternative capitalization of	Sense							.
+alternative form of	Sense							.
+alternative name of	Sense							.
+alternative spelling of	Sense							.
+apocopic form of	Sense							.
+archaic form of	Sense							.
+archaic past of	WordForm			indicative	past			.
+archaic spelling of	Sense							.
+augmentative of								.
+causative of	Sense							.
+combining form of	Sense							.
+comparative of	WordForm						comparative	.
+contraction of	Sense							.
+dated form of	Sense							.
+dative plural of	WordForm	dative	plural					.
+defective spelling of	Sense							.
+definite of								.
+diminutive of								.
+dual of			dual					.
+eclipsis of								.
+elative of		elative						.
+euphemistic form of	Sense							.
+euphemistic spelling of	Sense							.
+excessive spelling of	Sense							.
+eye dialect of	Sense							.
+feminine of	WordForm					feminine		.
+feminine past participle of	WordForm			participle	past	feminine		.
+feminine plural of	WordForm		plural			feminine		.
+feminine plural past participle of	WordForm		plural	participle	past	feminine		.
+first person singular present tense and imperative of	WordForm			participle	past	feminine		.
+form of								.
+frequentative of				frequentative				.
+future tense of				indicative	future			.
+genitive dual of		genitive	dual					.
+genitive plural of	WordForm	genitive	plural					.
+gerund of	WordForm			participle	present			.
+infinitive of	WordForm			infinitive				.
+inflected form of								.
+conjugation of								.
+inflection of								.
+informal form of	Sense							.
+informal spelling of	Sense							.
+initialism of	Sense							.
+instrumental dual of		instrumental	dual					.
+instrumental of		instrumental						.
+instrumental plural of		instrumental	plural					.
+irregular plural of	WordForm		plural					.
+irregular simple past of	WordForm			indicative	past			.
+lenition of	Sense							.
+locative dual of		locative	dual					.
+locative of		locative						.
+locative plural of		locative	plural					.
+masculine plural of	WordForm		plural			masculine		.
+medieval spelling of	Sense							.
+misconstruction of								.
+misspelling of								.
+mutation of								.
+negative of	Sense							.
+neuter of	WordForm					neuter		.
+new en adj attr bot								.
+nominative dual of		nominative	dual					.
+nominative of	WordForm	nominative						.
+nominative plural of	WordForm	nominative	plural					.
+nonstandard spelling of	Sense							.
+obsolete form of	Sense							.
+obsolete spelling of	Sense							.
+official form of	Sense							.
+participle of	WordForm			participle				.
+passive form of								.
+past of	WordForm			indicative	past			.
+past participle of	WordForm			participle	past			.
+past tense form of	WordForm			indicative	past			.
+past tense of	WordForm			indicative	past			.
+plural definite of			plural					.
+plural gerund of	WordForm		plural	participle	present			.
+plural indefinite of			plural					.
+plural of	WordForm		plural					.
+plural past participle of	WordForm		plural	participle	past			.
+present participle of	WordForm			participle	present			.
+rare spelling of	Sense							.
+reflexive of								.
+romanization of								.
+short for	Sense							.
+simple past of	WordForm			indicative	past			.
+singular definite of			singular					.
+spelling of								.
+superlative of	WordForm						superlative	.
+supine of								.
+traditional orthography spelling of								.
+verbal noun of	Sense							.
+vocative dual of			dual					.
+vocative of								.
+vocative plural of			plural					.
+vocative singular of			singular					.

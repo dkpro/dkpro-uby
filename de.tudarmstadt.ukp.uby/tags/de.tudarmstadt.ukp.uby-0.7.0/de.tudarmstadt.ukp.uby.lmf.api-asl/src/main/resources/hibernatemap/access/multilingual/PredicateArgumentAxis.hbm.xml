@@ -1,0 +1,35 @@
+<?xml version="1.0"?><!DOCTYPE hibernate-mapping PUBLIC
+ "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>  
+<class name="de.tudarmstadt.ukp.lmf.model.multilingual.PredicateArgumentAxis" table="PredicateArgumentAxis" node="PredicateArgumentAxis" dynamic-insert="true">
+
+    <id name="id" column="predicateArgumentAxisId" node="@id" type="string"/>
+    
+    <property name="axisType" column="axisType" node="@axisType" type="string"/>
+    
+    <many-to-one name="semanticPredicateOne" class="de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate" 
+		 column="semanticPredicateOne" node="@semanticPredicateOne" foreign-key="none" index="predicateargumentaxis_semanticPredicateOne_IDX"/>
+    	
+   	<many-to-one name="semanticPredicateTwo" class="de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate" 
+		 column="semanticPredicateTwo" node="@semanticPredicateTwo" foreign-key="none" index="predicateargumentaxis_semanticPredicateTwo_IDX"/>
+    
+   	<many-to-one name="semanticArgumentOne" class="de.tudarmstadt.ukp.lmf.model.semantics.SemanticArgument" 
+		 column="semanticArgumentOne" node="@semanticArgumentOne" foreign-key="none" index="predicateargumentaxis_semanticArgumentOne_IDX"/>
+   
+   	<many-to-one name="semanticArgumentTwo" class="de.tudarmstadt.ukp.lmf.model.semantics.SemanticArgument" 
+		 column="semanticArgumentTwo" node="@semanticArgumentTwo" foreign-key="none" index="predicateargumentaxis_semanticArgumentTwo_IDX"/>
+
+ 	<many-to-one name="lexiconOne" class="de.tudarmstadt.ukp.lmf.model.core.Lexicon" 
+		 column="lexiconOne" node="@lexiconOne" foreign-key="none" index="predicateargumentaxis_lexiconOne_IDX"/>
+
+ 	<many-to-one name="lexiconTwo" class="de.tudarmstadt.ukp.lmf.model.core.Lexicon" 
+		 column="lexiconTwo" node="@lexiconTwo" foreign-key="none" index="predicateargumentaxis_lexiconTwo_IDX"/>
+	
+    <property name="confidence" column="confidence" node="@confidence" type="double" />    
+	
+	<many-to-one name="metaData" class="de.tudarmstadt.ukp.lmf.model.meta.MetaData" column="metaDataId"
+    	 node="@metaData" foreign-key="none" index="predicateargumentaxis_metaDataId_IDX"/>
+    	 
+ </class>
+</hibernate-mapping>

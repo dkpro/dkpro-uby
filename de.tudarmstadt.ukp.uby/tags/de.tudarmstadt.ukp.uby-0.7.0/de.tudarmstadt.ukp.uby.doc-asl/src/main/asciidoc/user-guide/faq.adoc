@@ -1,0 +1,93 @@
+// Copyright 2015
+// Ubiquitous Knowledge Processing (UKP) Lab
+// Technische Universität Darmstadt
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+== FAQ
+
+=== Using the UBY version of !WordNet in your Java projects
+
+*Q*: I want to switch from the !WordNet JWNL API to the UBY-API and the UBY version of !WordNet in order be able to access all the sense alignments available for !WordNet senses. Are there any special things to be considered? 
+
+*A*: Yes, there are several things to be aware of:
+
+IMPORTANT: The !WordNet semantic relations (i.e. the hypernym, hyponym relations etc. available in !WordNet) are encoded as !SynsetRelation in UBY. That means, when iterating over the senses, you have to first retrieve their Synset, and then get the related synsets via !SynsetRelation. Here is a code snippet that shows how this can be done:
+
+[source,java]
+----
+  Synset synset = sense.getSynset();
+  HashSet<String> semanticallyRelatedWords = new HashSet<String>();
+     for (SynsetRelation synsetRel : synset.getSynsetRelations()) {
+        try {         
+            for (Sense s : synsetRel.getTarget().getSenses()) {  
+    
+            // here you could filter the retrieved SynsetRelations by relType (coarse filter)
+            // for this, you should look at the ERelTypeSemantics enumeration values, 
+            // e.g. ERelTypeSemantics.taxonomic for the taxonomic relations encoded in WordNet
+            // alternatively you could filter by relName using ERelNameSemantics  (fine-grained filter)   
+         
+               // we use the most frequent sense heuristic for diambiguation,     
+               // in UBY WordNet, this is the sense with index=0:  
+               if (s.getIndex() == 1) { 
+
+                // now do something, e.g. add the related lemmas to a set:
+                semanticallyRelatedWords.add(
+                  s.getLexicalEntry().getLemmaForm());
+
+               }
+             }
+         } catch (NullPointerException e) {
+                // sth wrong with target of synset relation, throw suitable exception
+         }
+     }
+----
+
+NOTE: You have to be aware of the fact, that UBY treats spaces and underscores as distinct characters. For instance, querying UBY !WordNet for "ice cream" and "ice_cream" will return different results: The query for "ice_cream" will return an empty list and only the query for "ice cream" will return the !WordNet entry for "ice cream". Thus, you have to modify your code a little bit in order to query UBY for Multiword Expressions. Please have a look at [http://groups.google.com/group/uby-users/browse_thread/thread/287b1f37d4e1113e this discussion in the UBY Users group], if you are interested in learning more about the reasons for this different behavior of UBY.
+
+
+=== Sense vs. Synset in UBY
+
+*Q*: What is the difference between "Synset" and "Sense" in UBY?
+
+*A*: Synonymous senses are organized in Synets. For some resources, for instance WordNet, there is no sense definition, but a synset definition, and certain relations are defined only between synsets, but apply to the senses in the synset as well.
+
+An alternative explanation is this:
+
+Sense = word sense = meaning of a word
+"sense" is the elemantary, basic organizational unit in UBY (and in LMF).
+
+Related senses can be grouped: so that senses related by some relation X all belong to the same group.
+
+Since there are many different relations between senses, there are also many different ways to establish groupings of senses.
+
+Example WordNet: X=synonymy, i.e. senses that are related by the synonymy relation are grouped into "Synsets"
+Example VerbNet: X="same syntactic alternation behaviour and same set of semantic roles" -> senses that are related by this relation are grouped into verb classes
+Example FrameNet: X="evoking the same frame" -> senses that evoke the same semantic frame are grouped into FrameNet frames
+
+=== Sense Axis in UBY
+
+*Q*: The Interlingual Index from GermaNet provides links between synsets rather than between senses. This seems to be incompatible with SenseAxis. There is also no method in the UBY API to get a SenseAxisIterator by synsets.
+
+*A*: SenseAxis in UBY covers both links between corresponding senses and between corresponding synsets. The former are encoded by the two SenseAxis attributes senseOne and senseTwo, the latter by synsetOne and synsetTwo. See also the specification of SenseAxis in the UBY-LMF DTD:
+
+[source,xml]
+----
+<!ATTLIST SenseAxis
+    id		ID #REQUIRED
+    senseOne IDREF #IMPLIED
+    senseTwo IDREF #IMPLIED
+    synsetOne IDREF #IMPLIED
+    synsetTwo IDREF #IMPLIED
+    senseAxisType (monolingualSenseAlignment|crosslingualSenseAlignment|definedMeaning) #IMPLIED>
+----

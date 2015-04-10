@@ -1,0 +1,75 @@
+// Copyright 2015
+// Ubiquitous Knowledge Processing (UKP) Lab
+// Technische Universität Darmstadt
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+[[imslex]]
+== Preprocessing steps for IMSlex-Subcat data
+
+=== General Information
+
+The current Java converter covers the following IMSlex-Subcat data:
+
+* `Subcat_ADJ.txt`
+* `Subcat_NN.txt`
+* `Subcat_PartV.txt`
+* `Subcat_V.txt`
+
+`Subcat_ADV.txt` will be covered in a future UBY release.
+
+Notes on the verb files `Subcat_V.txt` and `Subcat_PartV.txt`:
+ * in `Subcat_V.txt`, there are verbs without subcat frame; these are not imported into UBY.
+ * in `Subcat_PartV.txt`, the auxiliary is specified; this is currently not imported into UBY, but will be covered in a future UBY release.
+
+Note on the `Subcat_NN.txt` file: nouns with the following specifications have not been considered (very noisy):
+ * `(ntype(app))`
+ * `(ntype(app-buchst-zahl))`
+ * `(ntype(beruf))`
+ * `(ntype(name))`
+ * `(ntype(name-det))`
+
+
+
+=== Preprocessing
+
+The preprocessing steps convert the IMSlex-Subcat data into the target format required by the UBY Java converter:
+
+----
+lemma%pos%subcat-frame%semantic-class-information
+----
+
+On the command line, execute the following commands:
+
+Step 1: filtering and creating input format for Perl script.
+
+----
+gawk '{print $1 " noun " $2 " null"}' Subcat_NN.txt | sort -u > nouns
+gawk '{print $1 " adj " $2 " null"}' Subcat_ADJ.txt | sort -u > adjectives
+gawk '{print $1 " verb " $3 " null"}' Subcat_PartV.txt | sort -u > particleVerbs
+gawk '$2 ~ /\s/ {print $1 " verb " $2 " null"}' Subcat_V.txt | sort -u > nonParticleVerbs
+----
+
+Step 2: concatenating all files:
+
+----
+cat adjectives nouns nonParticleVerbs particleVerbs | sort -u > imsLexSubcat
+----
+
+Step 3: running the [http://code.google.com/p/uby/downloads/detail?name=IMSlex2converterInput&can=2&q=#makechanges Perl script] availble in the Downloads section.
+
+----
+perl IMSlex2converterInput imsLexSubcat
+----
+
+result file: `imsLexConverterInput`

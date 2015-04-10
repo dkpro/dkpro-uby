@@ -1,0 +1,2879 @@
+LabelType	LabelGroup	LabelSubgroup	LabelText
+dom	dom:misc:agra	agra	animal_husbandry
+dom	dom:misc:agra	agra	Holzverarbeitung
+dom	dom:misc:agra	agra	whaling
+dom	dom:misc:agra	agra	Tierzucht
+dom	dom:misc:agra	agra	horticulture
+dom	dom:misc:agra	agra	in Bezug auf Nutztiere
+dom	dom:misc:agra	agra	agriculture
+dom	dom:misc:agra	agra	im Forstwesen
+dom	dom:misc:agra	agra	Weinbau
+dom	dom:misc:agra	agra	Milchwirtschaft
+dom	dom:misc:agra	agra	Winzerei
+dom	dom:misc:agra	agra	Obstbau
+dom	dom:misc:agra	agra	horse breeding
+dom	dom:misc:agra	agra	forestry
+dom	dom:misc:agra	agra	Holz
+dom	dom:misc:agra	agra	beekeeping
+dom	dom:misc:agra	agra	landschaftlich
+dom	dom:misc:agra	agra	Landwirtschaft
+dom	dom:misc:agra	agra	animal husbandry
+dom	dom:misc:agra	agra	сельск.
+dom	dom:misc:agra	agra	Forstwirtschaft
+dom	dom:misc:agra	agra	лес.
+dom	dom:misc:agra	agra	Pomologie
+dom	dom:misc:agra	agra	agriculture
+dom	dom:misc:agra	agra	Imkerei
+dom	dom:misc:agra	agra	Wein
+dom	dom:misc:agra	agra	speziell Weinbau
+dom	dom:misc:agra	agra	Tierhaltung
+dom	dom:hum:archae	archae	paleontology
+dom	dom:hum:archae	archae	archaeology
+dom	dom:hum:archae	archae	Paläontologie
+dom	dom:hum:archae	archae	Paläobiologie
+dom	dom:hum:archae	archae	археол.
+dom	dom:hum:archae	archae	archaeology
+dom	dom:hum:archae	archae	paleontology
+dom	dom:hum:archae	archae	paleonotology
+dom	dom:hum:archae	archae	archeology
+dom	dom:hum:archae	archae	Archäologie
+dom	dom:hum:archae	archae	палеонт.
+dom	dom:hum:archae	archae	palynology
+dom	dom:hum:archi	archi	Architektur
+dom	dom:hum:archi	archi	Construction
+dom	dom:hum:archi	archi	buildings
+dom	dom:hum:archi	archi	building_industry
+dom	dom:hum:archi	archi	in der Baukunst
+dom	dom:hum:archi	archi	architecture
+dom	dom:hum:archi	archi	of a building
+dom	dom:hum:archi	archi	antike Architektur
+dom	dom:hum:archi	archi	Gebäude
+dom	dom:hum:archi	archi	Antike Architektur
+dom	dom:hum:archi	archi	Bau
+dom	dom:hum:archi	archi	roofing
+dom	dom:hum:archi	archi	masonry
+dom	dom:hum:archi	archi	town_planning
+dom	dom:hum:archi	archi	construction
+dom	dom:hum:archi	archi	mittelalterliche Architektur
+dom	dom:hum:archi	archi	архит.
+dom	dom:hum:archi	archi	Kirchenarchitektur
+dom	dom:hum:archi	archi	строит.
+dom	dom:hum:archi	archi	gardening
+dom	dom:hum:archi	archi	Architektur historisch
+dom	dom:hum:archi	archi	Städtebau
+dom	dom:hum:archi	archi	Erdbau
+dom	dom:hum:archi	archi	architecture
+dom	dom:hum:archi	archi	Bauwesen
+dom	dom:hum:archi	archi	Fachwerkbau
+dom	dom:hum:archi	archi	Gartenbau
+dom	dom:hum:archi	archi	Gebäuden
+dom	dom:hum:art	art	art
+dom	dom:hum:art	art	theatre
+dom	dom:hum:art	art	Kinematografie
+dom	dom:hum:art	art	Kino
+dom	dom:hum:art	art	performing arts
+dom	dom:hum:art	art	darstellende Kunst
+dom	dom:hum:art	art	of a film
+dom	dom:hum:art	art	drawing
+dom	dom:hum:art	art	sculpture
+dom	dom:hum:art	art	dance
+dom	dom:hum:art	art	plastic_arts
+dom	dom:hum:art	art	photography
+dom	dom:hum:art	art	graphic_arts
+dom	dom:hum:art	art	painting
+dom	dom:hum:art	art	arts
+dom	dom:hum:art	art	entertainment
+dom	dom:hum:art	art	drama
+dom	dom:hum:art	art	sculpture
+dom	dom:hum:art	art	кинол.
+dom	dom:hum:art	art	Theater
+dom	dom:hum:art	art	цирк.
+dom	dom:hum:art	art	cinematography
+dom	dom:hum:art	art	theater
+dom	dom:hum:art	art	Theater
+dom	dom:hum:art	art	bildende Kunst
+dom	dom:hum:art	art	Malerei
+dom	dom:hum:art	art	кино
+dom	dom:hum:art	art	Grafik
+dom	dom:hum:art	art	theatre
+dom	dom:hum:art	art	dance
+dom	dom:hum:art	art	фотогр.
+dom	dom:hum:art	art	Bildende Kunst
+dom	dom:hum:art	art	theater
+dom	dom:hum:art	art	film
+dom	dom:hum:art	art	Kunst
+dom	dom:hum:art	art	Kunstwissenschaft
+dom	dom:hum:art	art	Kunstgeschichte
+dom	dom:hum:art	art	театр.
+dom	dom:hum:art	art	Fotografie
+dom	dom:hum:art	art	animation
+dom	dom:hum:art	art	cinema
+dom	dom:hum:art	art	painting
+dom	dom:hum:art	art	film
+dom	dom:hum:art	art	ballet
+dom	dom:hum:art	art	acting
+dom	dom:hum:art	art	хореогр.
+dom	dom:hum:art	art	art
+dom	dom:hum:art	art	живоп.
+dom	dom:hum:art	art	photography
+dom	dom:hum:art	art	cinema
+dom	dom:hum:art	art	Belletristik und Film
+dom	dom:hum:art	art	Schauspielerei
+dom	dom:hum:art	art	visual art
+dom	dom:hum:art	art	sound engineering
+dom	dom:hum:art	art	Fototechnik
+dom	dom:hum:art	art	Film
+dom	dom:hum:art	art	Bildhauerei
+dom	dom:hum:art	art	Gesang
+dom	dom:hum:art	art	Film
+dom	dom:hum:art	art	digitale Fotografie
+dom	dom:hum:art	art	Filmtechnik
+dom	dom:hum:art	art	Zeichnen
+dom	dom:hum:art	art	in der Kunst
+dom	dom:hum:art	art	graphic design
+dom	dom:hum:art	art	Ballett
+dom	dom:hum:art	art	antiquities
+dom	dom:hum:art	art	Tanz
+dom	dom:hum:art	art	comedy
+dom	dom:nat:bio	bio	of a bacterium
+dom	dom:nat:bio	bio	Cytologie
+dom	dom:nat:bio	bio	herpetology
+dom	dom:nat:bio	bio	микробиол.
+dom	dom:nat:bio	bio	Mikrobiologie
+dom	dom:nat:bio	bio	microscopy
+dom	dom:nat:bio	bio	of bacteria
+dom	dom:nat:bio	bio	Entwicklungsbiologie
+dom	dom:nat:bio	bio	marine biology
+dom	dom:nat:bio	bio	steroid
+dom	dom:nat:bio	bio	cellular automata
+dom	dom:nat:bio	bio	von einem Körperteil
+dom	dom:nat:bio	bio	microbiology
+dom	dom:nat:bio	bio	steroid hormone
+dom	dom:nat:bio	bio	molecular biology
+dom	dom:nat:bio	bio	planktology
+dom	dom:nat:bio	bio	environment
+dom	dom:nat:bio	bio	von Zellen und Gewebe
+dom	dom:nat:bio	bio	of a chromosome
+dom	dom:nat:bio	bio	Genetik
+dom	dom:nat:bio	bio	Verhaltensbiologie
+dom	dom:nat:bio	bio	coenzyme
+dom	dom:nat:bio	bio	Zellbiologie
+dom	dom:nat:bio	bio	генет.
+dom	dom:nat:bio	bio	speziell Entwicklungsbiologie
+dom	dom:nat:bio	bio	Genetik / Wissenschaftsgeschichte
+dom	dom:nat:bio	bio	biologische Systematik
+dom	dom:nat:bio	bio	Biologie
+dom	dom:nat:bio	bio	Erbmerkmal bei diploiden Lebewesen
+dom	dom:nat:bio	bio	Evolutionsbiologie
+dom	dom:nat:bio	bio	Biologische Systematik
+dom	dom:nat:bio	bio	von Lebewesen allgemein
+dom	dom:nat:bio	bio	embryology
+dom	dom:nat:bio	bio	Bakteriologie
+dom	dom:nat:bio	bio	Molekularbiologie
+dom	dom:nat:bio	bio	coral science
+dom	dom:nat:bio	bio	bacteriology
+dom	dom:nat:bio	bio	Ökologie
+dom	dom:nat:bio	bio	biotechnology
+dom	dom:nat:bio	bio	biologisch
+dom	dom:nat:bio	bio	Landschaftsschutz
+dom	dom:nat:bio	bio	biology
+dom	dom:nat:bio	bio	экол.
+dom	dom:nat:bio	bio	hormone
+dom	dom:nat:bio	bio	ecology
+dom	dom:nat:bio	bio	taxonomy
+dom	dom:nat:bio	bio	Naturschutz
+dom	dom:nat:bio	bio	ботан.
+dom	dom:nat:bio	bio	biology
+dom	dom:nat:bio	bio	von Zellen
+dom	dom:nat:bio	bio	of a cell
+dom	dom:nat:bio	bio	subspecies
+dom	dom:nat:bio	bio	biologische Nomenklatur
+dom	dom:nat:bio	bio	genetics
+dom	dom:nat:bio	bio	биол.
+dom	dom:nat:bio	bio	cell biology
+dom	dom:nat:bio	bio	cytology
+dom	dom:nat:bio	bio	species
+dom	dom:nat:bio	bio	histology
+dom	dom:nat:bio	bio	taxlink
+dom	dom:nat:bio	bio	Pflanzenschutz
+dom	dom:nat:bio	bio	of a protein
+dom	dom:nat:bio	bio	protein
+dom	dom:nat:bio	bio	enzyme
+dom	dom:nat:bio	bio	genetics
+dom	dom:nat:bio	bio	systematics
+dom	dom:nat:bio	bio	ecology
+dom	dom:nat:bio	bio	Zytologie
+dom	dom:nat:bio	bio	Chronobiologie
+dom	dom:nat:bio	bio	Biologische Taxonomie
+dom	dom:nat:chem	chem	хим.
+dom	dom:nat:chem	chem	of a liquid
+dom	dom:nat:chem	chem	catalytic activity
+dom	dom:nat:chem	chem	toxicology
+dom	dom:nat:chem	chem	Lebensmittelchemie
+dom	dom:nat:chem	chem	Chemie
+dom	dom:nat:chem	chem	alchemy
+dom	dom:nat:chem	chem	petrochemistry
+dom	dom:nat:chem	chem	tincture
+dom	dom:nat:chem	chem	bei einem Atom
+dom	dom:nat:chem	chem	Analytische Chemie
+dom	dom:nat:chem	chem	биохим.
+dom	dom:nat:chem	chem	of an acid
+dom	dom:nat:chem	chem	of a molecule
+dom	dom:nat:chem	chem	inorganic chemistry
+dom	dom:nat:chem	chem	physical chemistry
+dom	dom:nat:chem	chem	spectroscopy
+dom	dom:nat:chem	chem	Organische Chemie
+dom	dom:nat:chem	chem	Materialwissenschaft
+dom	dom:nat:chem	chem	organische Chemie
+dom	dom:nat:chem	chem	bei organischen Verbindungen
+dom	dom:nat:chem	chem	carbohydrates
+dom	dom:nat:chem	chem	organic chemistry
+dom	dom:nat:chem	chem	organic compound
+dom	dom:nat:chem	chem	chemistry
+dom	dom:nat:chem	chem	of a material
+dom	dom:nat:chem	chem	Werkstofftechnik
+dom	dom:nat:chem	chem	petrochemischen Industrie
+dom	dom:nat:chem	chem	Anorganische Chemie
+dom	dom:nat:chem	chem	Elektrochemie
+dom	dom:nat:chem	chem	biochemistry
+dom	dom:nat:chem	chem	of a colloid
+dom	dom:nat:chem	chem	amino acid
+dom	dom:nat:chem	chem	poison
+dom	dom:nat:chem	chem	carbohydrate
+dom	dom:nat:chem	chem	of a polymer
+dom	dom:nat:chem	chem	organic compounds
+dom	dom:nat:chem	chem	Säuren
+dom	dom:nat:chem	chem	fatty acid
+dom	dom:nat:chem	chem	inorganic compound
+dom	dom:nat:chem	chem	analytical chemistry
+dom	dom:nat:chem	chem	of a reaction
+dom	dom:nat:chem	chem	biochemistry
+dom	dom:nat:chem	chem	neurotoxin
+dom	dom:nat:chem	chem	Biochemie
+dom	dom:nat:chem	chem	of a substance
+dom	dom:nat:chem	chem	materials science
+dom	dom:nat:chem	chem	Werkstoff
+dom	dom:nat:chem	chem	chemistry
+dom	dom:misc:collect	collect	нумизм.
+dom	dom:misc:collect	collect	philately
+dom	dom:misc:collect	collect	Numismatik
+dom	dom:misc:collect	collect	philately
+dom	dom:misc:collect	collect	numismatics
+dom	dom:misc:collect	collect	Philatelie
+dom	dom:misc:collect	collect	филат.
+dom	dom:misc:collect	collect	numismatics
+dom	dom:misc:craft	craft	Glasherstellung
+dom	dom:misc:craft	craft	Schmuck
+dom	dom:misc:craft	craft	jewellery
+dom	dom:misc:craft	craft	керам.
+dom	dom:misc:craft	craft	knitting
+dom	dom:misc:craft	craft	ювел.
+dom	dom:misc:craft	craft	Textilindustrie
+dom	dom:misc:craft	craft	Tischlerei
+dom	dom:misc:craft	craft	of fabric
+dom	dom:misc:craft	craft	von Holz
+dom	dom:misc:craft	craft	Schneiderei
+dom	dom:misc:craft	craft	Textilwesen
+dom	dom:misc:craft	craft	Gerberei
+dom	dom:misc:craft	craft	Böttcherei
+dom	dom:misc:craft	craft	Weberei
+dom	dom:misc:craft	craft	Schneiderhandwerk
+dom	dom:misc:craft	craft	Kunsthandwerk
+dom	dom:misc:craft	craft	jewelry
+dom	dom:misc:craft	craft	artisanship
+dom	dom:misc:craft	craft	ropemaking
+dom	dom:misc:craft	craft	finish carpentry
+dom	dom:misc:craft	craft	Textil
+dom	dom:misc:craft	craft	Textiltechnik
+dom	dom:misc:craft	craft	woodworking
+dom	dom:misc:craft	craft	carpentry
+dom	dom:misc:craft	craft	ceramics
+dom	dom:misc:craft	craft	Werkzeug
+dom	dom:misc:craft	craft	швейн.
+dom	dom:misc:craft	craft	sewing
+dom	dom:misc:craft	craft	weaving
+dom	dom:misc:craft	craft	pottery
+dom	dom:misc:craft	craft	manufacturing
+dom	dom:misc:craft	craft	glassblowing
+dom	dom:misc:craft	craft	портн.
+dom	dom:misc:craft	craft	Handwerk
+dom	dom:str:cs	cs	Theorie formale Sprache
+dom	dom:str:cs	cs	künstliche Intelligenz
+dom	dom:str:cs	cs	Software
+dom	dom:str:cs	cs	artificial intelligence
+dom	dom:str:cs	cs	technische Informatik
+dom	dom:str:cs	cs	Theoretische Informatik
+dom	dom:str:cs	cs	Computerlinguistik
+dom	dom:str:cs	cs	Computerzubehör
+dom	dom:str:cs	cs	Informatik und Telekommunikation
+dom	dom:str:cs	cs	graphics
+dom	dom:str:cs	cs	object-oriented programming
+dom	dom:str:cs	cs	IT
+dom	dom:str:cs	cs	metadata
+dom	dom:str:cs	cs	Computertechnik
+dom	dom:str:cs	cs	in formalen Sprachen
+dom	dom:str:cs	cs	Programmierung
+dom	dom:str:cs	cs	web design
+dom	dom:str:cs	cs	Java
+dom	dom:str:cs	cs	information theory
+dom	dom:str:cs	cs	Internet
+dom	dom:str:cs	cs	Internet
+dom	dom:str:cs	cs	information science
+dom	dom:str:cs	cs	computer
+dom	dom:str:cs	cs	computerunterstütztes zeichnen
+dom	dom:str:cs	cs	informationstechnol.
+dom	dom:str:cs	cs	computer hardware
+dom	dom:str:cs	cs	Unix
+dom	dom:str:cs	cs	objektorientierte Programmierung
+dom	dom:str:cs	cs	Programmiersprachen
+dom	dom:str:cs	cs	formale Sprachen
+dom	dom:str:cs	cs	in der Mathematik und Programmierung
+dom	dom:str:cs	cs	internet
+dom	dom:str:cs	cs	Microsoft Windows
+dom	dom:str:cs	cs	Softwareentwicklung
+dom	dom:str:cs	cs	Datenverarbeitung
+dom	dom:str:cs	cs	computer science
+dom	dom:str:cs	cs	computer graphics
+dom	dom:str:cs	cs	software engineering
+dom	dom:str:cs	cs	graphical user interface
+dom	dom:str:cs	cs	comptheory
+dom	dom:str:cs	cs	computing theory
+dom	dom:str:cs	cs	programming
+dom	dom:str:cs	cs	computer
+dom	dom:str:cs	cs	database
+dom	dom:str:cs	cs	GUI
+dom	dom:str:cs	cs	testing
+dom	dom:str:cs	cs	of software
+dom	dom:str:cs	cs	databases
+dom	dom:str:cs	cs	IRC
+dom	dom:str:cs	cs	object-oriented
+dom	dom:str:cs	cs	Wikipedistik
+dom	dom:str:cs	cs	software
+dom	dom:str:cs	cs	Informationstechnik
+dom	dom:str:cs	cs	networking
+dom	dom:str:cs	cs	digitale Bildbearbeitung
+dom	dom:str:cs	cs	formaler Sprachen
+dom	dom:str:cs	cs	theoretische Informatik
+dom	dom:str:cs	cs	Formale Sprachen
+dom	dom:str:cs	cs	demoscene
+dom	dom:str:cs	cs	Computersprache
+dom	dom:str:cs	cs	internet
+dom	dom:str:cs	cs	Netzwerktechnik
+dom	dom:str:cs	cs	hardware
+dom	dom:str:cs	cs	computing
+dom	dom:str:cs	cs	computer security
+dom	dom:str:cs	cs	computing
+dom	dom:str:cs	cs	Internet
+dom	dom:str:cs	cs	Internet
+dom	dom:str:cs	cs	Nachrichtentechnik Informatik
+dom	dom:str:cs	cs	Bildbearbeitung
+dom	dom:str:cs	cs	комп.
+dom	dom:str:cs	cs	Informationstechnologie
+dom	dom:str:cs	cs	Computer
+dom	dom:str:cs	cs	Computer
+dom	dom:str:cs	cs	прогр.
+dom	dom:str:cs	cs	EDV
+dom	dom:str:cs	cs	Informatik
+dom	dom:str:cs	cs	data management
+dom	dom:str:cs	cs	computer_science
+dom	dom:str:cs	cs	интернет.
+dom	dom:str:cs	cs	информ.
+dom	dom:soc:eco	eco	patents
+dom	dom:soc:eco	eco	Produktionswirtschaft
+dom	dom:soc:eco	eco	Verkaufspsychologie
+dom	dom:soc:eco	eco	palmistry
+dom	dom:soc:eco	eco	international trade
+dom	dom:soc:eco	eco	Finanzwesen
+dom	dom:soc:eco	eco	Betriebswirtschaftslehre
+dom	dom:soc:eco	eco	Börse
+dom	dom:soc:eco	eco	Immobilien
+dom	dom:soc:eco	eco	insurance
+dom	dom:soc:eco	eco	taxation
+dom	dom:soc:eco	eco	logistics
+dom	dom:soc:eco	eco	tax
+dom	dom:soc:eco	eco	trading
+dom	dom:soc:eco	eco	Offenmarktgeschäft
+dom	dom:soc:eco	eco	trade
+dom	dom:soc:eco	eco	Volkswirtschaft
+dom	dom:soc:eco	eco	Geldpolitik
+dom	dom:soc:eco	eco	Produktion
+dom	dom:soc:eco	eco	ökonomisch
+dom	dom:soc:eco	eco	retail
+dom	dom:soc:eco	eco	Wirtschaft
+dom	dom:soc:eco	eco	currency
+dom	dom:soc:eco	eco	Münzwesen
+dom	dom:soc:eco	eco	incoterm
+dom	dom:soc:eco	eco	Buchhaltung
+dom	dom:soc:eco	eco	economics
+dom	dom:soc:eco	eco	advertising
+dom	dom:soc:eco	eco	money
+dom	dom:soc:eco	eco	stock symbol
+dom	dom:soc:eco	eco	advertising
+dom	dom:soc:eco	eco	Marketing
+dom	dom:soc:eco	eco	Wirtschaftsinformatik
+dom	dom:soc:eco	eco	Volkswirtschaftslehre
+dom	dom:soc:eco	eco	Wirtschaftswissenschaften
+dom	dom:soc:eco	eco	finance
+dom	dom:soc:eco	eco	accounting
+dom	dom:soc:eco	eco	Wirtschaftswissenschaft
+dom	dom:soc:eco	eco	Marxism
+dom	dom:soc:eco	eco	Ökonomie
+dom	dom:soc:eco	eco	marketing
+dom	dom:soc:eco	eco	management
+dom	dom:soc:eco	eco	banking
+dom	dom:soc:eco	eco	Rechnungswesen
+dom	dom:soc:eco	eco	Bankwesen
+dom	dom:soc:eco	eco	фин.
+dom	dom:soc:eco	eco	operations
+dom	dom:soc:eco	eco	Geldwesen
+dom	dom:soc:eco	eco	stock market
+dom	dom:soc:eco	eco	Buchführung
+dom	dom:soc:eco	eco	рекл.
+dom	dom:soc:eco	eco	Logistik
+dom	dom:soc:eco	eco	business
+dom	dom:soc:eco	eco	insurance
+dom	dom:soc:eco	eco	Finanzmathematik
+dom	dom:soc:eco	eco	of an asset
+dom	dom:soc:eco	eco	Finanzwirtschaft
+dom	dom:soc:eco	eco	commerce
+dom	dom:soc:eco	eco	торг.
+dom	dom:soc:eco	eco	экон.
+dom	dom:soc:eco	eco	бухг.
+dom	dom:soc:eco	eco	управл.
+dom	dom:soc:eco	eco	real estate
+dom	dom:soc:eco	eco	Projektmanagement
+dom	dom:soc:eco	eco	commerce
+dom	dom:soc:eco	eco	project management
+dom	dom:soc:eco	eco	tax
+dom	dom:soc:eco	eco	money
+dom	dom:soc:eco	eco	insurance
+dom	dom:soc:eco	eco	finance
+dom	dom:soc:eco	eco	exchange
+dom	dom:soc:eco	eco	Immobilienbranche
+dom	dom:soc:eco	eco	Internetshopping
+dom	dom:soc:eco	eco	Wertpapierrecht
+dom	dom:soc:eco	eco	book_keeping
+dom	dom:soc:eco	eco	Betriebswirtschaft
+dom	dom:soc:eco	eco	Handel
+dom	dom:soc:eco	eco	Währung
+dom	dom:soc:eco	eco	Fachsprache der Werbung
+dom	dom:soc:eco	eco	pl. finanztechn.
+dom	dom:soc:eco	eco	Werbung
+dom	dom:soc:eco	eco	Finanzen
+dom	dom:soc:eco	eco	Einzelhandel
+dom	dom:soc:eco	eco	banking
+dom	dom:soc:eco	eco	Onlineshop
+dom	dom:soc:eco	eco	Export
+dom	dom:soc:eco	eco	economy
+dom	dom:eng:ele	ele	electronics
+dom	dom:eng:ele	ele	electrical engineering
+dom	dom:eng:ele	ele	electrotechnology
+dom	dom:eng:ele	ele	эл.-техн.
+dom	dom:eng:ele	ele	эл.-энерг.
+dom	dom:eng:ele	ele	ein Merkmal bei Elektronenröhren
+dom	dom:eng:ele	ele	electrical
+dom	dom:eng:ele	ele	Messtechnik
+dom	dom:eng:ele	ele	electronics
+dom	dom:eng:ele	ele	Elektronik
+dom	dom:eng:ele	ele	Regelungstechnik
+dom	dom:eng:ele	ele	Digitaltechnik
+dom	dom:eng:ele	ele	Funkmesstechnik
+dom	dom:eng:ele	ele	electrics
+dom	dom:eng	eng	rocketry
+dom	dom:eng	eng	техн.
+dom	dom:eng	eng	machinery
+dom	dom:eng	eng	civil engineering
+dom	dom:eng	eng	Industrie
+dom	dom:eng	eng	Kybernetik
+dom	dom:eng	eng	Hydraulik
+dom	dom:eng	eng	vor allem bei Maschinen
+dom	dom:eng	eng	astronautics
+dom	dom:eng	eng	of a machine
+dom	dom:eng	eng	shipbuilding
+dom	dom:eng	eng	engineering
+dom	dom:eng	eng	technologisch
+dom	dom:eng	eng	engineering
+dom	dom:eng	eng	cybernetics
+dom	dom:eng	eng	founding
+dom	dom:eng	eng	плотн.
+dom	dom:eng	eng	Bautechnik
+dom	dom:eng	eng	glassmaking
+dom	dom:eng	eng	Werkstoffkunde
+dom	dom:eng	eng	machining
+dom	dom:eng	eng	technisch
+dom	dom:eng	eng	aeronautics
+dom	dom:eng	eng	Elektrowerkzeug
+dom	dom:eng	eng	Wasserbau
+dom	dom:eng	eng	Bauingenieurwesen
+dom	dom:eng	eng	of an engine
+dom	dom:eng	eng	metalworking
+dom	dom:eng	eng	Fertigungstechnik
+dom	dom:eng	eng	applied_science
+dom	dom:eng	eng	Kunststofftechnik
+dom	dom:eng	eng	mechanical engineering
+dom	dom:eng	eng	Ingenieurwesen
+dom	dom:eng	eng	гидрол.
+dom	dom:eng	eng	von maschinellen Abläufen
+dom	dom:eng	eng	technology
+dom	dom:eng	eng	Technik
+dom	dom:eng	eng	astronautics
+dom	dom:eng	eng	Elektrotechnik
+dom	dom:eng	eng	Maschinenbau
+dom	dom:eng	eng	technical
+dom	dom:eng	eng	rail
+dom	dom:soc:eso	eso	Astrologie
+dom	dom:soc:eso	eso	ufology
+dom	dom:soc:eso	eso	tarot
+dom	dom:soc:eso	eso	occultism
+dom	dom:soc:eso	eso	paranormal
+dom	dom:soc:eso	eso	occultism
+dom	dom:soc:eso	eso	occult
+dom	dom:soc:eso	eso	Esoterik
+dom	dom:soc:eso	eso	оккульт.
+dom	dom:soc:eso	eso	astrology
+dom	dom:soc:eso	eso	Okkultismus
+dom	dom:soc:eso	eso	zodiac constellations
+dom	dom:soc:eso	eso	New Age
+dom	dom:soc:eso	eso	astrology
+dom	dom:soc:eso	eso	астрол.
+dom	dom:soc:eso	eso	алхим.
+dom	dom:soc:eso	eso	Geistesleben
+dom	dom:soc:eso	eso	Ayurveda
+dom	dom:misc:game	game	play
+dom	dom:misc:game	game	board games
+dom	dom:misc:game	game	gaming
+dom	dom:misc:game	game	игр.
+dom	dom:misc:game	game	game
+dom	dom:misc:game	game	Kinderspiel
+dom	dom:misc:game	game	Rubiks Cube
+dom	dom:misc:game	game	game of go
+dom	dom:misc:game	game	backgammon
+dom	dom:misc:game	game	Spiel
+dom	dom:misc:game	game	Computerspiel
+dom	dom:misc:game	game	Kartenspiel
+dom	dom:misc:game	game	Schachspiel
+dom	dom:misc:game	game	computer games
+dom	dom:misc:game	game	games
+dom	dom:misc:game	game	cribbage
+dom	dom:misc:game	game	Rollenspiel
+dom	dom:misc:game	game	puzzles
+dom	dom:misc:game	game	Scrabble
+dom	dom:misc:game	game	card games
+dom	dom:misc:game	game	Rubiks cubes
+dom	dom:misc:game	game	beim Skat
+dom	dom:misc:game	game	Skat
+dom	dom:misc:game	game	pinball
+dom	dom:misc:game	game	im Kartenspiel
+dom	dom:misc:game	game	bridge
+dom	dom:misc:game	game	Brettspiele
+dom	dom:misc:game	game	Roulette
+dom	dom:misc:game	game	crosswords
+dom	dom:misc:game	game	Spieltheorie
+dom	dom:misc:game	game	paintball
+dom	dom:misc:game	game	role-playing games
+dom	dom:misc:game	game	bingo
+dom	dom:misc:game	game	online games
+dom	dom:misc:game	game	video games
+dom	dom:misc:game	game	cards
+dom	dom:misc:game	game	gambling
+dom	dom:misc:game	game	online gaming
+dom	dom:misc:game	game	Karten- und Würfelspiel
+dom	dom:misc:game	game	Spielzeug
+dom	dom:misc:game	game	card
+dom	dom:misc:game	game	betting
+dom	dom:misc:game	game	juggling
+dom	dom:misc:game	game	insbesondere Skat
+dom	dom:misc:game	game	poker
+dom	dom:nat:geo	geo	topographic
+dom	dom:nat:geo	geo	of soil
+dom	dom:nat:geo	geo	Geodäsie
+dom	dom:nat:geo	geo	hydrology
+dom	dom:nat:geo	geo	vom Wetter
+dom	dom:nat:geo	geo	Geographie
+dom	dom:nat:geo	geo	geology
+dom	dom:nat:geo	geo	seismology
+dom	dom:nat:geo	geo	Gewitter
+dom	dom:nat:geo	geo	Glaziologie
+dom	dom:nat:geo	geo	metallurgy
+dom	dom:nat:geo	geo	climatology
+dom	dom:nat:geo	geo	карт.
+dom	dom:nat:geo	geo	of wind or weather
+dom	dom:nat:geo	geo	of the weather
+dom	dom:nat:geo	geo	crystallography
+dom	dom:nat:geo	geo	металл.
+dom	dom:nat:geo	geo	of a river
+dom	dom:nat:geo	geo	volcanology
+dom	dom:nat:geo	geo	Meteorologie
+dom	dom:nat:geo	geo	Geophysik
+dom	dom:nat:geo	geo	Bodenkunde
+dom	dom:nat:geo	geo	Wind
+dom	dom:nat:geo	geo	geomorphology
+dom	dom:nat:geo	geo	метеорол.
+dom	dom:nat:geo	geo	Kartografie
+dom	dom:nat:geo	geo	surveying
+dom	dom:nat:geo	geo	морск.
+dom	dom:nat:geo	geo	Tektonik
+dom	dom:nat:geo	geo	геол.
+dom	dom:nat:geo	geo	Hydrologie
+dom	dom:nat:geo	geo	Metallurgie
+dom	dom:nat:geo	geo	геогр.
+dom	dom:nat:geo	geo	геод.
+dom	dom:nat:geo	geo	of rock
+dom	dom:nat:geo	geo	Vulkanismus
+dom	dom:nat:geo	geo	cartography
+dom	dom:nat:geo	geo	Klimatologie
+dom	dom:nat:geo	geo	von Gesteinsbestandteilen
+dom	dom:nat:geo	geo	минер.
+dom	dom:nat:geo	geo	chiefly UK
+dom	dom:nat:geo	geo	Wasserwirtschaft
+dom	dom:nat:geo	geo	of weather
+dom	dom:nat:geo	geo	Topografie
+dom	dom:nat:geo	geo	weather
+dom	dom:nat:geo	geo	metrology
+dom	dom:nat:geo	geo	geography
+dom	dom:nat:geo	geo	Mineralogie
+dom	dom:nat:geo	geo	геофиз.
+dom	dom:nat:geo	geo	спелеол.
+dom	dom:nat:geo	geo	vulcanology
+dom	dom:nat:geo	geo	Vulkan
+dom	dom:nat:geo	geo	Geobotanik
+dom	dom:nat:geo	geo	British spelling
+dom	dom:nat:geo	geo	soil science
+dom	dom:nat:geo	geo	speziell Mineralogie
+dom	dom:nat:geo	geo	chiefly N CA
+dom	dom:nat:geo	geo	geology
+dom	dom:nat:geo	geo	Geografie
+dom	dom:nat:geo	geo	Kartographie
+dom	dom:nat:geo	geo	oceanography
+dom	dom:nat:geo	geo	geology
+dom	dom:nat:geo	geo	mineral
+dom	dom:nat:geo	geo	geography
+dom	dom:nat:geo	geo	metrology
+dom	dom:nat:geo	geo	Geomorphologie
+dom	dom:nat:geo	geo	meteorology
+dom	dom:nat:geo	geo	topography
+dom	dom:nat:geo	geo	meteorology
+dom	dom:nat:geo	geo	Wetter
+dom	dom:nat:geo	geo	of a wind
+dom	dom:nat:geo	geo	mineralogy
+dom	dom:nat:geo	geo	Geologie
+dom	dom:nat:geo	geo	Biogeographie
+dom	dom:nat:geo	geo	meteorology
+dom	dom:nat:geo	geo	oceanography
+dom	dom:nat:geo	geo	of a lake
+dom	dom:nat:geo	geo	earth
+dom	dom:nat:geo	geo	Biogeografie
+dom	dom:nat:geo	geo	speziell Geomorphologie
+dom	dom:hum:hist	hist	classical studies
+dom	dom:hum:hist	hist	Antikes Theater
+dom	dom:hum:hist	hist	antik
+dom	dom:hum:hist	hist	Mittelalter
+dom	dom:hum:hist	hist	historiography
+dom	dom:hum:hist	hist	Ancient Greek
+dom	dom:hum:hist	hist	heraldiccharge
+dom	dom:hum:hist	hist	Onomastik
+dom	dom:hum:hist	hist	Genealogie
+dom	dom:hum:hist	hist	heraldry
+dom	dom:hum:hist	hist	Historie
+dom	dom:hum:hist	hist	Heraldik
+dom	dom:hum:hist	hist	history
+dom	dom:hum:hist	hist	геральд.
+dom	dom:hum:hist	hist	heraldry
+dom	dom:hum:hist	hist	истор.
+dom	dom:hum:hist	hist	Roman
+dom	dom:hum:hist	hist	römische Antike
+dom	dom:hum:hist	hist	Geschichtswissenschaft
+dom	dom:hum:hist	hist	Feudalismus
+dom	dom:hum:hist	hist	Nationalsozialismus
+dom	dom:hum:hist	hist	in der Antike
+dom	dom:hum:hist	hist	genealogy
+dom	dom:hum:hist	hist	World War II
+dom	dom:hum:hist	hist	in Ancient Rome
+dom	dom:hum:hist	hist	Römisches Reich
+dom	dom:hum:hist	hist	Antike
+dom	dom:hum:hist	hist	Geschichtsschreibung
+dom	dom:hum:hist	hist	Ancient Rome
+dom	dom:hum:hist	hist	Geschichte
+dom	dom:hum:hist	hist	griechische Antike
+dom	dom:hum:hist	hist	Deutsche Geschichte
+dom	dom:hum:hist	hist	Spanische Geschichte
+dom	dom:hum:hist	hist	Vor- und Frühgeschichte
+dom	dom:hum:hist	hist	Roman antiquity
+dom	dom:hum:hist	hist	Altertumswissenschaften
+dom	dom:hum:hist	hist	history
+dom	dom:hum:hist	hist	heraldry
+dom	dom:hum:hist	hist	Roman law
+dom	dom:hum:hist	hist	Ancient Greece
+dom	dom:misc:lei	lei	Kleidungsstück
+dom	dom:misc:lei	lei	Hauswirtschaft
+dom	dom:misc:lei	lei	free_time
+dom	dom:misc:lei	lei	Scouting
+dom	dom:misc:lei	lei	Freizeit
+dom	dom:misc:lei	lei	home
+dom	dom:misc:lei	lei	Kochkunst
+dom	dom:misc:lei	lei	textiles
+dom	dom:misc:lei	lei	Beleuchtungstechnik
+dom	dom:misc:lei	lei	smoking
+dom	dom:misc:lei	lei	Unterhaltung
+dom	dom:misc:lei	lei	tourism
+dom	dom:misc:lei	lei	Haushalt
+dom	dom:misc:lei	lei	Küchengerät
+dom	dom:misc:lei	lei	Küche
+dom	dom:soc:law	law	Österreichisches Baurecht
+dom	dom:soc:law	law	deutsches Strafprozessrecht
+dom	dom:soc:law	law	deutsches Prozessrecht
+dom	dom:soc:law	law	Jura
+dom	dom:soc:law	law	Recht
+dom	dom:soc:law	law	criminal
+dom	dom:soc:law	law	law enforcement
+dom	dom:soc:law	law	Strafrecht
+dom	dom:soc:law	law	Polizeirecht
+dom	dom:soc:law	law	Zivilrecht
+dom	dom:soc:law	law	of a law
+dom	dom:soc:law	law	Prozessrecht
+dom	dom:soc:law	law	deutsches Familienrecht
+dom	dom:soc:law	law	im Justizwesen nur mit dieser Bedeutung
+dom	dom:soc:law	law	deutsches Strafrecht
+dom	dom:soc:law	law	Völkerrecht
+dom	dom:soc:law	law	property law
+dom	dom:soc:law	law	legal
+dom	dom:soc:law	law	Recht im subjektiven Sinn
+dom	dom:soc:law	law	civil law
+dom	dom:soc:law	law	Privatrecht
+dom	dom:soc:law	law	nach bürgerliches Recht
+dom	dom:soc:law	law	deutsches Bürgerliches Recht
+dom	dom:soc:law	law	international law
+dom	dom:soc:law	law	allgemeine Rechtssprache
+dom	dom:soc:law	law	criminal law
+dom	dom:soc:law	law	Staatsrecht
+dom	dom:soc:law	law	Rechtswissenschaft
+dom	dom:soc:law	law	richterliche/ behördliche
+dom	dom:soc:law	law	Verwaltungsrecht
+dom	dom:soc:law	law	Rechtsgeschichte
+dom	dom:soc:law	law	Baurecht
+dom	dom:soc:law	law	deutsches Privatrecht
+dom	dom:soc:law	law	nach dem Verwaltungsrecht
+dom	dom:soc:law	law	Recht im objektiven Sinn
+dom	dom:soc:law	law	vor Gericht
+dom	dom:soc:law	law	Rechtswesen
+dom	dom:soc:law	law	copyright
+dom	dom:soc:law	law	deutsches Zivilrecht
+dom	dom:soc:law	law	Steuerrecht
+dom	dom:soc:law	law	trademark
+dom	dom:soc:law	law	Rechtssprache
+dom	dom:soc:law	law	bürgerlichem Recht
+dom	dom:soc:law	law	juristisch
+dom	dom:soc:law	law	intellectual property
+dom	dom:soc:law	law	Verfassungsrecht
+dom	dom:soc:law	law	deutsches Recht
+dom	dom:soc:law	law	Justiz
+dom	dom:soc:law	law	Rechtsprechung
+dom	dom:soc:law	law	state
+dom	dom:soc:law	law	Rechtsphilosophie
+dom	dom:soc:law	law	English law
+dom	dom:soc:law	law	Gesetze
+dom	dom:soc:law	law	law
+dom	dom:soc:law	law	юр.
+dom	dom:soc:law	law	Kirchenrecht
+dom	dom:hum:ling	ling	Semantik
+dom	dom:hum:ling	ling	syntax
+dom	dom:hum:ling	ling	morphology
+dom	dom:hum:ling	ling	speziell generative Grammatik
+dom	dom:hum:ling	ling	grammar
+dom	dom:hum:ling	ling	of a word or phrase
+dom	dom:hum:ling	ling	language
+dom	dom:hum:ling	ling	grammar
+dom	dom:hum:ling	ling	orthography
+dom	dom:hum:ling	ling	linguistics
+dom	dom:hum:ling	ling	onomastics
+dom	dom:hum:ling	ling	sociolinguistics
+dom	dom:hum:ling	ling	Phonologie
+dom	dom:hum:ling	ling	linguistic morphology
+dom	dom:hum:ling	ling	phonology
+dom	dom:hum:ling	ling	speziell Wortbildung
+dom	dom:hum:ling	ling	Sprachwissenschaft
+dom	dom:hum:ling	ling	лингв.
+dom	dom:hum:ling	ling	Schriftlinguistik
+dom	dom:hum:ling	ling	speziell lexikalische Semantik
+dom	dom:hum:ling	ling	phonetics
+dom	dom:hum:ling	ling	speziell Phonetik
+dom	dom:hum:ling	ling	Phonetik
+dom	dom:hum:ling	ling	speziell Schriftlinguistik
+dom	dom:hum:ling	ling	Syntax
+dom	dom:hum:ling	ling	Rhetorik
+dom	dom:hum:ling	ling	Linguistik
+dom	dom:hum:ling	ling	speziell Onomastik
+dom	dom:hum:ling	ling	of a consonant
+dom	dom:hum:ling	ling	in der Sprachforschung und Semiotik
+dom	dom:hum:ling	ling	Quantitative Linguistik
+dom	dom:hum:ling	ling	Germanistik
+dom	dom:hum:ling	ling	linguistics
+dom	dom:hum:ling	ling	speziell Historiolinguistik
+dom	dom:hum:ling	ling	speziell Indogermanistik
+dom	dom:hum:ling	ling	speziell Sprechakttheorie
+dom	dom:hum:ling	ling	Linguistik/Grammatik
+dom	dom:hum:ling	ling	speziell Semantik
+dom	dom:hum:ling	ling	Sprache
+dom	dom:hum:ling	ling	altgriechische Phonetik
+dom	dom:hum:ling	ling	Schriftzeichen
+dom	dom:hum:ling	ling	Textlinguistik
+dom	dom:hum:ling	ling	speziell Kasusgrammatik und Valenzgrammatik
+dom	dom:hum:ling	ling	aus der englisch-amerikanischen Linguistik
+dom	dom:hum:ling	ling	translation studies
+dom	dom:hum:ling	ling	speziell Grammatik
+dom	dom:hum:ling	ling	auch in der Linguistik verwendet
+dom	dom:hum:ling	ling	speziell Slavistik
+dom	dom:hum:ling	ling	Allgemeine Linguistik
+dom	dom:hum:ling	ling	Soziolinguistik
+dom	dom:hum:ling	ling	Disziplin der Linguistik
+dom	dom:hum:ling	ling	in der Linguistik
+dom	dom:hum:ling	ling	Historiolinguistik
+dom	dom:hum:ling	ling	Stilistik
+dom	dom:hum:ling	ling	speziell Spracherwerbsforschung
+dom	dom:hum:ling	ling	grammar
+dom	dom:hum:ling	ling	speziell Soziolinguistik
+dom	dom:hum:ling	ling	indo-european studies
+dom	dom:hum:ling	ling	Morphologie
+dom	dom:hum:ling	ling	Dialektik
+dom	dom:hum:ling	ling	speech act
+dom	dom:hum:ling	ling	Sprachkontaktforschung
+dom	dom:hum:ling	ling	Linguistik/Sprachwissenschaft
+dom	dom:hum:ling	ling	of a vowel
+dom	dom:hum:ling	ling	Metrik
+dom	dom:hum:ling	ling	Linguistik/Phonetik
+dom	dom:hum:ling	ling	grammar
+dom	dom:hum:ling	ling	грам.
+dom	dom:hum:ling	ling	label=linguistics
+dom	dom:hum:ling	ling	speziell Dependenzgrammatik
+dom	dom:hum:ling	ling	translation studies
+dom	dom:hum:ling	ling	speziell Kasusgrammatik
+dom	dom:hum:ling	ling	Lojban grammar
+dom	dom:hum:ling	ling	pragmatics
+dom	dom:hum:ling	ling	lexikalische Semantik
+dom	dom:hum:ling	ling	Dialektologie
+dom	dom:hum:ling	ling	semiotics
+dom	dom:hum:ling	ling	semantics
+dom	dom:hum:ling	ling	prosody
+dom	dom:hum:ling	ling	speziell Stilistik
+dom	dom:hum:ling	ling	speziell Sprachtypologie
+dom	dom:hum:ling	ling	Semiotik
+dom	dom:hum:ling	ling	speziell Textlinguistik
+dom	dom:hum:ling	ling	Flexion
+dom	dom:hum:ling	ling	speziell Psycholinguistik
+dom	dom:hum:ling	ling	speziell Morphologie
+dom	dom:hum:lit	lit	Fantasy
+dom	dom:hum:lit	lit	of a book
+dom	dom:hum:lit	lit	narratology
+dom	dom:hum:lit	lit	texting
+dom	dom:hum:lit	lit	literature
+dom	dom:hum:lit	lit	Linguistik/Literaturwissenschaft
+dom	dom:hum:lit	lit	literature
+dom	dom:hum:lit	lit	лит.
+dom	dom:hum:lit	lit	comics
+dom	dom:hum:lit	lit	anime
+dom	dom:hum:lit	lit	Literaturgeschichte
+dom	dom:hum:lit	lit	literary theory
+dom	dom:hum:lit	lit	Poesie
+dom	dom:hum:lit	lit	Dichtung
+dom	dom:hum:lit	lit	Literaturwissenschaft
+dom	dom:hum:lit	lit	Literatur
+dom	dom:hum:lit	lit	Japanese fiction
+dom	dom:hum:lit	lit	филол.
+dom	dom:hum:lit	lit	fiction
+dom	dom:hum:lit	lit	scifi
+dom	dom:hum:lit	lit	Verslehre
+dom	dom:hum:lit	lit	фант.
+dom	dom:hum:lit	lit	Philologie
+dom	dom:hum:lit	lit	fantasy
+dom	dom:hum:lit	lit	philology
+dom	dom:hum:lit	lit	writing
+dom	dom:hum:lit	lit	poetry
+dom	dom:hum:lit	lit	manga
+dom	dom:hum:lit	lit	Lyrik
+dom	dom:hum:lit	lit	science fiction
+dom	dom:str:math	math	linear algebra
+dom	dom:str:math	math	Topologie
+dom	dom:str:math	math	number theory
+dom	dom:str:math	math	ring theory
+dom	dom:str:math	math	Prädikatenlogik
+dom	dom:str:math	math	geometry
+dom	dom:str:math	math	speziell Mengenlehre
+dom	dom:str:math	math	fuzzy logic
+dom	dom:str:math	math	Graphentheorie
+dom	dom:str:math	math	differential geometry
+dom	dom:str:math	math	logic
+dom	dom:str:math	math	vector
+dom	dom:str:math	math	probability theory
+dom	dom:str:math	math	set theory
+dom	dom:str:math	math	of a graph
+dom	dom:str:math	math	Mengenlehre
+dom	dom:str:math	math	Multiplikation und Subtraktion
+dom	dom:str:math	math	stochastic processes
+dom	dom:str:math	math	матем.
+dom	dom:str:math	math	speziell Geometrie
+dom	dom:str:math	math	Mathematik
+dom	dom:str:math	math	graph theory
+dom	dom:str:math	math	math
+dom	dom:str:math	math	probability
+dom	dom:str:math	math	order theory
+dom	dom:str:math	math	Wirtschaftsmathematik
+dom	dom:str:math	math	meist Mathematik
+dom	dom:str:math	math	mathematics
+dom	dom:str:math	math	game theory
+dom	dom:str:math	math	calculus
+dom	dom:str:math	math	arithmetic
+dom	dom:str:math	math	Kryptographie
+dom	dom:str:math	math	Statistik
+dom	dom:str:math	math	of a set
+dom	dom:str:math	math	in der Logik
+dom	dom:str:math	math	Division
+dom	dom:str:math	math	Geometrie
+dom	dom:str:math	math	group theory
+dom	dom:str:math	math	combinatorics
+dom	dom:str:math	math	of an integer
+dom	dom:str:math	math	Algebra
+dom	dom:str:math	math	zählbar
+dom	dom:str:math	math	statistics
+dom	dom:str:math	math	Analysis
+dom	dom:str:math	math	cryptography
+dom	dom:str:math	math	of a topological space
+dom	dom:str:math	math	Stochastik
+dom	dom:str:math	math	Bruchzahl bei Maßeinheiten
+dom	dom:str:math	math	category theory
+dom	dom:str:math	math	speziell Statistik
+dom	dom:str:math	math	геометр.
+dom	dom:str:math	math	Differentialgleichungen
+dom	dom:str:math	math	Logik
+dom	dom:str:math	math	statistics
+dom	dom:str:math	math	trigonometry
+dom	dom:str:math	math	стат.
+dom	dom:str:math	math	complex analysis
+dom	dom:str:math	math	maths
+dom	dom:str:math	math	set phrase
+dom	dom:str:math	math	field theory
+dom	dom:str:math	math	mathematische Logik
+dom	dom:str:math	math	analysis
+dom	dom:str:math	math	algebraic geometry
+dom	dom:str:math	math	mathematics
+dom	dom:str:math	math	algebra
+dom	dom:str:math	math	Mathematik/Zahlentheorie
+dom	dom:str:math	math	model theory
+dom	dom:str:math	math	Kryptologie
+dom	dom:str:math	math	topology
+dom	dom:str:math	math	geometry
+dom	dom:str:math	math	bei mathematischen Operationen
+dom	dom:str:math	math	functional analysis
+dom	dom:str:math	math	Mathematik/analytische Geometrie
+dom	dom:nat:medi	medi	Anatomie / Physiologie
+dom	dom:nat:medi	medi	of a drug
+dom	dom:nat:medi	medi	Tiermedizin
+dom	dom:nat:medi	medi	obstetrics
+dom	dom:nat:medi	medi	homeopathy
+dom	dom:nat:medi	medi	pharmacy
+dom	dom:nat:medi	medi	ophthalmology
+dom	dom:nat:medi	medi	gynaecology
+dom	dom:nat:medi	medi	Rechtsmedizin
+dom	dom:nat:medi	medi	oncology
+dom	dom:nat:medi	medi	Schmerztherapie
+dom	dom:nat:medi	medi	Dermatologie
+dom	dom:nat:medi	medi	Sinnesphysiologie
+dom	dom:nat:medi	medi	Augenheilkunde
+dom	dom:nat:medi	medi	steroid drug
+dom	dom:nat:medi	medi	emergency medicine
+dom	dom:nat:medi	medi	анат.
+dom	dom:nat:medi	medi	veterinary
+dom	dom:nat:medi	medi	Physiologie
+dom	dom:nat:medi	medi	diseases
+dom	dom:nat:medi	medi	Pathologie
+dom	dom:nat:medi	medi	Palliativmedizin
+dom	dom:nat:medi	medi	Krankheit
+dom	dom:nat:medi	medi	Pharmazie
+dom	dom:nat:medi	medi	Radiologie
+dom	dom:nat:medi	medi	Phytopathologie
+dom	dom:nat:medi	medi	neurology
+dom	dom:nat:medi	medi	Psychiatrie
+dom	dom:nat:medi	medi	hematology
+dom	dom:nat:medi	medi	физиол.
+dom	dom:nat:medi	medi	Neuroanatomie
+dom	dom:nat:medi	medi	антроп.
+dom	dom:nat:medi	medi	dentistry
+dom	dom:nat:medi	medi	optometry
+dom	dom:nat:medi	medi	medicine
+dom	dom:nat:medi	medi	Anatomie
+dom	dom:nat:medi	medi	Medizin
+dom	dom:nat:medi	medi	Neurologie
+dom	dom:nat:medi	medi	endocrinology
+dom	dom:nat:medi	medi	das Gehör betreffend
+dom	dom:nat:medi	medi	мед.
+dom	dom:nat:medi	medi	Orthopädie
+dom	dom:nat:medi	medi	veterinary medicine
+dom	dom:nat:medi	medi	cardiology
+dom	dom:nat:medi	medi	pharmacology
+dom	dom:nat:medi	medi	Chirurgie
+dom	dom:nat:medi	medi	pathology
+dom	dom:nat:medi	medi	physiology
+dom	dom:nat:medi	medi	clinical psychology
+dom	dom:nat:medi	medi	medical
+dom	dom:nat:medi	medi	surgery
+dom	dom:nat:medi	medi	Zahnmedizin
+dom	dom:nat:medi	medi	den Geruchssinn betreffend
+dom	dom:nat:medi	medi	den Geschmackssinn betreffend
+dom	dom:nat:medi	medi	immunology
+dom	dom:nat:medi	medi	physiology
+dom	dom:nat:medi	medi	Humanmedizin
+dom	dom:nat:medi	medi	вет.
+dom	dom:nat:medi	medi	Geburtshilfe
+dom	dom:nat:medi	medi	фарм.
+dom	dom:nat:medi	medi	anatomy
+dom	dom:nat:medi	medi	muscle
+dom	dom:nat:medi	medi	teratology
+dom	dom:nat:medi	medi	Gynäkologie
+dom	dom:nat:medi	medi	symptom
+dom	dom:nat:medi	medi	psychiatry
+dom	dom:nat:medi	medi	психиатр.
+dom	dom:nat:medi	medi	pharmaceutical drug
+dom	dom:nat:medi	medi	Humanphysiologie
+dom	dom:nat:medi	medi	speziell Physiologie
+dom	dom:nat:medi	medi	pharmacy
+dom	dom:nat:medi	medi	Naturheilkunde
+dom	dom:nat:medi	medi	medizinisch
+dom	dom:nat:medi	medi	speziell Anatomie
+dom	dom:nat:medi	medi	psychiatry
+dom	dom:nat:medi	medi	Veterinärmedizin
+dom	dom:nat:medi	medi	epidemiology
+dom	dom:nat:medi	medi	radiology
+dom	dom:nat:medi	medi	dentistry
+dom	dom:nat:medi	medi	surgery
+dom	dom:nat:medi	medi	Anthropologie
+dom	dom:nat:medi	medi	Pharmakologie
+dom	dom:nat:medi	medi	Ophthalmologie
+dom	dom:nat:medi	medi	disease
+dom	dom:nat:medi	medi	Anatomische Nomenklatur
+dom	dom:nat:medi	medi	physiology
+dom	dom:nat:medi	medi	neurotransmitter
+dom	dom:nat:medi	medi	anatomy
+dom	dom:nat:medi	medi	virology
+dom	dom:nat:medi	medi	bei Krankheiten
+dom	dom:nat:medi	medi	zootechnics
+dom	dom:nat:medi	medi	alternative medicine
+dom	dom:nat:medi	medi	veterinary
+dom	dom:nat:medi	medi	neuroanatomy
+dom	dom:nat:medi	medi	medicine
+dom	dom:nat:medi	medi	neuroscience
+dom	dom:soc:media	media	dermatology
+dom	dom:soc:media	media	Buchwesen
+dom	dom:soc:media	media	Buchbinderei
+dom	dom:soc:media	media	metal typesetting
+dom	dom:soc:media	media	Radio
+dom	dom:soc:media	media	Digital Versatile Disc
+dom	dom:soc:media	media	printing
+dom	dom:soc:media	media	Journalismus
+dom	dom:soc:media	media	typography
+dom	dom:soc:media	media	journalism
+dom	dom:soc:media	media	Buchdruck
+dom	dom:soc:media	media	newspapers
+dom	dom:soc:media	media	Druckereiwesen
+dom	dom:soc:media	media	typesetting
+dom	dom:soc:media	media	Verlagswesen
+dom	dom:soc:media	media	Medien
+dom	dom:soc:media	media	радио
+dom	dom:soc:media	media	Typografie
+dom	dom:soc:media	media	DVD
+dom	dom:soc:media	media	Typographie
+dom	dom:soc:media	media	Fernsehen
+dom	dom:soc:media	media	bookbinding
+dom	dom:soc:media	media	radio+tv
+dom	dom:soc:media	media	library science
+dom	dom:soc:media	media	radio
+dom	dom:soc:media	media	publishing
+dom	dom:soc:media	media	television
+dom	dom:soc:media	media	im Druckwesen und EDV
+dom	dom:soc:media	media	Druckerei
+dom	dom:soc:media	media	entertainment industry
+dom	dom:soc:media	media	Druckwesen
+dom	dom:soc:media	media	Unterhaltungselektronik
+dom	dom:soc:media	media	publishing
+dom	dom:soc:media	media	Printmedium
+dom	dom:soc:media	media	media
+dom	dom:soc:media	media	speziell Typographie
+dom	dom:soc:media	media	paper
+dom	dom:soc:media	media	broadcasting
+dom	dom:soc:media	media	video compression
+dom	dom:soc:media	media	Journalistik
+dom	dom:soc:media	media	Schriftsatz
+dom	dom:soc:media	media	Publizistik
+dom	dom:soc:media	media	sound
+dom	dom:soc:media	media	Bibliothekswesen
+dom	dom:soc:media	media	TV
+dom	dom:soc:media	media	Rundfunk
+dom	dom:soc:media	media	Kupferstecherei
+dom	dom:soc:media	media	bibliography
+dom	dom:soc:media	media	полигр.
+dom	dom:soc:media	media	Drucktechnik
+dom	dom:soc:milit	milit	army
+dom	dom:soc:milit	milit	Soldaten
+dom	dom:soc:milit	milit	военн.
+dom	dom:soc:milit	milit	Bundeswehr
+dom	dom:soc:milit	milit	weaponry
+dom	dom:soc:milit	milit	Marines
+dom	dom:soc:milit	milit	artillery
+dom	dom:soc:milit	milit	military ranks
+dom	dom:soc:milit	milit	Military
+dom	dom:soc:milit	milit	of a missile
+dom	dom:soc:milit	milit	firearms
+dom	dom:soc:milit	milit	Waffenkunde
+dom	dom:soc:milit	milit	military
+dom	dom:soc:milit	milit	military
+dom	dom:soc:milit	milit	Military
+dom	dom:soc:milit	milit	Army
+dom	dom:soc:milit	milit	navy
+dom	dom:soc:milit	milit	shooting
+dom	dom:soc:milit	milit	Krieg
+dom	dom:soc:milit	milit	military slang
+dom	dom:soc:milit	milit	meist Militär
+dom	dom:soc:milit	milit	air force
+dom	dom:soc:milit	milit	Royal Navy
+dom	dom:soc:milit	milit	of a firearm
+dom	dom:soc:milit	milit	Marine
+dom	dom:soc:milit	milit	military
+dom	dom:soc:milit	milit	Schließtechnik
+dom	dom:soc:milit	milit	Navy
+dom	dom:soc:milit	milit	navy
+dom	dom:soc:milit	milit	Militärwesen
+dom	dom:soc:milit	milit	Militär
+dom	dom:soc:milit	milit	Munition
+dom	dom:soc:milit	milit	fortification
+dom	dom:soc:milit	milit	Kriegsführung
+dom	dom:soc:milit	milit	militärisch
+dom	dom:soc:milit	milit	weapons
+dom	dom:soc:milit	milit	Navy
+dom	dom:soc:milit	milit	Waffentechnik
+dom	dom:eng:mining	mining	drilling
+dom	dom:eng:mining	mining	bergmännisch
+dom	dom:eng:mining	mining	oil drilling
+dom	dom:eng:mining	mining	горн.
+dom	dom:eng:mining	mining	Sprengtechnik
+dom	dom:eng:mining	mining	Bergbau
+dom	dom:eng:mining	mining	Bergmannssprache
+dom	dom:eng:mining	mining	oil industry
+dom	dom:eng:mining	mining	Hüttenwesen
+dom	dom:eng:mining	mining	нефтегаз.
+dom	dom:eng:mining	mining	mining
+dom	dom:hum:art:music	music	jazz
+dom	dom:hum:art:music	music	муз.
+dom	dom:hum:art:music	music	Musikinstrumentenbau
+dom	dom:hum:art:music	music	musical instruments
+dom	dom:hum:art:music	music	music
+dom	dom:hum:art:music	music	musical instrument
+dom	dom:hum:art:music	music	Musikinstrument
+dom	dom:hum:art:music	music	of a musical instrument
+dom	dom:hum:art:music	music	stringed instruments
+dom	dom:hum:art:music	music	musici
+dom	dom:hum:art:music	music	Musik
+dom	dom:hum:art:music	music	of music
+dom	dom:hum:art:music	music	ein Musikinstrument durch Berührung
+dom	dom:hum:art:music	music	music
+dom	dom:soc:myth	myth	Griechische Mythologie
+dom	dom:soc:myth	myth	römische Mythologie
+dom	dom:soc:myth	myth	ägyptische Mythologie
+dom	dom:soc:myth	myth	mythologisch
+dom	dom:soc:myth	myth	Greek god
+dom	dom:soc:myth	myth	Irish mythology
+dom	dom:soc:myth	myth	Roman mythology
+dom	dom:soc:myth	myth	mythical
+dom	dom:soc:myth	myth	Norse mythology
+dom	dom:soc:myth	myth	Armenian mythology
+dom	dom:soc:myth	myth	mythology
+dom	dom:soc:myth	myth	Egyptian mythology
+dom	dom:soc:myth	myth	Greek mythology
+dom	dom:soc:myth	myth	Roman god
+dom	dom:soc:myth	myth	мифол.
+dom	dom:soc:myth	myth	mythology
+dom	dom:soc:myth	myth	Australian Aboriginal mythology
+dom	dom:soc:myth	myth	Ägyptische Mythologie
+dom	dom:soc:myth	myth	mythology
+dom	dom:soc:myth	myth	griechische Mythologie
+dom	dom:soc:myth	myth	Mythologie
+dom	dom:misc:nutr	nutr	of fruit
+dom	dom:misc:nutr	nutr	Nahrungsmittel
+dom	dom:misc:nutr	nutr	cookery
+dom	dom:misc:nutr	nutr	nutrition
+dom	dom:misc:nutr	nutr	Essen
+dom	dom:misc:nutr	nutr	gastronomy
+dom	dom:misc:nutr	nutr	italienische Küche
+dom	dom:misc:nutr	nutr	vitamin
+dom	dom:misc:nutr	nutr	гастрон.
+dom	dom:misc:nutr	nutr	of food
+dom	dom:misc:nutr	nutr	кулин.
+dom	dom:misc:nutr	nutr	in der Sprache der Köche
+dom	dom:misc:nutr	nutr	Alkoholisches Getränk
+dom	dom:misc:nutr	nutr	indonesische Küche
+dom	dom:misc:nutr	nutr	insbesondere Küche
+dom	dom:misc:nutr	nutr	Nahrung
+dom	dom:misc:nutr	nutr	Getränk
+dom	dom:misc:nutr	nutr	Speise
+dom	dom:misc:nutr	nutr	österreichisch-ungarische Küche
+dom	dom:misc:nutr	nutr	österreichische Küche
+dom	dom:misc:nutr	nutr	cooking
+dom	dom:misc:nutr	nutr	cookware
+dom	dom:misc:nutr	nutr	brewing
+dom	dom:misc:nutr	nutr	türkische Küche
+dom	dom:misc:nutr	nutr	französische Küche
+dom	dom:misc:nutr	nutr	food
+dom	dom:misc:nutr	nutr	wine
+dom	dom:misc:nutr	nutr	Gemüse
+dom	dom:misc:nutr	nutr	food
+dom	dom:misc:nutr	nutr	gastronomy
+dom	dom:misc:nutr	nutr	Geschirr
+dom	dom:misc:nutr	nutr	Lebensmittel
+dom	dom:misc:nutr	nutr	bei Speisen
+dom	dom:misc:nutr	nutr	restaurants
+dom	dom:misc:nutr	nutr	of wine
+dom	dom:misc:nutr	nutr	von Nahrung
+dom	dom:misc:nutr	nutr	alkoholisches Getränk
+dom	dom:misc:nutr	nutr	Gastronomie
+dom	dom:misc:nutr	nutr	of meat
+dom	dom:misc:nutr	nutr	Ernährung
+dom	dom:hum:phil	phil	epistemology
+dom	dom:hum:phil	phil	metaphysics
+dom	dom:hum:phil	phil	philosophy
+dom	dom:hum:phil	phil	meist Philosophie
+dom	dom:hum:phil	phil	philosophy
+dom	dom:hum:phil	phil	филос.
+dom	dom:hum:phil	phil	Naturphilosophie
+dom	dom:hum:phil	phil	Philosophie
+dom	dom:hum:phil	phil	phenomenology
+dom	dom:hum:phil	phil	theologisch/philosophisch
+dom	dom:hum:phil	phil	philosophisch
+dom	dom:nat:phys	phys	phys.
+dom	dom:nat:phys	phys	hydraulics
+dom	dom:nat:phys	phys	optics
+dom	dom:nat:phys	phys	Wärmeenergietechnik
+dom	dom:nat:phys	phys	galaxy
+dom	dom:nat:phys	phys	Physik
+dom	dom:nat:phys	phys	SI-unit
+dom	dom:nat:phys	phys	isotope
+dom	dom:nat:phys	phys	constellation
+dom	dom:nat:phys	phys	mechanics
+dom	dom:nat:phys	phys	Raumfahrt
+dom	dom:nat:phys	phys	celestial mechanics
+dom	dom:nat:phys	phys	areology
+dom	dom:nat:phys	phys	thermodynamics
+dom	dom:nat:phys	phys	electrical current
+dom	dom:nat:phys	phys	Kerntechnik
+dom	dom:nat:phys	phys	NASA
+dom	dom:nat:phys	phys	planetology
+dom	dom:nat:phys	phys	Elektrodynamik
+dom	dom:nat:phys	phys	астрон.
+dom	dom:nat:phys	phys	quantum mechanics
+dom	dom:nat:phys	phys	nuclear power
+dom	dom:nat:phys	phys	Magnetismus
+dom	dom:nat:phys	phys	space science
+dom	dom:nat:phys	phys	katal
+dom	dom:nat:phys	phys	metre
+dom	dom:nat:phys	phys	astrophysics
+dom	dom:nat:phys	phys	of a sound
+dom	dom:nat:phys	phys	electricity
+dom	dom:nat:phys	phys	electricity
+dom	dom:nat:phys	phys	Messgerät
+dom	dom:nat:phys	phys	mechanics
+dom	dom:nat:phys	phys	nuclear physics
+dom	dom:nat:phys	phys	nuclear industry
+dom	dom:nat:phys	phys	electricity
+dom	dom:nat:phys	phys	bei optischen Linsen
+dom	dom:nat:phys	phys	Astronomie
+dom	dom:nat:phys	phys	space
+dom	dom:nat:phys	phys	cosmology
+dom	dom:nat:phys	phys	acoustics
+dom	dom:nat:phys	phys	Tribologie
+dom	dom:nat:phys	phys	Astrophysik
+dom	dom:nat:phys	phys	Entfernungseinheit
+dom	dom:nat:phys	phys	audio
+dom	dom:nat:phys	phys	relativity
+dom	dom:nat:phys	phys	опт.
+dom	dom:nat:phys	phys	star
+dom	dom:nat:phys	phys	Teilchenphysik
+dom	dom:nat:phys	phys	Licht & Lichterzeugendes
+dom	dom:nat:phys	phys	Kosmologie
+dom	dom:nat:phys	phys	classical mechanics
+dom	dom:nat:phys	phys	optics
+dom	dom:nat:phys	phys	physikalisch
+dom	dom:nat:phys	phys	Mechanik
+dom	dom:nat:phys	phys	косм.
+dom	dom:nat:phys	phys	Optik
+dom	dom:nat:phys	phys	Kernphysik
+dom	dom:nat:phys	phys	quantum physics
+dom	dom:nat:phys	phys	astronomy
+dom	dom:nat:phys	phys	Elementarteilchenphysik
+dom	dom:nat:phys	phys	astronomy
+dom	dom:nat:phys	phys	physics
+dom	dom:nat:phys	phys	nanotechnology
+dom	dom:nat:phys	phys	fluid dynamics
+dom	dom:nat:phys	phys	speziell Teilchenphysik
+dom	dom:nat:phys	phys	мех.
+dom	dom:nat:phys	phys	atomic_physic
+dom	dom:nat:phys	phys	Akustik
+dom	dom:nat:phys	phys	Thermodynamik
+dom	dom:nat:phys	phys	acoustics
+dom	dom:nat:phys	phys	physics
+dom	dom:nat:phys	phys	физ.
+dom	dom:soc:pol	pol	government
+dom	dom:soc:pol	pol	diplomacy
+dom	dom:soc:pol	pol	Politikwissenschaft
+dom	dom:soc:pol	pol	espionage
+dom	dom:soc:pol	pol	public policy
+dom	dom:soc:pol	pol	politics
+dom	dom:soc:pol	pol	Politologie
+dom	dom:soc:pol	pol	Politik
+dom	dom:soc:pol	pol	diplomacy
+dom	dom:soc:pol	pol	совет.
+dom	dom:soc:pol	pol	politisch-organisatorisch
+dom	dom:soc:pol	pol	Wirtschaftspolitik
+dom	dom:soc:pol	pol	полит.
+dom	dom:soc:pol	pol	Marxismus
+dom	dom:soc:pol	pol	US politics
+dom	dom:soc:pol	pol	Staatsorgan
+dom	dom:soc:pol	pol	political
+dom	dom:soc:pol	pol	дипл.
+dom	dom:soc:pol	pol	political science
+dom	dom:soc:pol	pol	politics
+dom	dom:soc:pol	pol	communism
+dom	dom:soc:psych	psych	seelisch
+dom	dom:soc:psych	psych	psychoanalysis
+dom	dom:soc:psych	psych	psychoanalysis
+dom	dom:soc:psych	psych	psychology
+dom	dom:soc:psych	psych	Ergonomie
+dom	dom:soc:psych	psych	Verhaltensforschung
+dom	dom:soc:psych	psych	psychological_features
+dom	dom:soc:psych	psych	in der Psychologie
+dom	dom:soc:psych	psych	психол.
+dom	dom:soc:psych	psych	emphatic
+dom	dom:soc:psych	psych	Entwicklungspsychologie
+dom	dom:soc:psych	psych	Individualpsychologie
+dom	dom:soc:psych	psych	Tierpsychologie
+dom	dom:soc:psych	psych	Psychologie
+dom	dom:soc:psych	psych	Parapsychologie
+dom	dom:soc:psych	psych	parapsychology
+dom	dom:soc:psych	psych	psychology
+dom	dom:soc:psych	psych	psychologisch
+dom	dom:soc:psych	psych	psychotherapy
+dom	dom:soc:reli	reli	Christliche Religion
+dom	dom:soc:reli	reli	Bibel
+dom	dom:soc:reli	reli	Islam
+dom	dom:soc:reli	reli	Katholische Kirche
+dom	dom:soc:reli	reli	Alten Testament
+dom	dom:soc:reli	reli	ethics
+dom	dom:soc:reli	reli	jüdische und christliche Religion
+dom	dom:soc:reli	reli	islamische Religion
+dom	dom:soc:reli	reli	spirituality
+dom	dom:soc:reli	reli	katholische Religion
+dom	dom:soc:reli	reli	Catholicism
+dom	dom:soc:reli	reli	Roman Catholic Church
+dom	dom:soc:reli	reli	theosophy
+dom	dom:soc:reli	reli	Scientology
+dom	dom:soc:reli	reli	religious
+dom	dom:soc:reli	reli	Judaism
+dom	dom:soc:reli	reli	christliche Religion
+dom	dom:soc:reli	reli	Mormonism
+dom	dom:soc:reli	reli	theology
+dom	dom:soc:reli	reli	nach dem Altes Testament
+dom	dom:soc:reli	reli	paganism
+dom	dom:soc:reli	reli	christianity
+dom	dom:soc:reli	reli	religion
+dom	dom:soc:reli	reli	religion
+dom	dom:soc:reli	reli	ecclesiastical
+dom	dom:soc:reli	reli	Bible
+dom	dom:soc:reli	reli	Islam
+dom	dom:soc:reli	reli	biblical
+dom	dom:soc:reli	reli	Eastern Orthodoxy
+dom	dom:soc:reli	reli	Buddhism
+dom	dom:soc:reli	reli	canon law
+dom	dom:soc:reli	reli	Protestantism
+dom	dom:soc:reli	reli	biblical character
+dom	dom:soc:reli	reli	Abrahamic religions
+dom	dom:soc:reli	reli	christliche Theologie
+dom	dom:soc:reli	reli	Liturgie
+dom	dom:soc:reli	reli	Christianity
+dom	dom:soc:reli	reli	Sikhism
+dom	dom:soc:reli	reli	Wicca
+dom	dom:soc:reli	reli	Roman Catholicism
+dom	dom:soc:reli	reli	Hinduism
+dom	dom:soc:reli	reli	Christian
+dom	dom:soc:reli	reli	Judentum
+dom	dom:soc:reli	reli	Religionsgeschichte
+dom	dom:soc:reli	reli	Liturgik
+dom	dom:soc:reli	reli	Roman Catholic
+dom	dom:soc:reli	reli	jüdische Religion
+dom	dom:soc:reli	reli	gnosticism
+dom	dom:soc:reli	reli	katholische Theologie
+dom	dom:soc:reli	reli	roman_catholic
+dom	dom:soc:reli	reli	rasta
+dom	dom:soc:reli	reli	религ.
+dom	dom:soc:reli	reli	blasphemous
+dom	dom:soc:reli	reli	церк.
+dom	dom:soc:reli	reli	eine Position innerhalb einer kirchlichen Gemeinschaft
+dom	dom:soc:reli	reli	zumeist Bibelsprache
+dom	dom:soc:reli	reli	Religion
+dom	dom:soc:reli	reli	alttestamentliche Bibelwissenschaft
+dom	dom:soc:reli	reli	speziell Christentum
+dom	dom:soc:reli	reli	Kirche
+dom	dom:soc:reli	reli	Christliche Theologie
+dom	dom:soc:reli	reli	Theologie
+dom	dom:soc:reli	reli	ислам.
+dom	dom:soc:reli	reli	label=Christianity
+dom	dom:soc:reli	reli	библейск.
+dom	dom:soc:reli	reli	церк.-слав.
+dom	dom:soc:reli	reli	theology
+dom	dom:soc:reli	reli	religion
+dom	dom:soc:reli	reli	Ethik
+dom	dom:soc:reli	reli	außerhalb des Christentums
+dom	dom:soc:reli	reli	Christentum
+dom	dom:soc:reli	reli	Zoroastrianism
+dom	dom:soc:reli	reli	Biblical
+dom	dom:soc:reli	reli	Religion
+dom	dom:soc:reli	reli	religiös
+dom	dom:soc:reli	reli	Kult
+dom	dom:soc:reli	reli	katholisch
+dom	dom:soc:reli	reli	Katholizismus
+dom	dom:soc:reli	reli	Jainism
+dom	dom:soc:reli	reli	christliche und jüdische Religion
+dom	dom:soc:reli	reli	katholische Kirche
+dom	dom:soc:reli	reli	in der Bibelsprache
+dom	dom:soc:reli	reli	römisch-katholische Kirche
+dom	dom:soc:reli	reli	Judaismus
+dom	dom:soc:reli	reli	Hinduismus
+dom	dom:soc:reli	reli	Tibetan Buddhism
+dom	dom:soc:reli	reli	Buddhismus
+dom	dom:soc:reli	reli	Gnosticism
+dom	dom:soc	soc	Adoption
+dom	dom:soc	soc	Diplomatie
+dom	dom:soc	soc	labor union
+dom	dom:soc	soc	social sciences
+dom	dom:soc	soc	folklore
+dom	dom:soc	soc	Verwaltungsakt
+dom	dom:soc	soc	öffentliche Verwaltung
+dom	dom:soc	soc	forensics
+dom	dom:soc	soc	anthropology
+dom	dom:soc	soc	Polizeiwesen
+dom	dom:soc	soc	politisch-weltanschaulich
+dom	dom:soc	soc	folklore
+dom	dom:soc	soc	Verwaltungswesen
+dom	dom:soc	soc	folklore
+dom	dom:soc	soc	Demografie
+dom	dom:soc	soc	Skandinavistik
+dom	dom:soc	soc	Völkerkunde
+dom	dom:soc	soc	Sozialwissenschaft
+dom	dom:soc	soc	Kriminologie
+dom	dom:soc	soc	sociology
+dom	dom:soc	soc	Kulturwissenschaft
+dom	dom:soc	soc	social_science
+dom	dom:soc	soc	Kriminalistik
+dom	dom:soc	soc	politisch
+dom	dom:soc	soc	feminism
+dom	dom:soc	soc	Sexualität
+dom	dom:soc	soc	ethnology
+dom	dom:soc	soc	Verwaltung
+dom	dom:soc	soc	administration
+dom	dom:soc	soc	Polizei etc.
+dom	dom:soc	soc	Ägyptologie
+dom	dom:soc	soc	ballistics
+dom	dom:soc	soc	Polizei
+dom	dom:soc	soc	Sexualkunde
+dom	dom:soc	soc	ethnology
+dom	dom:soc	soc	социол.
+dom	dom:soc	soc	Familie
+dom	dom:soc	soc	культурол.
+dom	dom:soc	soc	Urbanistik
+dom	dom:soc	soc	Soziologie
+dom	dom:soc	soc	Sozialwissenschaften
+dom	dom:soc	soc	soziologisch
+dom	dom:soc	soc	Sozialleben
+dom	dom:soc	soc	sociology
+dom	dom:soc	soc	Ethnologie
+dom	dom:soc	soc	Brauchtum
+dom	dom:soc	soc	ethnography
+dom	dom:soc	soc	anthropology
+dom	dom:soc	soc	Gesellschaft
+dom	dom:soc	soc	Kultur
+dom	dom:soc	soc	этнолог.
+dom	dom:soc	soc	Volkskunde
+dom	dom:soc	soc	фолькл.
+dom	dom:soc	soc	этногр.
+dom	dom:soc	soc	social science
+dom	dom:soc	soc	criminology
+dom	dom:soc	soc	Demographie
+dom	dom:soc	soc	nicht amtlich
+dom	dom:soc	soc	anthropology
+dom	dom:misc:sport	sport	rock climbing
+dom	dom:misc:sport	sport	volleyball
+dom	dom:misc:sport	sport	Segeln
+dom	dom:misc:sport	sport	roller derby
+dom	dom:misc:sport	sport	Canadian football
+dom	dom:misc:sport	sport	Gaelic football
+dom	dom:misc:sport	sport	darts
+dom	dom:misc:sport	sport	motorcycling
+dom	dom:misc:sport	sport	Tennis
+dom	dom:misc:sport	sport	Angelfischerei
+dom	dom:misc:sport	sport	skating
+dom	dom:misc:sport	sport	auto racing
+dom	dom:misc:sport	sport	Fischerei
+dom	dom:misc:sport	sport	hurling
+dom	dom:misc:sport	sport	racing
+dom	dom:misc:sport	sport	rugby
+dom	dom:misc:sport	sport	skiing
+dom	dom:misc:sport	sport	skating
+dom	dom:misc:sport	sport	cycling
+dom	dom:misc:sport	sport	volleyball
+dom	dom:misc:sport	sport	Schach
+dom	dom:misc:sport	sport	tennis
+dom	dom:misc:sport	sport	sport
+dom	dom:misc:sport	sport	soccer
+dom	dom:misc:sport	sport	rowing
+dom	dom:misc:sport	sport	golf
+dom	dom:misc:sport	sport	football
+dom	dom:misc:sport	sport	cricket
+dom	dom:misc:sport	sport	basketball
+dom	dom:misc:sport	sport	baseball
+dom	dom:misc:sport	sport	croquet
+dom	dom:misc:sport	sport	table_tennis
+dom	dom:misc:sport	sport	boxing
+dom	dom:misc:sport	sport	Sport
+dom	dom:misc:sport	sport	Sport
+dom	dom:misc:sport	sport	racing
+dom	dom:misc:sport	sport	bowling
+dom	dom:misc:sport	sport	hunting
+dom	dom:misc:sport	sport	fishing
+dom	dom:misc:sport	sport	hockey
+dom	dom:misc:sport	sport	fencing
+dom	dom:misc:sport	sport	mountaineering
+dom	dom:misc:sport	sport	wrestling
+dom	dom:misc:sport	sport	athletics
+dom	dom:misc:sport	sport	racing
+dom	dom:misc:sport	sport	diving
+dom	dom:misc:sport	sport	sub
+dom	dom:misc:sport	sport	swimming
+dom	dom:misc:sport	sport	chess
+dom	dom:misc:sport	sport	archery
+dom	dom:misc:sport	sport	Pferdesport
+dom	dom:misc:sport	sport	Radsport
+dom	dom:misc:sport	sport	Golfsport
+dom	dom:misc:sport	sport	squash
+dom	dom:misc:sport	sport	cheerleading
+dom	dom:misc:sport	sport	Turnen
+dom	dom:misc:sport	sport	of a batsman
+dom	dom:misc:sport	sport	badminton
+dom	dom:misc:sport	sport	exercise
+dom	dom:misc:sport	sport	badminton
+dom	dom:misc:sport	sport	Ultimate Frisbee
+dom	dom:misc:sport	sport	Bergsteigen
+dom	dom:misc:sport	sport	Boxen
+dom	dom:misc:sport	sport	Fechten
+dom	dom:misc:sport	sport	caving
+dom	dom:misc:sport	sport	rugby union
+dom	dom:misc:sport	sport	canoeing
+dom	dom:misc:sport	sport	Golf
+dom	dom:misc:sport	sport	альп.
+dom	dom:misc:sport	sport	йогич.
+dom	dom:misc:sport	sport	рыбол.
+dom	dom:misc:sport	sport	Fußball
+dom	dom:misc:sport	sport	шахм.
+dom	dom:misc:sport	sport	охотн.
+dom	dom:misc:sport	sport	kayaking
+dom	dom:misc:sport	sport	Golf
+dom	dom:misc:sport	sport	cue sports
+dom	dom:misc:sport	sport	Jagd
+dom	dom:misc:sport	sport	aerial freestyle skiing
+dom	dom:misc:sport	sport	yachting
+dom	dom:misc:sport	sport	combat sports
+dom	dom:misc:sport	sport	parachuting
+dom	dom:misc:sport	sport	swimming
+dom	dom:misc:sport	sport	diving
+dom	dom:misc:sport	sport	спорт.
+dom	dom:misc:sport	sport	football
+dom	dom:misc:sport	sport	cycling
+dom	dom:misc:sport	sport	bodybuilding
+dom	dom:misc:sport	sport	curling
+dom	dom:misc:sport	sport	fishing
+dom	dom:misc:sport	sport	surfing
+dom	dom:misc:sport	sport	basketball
+dom	dom:misc:sport	sport	snooker
+dom	dom:misc:sport	sport	billiards
+dom	dom:misc:sport	sport	chess
+dom	dom:misc:sport	sport	fencing
+dom	dom:misc:sport	sport	rugby
+dom	dom:misc:sport	sport	ice hockey
+dom	dom:misc:sport	sport	golf
+dom	dom:misc:sport	sport	horse racing
+dom	dom:misc:sport	sport	tennis
+dom	dom:misc:sport	sport	wrestling
+dom	dom:misc:sport	sport	softball
+dom	dom:misc:sport	sport	snowboarding
+dom	dom:misc:sport	sport	martial arts
+dom	dom:misc:sport	sport	skateboarding
+dom	dom:misc:sport	sport	gymnastics
+dom	dom:misc:sport	sport	falconry
+dom	dom:misc:sport	sport	boxing
+dom	dom:misc:sport	sport	Australian rules football
+dom	dom:misc:sport	sport	weightlifting
+dom	dom:misc:sport	sport	skiing
+dom	dom:misc:sport	sport	pool
+dom	dom:misc:sport	sport	Wassersport
+dom	dom:misc:sport	sport	fandom
+dom	dom:misc:sport	sport	climbing
+dom	dom:misc:sport	sport	Rennsport
+dom	dom:misc:sport	sport	athletics
+dom	dom:misc:sport	sport	Schießsport
+dom	dom:misc:sport	sport	Sportspiele
+dom	dom:misc:sport	sport	Eiskunstlauf
+dom	dom:misc:sport	sport	im Fußball abfällig für
+dom	dom:misc:sport	sport	Kegelsport
+dom	dom:misc:sport	sport	Sport / Ballspiele
+dom	dom:misc:sport	sport	golf
+dom	dom:misc:sport	sport	Mannschaftssport
+dom	dom:misc:sport	sport	Basketball
+dom	dom:misc:sport	sport	vor allem Hockey
+dom	dom:misc:sport	sport	Schisport
+dom	dom:misc:sport	sport	speziell Boxen
+dom	dom:misc:sport	sport	Schwimmen
+dom	dom:misc:sport	sport	Rudersport
+dom	dom:misc:sport	sport	Ballspiele
+dom	dom:misc:sport	sport	Ballsport
+dom	dom:misc:sport	sport	Vogeljagd
+dom	dom:misc:sport	sport	Jagdwesen
+dom	dom:misc:sport	sport	American football
+dom	dom:misc:sport	sport	soccer
+dom	dom:misc:sport	sport	baseball
+dom	dom:misc:sport	sport	professional wrestling
+dom	dom:misc:sport	sport	Wintersport
+dom	dom:misc:sport	sport	Fechtsport
+dom	dom:misc:sport	sport	Angeln
+dom	dom:misc:sport	sport	Fahrsport
+dom	dom:misc:sport	sport	Ballspiel
+dom	dom:misc:sport	sport	in Bezug auf Wild
+dom	dom:misc:sport	sport	Volleyball
+dom	dom:misc:sport	sport	Automobilsport
+dom	dom:misc:sport	sport	besonders Fußball
+dom	dom:misc:sport	sport	cricket
+dom	dom:misc:sport	sport	sports
+dom	dom:misc:sport	sport	Fischfang
+dom	dom:misc:sport	sport	bowling
+dom	dom:misc:sport	sport	lacrosse
+dom	dom:misc:sport	sport	Reitsport
+dom	dom:misc:sport	sport	archery
+dom	dom:misc:sport	sport	sport
+dom	dom:misc:sport	sport	Kampfsport
+dom	dom:misc:sport	sport	rowing
+dom	dom:misc:sport	sport	hunting
+dom	dom:misc:sport	sport	field hockey
+dom	dom:misc:sport	sport	sailing
+dom	dom:misc:sport	sport	Motorsport
+dom	dom:misc:sport	sport	skeleton
+dom	dom:misc:sport	sport	sport
+dom	dom:misc:sport	sport	bullfighting
+dom	dom:misc:sport	sport	Skisport
+dom	dom:misc:sport	sport	sumo
+dom	dom:misc:sport	sport	motor racing
+dom	dom:misc:sport	sport	Angelsport
+dom	dom:misc:sport	sport	netball
+dom	dom:soc:teach	teach	degree
+dom	dom:soc:teach	teach	sciences
+dom	dom:soc:teach	teach	Bildung
+dom	dom:soc:teach	teach	Schulwesen
+dom	dom:soc:teach	teach	Pädagogik
+dom	dom:soc:teach	teach	Schule
+dom	dom:soc:teach	teach	Wissenschaft
+dom	dom:soc:teach	teach	Bildungswesen
+dom	dom:soc:teach	teach	научн.
+dom	dom:soc:teach	teach	school
+dom	dom:soc:teach	teach	schools
+dom	dom:soc:teach	teach	wissenschaftlich
+dom	dom:soc:teach	teach	scientific
+dom	dom:soc:teach	teach	pedagogy
+dom	dom:soc:teach	teach	academia
+dom	dom:soc:teach	teach	university
+dom	dom:soc:teach	teach	education
+dom	dom:soc:teach	teach	Universität
+dom	dom:soc:teach	teach	Wissenschaftstheorie
+dom	dom:soc:teach	teach	science
+dom	dom:eng:trans	trans	merchant_navy
+dom	dom:eng:trans	trans	gas
+dom	dom:eng:trans	trans	Schiffbau
+dom	dom:eng:trans	trans	vehicles
+dom	dom:eng:trans	trans	nautical
+dom	dom:eng:trans	trans	bei Flugzeugen
+dom	dom:eng:trans	trans	авиац.
+dom	dom:eng:trans	trans	aviation
+dom	dom:eng:trans	trans	transport
+dom	dom:eng:trans	trans	Flugzeugbau
+dom	dom:eng:trans	trans	Verkehrsmittel
+dom	dom:eng:trans	trans	Autoindustrie
+dom	dom:eng:trans	trans	of a vehicle
+dom	dom:eng:trans	trans	transportation
+dom	dom:eng:trans	trans	Fahrzeug
+dom	dom:eng:trans	trans	Transportwesen
+dom	dom:eng:trans	trans	navigation
+dom	dom:eng:trans	trans	Öffentlicher Verkehr
+dom	dom:eng:trans	trans	автомоб.
+dom	dom:eng:trans	trans	im Straßenbau
+dom	dom:eng:trans	trans	maritim
+dom	dom:eng:trans	trans	Flugwesen
+dom	dom:eng:trans	trans	Schiff
+dom	dom:eng:trans	trans	unter Zuhilfenahme eines Transportmittels
+dom	dom:eng:trans	trans	трансп.
+dom	dom:eng:trans	trans	Eisenbahnwesen
+dom	dom:eng:trans	trans	Luftfahrttechnik
+dom	dom:eng:trans	trans	rail transport
+dom	dom:eng:trans	trans	railways
+dom	dom:eng:trans	trans	Verkehr
+dom	dom:eng:trans	trans	railway
+dom	dom:eng:trans	trans	nautical
+dom	dom:eng:trans	trans	nautical
+dom	dom:eng:trans	trans	shipping
+dom	dom:eng:trans	trans	aviation
+dom	dom:eng:trans	trans	Verkehrswesen
+dom	dom:eng:trans	trans	of traffic
+dom	dom:eng:trans	trans	aviation
+dom	dom:eng:trans	trans	Kraftfahrzeugtechnik
+dom	dom:eng:trans	trans	railway
+dom	dom:eng:trans	trans	Eisenbahn
+dom	dom:eng:trans	trans	Straßenverkehr
+dom	dom:eng:trans	trans	transport
+dom	dom:eng:trans	trans	Seewesen
+dom	dom:eng:trans	trans	travel
+dom	dom:eng:trans	trans	Fahrzeugbau
+dom	dom:eng:trans	trans	Fahrzeugtechnik
+dom	dom:eng:trans	trans	vehicle
+dom	dom:eng:trans	trans	Nautik
+dom	dom:eng:trans	trans	of an aircraft
+dom	dom:eng:trans	trans	Aviatik
+dom	dom:eng:trans	trans	aircraft
+dom	dom:eng:trans	trans	Seefahrt
+dom	dom:eng:trans	trans	automotive
+dom	dom:eng:trans	trans	Verkehrsinfrastruktur
+dom	dom:eng:trans	trans	automobiles
+dom	dom:eng:trans	trans	nautical
+dom	dom:eng:trans	trans	von Schiffen
+dom	dom:eng:trans	trans	Nautical
+dom	dom:eng:trans	trans	of a boat
+dom	dom:eng:trans	trans	of a motor vehicle
+dom	dom:eng:trans	trans	Nautical
+dom	dom:eng:trans	trans	of a ship
+dom	dom:eng:trans	trans	Schifffahrt
+dom	dom:eng:trans	trans	Nautical
+dom	dom:eng:trans	trans	Gewerbliche Schifffahrt
+dom	dom:eng:trans	trans	naval
+dom	dom:eng:trans	trans	aerospace
+dom	dom:eng:trans	trans	Seefahrtzeichen
+dom	dom:eng:trans	trans	railroads
+dom	dom:eng:trans	trans	Schiffsbau
+dom	dom:eng:trans	trans	Luftfahrt
+dom	dom:eng:trans	trans	Postwesen
+dom	dom:soc:work	work	industry
+dom	dom:soc:work	work	Bäckerei
+dom	dom:soc:work	work	Schlosserei
+dom	dom:soc:work	work	plumbing
+dom	dom:soc:work	work	Friseurhandwerk
+dom	dom:soc:work	work	Mühlenwesen
+dom	dom:soc:work	work	Berufsbezeichnung
+dom	dom:soc:work	work	industry
+dom	dom:soc:work	work	nursing
+dom	dom:soc:work	work	firefighting
+dom	dom:soc:work	work	occupational
+dom	dom:soc:work	work	enterprise
+dom	dom:soc:work	work	English occupational
+dom	dom:soc:work	work	Arbeitswelt
+dom	dom:soc:work	work	Person
+dom	dom:soc:work	work	Beruf
+dom	dom:soc:work	work	travel industry
+dom	dom:soc:com	com	blogging
+dom	dom:soc:com	com	communications
+dom	dom:soc:com	com	telegraphy
+dom	dom:soc:com	com	mobile
+dom	dom:soc:com	com	Telekommunikation
+dom	dom:soc:com	com	communication
+dom	dom:soc:com	com	telephony
+dom	dom:soc:com	com	Nachrichtentechnik
+dom	dom:soc:com	com	telecommunications
+dom	dom:soc:com	com	Kommunikation
+dom	dom:soc:com	com	telecommunication
+dom	dom:soc:com	com	Telefon
+dom	dom:soc:com	com	signal processing
+dom	dom:soc:com	com	Funk
+dom	dom:soc:com	com	Post
+dom	dom:soc:com	com	communication
+dom	dom:soc:com	com	Informationstheorie
+dom	dom:soc:com	com	telecommunication
+dom	dom:soc:com	com	post
+dom	dom:soc:com	com	telegraphy
+dom	dom:soc:com	com	Telefonie
+dom	dom:soc:com	com	telephony
+dom	dom:soc:com	com	telephony
+dom	dom:soc:sex	sex	paraphilia
+dom	dom:soc:sex	sex	сексол.
+dom	dom:soc:sex	sex	sex
+dom	dom:soc:sex	sex	BDSM
+dom	dom:soc:sex	sex	sexuality
+dom	dom:soc:sex	sex	pornography
+dom	dom:soc:sex	sex	sexuality
+dom	dom:misc:health	health	body_care
+dom	dom:misc:health	health	healthcare
+dom	dom:misc:health	health	health
+dom	dom:misc:health	health	massage
+dom	dom:misc:health	health	Gesundheit
+dom	dom:misc:health	health	Heathenry
+dom	dom:misc:health	health	парикмах.
+dom	dom:misc:health	health	Hygiene
+dom	dom:misc:health	health	public health
+dom	dom:hum:art:fash	fash	of hair
+dom	dom:hum:art:fash	fash	Möbelkunst
+dom	dom:hum:art:fash	fash	Kosmetik
+dom	dom:hum:art:fash	fash	Mobiliar
+dom	dom:hum:art:fash	fash	Kleidungsstücke
+dom	dom:hum:art:fash	fash	fashion
+dom	dom:hum:art:fash	fash	furniture
+dom	dom:hum:art:fash	fash	of clothing
+dom	dom:hum:art:fash	fash	Kosmetikartikel
+dom	dom:hum:art:fash	fash	Schuhwerk
+dom	dom:hum:art:fash	fash	Kleidung
+dom	dom:hum:art:fash	fash	von Kleidung
+dom	dom:hum:art:fash	fash	clothing
+dom	dom:hum:art:fash	fash	design
+dom	dom:hum:art:fash	fash	of a garment
+dom	dom:hum:art:fash	fash	Kopfbekleidung
+dom	dom:hum:art:fash	fash	Mode
+dom	dom:hum:art:fash	fash	of clothes
+dom	dom:hum:art:fash	fash	Bekleidung
+dom	dom:hum:art:fash	fash	furniture
+dom	dom:hum:art:fash	fash	fashion
+dom	dom:hum:art:fash	fash	текст.
+dom	dom:hum:art:fash	fash	Möbelstück
+dom	dom:hum:art:fash	fash	interior decorating
+dom	dom:hum:art:fash	fash	von Wäschestücken
+dom	dom:hum	hum	Geisteswissenschaft
+dom	dom:hum	hum	Symbolik
+dom	dom:hum	hum	doctrines
+dom	dom:hum	hum	humanities
+dia	dia	dia	Cockney rhyming slang
+dia	dia	dia	Helvetismus
+dia	dia	dia	Northern English dialect
+dia	dia	dia	dialectal
+dia	dia	dia	Cockney
+dia	dia	dia	dialect
+dia	dia	dia	sächsisch
+dia	dia	dia	kölsch
+dia	dia	dia	besonders berlinisch
+dia	dia	dia	bayrisch
+dia	dia	dia	österreichisch umgangssprachlich
+dia	dia	dia	Geordie
+dia	dia	dia	Spanglish
+dia	dia	dia	jenisch
+dia	dia	dia	Anglo-Saxon
+dia	dia	dia	osterländisch
+dia	dia	dia	Cornish
+dia	dia	dia	bayrisch und österreichisch umgangssprachlich
+dia	dia	dia	Australian Aboriginal
+dia	dia	dia	dialectical
+dia	dia	dia	rheinländisch
+dia	dia	dia	bairisch
+dia	dia	dia	südtirolerisch
+dia	dia	dia	chiefly dialectal
+dia	dia	dia	Helvetismus sowie
+dia	dia	dia	bayrisch und am Oberlauf des Mains
+dia	dia	dia	Schwäbisch
+dia	dia	dia	alemannisch
+dia	dia	dia	thüringisch-obersächsisch
+dia	dia	dia	niederdeutsch
+dia	dia	dia	dialectally
+dia	dia	dia	bes. österreichisch
+dia	dia	dia	oberdeutsch
+dia	dia	dia	vogtländisch
+dia	dia	dia	berlinerisch
+dia	dia	dia	modern British & Australian
+dia	dia	dia	_dialectal
+dia	dia	dia	rhyming slang
+dia	dia	dia	Scottish and Irish
+dia	dia	dia	bairisch-österreichisch
+dia	dia	dia	berlinisch
+dia	dia	dia	Multicultural London English
+dia	dia	dia	Schweizerdeutsch
+dia	dia	dia	South African
+dia	dia	dia	besonders österreichisch
+dia	dia	dia	österreichisch
+dia	dia	dia	Australian rhyming slang
+dia	dia	dia	bayrisch-österreichisch
+dia	dia	dia	ostösterreichisch
+dia	dia	dia	schlesisch
+dia	dia	dia	English and Scottish
+dia	dia	dia	British
+dia	dia	dia	schweizerisch
+dia	dia	dia	österr.
+dia	dia	dia	диал.
+dia	dia	dia	schweiz.
+dia	dia	dia	Irish English
+dia	dia	dia	African American
+dia	dia	dia	dialektal in West- und Südwestdeutschland sowie der Schweiz
+dia	dia	dia	schweizerdeutsch
+dia	dia	dia	südostdeutsch
+dia	dia	dia	mundartlich
+dia	dia	dia	bayerisch
+dia	dia	dia	schwäbisch
+dia	dia	dia	pfälzisch
+dia	dia	dia	dialektal
+dia	dia	dia	Australian
+dia	dia	dia	moselfränkisch
+dia	dia	dia	österreichisch scherzhaft
+dia	dia	dia	wienerisch
+dia	dia	dia	Canadian
+dia	dia	dia	American
+dia	dia	dia	aber auch regional schwäbisch
+dia	dia	dia	koblenzisch
+dia	dia	dia	hessisch
+dia	dia	dia	African American Vernacular English
+dia	dia	dia	meißnisch
+dia	dia	dia	British & Australian
+dia	dia	dia	oberbayrisch
+dia	dia	dia	westfälisch
+dia	dia	dia	eye dialect
+dia	dia	dia	österreichisch und schweizerisch umgangssprachlich
+dia	dia	dia	South African English
+dia	dia	dia	except in dialects
+dia	dia	dia	Irish
+dia	dia	dia	Yorkshire
+dia	dia	dia	Jewish
+dia	dia	dia	Scottish
+etym	etym	etym	from=Scottish Gaelic
+etym	etym	etym	from=India
+etym	etym	etym	lang=hy
+etym	etym	etym	from=Spanish
+etym	etym	etym	from=Irish
+etym	etym	etym	from=Dutch
+etym	etym	etym	borrowed
+etym	etym	etym	from=German
+etym	etym	etym	from=Welsh
+etym	etym	etym	from=Arabic
+etym	etym	etym	from=Old French
+etym	etym	etym	from=Korean
+etym	etym	etym	from=Italian
+etym	etym	etym	from=Old English
+etym	etym	etym	from=Middle English
+etym	etym	etym	from=Greek
+etym	etym	etym	from=Hebrew
+etym	etym	etym	from=Polish
+etym	etym	etym	from=Danish
+etym	etym	etym	from=French
+etym	etym	etym	from=Armenian
+etym	etym	etym	in Fremdwörtern aus dem Griechischen
+etym	etym	etym	from=Japanese
+etym	etym	etym	from=Swedish
+etym	etym	etym	in Fremdwörtern aus dem Lateinischen
+etym	etym	etym	from=Chinese
+syntax	syntax:form	form	Vergangenheitsform
+syntax	syntax:form	form	alternative Schreibweise von
+syntax	syntax:gram:auxiliary	haben	mit Hilfsverb haben
+syntax	syntax:gram:auxiliary	haben	Hilfsverb haben
+syntax	syntax:gram:auxiliary	sein	Hilfsverb sein
+syntax	syntax:gram:auxiliary	sein	mit Hilfsverb sein
+syntax	syntax:gram:auxiliary	habenSein	beide Hilfsverben
+syntax	syntax:gram:subcat	onlySubject	intransitiv
+syntax	syntax:gram:subcat	onlySubject	intrans.
+syntax	syntax:gram:subcat	onlySubject	intransitive
+syntax	syntax:gram:subcat	directObject	trans
+syntax	syntax:gram:subcat	directObject	trans.
+syntax	syntax:gram:subcat	directObject	transitive
+syntax	syntax:gram:subcat	directObject	transitiv
+syntax	syntax:gram:subcat	directObjectMitPrepositionalComplement	jemanden mit etwas
+syntax	syntax:gram:subcat	directObjectObjectComplement	mit doppeltem Akkusativ oder Dativ
+syntax	syntax:gram:subcat	directObjectObjectComplement	mit doppeltem Akkusativ
+syntax	syntax:gram:subcat	directObjectObjectComplement	may take two objects
+syntax	syntax:gram:subcat	optionalDirectObject	ohne und mit Akkusativ
+syntax	syntax:gram:subcat	optionalDirectObject	ergative
+syntax	syntax:gram:subcat	optionalDirectObject	auch transitiv
+syntax	syntax:gram:subcat	optionalDirectObject	ambitransitive
+syntax	syntax:gram:subcat	optionalDirectObject	transitive and intransitive
+syntax	syntax:gram:subcat	optionalDirectObject	ohne obligatorisches Objekt
+syntax	syntax:gram:subcat	dativeComplement	mit Dativ
+syntax	syntax:gram:subcat	dativeComplement	mit Dativobjekt
+syntax	syntax:gram:subcat	dativeComplement	Präposition mit dem Dativ
+syntax	syntax:gram:subcat	dativeComplement	mit Dativ-Objekt
+syntax	syntax:gram:subcat	dativeComplementFuerPrepositionalComplement	jemandem für etwas
+syntax	syntax:gram:subcat	accusativeComplement	mit dem Akkusativ
+syntax	syntax:gram:subcat	accusativeComplement	mit Akkusativ
+syntax	syntax:gram:subcat	reflexiveComplement	reflexiv
+syntax	syntax:gram:subcat	reflexiveComplement	reflexives Verb
+syntax	syntax:gram:subcat	reflexiveComplement	refl.
+syntax	syntax:gram:subcat	reflexiveComplement	reflexive
+syntax	syntax:gram:subcat	reflexiveComplement	sich ~
+syntax	syntax:gram:subcat	reflexiveComplement	+sich
+syntax	syntax:gram:subcat	reflexiveComplementZuPrepositionalComplement	sich zu jemandem
+syntax	syntax:gram:subcat	reflexiveDativeComplement	mit sich im Dativ
+syntax	syntax:gram:subcat	genitiveComplement	mit Genitiv
+syntax	syntax:gram:subcat	impersonalComplement	impersonal
+syntax	syntax:gram:subcat	adjectivalComplement	copulative
+syntax	syntax:gram:subcat	adjectivalComplement	mit Adjektivzusatz
+syntax	syntax:gram:subcat	thatClauseComplement	mit erweitertem Infinitiv oder mit dass
+syntax	syntax:gram:subcat	zuPrepositionalComplement	mit der Präposition zu
+syntax	syntax:gram:subcat	aufPrepositionalComplement	auf jemanden
+syntax	syntax:gram:subcat	aufPrepositionalComplement	mit der Präposition auf
+syntax	syntax:gram:subcat	infinitivalComplement	with infinitive
+syntax	syntax:gram:synprop	predicativeAdjective	nur prädikativ
+syntax	syntax:gram:nounClass	agentNoun	agent noun
+syntax	syntax:gram:nounClass	onlySingular	ohne Plural
+syntax	syntax:gram:nounClass	onlySingular	kPl.
+syntax	syntax:gram:nounClass	onlySingular	nur Einzahl
+syntax	syntax:gram:nounClass	onlySingular	nur Singular
+syntax	syntax:gram:nounClass	onlySingular	singulare tantum
+syntax	syntax:gram:nounClass	onlySingular	kein Plural
+syntax	syntax:gram:nounClass	onlySingular	nur im Singular
+syntax	syntax:gram:nounClass	onlySingular	singular only
+syntax	syntax:gram:nounClass	onlyPlural	plural only
+syntax	syntax:gram:nounClass	onlyPlural	kein Singular
+syntax	syntax:gram:nounClass	onlyPlural	pluralonly
+syntax	syntax:gram:nounClass	onlyPlural	plurale tantum
+syntax	syntax:gram:nounClass	onlyPlural	nur Plural
+syntax	syntax:gram:nounClass	onlyPlural	only as plural
+syntax	syntax:gram:nounClass	onlyPlural	nur im Plural
+syntax	syntax:gram:nounClass	onlyMasculine	nur Maskulinum
+syntax	syntax:gram:nounClass	massNoun	unzählbar
+syntax	syntax:gram:nounClass	massNoun	not countable
+syntax	syntax:gram:nounClass	massNoun	uncountable
+syntax	syntax:gram:nounClass	countNoun	countable
+syntax	syntax:gram:usage	oftenSingular	meist nur im Singular
+syntax	syntax:gram:usage	oftenSingular	meistens kein Plural
+syntax	syntax:gram:usage	oftenSingular	Plural unüblich
+syntax	syntax:gram:usage	oftenSingular	meist Singular
+syntax	syntax:gram:usage	oftenPlural	often plural
+syntax	syntax:gram:usage	oftenPlural	zumeist im Plural
+syntax	syntax:gram:usage	oftenPlural	often in plural
+syntax	syntax:gram:usage	oftenPlural	usually in the plural
+syntax	syntax:gram:usage	oftenPlural	often pluralized
+syntax	syntax:gram:usage	oftenPlural	chiefly in plural
+syntax	syntax:gram:usage	oftenPlural	zumeist Plural
+syntax	syntax:gram:usage	oftenPlural	Singular ungebräuchlich
+syntax	syntax:gram:usage	oftenPlural	meistens im Plural
+syntax	syntax:gram:usage	oftenPlural	besonders im Plural
+syntax	syntax:gram:usage	oftenPlural	meist kollektiv im Plural
+syntax	syntax:gram:usage	oftenPlural	meist im Plural
+syntax	syntax:gram:usage	oftenPlural	meist Plural
+syntax	syntax:gram:usage	oftenPlural	usually in plural
+syntax	syntax:gram:usage	oftenPlural	usually plural
+syntax	syntax:gram:usage	oftenCapitalized	often capitalized
+syntax	syntax:gram:usage	oftenCapitalized	usually capitalized
+syntax	syntax:gram:usage	oftenPassive	usually in the passive
+syntax	syntax:gram:usage	oftenPerfectParticiple	häufig als Partizip II
+syntax	syntax:gram:usage	oftenPerfectParticiple	oft im Partizip II
+syntax	syntax:gram:usage	oftenNegated	meist in Negation
+syntax	syntax:gram:usage	collocationPart	nur in der Wortverbindung
+syntax	syntax:gram:usage	collocationPart	nur in festen Wendungen
+syntax	syntax:gram:usage	collocationPart	in combinations
+syntax	syntax:gram:usage	collocationPart	in Bildungen mit Substantiven
+syntax	syntax:gram:usage	oftenCompoundPart	häufig in Komposita
+syntax	syntax:gram:usage	attributive	attributive
+syntax	syntax:gram:usage	attributive	in attributive use
+syntax	syntax:gram:usage	oftenAttributive	usually used attributively
+syntax	syntax:gram:usage	oftenAttributive	often used attributively
+syntax	syntax:gram:usage	adverbial	adverbialer Gebrauch
+syntax	syntax:gram:usage	oftenAdverbial	meist als Adverb
+syntax	syntax:gram:usage	comparable	comparable
+syntax	syntax:gram:usage	notComparable	not comparable
+syntax	syntax:gram:usage	notComparable	uncomparable
+syntax	syntax:gram:usage	notComparable	ohne Steigerung
+syntax	syntax:gram:usage	notComparable	keine Steigerung
+syntax	syntax:gram:usage	notComparable	kSt.
+syntax	syntax:gram:usage	notComparable	nicht steigerbar
+syntax	syntax:gram:usage	oftenOnlySubject	meist intransitiv
+syntax	syntax:gram:usage	onlyPerfectParticiple	nur Partizip II
+syntax	syntax:gram:usage	withDeterminer	mit Artikel
+syntax	syntax:gram:usage	withoutDeterminer	ohne Artikel
+syntax	syntax:gram:usage	withDefiniteDeterminer	with definite article
+syntax	syntax:gram:usage	oftenWithoutDeterminer	meist ohne Artikel
+syntax	syntax:gram	gram	auch im Plural
+syntax	syntax:gram	gram	многокр.
+syntax	syntax:gram	gram	Genitiv
+syntax	syntax:gram	gram	im Konjunktiv II
+syntax	syntax:gram	gram	Pl.2
+syntax	syntax:gram	gram	auxiliary
+syntax	syntax:gram	gram	Plural
+syntax	syntax:gram	gram	одуш.
+syntax	syntax:gram	gram	Plural
+syntax	syntax:gram	gram	capitalized
+syntax	syntax:gram	gram	mit Plural 1
+syntax	syntax:gram	gram	Partizip II
+syntax	syntax:gram	gram	предик.
+syntax	syntax:gram	gram	non-productive
+syntax	syntax:gram	gram	im Imperativ auch freundliche Aufforderung zum einlenken
+syntax	syntax:gram	gram	неперех.
+syntax	syntax:gram	gram	in der 3. Person
+syntax	syntax:gram	gram	Pl. 2
+syntax	syntax:gram	gram	неисч.
+syntax	syntax:gram	gram	with "the"
+syntax	syntax:gram	gram	plural of
+syntax	syntax:gram	gram	als Eigenname ohne Artikel und Plural
+syntax	syntax:gram	gram	неодуш.
+syntax	syntax:gram	gram	modal
+syntax	syntax:gram	gram	im Präteritum
+syntax	syntax:gram	gram	mit Plural 2
+syntax	syntax:gram	gram	umgangssprachlich im Plural
+syntax	syntax:gram	gram	im Plural
+syntax	syntax:gram	gram	alternate form of
+syntax	syntax:gram	gram	Plural 1
+syntax	syntax:gram	gram	статив.
+syntax	syntax:gram	gram	in der 3. Person Singular
+syntax	syntax:gram	gram	Grammatik
+syntax	syntax:gram	gram	substantiviert
+syntax	syntax:gram	gram	нескл.
+syntax	syntax:gram	gram	indeklinabel
+syntax	syntax:gram	gram	plural
+syntax	syntax:gram	gram	перех.
+syntax	syntax:gram	gram	plural
+syntax	syntax:gram	gram	conjunctive
+syntax	syntax:gram	gram	verneint
+syntax	syntax:gram	gram	im Passiv
+syntax	syntax:gram	gram	auch Plural 2
+syntax	syntax:gram	gram	Nebenformen im Plural
+syntax	syntax:gram	gram	insbesondere im Perfekt
+syntax	syntax:gram	gram	однокр.
+syntax	syntax:gram	gram	attributiv
+syntax	syntax:gram	gram	in the plural
+syntax	syntax:gram	gram	als Präfix oder durch Bindestrich verbundener Zusatz
+syntax	syntax:gram	gram	Plural 1+2
+syntax	syntax:gram	gram	ohne Adverbiale der Richtung
+syntax	syntax:gram	gram	seltener Plural 2
+syntax	syntax:gram	gram	allenfalls Plural 1
+syntax	syntax:gram	gram	in combination
+syntax	syntax:gram	gram	in plural
+syntax	syntax:gram	gram	женск.
+syntax	syntax:gram	gram	in der Wendung
+syntax	syntax:gram	gram	present participle of
+syntax	syntax:gram	gram	спец.
+syntax	syntax:gram	gram	Plural 2
+syntax	syntax:gram	gram	past of
+syntax	syntax:gram	gram	alternative form of
+syntax	syntax:gram	gram	past participial
+syntax	syntax:gram	gram	mit Plural
+syntax	syntax:gram	gram	in Verbindung mit es
+syntax	syntax:gram	gram	often in combination
+syntax	syntax:gram	gram	nur Plural 1
+syntax	syntax:gram	gram	Pl.1
+syntax	syntax:gram	gram	construed with of
+syntax	syntax:gram	gram	the third person singular
+syntax	syntax:gram	gram	trennbar
+syntax	syntax:gram	gram	Singular
+syntax	syntax:gram	gram	субстантивир.
+syntax	syntax:gram	gram	noun adjunct
+syntax	syntax:gram	gram	as imperative
+syntax	syntax:gram	gram	jemanden
+syntax	syntax:gram	gram	pluralized
+syntax	syntax:gram	gram	except in set phrases
+syntax	syntax:gram	gram	alternative spelling of
+syntax	syntax:gram	gram	im Konjunktiv II Präteritum
+syntax	syntax:gram	gram	singular
+syntax	syntax:gram	gram	nur Plural 2
+syntax	syntax:gram	gram	also in plural
+syntax	syntax:gram	gram	im Singular
+syntax	syntax:gram	gram	страд.
+syntax	syntax:gram	gram	imperative
+syntax	syntax:gram	gram	as plural
+syntax	syntax:gram	gram	especially in plural
+syntax	syntax:gram	gram	sometimes capitalized
+syntax	syntax:gram	gram	Plural 3
+syntax	syntax:gram	gram	used attributively as a modifier
+syntax	syntax:pos	pos	particles
+syntax	syntax:pos	pos	from=given names
+syntax	syntax:pos	pos	patronymic
+syntax	syntax:pos	pos	verbales Präfix
+syntax	syntax:pos	pos	postpositive
+syntax	syntax:pos	pos	cardinal
+syntax	syntax:pos	pos	Interrogativsatz
+syntax	syntax:pos	pos	short scale
+syntax	syntax:pos	pos	Interrogativadverb
+syntax	syntax:pos	pos	Pronominaladverb
+syntax	syntax:pos	pos	прич.
+syntax	syntax:pos	pos	modal auxiliary verb
+syntax	syntax:pos	pos	ordinal
+syntax	syntax:pos	pos	acronym
+syntax	syntax:pos	pos	long scale
+syntax	syntax:pos	pos	onomatopoeia
+syntax	syntax:pos	pos	вводн.
+syntax	syntax:pos	pos	initialism
+syntax	syntax:pos	pos	адъектив.
+syntax	syntax:pos	pos	Relativadverb
+syntax	syntax:pos	pos	fractional
+syntax	syntax:pos	pos	сокр.
+syntax	syntax:pos	pos	abbreviation
+syntax	syntax:pos	pos	English patronymic
+syntax	syntax:pos	pos	собир.
+syntax	syntax:pos	pos	simile
+syntax	syntax:pos	pos	A=An English patronymic
+syntax	syntax:pos	pos	compared to given name
+syntax	syntax:pos	pos	нареч.
+syntax	syntax:pos	pos	surname
+reg	reg	reg	westmitteldeutsch
+reg	reg	reg	in Österreich
+reg	reg	reg	mitteldeutsch
+reg	reg	reg	Österreich
+reg	reg	reg	in Niederdeutschland
+reg	reg	reg	regional auch
+reg	reg	reg	Namibia
+reg	reg	reg	mittelostdeutsch
+reg	reg	reg	regional
+reg	reg	reg	süddeutsch
+reg	reg	reg	südwestdeutsch
+reg	reg	reg	rheinisch
+reg	reg	reg	ostdeutsch
+reg	reg	reg	vor allem in Brandenburg
+reg	reg	reg	besonders im Schwarzwald
+reg	reg	reg	Schweiz
+reg	reg	reg	DDR
+reg	reg	reg	in Preußen
+reg	reg	reg	in Deutschland
+reg	reg	reg	besonders norddeutsch
+reg	reg	reg	norddeutsch
+reg	reg	reg	nordostdeutsch
+reg	reg	reg	in der Schweiz
+reg	reg	reg	besonders süddeutsch
+reg	reg	reg	reg.
+reg	reg	reg	Südwesterdeutsch
+reg	reg	reg	im bayerisch-österreichischen Sprachraum
+reg	reg	reg	Süddeutschland
+reg	reg	reg	Deutschland
+reg	reg	reg	Liechtenstein
+reg	reg	reg	regional unterschiedlich gebräuchlich
+reg	reg	reg	ostmitteldeutsch
+reg	reg	reg	regional für
+reg	reg	reg	Ostpreußen
+reg	reg	reg	landsch.
+reg	reg	reg	Rheinland
+reg	reg	reg	vor allem in Norddeutschland
+reg	reg	reg	besonders mittelwestdeutsch
+reg	reg	reg	Südostdeutschland
+reg	reg	reg	Mexico
+reg	reg	reg	in Mecklenburg
+reg	reg	reg	noch regional
+reg	reg	reg	besonders schweizerisch
+reg	reg	reg	westerzgebirgisch
+reg	reg	reg	Pennsylvania
+reg	reg	reg	Ostseeraum
+reg	reg	reg	regional
+reg	reg	reg	East Africa
+reg	reg	reg	Tirol
+reg	reg	reg	Borrowdale
+reg	reg	reg	nord- und ostmitteldeutsch
+reg	reg	reg	mittelwestdeutsch
+reg	reg	reg	Asia
+reg	reg	reg	übriges Sprachgebiet
+reg	reg	reg	Wales
+reg	reg	reg	osterzgebirgisch
+reg	reg	reg	Isle of Mann
+reg	reg	reg	Appalachia
+reg	reg	reg	fränkisch
+reg	reg	reg	besonders süddeutsch und österreichisch
+reg	reg	reg	New Orleans
+reg	reg	reg	US
+reg	reg	reg	польск.
+reg	reg	reg	British Columbia
+reg	reg	reg	nur Österreich
+reg	reg	reg	тат.
+reg	reg	reg	укр.
+reg	reg	reg	Vogtland und Oberlausitz
+reg	reg	reg	southern
+reg	reg	reg	Philippines
+reg	reg	reg	Orkney
+reg	reg	reg	Kent
+reg	reg	reg	norddeutsch und ostdeutsch
+reg	reg	reg	Pommern und um Göttingen
+reg	reg	reg	Northern
+reg	reg	reg	West Midlands
+reg	reg	reg	West Indies
+reg	reg	reg	яп.
+reg	reg	reg	Elsass
+reg	reg	reg	Virginia
+reg	reg	reg	Westfalen
+reg	reg	reg	Cumbria
+reg	reg	reg	Nigeria
+reg	reg	reg	Hong Kong
+reg	reg	reg	Northeastern US
+reg	reg	reg	Canada
+reg	reg	reg	South Asia
+reg	reg	reg	Massachusetts
+reg	reg	reg	Scotland
+reg	reg	reg	in der Schweiz und Luxemburg
+reg	reg	reg	bes. schweizerisch
+reg	reg	reg	mittel- und norddeutsch
+reg	reg	reg	South
+reg	reg	reg	Europe
+reg	reg	reg	Kenya
+reg	reg	reg	Brazil
+reg	reg	reg	Ireland
+reg	reg	reg	Queensland
+reg	reg	reg	Southwestern US
+reg	reg	reg	Shetland
+reg	reg	reg	Northeast England
+reg	reg	reg	Maryland
+reg	reg	reg	southern US
+reg	reg	reg	UK
+reg	reg	reg	Australia
+reg	reg	reg	NZ
+reg	reg	reg	besonders ostmitteldeutsch
+reg	reg	reg	Südtirol
+reg	reg	reg	высок.
+reg	reg	reg	рег.
+reg	reg	reg	besonders süddeutscher Sprachgebrauch
+reg	reg	reg	Trinidad
+reg	reg	reg	Scottish law
+reg	reg	reg	North America
+reg	reg	reg	India
+reg	reg	reg	North England
+reg	reg	reg	New York City
+reg	reg	reg	South America
+reg	reg	reg	Northern England
+reg	reg	reg	South Africa
+reg	reg	reg	Atlantic Canada
+reg	reg	reg	England
+reg	reg	reg	Tasmania
+reg	reg	reg	süddt. - österr.
+reg	reg	reg	Latin America
+reg	reg	reg	New Zealand
+reg	reg	reg	in Österreich und Bayern
+reg	reg	reg	erzgebirgisch
+reg	reg	reg	Western US
+reg	reg	reg	Southern
+reg	reg	reg	West Cumbrian
+reg	reg	reg	New South Wales
+reg	reg	reg	Jamaica
+reg	reg	reg	Northern Ireland
+reg	reg	reg	China
+reg	reg	reg	Hawaii
+reg	reg	reg	South Australia
+reg	reg	reg	Pakistan
+reg	reg	reg	provincial
+reg	reg	reg	Rhode Island
+reg	reg	reg	AU
+reg	reg	reg	Texas
+reg	reg	reg	aus jüdischer Sicht
+reg	reg	reg	New York
+reg	reg	reg	Liverpool
+reg	reg	reg	California
+reg	reg	reg	Bristol
+reg	reg	reg	nordwestdeutsch
+reg	reg	reg	Sussex
+reg	reg	reg	Singapore
+reg	reg	reg	Appalachian
+reg	reg	reg	Norfolk
+reg	reg	reg	Cornwall
+reg	reg	reg	landschaftlich umgangssprachlich
+reg	reg	reg	Guernsey
+reg	reg	reg	except Canada
+reg	reg	reg	London
+reg	reg	reg	Northumbria
+reg	reg	reg	Lancashire
+reg	reg	reg	Louisiana
+reg	reg	reg	Netherlands
+reg	reg	reg	Indian
+reg	reg	reg	East Anglia
+reg	reg	reg	Caribbean
+reg	reg	reg	Japan
+reg	reg	reg	northern England
+reg	reg	reg	Pommern
+reg	reg	reg	Quebec
+reg	reg	reg	West Country
+reg	reg	reg	Welsh
+reg	reg	reg	Südtirol und Trentino
+reg	reg	reg	Dublin
+reg	reg	reg	regional in Ostelbien
+reg	reg	reg	Norddeutschland
+reg	reg	reg	southern
+reg	reg	reg	Griechenland
+reg	reg	reg	Zimbabwe
+reg	reg	reg	Ulster
+reg	reg	reg	English and Scottish habitational
+reg	reg	reg	Sachsen
+reg	reg	reg	Africa
+reg	reg	reg	New England
+reg	reg	reg	Newfoundland
+reg	reg	reg	Ägypten
+reg	reg	reg	vorpommersch
+reg	reg	reg	Northern English
+reg	reg	reg	Germany
+reg	reg	reg	American spelling
+reg	reg	reg	Channel Islands
+reg	reg	reg	Southern US
+reg	reg	reg	Western Australia
+reg	reg	reg	Southern
+reg	reg	reg	Luxemburg
+phas	phas:register:slang	slang	жаргон википроектов
+phas	phas:register:slang	slang	ugs.
+phas	phas:register:slang	slang	umgangssprachlich
+phas	phas:register:slang	slang	jargon
+phas	phas:register:slang	slang	Umgangssprachlich
+phas	phas:register:slang	slang	ugs
+phas	phas:register:slang	slang	jargon
+phas	phas:register:slang	slang	umgangsspachlich
+phas	phas:register:slang	slang	slang
+phas	phas:register:slang	slang	umgangssprachlich für
+phas	phas:register:slang	slang	студ. жарг.
+phas	phas:register:slang	slang	internet slang
+phas	phas:register:slang	slang	internet slang
+phas	phas:register:slang	slang	umgangssprachlich bis vulgär für
+phas	phas:register:slang	slang	umgangssprachlich auch mit in etwas
+phas	phas:register:slang	slang	Umgangssprache
+phas	phas:register:slang	slang	profane
+phas	phas:register:slang	slang	slang
+phas	phas:register:slang	slang	сленг
+phas	phas:register:slang	slang	прост.
+phas	phas:register:slang	slang	Slang
+phas	phas:register:slang	slang	Slang
+phas	phas:register:slang	slang	Internet slang
+phas	phas:register:slang	slang	мол.
+phas	phas:register:slang	slang	Internet slang
+phas	phas:register:slang	slang	ugs. für
+phas	phas:register:slang	slang	slang
+phas	phas:register:slang	slang	сниж.
+phas	phas:register:slang	slang	slang
+phas	phas:register:slang	slang	Jargon
+phas	phas:register:slang	slang	жарг.
+phas	phas:register:slang	slang	colloquial
+phas	phas:register:slang	slang	Jargon
+phas	phas:register	register	
+dom	dom:nat:bio:zoo	zoo	ichthyology
+dom	dom:nat:bio:zoo	zoo	of an insect
+dom	dom:nat:bio:zoo	zoo	von Hunden
+dom	dom:nat:bio:zoo	zoo	ornithology
+dom	dom:nat:bio:zoo	zoo	Entomologische Taxonomie
+dom	dom:nat:bio:zoo	zoo	of a fish
+dom	dom:nat:bio:zoo	zoo	horses
+dom	dom:nat:bio:zoo	zoo	cryptozoology
+dom	dom:nat:bio:zoo	zoo	bei Insekten
+dom	dom:nat:bio:zoo	zoo	of an animal
+dom	dom:nat:bio:zoo	zoo	zoology
+dom	dom:nat:bio:zoo	zoo	beim Tier
+dom	dom:nat:bio:zoo	zoo	Ornithologie
+dom	dom:nat:bio:zoo	zoo	of a horse
+dom	dom:nat:bio:zoo	zoo	malacology
+dom	dom:nat:bio:zoo	zoo	of animals
+dom	dom:nat:bio:zoo	zoo	Tiere
+dom	dom:nat:bio:zoo	zoo	entomology
+dom	dom:nat:bio:zoo	zoo	animals
+dom	dom:nat:bio:zoo	zoo	Zoologische Taxonomie
+dom	dom:nat:bio:zoo	zoo	Vogelkunde und poetische Verwendung
+dom	dom:nat:bio:zoo	zoo	Zoologie
+dom	dom:nat:bio:zoo	zoo	birdwatching
+dom	dom:nat:bio:zoo	zoo	орнитол.
+dom	dom:nat:bio:zoo	zoo	Ichthyologie
+dom	dom:nat:bio:zoo	zoo	zoology
+dom	dom:nat:bio:zoo	zoo	Jungtiere
+dom	dom:nat:bio:zoo	zoo	Anatomie der Säugetiere
+dom	dom:nat:bio:zoo	zoo	энтомол.
+dom	dom:nat:bio:zoo	zoo	zoologisch
+dom	dom:nat:bio:zoo	zoo	ихтиол.
+dom	dom:nat:bio:zoo	zoo	Zoologie / Küche
+dom	dom:nat:bio:zoo	zoo	von Katzen
+dom	dom:nat:bio:zoo	zoo	Herpetologie
+dom	dom:nat:bio:zoo	zoo	of a bird
+dom	dom:nat:bio:zoo	zoo	Kuh
+dom	dom:nat:bio:zoo	zoo	insbesondere Vögeln
+dom	dom:nat:bio:zoo	zoo	of birds
+dom	dom:nat:bio:zoo	zoo	зоол.
+dom	dom:nat:bio:zoo	zoo	speziell Ichthyologie
+dom	dom:nat:bio:zoo	zoo	speziell Ornithologie
+dom	dom:nat:bio:zoo	zoo	Insekten
+dom	dom:nat:bio:zoo	zoo	fish
+dom	dom:nat:bio:zoo	zoo	bei Vögeln
+dom	dom:nat:bio:zoo	zoo	entomology
+dom	dom:nat:bio:zoo	zoo	entomology
+dom	dom:nat:bio:zoo	zoo	von Lebewesen
+dom	dom:nat:bio:zoo	zoo	nematology
+dom	dom:nat:bio:zoo	zoo	zoologisch-taxonomisch
+dom	dom:nat:bio:zoo	zoo	swarm
+dom	dom:nat:bio:zoo	zoo	Tieranatomie
+dom	dom:nat:bio:zoo	zoo	Tier
+dom	dom:nat:bio:zoo	zoo	of a snake
+dom	dom:nat:bio:zoo	zoo	bei Tieren
+dom	dom:nat:bio:zoo	zoo	of a dog
+dom	dom:nat:bio:zoo	zoo	Entomologie
+dom	dom:nat:bio:zoo	zoo	Anatomie des Vogelflügels
+dom	dom:nat:bio:zoo	zoo	animal
+dom	dom:nat:bio:zoo	zoo	in Bezug auf Insekten
+dom	dom:nat:bio:zoo	zoo	bei Hautflüglern
+dom	dom:nat:bio:zoo	zoo	of fish
+dom	dom:nat:bio:zoo	zoo	of horses
+freq	freq	freq	frequently
+freq	freq	freq	sometimes
+freq	freq	freq	rather rare
+freq	freq	freq	often
+freq	freq	freq	selten
+freq	freq	freq	Plural ungebräuchlich oder selten
+freq	freq	freq	uncommon
+freq	freq	freq	mostly
+freq	freq	freq	häufig
+freq	freq	freq	usually
+freq	freq	freq	ungebräuchlich
+freq	freq	freq	less common
+freq	freq	freq	eher selten
+freq	freq	freq	редк.
+freq	freq	freq	sehr selten
+freq	freq	freq	less commonly
+freq	freq	freq	selten verwendet
+freq	freq	freq	seltener
+freq	freq	freq	rare
+freq	freq	freq	nur in wenigen Wendungen
+temp	temp	temp	historical
+temp	temp	temp	dated
+temp	temp	temp	obsolete except in dialects
+temp	temp	temp	obsolete
+temp	temp	temp	неол.
+temp	temp	temp	старин.
+temp	temp	temp	obsolete term
+temp	temp	temp	устар.
+temp	temp	temp	veraltet?
+temp	temp	temp	umgangssprachlich veraltet
+temp	temp	temp	erste Hälfte des 18. Jahrhunderts
+temp	temp	temp	ursprünglich ausschließlich
+temp	temp	temp	1970s
+temp	temp	temp	1800s
+temp	temp	temp	in Deutschland veraltend
+temp	temp	temp	archaic
+temp	temp	temp	obsolete
+temp	temp	temp	früher
+temp	temp	temp	14th-16th c.
+temp	temp	temp	archaic
+temp	temp	temp	altertümlich allgemein
+temp	temp	temp	ehemals
+temp	temp	temp	1990s
+temp	temp	temp	deprecated
+temp	temp	temp	Psychologie und Medizin veraltet
+temp	temp	temp	1960s
+temp	temp	temp	veraltet für
+temp	temp	temp	originally
+temp	temp	temp	nowadays
+temp	temp	temp	altertümlich
+temp	temp	temp	19th century
+temp	temp	temp	frühere Bezeichnung für
+temp	temp	temp	formerly
+temp	temp	temp	16th-17th c.
+temp	temp	temp	defdate
+temp	temp	temp	antiquiert
+temp	temp	temp	1811
+temp	temp	temp	sonst veraltet
+temp	temp	temp	historic
+temp	temp	temp	17th c.
+temp	temp	temp	veraltend
+temp	temp	temp	historisch
+temp	temp	temp	ansonsten mündlich veraltend
+temp	temp	temp	im Mittelalter
+temp	temp	temp	neudeutsch
+temp	temp	temp	stark veraltet beziehungsweise untergegangen
+temp	temp	temp	nonce word
+temp	temp	temp	ursprünglich
+temp	temp	temp	bis 1945
+temp	temp	temp	neologism
+temp	temp	temp	veraltet
+temp	temp	temp	hist.
+temp	temp	temp	jugendsprachlich veraltend
+temp	temp	temp	ansonsten veraltet
+temp	temp	temp	seit dem 16. Jahrhundert
+temp	temp	temp	nonce
+temp	temp	temp	14th-17th c.
+temp	temp	temp	now chiefly
+temp	temp	temp	umgangssprachlich veraltend
+temp	temp	temp	modern
+temp	temp	temp	18th century
+temp	temp	temp	seit 1945
+temp	temp	temp	16th c.
+request	request	request	rfv-sense
+request	request	request	rfc-sense
+request	request	request	rfquotek
+request	request	request	rfd-sense
+request	request	request	rfc-def
+request	request	request	rft-sense
+request	request	request	rfd-redundant
+request	request	request	rfquote-sense
+dom	dom:nat:bio:bot	bot	of leaves
+dom	dom:nat:bio:bot	bot	Pilzflora
+dom	dom:nat:bio:bot	bot	of a leaf
+dom	dom:nat:bio:bot	bot	of a flower
+dom	dom:nat:bio:bot	bot	Mykologie
+dom	dom:nat:bio:bot	bot	botany
+dom	dom:nat:bio:bot	bot	mushroom
+dom	dom:nat:bio:bot	bot	von Pflanzen
+dom	dom:nat:bio:bot	bot	Pflanzen
+dom	dom:nat:bio:bot	bot	botany
+dom	dom:nat:bio:bot	bot	botanisch-taxonomisch
+dom	dom:nat:bio:bot	bot	plants
+dom	dom:nat:bio:bot	bot	Botanik
+dom	dom:nat:bio:bot	bot	plants
+dom	dom:nat:bio:bot	bot	botany
+dom	dom:nat:bio:bot	bot	of a plant
+dom	dom:nat:bio:bot	bot	Bäumen
+dom	dom:nat:bio:bot	bot	Blütenbau
+dom	dom:nat:bio:bot	bot	mycology
+dom	dom:nat:bio:bot	bot	Pflanze
+dom	dom:nat:bio:bot	bot	plant
+dom	dom:nat	nat	Naturwissenschaft
+dom	dom:nat	nat	Naturwissenschaften
+dom	dom:nat	nat	pure_science
+eval	eval:attitude:off	off	offensive
+eval	eval:attitude:off	off	coarse
+eval	eval:attitude:off	off	disparaging
+eval	eval:attitude:off	off	вульг.
+eval	eval:attitude:off	off	ethnic slur
+eval	eval:attitude:off	off	мат
+eval	eval:attitude:off	off	taboo
+eval	eval:attitude:off	off	Spott- und Schimpfwort
+eval	eval:attitude:off	off	Schimpfwort für einen
+eval	eval:attitude:off	off	oft als Schimpfwort
+eval	eval:attitude:off	off	potentially offensive
+eval	eval:attitude:off	off	derb
+eval	eval:attitude:off	off	Schimpfwort
+eval	eval:attitude:off	off	vulgärer Kraftausdruck
+eval	eval:attitude:off	off	auch als Schimpfwort
+eval	eval:attitude:off	off	beleidigend
+eval	eval:attitude:off	off	crude
+eval	eval:attitude:off	off	бранн.
+eval	eval:attitude:off	off	grob
+eval	eval:attitude:off	off	racial slur
+eval	eval:attitude:off	off	derisive
+eval	eval:attitude:off	off	табу
+eval	eval:attitude:off	off	груб.
+eval	eval:attitude:off	off	vulgär
+eval	eval:attitude:off	off	vulgar
+phas	phas:style	style	schriftsprachlich
+phas	phas:style	style	noch scherzhaft
+phas	phas:style	style	эррат.
+phas	phas:style	style	humorously
+phas	phas:style	style	dichterisch
+phas	phas:style	style	fachspezifisch
+phas	phas:style	style	humorous
+phas	phas:style	style	fachspr.
+phas	phas:style	style	amtssprachlich
+phas	phas:style	style	fachsprachlich
+phas	phas:style	style	in der Übertreibung salopp bis ironisch
+phas	phas:style	style	mildly
+phas	phas:style	style	hypocoristic
+phas	phas:style	style	literary
+phas	phas:style	style	jocular
+phas	phas:style	style	amtlich
+phas	phas:style	style	oft ironisch
+phas	phas:style	style	euphemistisch
+phas	phas:style	style	scherzhaft
+phas	phas:style	style	rhetoric
+phas	phas:style	style	besonders Amtssprache
+phas	phas:style	style	endearing
+phas	phas:style	style	biblisch
+phas	phas:style	style	poetisch für
+phas	phas:style	style	ironic
+phas	phas:style	style	literarisch
+phas	phas:style	style	увелич.
+phas	phas:style	style	трад.-поэт.
+phas	phas:style	style	bildungssprachlich
+phas	phas:style	style	Bildungssprache
+phas	phas:style	style	ironisch
+phas	phas:style	style	by synecdoche
+phas	phas:style	style	усилит.
+phas	phas:style	style	euphemism
+phas	phas:style	style	poetisch
+phas	phas:style	style	разг.
+phas	phas:style	style	Papierdeutsch
+phas	phas:style	style	hyperbole
+phas	phas:style	style	verhüllend
+phas	phas:style	style	rhetorical question
+phas	phas:style	style	poetic
+phas	phas:style	style	книжн.
+phas	phas:style	style	euphemistic
+phas	phas:style	style	scherzh.
+phas	phas:style	style	ästhetisch
+phas	phas:style	style	buzzword
+phas	phas:style	style	puerile
+phas	phas:style	style	ирон.
+phas	phas:style	style	шутл.
+phas	phas:style	style	Amtssprache
+phas	phas:style	style	поэт.
+phas	phas:style	style	teils scherzhaft
+phas	phas:style	style	fachsprachliche Fügung
+phas	phas:style	style	уменьш.
+phas	phas:style	style	умласк.
+phas	phas:style	style	euphemistisch für
+phas	phas:style	style	rhetorical
+phas	phas:style	style	figure of speech
+phas	phas:style	style	sarcastic
+phas	phas:style	style	ритор.
+phas	phas:style	style	Fachsprache
+phas	phas:style	style	эвф.
+phas	phas:style	style	Amtsdeutsch
+phas	phas:style	style	Schriftdeutsch
+phas	phas:style	style	rechtssprachlich
+eval	eval:attitude	attitude	sehr abwertend
+eval	eval:attitude	attitude	salopp abwertend
+eval	eval:attitude	attitude	teilweise abwertend gemeint
+eval	eval:attitude	attitude	oft spöttisch
+eval	eval:attitude	attitude	abfällig
+eval	eval:attitude	attitude	teils als abwertend empfunden
+eval	eval:attitude	attitude	презр.
+eval	eval:attitude	attitude	impolite
+eval	eval:attitude	attitude	пренебр.
+eval	eval:attitude	attitude	teils abwertend
+eval	eval:attitude	attitude	derogatory
+eval	eval:attitude	attitude	pejorative
+eval	eval:attitude	attitude	pejorativ
+eval	eval:attitude	attitude	abschätzig
+eval	eval:attitude	attitude	meist negativ
+eval	eval:attitude	attitude	meist negativ konnotiert
+eval	eval:attitude	attitude	ласк.
+eval	eval:attitude	attitude	spöttisch
+eval	eval:attitude	attitude	auch abwertend
+eval	eval:attitude	attitude	унич.
+eval	eval:attitude	attitude	oft abwertend
+eval	eval:attitude	attitude	evaluative
+eval	eval:attitude	attitude	abwertend für
+eval	eval:attitude	attitude	leicht abwertend
+eval	eval:attitude	attitude	negativ besetzt
+eval	eval:attitude	attitude	verächtlich
+eval	eval:attitude	attitude	affectionate
+eval	eval:attitude	attitude	meist abwertend
+eval	eval:attitude	attitude	sometimes derogatory
+eval	eval:attitude	attitude	abwertend
+eval	eval:attitude	attitude	häufig abwertend
+eval	eval:attitude	attitude	eher abwertend
+eval	eval:attitude	attitude	zumeist abwertend
+eval	eval:attitude	attitude	heute meist abwertend
+eval	eval:attitude	attitude	mildly pejorative
+eval	eval:attitude	attitude	sometimes pejorative
+eval	eval:attitude	attitude	herabsetzend
+eval	eval:attitude	attitude	teilweise abwertend
+eval	eval:attitude	attitude	dismissal
+eval	eval:attitude	attitude	wertend
+eval	eval:attitude	attitude	неодобр.
+eval	eval:attitude	attitude	häufig verneinend
+eval	eval:attitude	attitude	meist als abwertend empfunden
+eval	eval:attitude	attitude	negativ
+strat	strat:jargon	jargon	gay slang
+strat	strat:jargon	jargon	studentensprachlich
+strat	strat:jargon	jargon	gaunersprachlich
+strat	strat:jargon	jargon	Jägersprache
+strat	strat:jargon	jargon	unter Alkoholikern
+strat	strat:jargon	jargon	fandom slang
+strat	strat:jargon	jargon	conservationist jargon
+strat	strat:jargon	jargon	Sportjargon
+strat	strat:jargon	jargon	seemannssprachlich
+strat	strat:jargon	jargon	poker slang
+strat	strat:jargon	jargon	Militärjargon
+strat	strat:jargon	jargon	Netzjargon
+strat	strat:jargon	jargon	Fliegersprache
+strat	strat:jargon	jargon	bergmannssprachlich
+strat	strat:jargon	jargon	jägersprachlich
+strat	strat:jargon	jargon	Polari
+strat	strat:jargon	jargon	kaufmannssprachlich
+strat	strat:jargon	jargon	soldatensprachlich
+strat	strat:jargon	jargon	Soldatensprache
+strat	strat:jargon	jargon	Technikjargon
+strat	strat:jargon	jargon	Gaunersprache
+strat	strat:jargon	jargon	LGBT
+strat	strat:jargon	jargon	Seemannssprache
+strat	strat:jargon	jargon	in der Drogenszene
+strat	strat:jargon	jargon	Fleischerei und Jägersprache
+strat	strat:jargon	jargon	waidmännisch
+strat	strat:jargon	jargon	New Age jargon
+strat	strat:jargon	jargon	prison
+strat	strat:jargon	jargon	Ganovenslang
+strat	strat:jargon	jargon	leet
+strat	strat:jargon	jargon	Forstsprache
+strat	strat:jargon	jargon	seemännisch
+strat	strat:jargon	jargon	Kaufmannssprache
+strat	strat:jargon	jargon	gay
+strat	strat:jargon	jargon	kaufmännisch
+strat	strat:jargon	jargon	Wiktionary and WMF jargon
+phas	phas:meaning	meaning	metaphorisch und absprechend
+phas	phas:meaning	meaning	übertragen
+phas	phas:meaning	meaning	wörtlich
+phas	phas:meaning	meaning	metonymisch
+phas	phas:meaning	meaning	auch im übertragenen Sinne
+phas	phas:meaning	meaning	metaphorical
+phas	phas:meaning	meaning	in figurative use
+phas	phas:meaning	meaning	übertragen von
+phas	phas:meaning	meaning	by metonymy
+phas	phas:meaning	meaning	übertragene Bedeutung
+phas	phas:meaning	meaning	idiomatic
+phas	phas:meaning	meaning	auch übertragen
+phas	phas:meaning	meaning	vor allem auch übertragen
+phas	phas:meaning	meaning	übertragen aus
+phas	phas:meaning	meaning	sinnbildlich
+phas	phas:meaning	meaning	bildhaft zu
+phas	phas:meaning	meaning	im übertragenen Sinne
+phas	phas:meaning	meaning	übertragenen
+phas	phas:meaning	meaning	symbolisch
+phas	phas:meaning	meaning	figürlich
+phas	phas:meaning	meaning	metaphorically
+phas	phas:meaning	meaning	übertragen zu
+phas	phas:meaning	meaning	bildlich
+phas	phas:meaning	meaning	in übertragenem Sinn
+phas	phas:meaning	meaning	figuratively
+phas	phas:meaning	meaning	figurativ
+phas	phas:meaning	meaning	übertr.
+phas	phas:meaning	meaning	idiom
+phas	phas:meaning	meaning	im weiteren Sinne / übertragen
+phas	phas:meaning	meaning	literal
+phas	phas:meaning	meaning	auch übertragen benutzt
+phas	phas:meaning	meaning	metaphorisch
+phas	phas:meaning	meaning	im übertragenen Sinn
+phas	phas:meaning	meaning	metaphor
+phas	phas:meaning	meaning	also used figuratively
+phas	phas:meaning	meaning	redensartlich
+phas	phas:meaning	meaning	metonymy
+phas	phas:meaning	meaning	meist im übertragenen Sinn
+phas	phas:meaning	meaning	bildhaft
+phas	phas:meaning	meaning	im übertragenen Sinne zu
+phas	phas:meaning	meaning	wird auch übertragen benutzt
+phas	phas:meaning	meaning	literally
+phas	phas:meaning	meaning	Übertragen
+phas	phas:meaning	meaning	figurative
+phas	phas:meaning	meaning	fig.
+phas	phas:meaning	meaning	перен.
+phas	phas:meaning	meaning	übertragen für
+phas	phas	phas	
+eval	eval	eval	
+norm	norm	norm	proscribed
+norm	norm	norm	fälschlich
+norm	norm	norm	hypercorrect
+norm	norm	norm	nonstandard
+norm	norm	norm	intentionally incorrect
+norm	norm	norm	politically correct
+norm	norm	norm	non-standard
+norm	norm	norm	historisch und politisch inkorrekt
+phas	phas:register:formal	formal	торж.
+phas	phas:register:formal	formal	familiar
+phas	phas:register:formal	formal	geh.
+phas	phas:register:formal	formal	salopp
+phas	phas:register:formal	formal	gehoben
+phas	phas:register:formal	formal	formal
+phas	phas:register:formal	formal	nur unpersönlich
+phas	phas:register:formal	formal	офиц.
+phas	phas:register:formal	formal	formell
+phas	phas:register:formal	formal	фам.
+phas	phas:register:formal	formal	noch gehoben
+phas	phas:register:formal	formal	heute salopp
+phas	phas:register:formal	formal	familiär
+phas	phas:register:formal	formal	unpersönlich
+phas	phas:register:formal	formal	hochsprachlich für
+phas	phas:register:formal	formal	persönlich
+phas	phas:register:formal	formal	informal
+strat	strat	strat	
+strat	strat:culture	culture	Volksbrauchtum
+strat	strat:culture	culture	traditionelle Bezeichnung
+strat	strat:culture	culture	Volkstum
+strat	strat:culture	culture	volkstümlich
+strat	strat:sociolect	sociolect	hip-hop
+strat	strat:sociolect	sociolect	Jugendsprache
+strat	strat:sociolect	sociolect	schülersprachlich
+strat	strat:sociolect	sociolect	jugendsprachlich
+strat	strat:sociolect	sociolect	baby-talk
+strat	strat:sociolect	sociolect	Kindersprache
+strat	strat:sociolect	sociolect	childish
+strat	strat:sociolect	sociolect	детск.
+strat	strat:sociolect	sociolect	kindersprachlich
+strat	strat:sociolect	sociolect	baby talk
+dom	dom:str	str	Systemtheorie
+dom	dom:soc:lex	lex	lexicography
+dom	dom:soc:lex	lex	Lexikografie
+phas	phas:style:text	text	Shakespeare
+phas	phas:style:text	text	text messaging
+phas	phas:style:text	text	Märchen
+phas	phas:style:text	text	in der Bibel

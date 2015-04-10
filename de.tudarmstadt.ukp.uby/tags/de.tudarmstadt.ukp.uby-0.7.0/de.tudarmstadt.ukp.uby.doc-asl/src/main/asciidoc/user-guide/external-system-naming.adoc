@@ -1,0 +1,41 @@
+// Copyright 2015
+// Ubiquitous Knowledge Processing (UKP) Lab
+// Technische Universität Darmstadt
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+== Naming Convention
+
+  * FrameNet_1.5_eng_lexicalUnit
+  * FrameNet_1.5_eng_semanticType
+  * VerbNet_3.1_eng_sense
+  * WordNet_3.0_eng_senseKey
+  * WordNet_3.0_eng_synsetOffset
+  * GermaNet_7.0_deu_lexicalUnit
+  * GermaNet_7.0_deu_synset
+
+OmegaWiki, Wiktionary, Wikipedia: version = [YYYY]-[MM]-[DD]
+
+----
+  OmegaWiki_<version>_<language>_synTrans
+  OmegaWiki_<version>_<language>_definedMeaning
+----
+
+An OmegaWiki multilingual synset is a "defined meaning". A "synTrans" is a combination of "synonym" and "translation", they are treated internally as the same thing in OmegaWiki(a synonym is a translation in the same language), and in UBY-LMF it translates to either a "Sense" if it's in the same language or an "Equivalent" otherwise.
+
+----
+  Wiktionary_<version>_<language>_sense
+  Wikipedia_<version>_<language>_articleTitle
+----
+
+Wiktionary: e.g., Wiktionary_1.0.0_2013-02-04_deu_sense

@@ -1,0 +1,285 @@
+// Copyright 2015
+// Ubiquitous Knowledge Processing (UKP) Lab
+// Technische Universität Darmstadt
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+== UBY-API
+
+NOTE: *needs to be updated to Uby 0.6.0*
+
+=== Prerequisites
+
+To use the UBY-API, you first have to set up the UBY database, either by downloading and importing the SQL dump from [http://uby.ukp.informatik.tu-darmstadt.de/uby/ our website], or by running the converters and creating the database with the desired resources yourself.
+
+After setting up everything, you can connect to UBY in your Java program with the following lines of code, using the parameters for your setup. We use MySQL in this example, but other values for the DB driver and DB vendor name (which is internally used to construct the connection URL) should work, although we didn't test that. The last parameter is for debugging, if you set it to "true" the database queries are displayed on the console.
+
+[source,java]
+----
+DBConfig db = new DBConfig("localhost/uby_database","com.mysql.jdbc.Driver","mysql","user", "password", false);
+Uby uby = new Uby(db);
+----
+
+In the following, we will discuss some of the classes in the UBY-API, explain their usage and give some examples. Although we do not discuss everything, you should get an idea of how stuff works.
+
+=== Uby
+
+The most common access points for Uby is searching for a lexical entry, that is a lemma/POS combination. For this you can use the method `getLexicalEntries(String word, EPartOfSpeech pos, Lexicon lexicon)`. If you provide a null value for the POS, no filter is applied. If you provide a Lexicon as third parameter, only this lexicon is searched, otherwise all Lexicons are considered.
+
+To obtain the Lexicons you want to query, you can either
+
+. Get all of them: `getLexicons()`
+. Get only those of a specific language: `getLexiconsByLanguage(ELanguageIdentifier lang)`
+. Or get a specific lexicon, specified by its name: `getLexiconByName(String name)`
+
+In a similiar manner, you can get an iterator over all !LexialEntries by using `getLexicalEntryIterator(EPartOfSpeech pos,Lexicon lexicon)`. Similar methods also exist for retrieving Senses and Synsets.
+
+!SenseAxis are sense alignments between different resources, thus they are not attached to a specific Lexicon. You can directly query them with you Uby object. While `getSenseAxis()` returns a List of all of them, you can also retrieve them with `getSenseAxisBySense(Sense sense)` or `getSenseAxisById(String ID)` if you're interested in one particular sense. !SenseAxis are explained in more detail below.
+
+=== UBY Queries based on UBY-LMF
+
+The UBY-LMF DTD is useful for writing Hibernate-based UBY queries, because the lexicon model UBY-LMF is represented as a Java Object Model. An object-relational mapping by means of Hibernate allows mapping any instance of UBY-LMF either to a SQL database or to an XML file.
+
+=== Lexicon
+
+The basic functionality offered by a particular Lexicon object is to retrieve the informational entities within this Lexicon: !LexicalEntry, Sense, Synset and so on. Note that you can only retrieve collections - for querying a single item, a !LexicalEntry retrieved via the Uby object is usually the entry point.
+
+=== !LexicalEntry
+
+While the !LexicalEntry object offers methods for retrieving basic knowledge about it such as POS or Lemma, you can also retrieve the attached Senses / Synsets which are the core of the information encoded in UBY.
+
+=== Sense / Synset
+
+The basic and most frequently used information available for a Sense object via corresponding methods are the definition and the sense examples, which encode the actual meaning of a sense in human-readable form. This can instantly be used, e.g. for WSD algorithms. Via `getSenseRelations()` relations to other Sense objects can be retrieved, such as hyponomy. This might be important for methods exploiting the graph structure of a resource.
+
+Another important piece of information is offered by the method `getMonolingualExternalRefs()`. With this, you can retrieve the ID of a sense as it was represented in the original resource. This might be useful to make a connection to legacy experiments or data.
+
+Most of this (except for the sense examples) also holds for a Synset object, but per definition, a Synset consists of multiple senses, which can be accessed as a list via the `getSenses()` method. Note that the definition text for a Sense might be empty (e.g. for !WordNet), if the definition is given in the Synset the Sense belongs to instead. This can be easily handled by checking if the length of the definition is 0.
+
+=== !SenseAxis
+
+!SenseAxis are a major asset of UBY, as they offer alignments between different resources on sense level, not only on lexical level. They can exist between Sense object as well as Synset objects, thus the !SenseAxis object offers method for retrieving the source Sense / Synset (`getSenseOne()` / `getSynsetOne()`) and the target Sense / Synset (`getSenseTwo()` / `getSynsetTwo()`). Note that usually only the Sense OR the Synset values are not null, only for few resources such as !OmegaWiki both values are defined, as in this case a Synset alignment trivially implies a Sense alignment and vice versa. Additionally, the type of the !SenseAxis can be queried, which is `monolingualSenseAlignment` or
+`crosslingualSenseAlignment`. This information might be useful for tasks such as cross-lingual information retrieval.
+
+=== Code example (tested for UBY database v0.2.0)
+
+Here is a typical example on how to access the basic information in UBY. What we do is the following:
+
+   # Retrieve the English Wiktionary as Lexicon
+   # Query this lexicon for the verb "align"
+   # Output the definition for all senses of "align"
+   # Output the definitions of all aligned senses in other resources
+
+Note again that the definition text for a Sense might be contained in the parent Synset instead.
+
+[source,java]
+----
+public static void main(String[] args)
+{
+	DBConfig db = new   DBConfig("localhost/uby_database","com.mysql.jdbc.Driver","mysql","user", "password", false);
+	Uby uby = new Uby(db);
+	Lexicon lex = uby.getLexiconByName("WiktionaryEN");
+	List<LexicalEntry> entries = uby.getLexicalEntries("align", EPartOfSpeech.verb, lex);
+	for (LexicalEntry le : entries) 
+        {
+		for (Sense s: le.getSenses())
+                {
+                        if (s.getDefinitionText() != null) {
+                        	System.out.println("Wiktionary Sense:"+s.getDefinitionText());
+                        }
+                        List<SenseAxis> alignedSenses = uby.getSenseAxisBySense(s);
+                        if(alignedSenses.size()>0)
+                        {
+                                for(SenseAxis axis : alignedSenses)
+                                {
+                                	String definition = "";
+                                    if (axis.getSenseOne().getDefinitionText() != null) {
+                                    	definition =  axis.getSenseOne().getDefinitionText();
+                                    } else if (axis.getSenseOne().getSynset().getDefinitionText() != null) {
+                                    	definition = axis.getSenseOne().getSynset().getDefinitionText();
+                                    } else {
+                                    	definition = "There is no definition for this sense.";
+                                    }
+                                    System.out.println("Aligned Sense:" +definition);
+                                }
+                        }
+                }
+
+	}
+}
+----
+
+=== !FrameNet and !VerbNet Code examples (tested for UBY database v0.2.0)
+
+To conclude, here are some code snippets to showcase how to retrieve more complex information from !FrameNet and !VerbNet.
+
+==== !FrameNet
+
+In this first example, you can see how multiword information is retrieved from !FrameNet for the entry "carry out".
+
+[source,java]
+----
+Lexicon lex = uby.getLexiconByName("FrameNet");
+List<LexicalEntry> entries = uby.getLexicalEntries("carry out", null, lex);
+LexicalEntry e = entries.get(0);
+String lemma = e.getLemmaForm(); // lemma
+String def = e.getSenses().get(0).getDefinitionText(); //definition
+if (e.getListOfComponents()!=null){
+List<Component>  loc = e.getListOfComponents().getComponents();
+System.out.println("\n-- Component of Multiword Lexemes --");
+System.out.println("Definition of '" + lemma + "': " + def);
+for (Component c: loc)
+{
+                String constituentLemma = c.getTargetLexicalEntry().getLemmaForm();
+                Boolean isHead = c.isHead();
+                Boolean breakBefore = c.isBreakBefore();
+                int position = c.getPosition();
+                System.out.println(" lemma: " + constituentLemma + "\n  head: " +
+                isHead + "\n  breakbefore: " + breakBefore  + "\n  position: " + position);
+}
+----
+
+Here we show how !SemanticPredicate information is obtained for a known !SemanticPredicate.
+
+[source,java]
+----
+     // Show SemanticPredicate information
+        SemanticPredicate semPred = uby.getSemanticPredicateByExactId("FN_SemanticPredicate_624");
+        // SemanticPredicate: Id
+        String semPredId = semPred.getId();
+        // SemanticPredicate: name
+        String semPredName = semPred.getLabel();
+        // SemanticPredicate: Definition
+        List<Definition> definitions = semPred.getDefinitions();
+        Definition definition = definitions.get(0);
+        // SemanticPredicate: isLexicalized
+        boolean isLex = semPred.isLexicalized();
+        // SemanticPredicate: isPerspectivalized
+        boolean isPers = semPred.isPerspectivalized();
+        // SemanticPredicate: Show Predicate Relations
+        List<PredicateRelation> predRels = semPred.getPredicateRelations();
+        PredicateRelation exampleRel = predRels.get(0);
+        String relName = exampleRel.getRelName();
+        String relType = exampleRel.getRelType();
+        SemanticPredicate relTarget = exampleRel.getTarget();
+        String relTargetName = relTarget.getLabel();
+        System.out.println("\n-- Semantic Predicate Information --");
+        System.out.println("Semantic predicate: " + semPredName + " -- id: " + semPredId);
+
+        System.out.println(" Definition:" + definition.getTextRepresentations().get(0).getWrittenText());
+
+        System.out.println(" isLexicalized: " + isLex);
+        System.out.println(" isPerspectivalized: " + isPers);
+        System.out.println(" Number of PredicateRelations: " + predRels.size());
+        System.out.println("  Example predicate relation: \n" + "   name: " + relName +
+                                "\n   type: " + relType + "\n   Name of target predicate:" + relTargetName +
+                                        " \n its definition: " + relTarget.getDefinitions().get(0).getTextRepresentations().get(0).getWrittenText());
+----
+
+Here the same for !SemanticArgument.
+
+[source,java]
+----
+        List<SemanticArgument> semArguments = semPred.getSemanticArguments();
+     // SemanticArgument: Show Argument Definition
+     SemanticArgument argFirst = semArguments.get(0); // Exchangers
+     String argDef = argFirst.getDefinitions().get(0).getTextRepresentations().get(0).getWrittenText();
+     // SemanticArgument: Core type of SemanticArgument
+     ECoreType coreType = argFirst.getCoreType();
+     // SemanticArgument: Show Argument Relations
+     List<ArgumentRelation> argRels = argFirst.getArgumentRelations();
+
+     System.out.println("\n-- Semantic Argument Information --");
+     System.out.println("  Number of semantic arguments: " + semArguments.size());
+     System.out.println("\nSemantic Argument: " + argFirst.getSemanticRole() + " ID: " + argFirst.getId());
+     System.out.println(" Definition: " + argDef.trim());
+     System.out.println(" Core Type: " + coreType.toString());
+     System.out.println("  Number of argument relations: " + argRels.size());
+----
+
+Finally, you can see how the frequency of a Sense can be retrieved, which might be important for certain applications. 
+
+[source,java]
+----
+Sense s2 = uby.getSenseByExactId("FN_Sense_1230");
+List<Frequency> senseFreqs = s2.getFrequencies();
+System.out.println("\n-- Frequency Information --");
+for (Frequency f: senseFreqs)
+{
+	Integer freq = f.getFrequency();
+	String gen = f.getGenerator();
+	System.out.println(" Frequency of sense " + s2.getId() + " and generator '" + gen + "': " + freq );
+}
+----
+
+==== !VerbNet
+
+Finally here an example snippet which shows how specific information from !VerbNet is retrieved for the verb "run". In particular, we show how to display the mapping between syntactic and semantic arguments provided by !VerbNet.
+
+[source,java]
+----
+private static HashMap<SyntacticArgument, SemanticArgument> SynargSemargMap  = new HashMap<SyntacticArgument, SemanticArgument>();
+
+Lexicon verbNet = uby.getLexiconByName("VerbNet");
+List<SynSemArgMap> SynSemArgMaps = uby.getSynSemArgMaps(); // retrieve complete SynSemArgMap table
+for (SynSemArgMap synSem : SynSemArgMaps) 
+{
+      SynargSemargMap.put(synSem.getSyntacticArgument(), synSem.getSemanticArgument());
+}
+List<LexicalEntry> lexicalEntries = uby.getLexicalEntries("run",null, verbNet);
+for(LexicalEntry le : lexicalEntries)
+{
+	System.out.println("LexicalEntry: "+le.getId());
+	String lemma = le.getLemmaForm();
+	System.out.println("Lemma: "+lemma);
+	for(Sense sense : le.getSenses())
+        {
+		System.out.println("\n" +"- Sense: "+sense.getId());
+		System.out.println("- Example: "+sense.getSenseExamples().get(0).getTextRepresentations().get(0).getWrittenText());
+		for (SyntacticBehaviour syntBeh : le.getSyntacticBehaviours()) 
+                {
+			if (syntBeh.getSense().equals(sense)) 
+                        {
+				SubcategorizationFrame scf = syntBeh.getSubcategorizationFrame();
+				System.out.println("SubcatFrame: " +uby.getSubcatFrameString(scf, yourLemma));
+				int synCount = 0;
+				for (SyntacticArgument arg: scf.getSyntacticArguments()) 
+                                {
+					synCount++;
+					if (SynargSemargMap.containsKey(arg)) 
+                                        {
+						SemanticArgument semArg = SynargSemargMap.get(arg);
+						System.out.print("    " +synCount +") " +uby.getArgumentString(arg) +" ");
+						List<String> semFeats = new ArrayList<String>();
+						semFeats.add((semArg.getSemanticRole()));
+						try
+                                                {
+							for (SemanticLabel semLabel : semArg.getSemanticLabels()) 
+                                                        {
+								if (semLabel.getType() == ELabelTypeSemantics.selectionalPreference)
+                                                                {
+									semFeats.add("(" +semLabel.getLabel() +")");
+								}
+							}
+						}catch(NullPointerException ex){}
+						String semFeatString = uby.join(semFeats," ");
+						System.out.println(semFeatString);
+					} else { //no corresponding semantic argument exists
+							System.out.println("    " +synCount +") " +uby.getArgumentString(arg) +" ");
+				}
+			}
+		}
+	}//for
+}//for
+}
+----

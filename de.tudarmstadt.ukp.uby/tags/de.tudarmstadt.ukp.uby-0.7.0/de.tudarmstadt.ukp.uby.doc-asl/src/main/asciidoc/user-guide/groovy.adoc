@@ -1,0 +1,151 @@
+// Copyright 2015
+// Ubiquitous Knowledge Processing (UKP) Lab
+// Technische Universität Darmstadt
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+== Groovy scripts using DKPro Core
+
+This assumes that you have installed link:http://groovy.codehaus.org[Groovy] and that you have the command `groovy` available in your path. On Debian/Ubuntu systems, installing Groovy should be as easy as `apt-get install groovy`.
+
+*Note: An link:http://stackoverflow.com/questions/23504261/dkpro-groovy-usage-and-installation-with-uima[incompatibility] has been reported with Groovy version 2.3.0. Please use a 2.1.x or 2.2.x version or even version 2.3.1 or higher. (See also: link:http://jira.codehaus.org/browse/GROOVY-6768[GROOVY-6768])*
+
+Copy one of the scripts into a simple text file (e.g. `pipeline`). Make the file executable (e.g. `chmod +x pipeline`). Then run it (e.g. `./pipeline`). The first time this will take quite long because libraries and models are automatically downloaded.
+
+You might also want to try the link:https://code.google.com/p/dkpro-core-asl/wiki/DKProGroovyCookbook[DKPro Core Groovy scripts].
+
+=== Scripts
+
+=== Annotating text with DKPro Core and Uby
+
+==== Semantic tags and syntax information
+
+Reads a text file (English text) `document.txt` in the same folder as the script and writes the results to the specified file.
+
+Call with `pipeline <outputfile>`, e.g. `pipeline output.txt`.
+
+
+[source,groovy,subs="+attributes"]
+----
+#!/usr/bin/env groovy
+
+@GrabResolver(name='ukp-oss-releases',
+     root='http://zoidberg.ukp.informatik.tu-darmstadt.de/artifactory/public-releases')
+
+@Grab(group='de.tudarmstadt.ukp.uby', version='{uby-version}',
+      module='de.tudarmstadt.ukp.uby.uima-asl')
+
+@Grab(group='de.tudarmstadt.ukp.dkpro.core', version='{dkpro-core-version}',
+      module='de.tudarmstadt.ukp.dkpro.core.opennlp-asl')
+
+@Grab(group='de.tudarmstadt.ukp.dkpro.core', version='{dkpro-core-version}',
+      module='de.tudarmstadt.ukp.dkpro.core.languagetool-asl')
+
+@Grab(group='de.tudarmstadt.ukp.dkpro.core', version='{dkpro-core-version}',
+      module='de.tudarmstadt.ukp.dkpro.core.io.text-asl')
+      
+@Grab(group='com.h2database', version='1.3.176',
+      module='h2')
+      
+import de.tudarmstadt.ukp.uby.uima.writer.*;
+import de.tudarmstadt.ukp.uby.uima.annotator.*;
+import de.tudarmstadt.ukp.uby.resource.*;
+import de.tudarmstadt.ukp.dkpro.core.io.text.*;
+import de.tudarmstadt.ukp.dkpro.core.languagetool.*;
+import de.tudarmstadt.ukp.dkpro.core.opennlp.*;
+import org.h2.*
+
+import static org.apache.uima.fit.pipeline.SimplePipeline.*;
+import static org.apache.uima.fit.factory.AnalysisEngineFactory.*;
+import static org.apache.uima.fit.factory.CollectionReaderFactory.*;
+import static org.apache.uima.fit.factory.ExternalResourceFactory.createExternalResourceDescription;
+
+def ubyResource = createExternalResourceDescription(
+                  UbyResource,
+                  (Object) UbyResource.PARAM_LANGUAGE, "en", 
+                  UbyResource.PARAM_VARIANT, "light");
+                  
+runPipeline(
+  createReaderDescription(TextReader,
+    TextReader.PARAM_SOURCE_LOCATION, "document.txt",
+    TextReader.PARAM_LANGUAGE, "en"),
+  createEngineDescription(OpenNlpSegmenter),
+  createEngineDescription(OpenNlpPosTagger),
+  createEngineDescription(LanguageToolLemmatizer),
+  createEngineDescription(UbySemanticFieldAnnotator,
+      UbySemanticFieldAnnotator.PARAM_UBY_SEMANTIC_FIELD_RESOURCE,    	           
+    	    createExternalResourceDescription(
+            UbySemanticFieldResource,
+    	      (Object) UbySemanticFieldResource.PARAM_LANGUAGE, "en",
+    	               UbySemanticFieldResource.RES_UBY, ubyResource)),
+  createEngineDescription(SemanticTagWriter,
+                 SemanticTagWriter.PARAM_TARGET_LOCATION, args[0],
+                 SemanticTagWriter.RES_UBY, ubyResource)
+                 );  
+----
+
+Example output:
+
+----
+Saito	Saito	NP
+insists	insist	V
+	 syntax: transitive/with_to-infinitive
+	 semantic field: communication
+	 synonyms: take a firm stand
+	 related: stand fast, hold firm, asseverate, stand pat, assert
+	 associated: statement
+on	on	PP
+accompanying	accompany	V
+	 syntax: transitive
+	 semantic field: stative
+	 synonyms: go with, come with, attach to
+	 related: construe with, cooccur with, collocate with, co-occur with
+	 associated: music, cotheme
+the	the	ART
+team	team	NN
+	 syntax: ---
+	 semantic field: group
+	 synonyms: team up
+	 related: aggroup
+	 associated: aggregate
+to	to	PP
+verify	verify	V
+	 syntax: transitive/with_to-infinitive
+	 semantic field: cognition
+	 synonyms: ---
+	 related: check off, insure, substantiate, affirm, tick off, corroborate, confirm, see to it
+	 associated: law, verification, evidence, science
+the	the	ART
+team	team	NN
+	 syntax: ---
+	 semantic field: group
+	 synonyms: team up
+	 related: aggroup
+	 associated: aggregate
+'s	's	O
+success	success	NN
+	 syntax: ---
+	 semantic field: event
+	 synonyms: ---
+	 related: victory, Godspeed, occurrent, happening, occurrence, triumph, natural event
+	 associated: successful_action, success_or_failure
+.	.	PUNC
+----
+
+=== Trouble shooting
+
+See link:https://code.google.com/p/dkpro-core-asl/wiki/DKProGroovyTroubleShooting[DKPro Core Groovy trouble shooting tips].
+
+
+
+                     
