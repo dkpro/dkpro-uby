@@ -23,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -83,7 +84,8 @@ public class WiktionaryLMFMap {
 	 *  @throws IOException if the mapping file could not be loaded. */
 	public static void loadLanguageCodes(final InputStream stream) throws IOException {
 		Map<String, String> languages = new TreeMap<String, String>();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+		BufferedReader reader = new BufferedReader(
+				new InputStreamReader(stream, StandardCharsets.UTF_8));
 		try {
 			String line;
 			while ((line = reader.readLine()) != null) {
@@ -132,10 +134,7 @@ public class WiktionaryLMFMap {
 			return result;
 	}
 
-	/**
-	 * Maps Wiktionary PartOfSpeech to LMF PartOfSpeech
-	 * @param pos
-	 */
+	/** Maps Wiktionary PartOfSpeech to LMF PartOfSpeech. */
 	public static EPartOfSpeech mapPos(final IWiktionaryEntry entry) {
 		if (entry.getPartOfSpeech() != null)
 			switch (entry.getPartOfSpeech()) {
