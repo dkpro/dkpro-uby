@@ -22,6 +22,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
 public class Target {
 
@@ -34,4 +35,7 @@ public class Target {
 	@XmlElement(name = "score")
 	public List<Score> scores = new ArrayList<Score>();
 
+	@XmlElementWrapper(name = "secondaryalignment")
+	@XmlElement(name = "subsource")
+	public List<SubSource> subsources = new ArrayList<SubSource>();
 }

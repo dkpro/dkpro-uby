@@ -29,19 +29,15 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeMap;
+
 import javax.xml.transform.TransformerException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.dom4j.DocumentException;
 import org.xml.sax.SAXException;
 
-import de.tudarmstadt.ukp.integration.alignment.xml.AlignmentXmlReader;
 import de.tudarmstadt.ukp.integration.alignment.xml.model.Decisiontype;
 import de.tudarmstadt.ukp.integration.alignment.xml.model.Source;
 import de.tudarmstadt.ukp.integration.alignment.xml.model.Target;
-import de.tudarmstadt.ukp.integration.alignment.xml.model.XmlMeta;
-import de.tudarmstadt.ukp.lmf.api.Uby;
 import de.tudarmstadt.ukp.lmf.model.core.GlobalInformation;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
@@ -51,100 +47,34 @@ import de.tudarmstadt.ukp.lmf.model.meta.MetaData;
 import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 import de.tudarmstadt.ukp.lmf.transform.LMFXmlWriter;
-import de.tudarmstadt.ukp.lmf.transform.XMLToDBTransformer;
 
 /**
- * Create sense alignment objects directly from generic alignment xml file
+ * Create uby lexical resource containing sense axes 
+ * directly from generic alignment xml file
  * Replaces SenseAlignment and children of SenseAlignment
  */
-public class SenseAlignmentGenericXml {
-
-	// enum not possible: match any externalReference String in UBY
-	public static final String UBY_SENSE_ID = "UBY_SENSE_ID";
-	public static final String UBY_SYNSET_ID = "UBY_SYNSET_ID";
-
-	// default confidence score 1.0
-	public static final Double DEFAULTCONFSCORE = 1.0;
-
-	public StringBuilder logString;
-	public int nullAlignment = 0;
-
-	protected static String UBY_HOME = System.getenv("UBY_HOME");
-	protected static String LF = System.getProperty("line.separator");
-
-	private File alignment;
+public class SenseAlignmentGenericXml extends AlignmentGenericXml {
 
 	private TreeMap<String, SenseAxis> senseAxisMap;
-	private LinkedList<MetaData> lmfMetaData;
-	private Uby ubySource;
 
-	private List<Source> alignments;
-	private XmlMeta metadata;
-
+	/*
 	protected final static Log logger = LogFactory
 			.getLog(SenseAlignmentGenericXml.class);
-
+	*/
+	
 	public SenseAlignmentGenericXml(String sourceUrl, String dbDriver,
 			String dbVendor, String alignmentFile, String user, String pass) {
-
-		this.alignment = new File(alignmentFile);
-
-		lmfMetaData = new LinkedList<>();
+		super(sourceUrl, dbDriver, dbVendor, alignmentFile, user, pass);
 		senseAxisMap = new TreeMap<>();
-		logString = new StringBuilder();
-
-		if (!alignment.exists() && !alignment.isFile()) {
-			System.out.println("Alignment file: " + alignmentFile
-					+ " doesn't exist! ");
-			System.exit(1);
-		}
-
-		DBConfig dbConfig = new DBConfig(sourceUrl, dbDriver,
-				dbVendor, user, pass, false);
-		try {
-			ubySource = new Uby(dbConfig);
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		}
-
-		try {
-			readAlignmentFile(alignment);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public SenseAlignmentGenericXml(DBConfig dbconf, String alignmentFile) {
-
-		this.alignment = new File(alignmentFile);
-
-		lmfMetaData = new LinkedList<>();
+		super(dbconf,alignmentFile);
 		senseAxisMap = new TreeMap<>();
-		logString = new StringBuilder();
-
-		if (!alignment.exists() && !alignment.isFile()) {
-			System.out.println("Alignment file: " + alignmentFile
-					+ " doesn't exist! ");
-			System.exit(1);
-		}
-
-		DBConfig dbConfig = dbconf;
-		try {
-			ubySource = new Uby(dbConfig);
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		}
-
-		try {
-			readAlignmentFile(alignment);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
+	
 	/**
-	 * Convert generic alignment xml format to LMF
-	 * 
-	 * TODO: get idPrefix implicitly from metadata?
+	 * Convert sense alignment in generic alignment xml format to LMF
 	 * 
 	 * @param idPrefix
 	 * @throws ParseException
@@ -173,15 +103,14 @@ public class SenseAlignmentGenericXml {
 		meta.setId(metadata.identifier);
 		meta.setVersion(metadata.version);
 
-		// TODO check in DB if automatic is mapped properly
 		meta.setAutomatic(decisiontype.type == Decisiontype.Decision.AUTOMATIC); 
 		meta.setCreationProcess(decisiontype.id);
 		meta.setCreationTool(metadata.description);
 		lmfMetaData.add(meta);
 
-		Lexicon sourceLexicon = ubySource
+		Lexicon sourceLexicon = uby
 				.getLexiconById(metadata.sourceResource.id);
-		Lexicon destLexicon = ubySource
+		Lexicon destLexicon = uby
 				.getLexiconById(metadata.targetResource.id);
 		int id = 0;
 
@@ -236,7 +165,6 @@ public class SenseAlignmentGenericXml {
 										+ source.ref + " " + target.ref);
 								logString.append(LF);
 								nullAlignment++;
-								System.err.println("Cannot align these guys!");
 							}
 						}
 					}
@@ -248,26 +176,8 @@ public class SenseAlignmentGenericXml {
 		logger.info(logString.toString());
 	}
 
-	private List<Sense> getSenses(String sourceType, String sourceID,
-			Lexicon sourceLexicon) {
-		List<Sense> senses = new ArrayList<>();
-		if (sourceType.equals(UBY_SENSE_ID)) {
-			senses.add(ubySource.getSenseById(sourceID));
-		} else if (sourceType.equals(UBY_SYNSET_ID)) {
-			senses = ubySource.getSynsetById(sourceID).getSenses();
-		} else {
-			senses = ubySource.getSensesByOriginalReference(sourceType,
-					sourceID, sourceLexicon);
-		}
-		if (senses.size() == 0) {
-			logger.warn("Could not find sense for " + sourceType
-					+ " " + sourceID + " " + sourceLexicon.getName());
-		}
-		return senses;
-	}
-
 	/**
-	 * Write alignments to UBY LMF xml
+	 * Write sense alignments to UBY LMF xml
 	 * 
 	 * @param idPrefix
 	 * @param crosslingual
@@ -320,24 +230,7 @@ public class SenseAlignmentGenericXml {
 	public static void toDB(DBConfig dbConfig, File xmlSource, String idPrefix)
 			throws DocumentException, FileNotFoundException,
 			IllegalArgumentException {
-		XMLToDBTransformer xml2DB = new XMLToDBTransformer(dbConfig);
-		xml2DB.transform(xmlSource, "Uby_Alignments_" + idPrefix);
+		convertToDB(dbConfig, xmlSource, "Uby_Alignments_" + idPrefix);
 	}
 
-	private void readAlignmentFile(File alignmentFile) throws IOException {
-		AlignmentXmlReader reader = null;
-		try {
-			reader = new AlignmentXmlReader(alignmentFile);
-			metadata = reader.readMetaData();
-			alignments = reader.readAlignments().source;
-			System.err.println(alignments.size());
-			System.err.println(metadata);
-			System.err.println((metadata.targetResource).language);
-
-		} catch (IOException e) {
-			throw new IOException(e);
-		} finally {
-			reader.close();
-		}
-	}
 }

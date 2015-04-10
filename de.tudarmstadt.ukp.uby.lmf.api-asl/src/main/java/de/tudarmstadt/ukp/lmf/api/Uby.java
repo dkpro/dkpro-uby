@@ -41,8 +41,10 @@ import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
 import de.tudarmstadt.ukp.lmf.model.meta.SemanticLabel;
+import de.tudarmstadt.ukp.lmf.model.multilingual.PredicateArgumentAxis;
 import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis;
 import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
+import de.tudarmstadt.ukp.lmf.model.semantics.PredicativeRepresentation;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticArgument;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
 import de.tudarmstadt.ukp.lmf.model.semantics.SynSemArgMap;
@@ -676,7 +678,7 @@ public class Uby
 
     /**
      * Returns a {@link List} of all {@link SenseAxis} instances contained in the database accessed
-     * by this {@link Uby} instnace.
+     * by this {@link Uby} instance.
      *
      * @return a list of all sense axes in the accessed database or an empty list if the accessed
      *         database does not contain any sense axes
@@ -699,7 +701,7 @@ public class Uby
      *            string contained in the identifiers of the sense axes to be returned
      *
      * @return the {@link List} of all sense axes which id contains the specified string.<br>
-     *         This method returns an empty list is no sense axis contains the specified string in
+     *         This method returns an empty list if no sense axis contains the specified string in
      *         its id or the specified string is null.
      *
      * @see #getSenseAxes()
@@ -1182,6 +1184,35 @@ public class Uby
 
 	/**
 	 * Returns a {@link List} of all {@link SemanticPredicate} instances in the
+	 * database with the given label and filtered by {@link Lexicon}.
+	 * @param label
+	 * 			semantic predicate label
+	 * @param lexicon
+	 * 	 		all returned semantic predicates will belong to
+	 *          the specified lexicon
+	 * @return list of semantic predicates which matches the criteria or an
+	 *         empty list if none of the semantic predicates matches the
+	 *         criteria
+	 */
+	public List<SemanticPredicate> getSemanticPredicatesByLabelAndLexicon(String label, Lexicon lexicon){
+		System.err.println(lexicon.getId());
+		Criteria criteria = session.createCriteria(SemanticPredicate.class);
+		criteria = criteria.add(
+				Restrictions.and(
+						Restrictions.eq("label", label),
+						Restrictions.eq("lexicon", lexicon)));
+		
+        @SuppressWarnings("unchecked")
+        List<SemanticPredicate> result = criteria.list(); 
+
+        if(result == null) {
+            result = new ArrayList<SemanticPredicate>(0);
+        }
+        
+        return result;
+	}
+	/**
+	 * Returns a {@link List} of all {@link SemanticPredicate} instances in the
 	 * database accessed by this {@link Uby} instance, optionally filtered by
 	 * {@link Lexicon}.
 	 *
@@ -1247,6 +1278,35 @@ public class Uby
 		return (SemanticArgument) criteria.uniqueResult();
 	}
 
+	/**
+	 * Returns a {@link List} of all {@link SemanticArgument} instances in the
+	 * database with the given label and {@link SemanticPredicate}.
+	 * @param label
+	 * 			semantic argument label
+	 * @param lexicon
+	 * 	 		all returned semantic arguments will belong to
+	 *          the specified lexicon
+	 * @return list of semantic predicates which matches the criteria or an
+	 *         empty list if none of the semantic predicates matches the
+	 *         criteria
+	 */
+	public List<SemanticArgument> getSemanticArgumentsByLabelAndPredicate(String roleLabel, SemanticPredicate predicate){
+		Criteria criteria = session.createCriteria(SemanticArgument.class);
+		System.err.println(" predicateid " + predicate.getId());
+		criteria = criteria.add(
+				Restrictions.and(
+						Restrictions.eq("predicate",predicate),
+						Restrictions.eq("semanticRole", roleLabel)));
+
+        @SuppressWarnings("unchecked")
+        List<SemanticArgument> result = criteria.list(); 
+
+        if(result == null) {
+            result = new ArrayList<SemanticArgument>(0);
+        }
+        
+        return result;
+	}
     /**
      * Returns all {@link SynSemArgMap} instances contained in the database accessed by this
      * {@link Uby} instance.
@@ -1270,5 +1330,127 @@ public class Uby
 	{
 		//dbConfig = null; -- FindBugs: This finalizer nulls out fields. This is usually an error, as it does not aid garbage collection, and the object is going to be garbage collected anyway.
 		session.close();
+	}
+
+	/**
+	 * Returns a {@link List} of all {@link SemanticPredicate} instances in the
+	 * database that are associated with a {@link Sense} with the given senseId
+	 * @param senseId
+	 * 		UBY sense Id string
+	 * @return list of semantic predicates which matches the criteria or an empty list
+	 */
+	public List<SemanticPredicate> getSemanticPredicatesBySenseId(
+			String senseId) {
+		Criteria criteria= session.createCriteria(PredicativeRepresentation.class);
+		criteria=criteria.add(Restrictions.sqlRestriction("senseId='"+ senseId+"'"));
+		@SuppressWarnings("unchecked")
+		List<PredicativeRepresentation> representations = criteria.list();
+		List<SemanticPredicate> result = new ArrayList<>();
+		for (PredicativeRepresentation predicative : representations){
+			result.add(predicative.getPredicate());
+		}
+		return result;
+	}
+	
+    /**
+     * Returns a {@link List} of all {@link PredicateArgumentAxis} instances contained in the database accessed
+     * by this {@link Uby} instance.
+     *
+     * @return a list of all predicate-argument axes in the accessed database or an empty list if the accessed
+     *         database does not contain any sense axes
+     */
+	public List<PredicateArgumentAxis> getPredicateArgumentAxes(){
+		Criteria criteria = session.createCriteria(PredicateArgumentAxis.class);
+		@SuppressWarnings("unchecked")
+		List<PredicateArgumentAxis> result = criteria.list();
+		if(result == null) {
+			result = new ArrayList<PredicateArgumentAxis>(0);
+		}
+		return result;
+	}
+	
+    /**
+     * This method finds all {@link PredicateArgumentAxis} instances whose id contains the specified
+     * {@link String} in the database accessed by this {@link Uby} instance.
+     *
+     * @param senseAxisId
+     *            string contained in the identifiers of the predicate-argument axes to be returned
+     *
+     * @return the {@link List} of all predicate-argument axes whose id contains the specified string.<br>
+     *         This method returns an empty list if no axis contains the specified string in
+     *         its id or the specified string is null.
+     *
+     * @see #getPredicateArgumentAxes()
+     * @see #getSenseAxesBySense(Sense)
+     */
+	public List<PredicateArgumentAxis> getPredicateArgumentAxesByIdPattern(String axisId){
+		Criteria criteria= session.createCriteria(PredicateArgumentAxis.class);
+		criteria=criteria.add(Restrictions.sqlRestriction("predicateArgumentAxisId like '%"+ axisId+"%'"));
+
+		@SuppressWarnings("unchecked")
+		List<PredicateArgumentAxis> result =  criteria.list();
+		if(result == null) {
+			result = new ArrayList<PredicateArgumentAxis>(0);
+		}
+		return result;
+	}
+
+    /**
+     * This method retrieves all {@link PredicateArgumentAxis} which bind the specified {@link SemanticPredicate}.
+     *
+     * @param predicate
+     *            all returned predicate-argument axes should bind this semantic predicate
+     *
+     * @return all predicate-argument axes that contain the consumed semantic predicate.<br>
+     *         This method returns an empty list if the accessed UBY-LMF database does not contain
+     *         any alignments of the specified semantic predicate, or the specified semantic predicate is null.
+     */
+	public List<PredicateArgumentAxis> getPredicateArgumentAxesByPredicate(SemanticPredicate predicate) {
+		if (predicate != null && predicate.getId() != null && !predicate.getId().equals("")) {
+			Criteria criteria = session.createCriteria(PredicateArgumentAxis.class);
+			criteria = criteria.add(Restrictions.or(
+					Restrictions.eq("semanticPredicateOne", predicate),
+					Restrictions.eq("semanticPredicateTwo", predicate)));
+			@SuppressWarnings("unchecked")
+			List<PredicateArgumentAxis> result = criteria.list();
+			return result;
+		}
+		else {
+			return new ArrayList<PredicateArgumentAxis>(0);
+		}
+	}
+	
+    /**
+     * Consumes two {@link SemanticPredicate} instances and returns true if and only if the consumed instances
+     * are aligned by a {@link PredicateArgumentAxis} instance.
+     *
+     * @param pred1
+     *            the semantic predicate to be checked for alignment with pred2
+     * @param pred2
+     *            the semantic predicate to be checked for alignment with pred1
+     * @return true if and only if pred1 has an alignment to pred2 by a predicate-argument axis instance so
+     *         that pred1 is the first semantic predicate of an axis and pred2 the second.<br>
+     *         This method returns false if one of the consumed semantic predicates is null.
+     * @see PredicateArgumentAxis#getSemanticPredicateOne()
+     * @see PredicateArgumentAxis#getSemanticPredicateTwo()
+     */
+	public boolean hasPredicateArgumentAxis(SemanticPredicate pred1, SemanticPredicate pred2) {
+		boolean ret = false;
+		if (pred1 != null && pred2 != null && pred1.getId() != null
+				&& pred1.getId().length() > 0 && pred2.getId() != null
+				&& pred2.getId().length() > 0) {
+			String sql = "Select semanticPredicateOne, semanticPredicateTwo from PredicateArgumentAxis where "
+					+ "(semanticPredicateOne='" + pred1.getId() + "' and semanticPredicateTwo='"
+					+ pred2.getId() + "')" + "or(semanticPredicateOne='"
+					+ pred2.getId() + "' and semanticPredicateTwo='" + pred1.getId()
+					+ "')";
+
+			List<?> query = session.createSQLQuery(sql).list();
+			if (query.size() > 0) {
+				ret = true;
+			}
+
+		}
+		return ret;
 	}
 }

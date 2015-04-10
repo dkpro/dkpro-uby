@@ -74,6 +74,18 @@ public class SemanticArgument implements IHasID, IHasDefinitions, IHasSemanticLa
 	@AccessType(type = EAccessType.FIELD)
 	private Boolean isIncorporated;
 	
+	// Backlink to Lexicon added for convenience
+	@VarType(type = EVarType.NONE)
+	private SemanticPredicate predicate;
+	
+	public SemanticPredicate getPredicate() {
+		return predicate;
+	}
+
+	public void setPredicate(SemanticPredicate predicate) {
+		this.predicate = predicate;
+	}
+
 	/**
 	 * Constructs an empty {@link SemanticArgument} instance.
 	 * 

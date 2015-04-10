@@ -60,6 +60,12 @@ public class XmlMeta {
 	
 	@XmlElement(name="targetresource")
 	public ResourceXml targetResource;
+
+	@XmlElement(name="subsource")
+	public ResourceXml subSource;
+	
+	@XmlElement(name="subtarget")
+	public ResourceXml subTarget;
 	
 	@XmlElementWrapper(name="scoretypes")
 	@XmlElement(name="scoretype")

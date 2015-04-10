@@ -22,6 +22,7 @@ import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.ConstraintSet;
+import de.tudarmstadt.ukp.lmf.model.multilingual.PredicateArgumentAxis;
 import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
 import de.tudarmstadt.ukp.lmf.model.semantics.SynSemCorrespondence;
@@ -96,6 +97,10 @@ abstract class LMFXMLTransformer extends LMFTransformer{
 		SenseAxis senseAxis;
 		while((senseAxis = getNextSenseAxis()) != null)
 			writer.writeElement(senseAxis);
+
+		PredicateArgumentAxis predAxis;
+		while((predAxis = getNextPredicateArgumentAxis()) != null)
+			writer.writeElement(predAxis);
 		
 		writer.writeEndElement(resource);
 		writer.writeEndDocument();

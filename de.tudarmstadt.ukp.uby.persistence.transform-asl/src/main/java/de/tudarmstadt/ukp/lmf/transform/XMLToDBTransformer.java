@@ -43,6 +43,7 @@ import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.interfaces.IHasID;
 import de.tudarmstadt.ukp.lmf.model.meta.MetaData;
 import de.tudarmstadt.ukp.lmf.model.miscellaneous.ConstraintSet;
+import de.tudarmstadt.ukp.lmf.model.multilingual.PredicateArgumentAxis;
 import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis;
 import de.tudarmstadt.ukp.lmf.model.semantics.SemanticPredicate;
 import de.tudarmstadt.ukp.lmf.model.semantics.SynSemCorrespondence;
@@ -195,6 +196,10 @@ public class XMLToDBTransformer extends UBYHibernateTransformer
 			listElement = fromXmlToObject(el, SenseAxis.class);
 			saveListElement(lexicalResource, lexicalResource.getSenseAxes(), listElement);
 		} else
+		if ("PredicateArgumentAxis".equals(n)) {
+				listElement = fromXmlToObject(el, PredicateArgumentAxis.class);
+				saveListElement(lexicalResource, lexicalResource.getPredicateArgumentAxes(), listElement);
+			} else
 		if ("MetaData".equals(n)) {
 			listElement = fromXmlToObject(el, MetaData.class);
 			saveListElement(lexicalResource, lexicalResource.getMetaData(), listElement);
