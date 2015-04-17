@@ -36,7 +36,7 @@
             <name>Luc Hogie Maven repository</name>
             <url>http://www.i3s.unice.fr/~hogie/maven_repository/</url>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </snapshots>
         </repository>
     </repositories>
