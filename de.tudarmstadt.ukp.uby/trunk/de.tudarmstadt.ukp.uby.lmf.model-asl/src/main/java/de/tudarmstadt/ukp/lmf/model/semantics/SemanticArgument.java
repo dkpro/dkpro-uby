@@ -18,7 +18,6 @@
 package de.tudarmstadt.ukp.lmf.model.semantics;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.core.Definition;
@@ -35,7 +34,7 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
 
 /**
  * SemanticArgument is a class representing an argument of a given {@link SemanticPredicate}.
- * 
+ *
  * @author Zijad Maksuti
  *
  */
@@ -73,11 +72,11 @@ public class SemanticArgument implements IHasID, IHasDefinitions, IHasSemanticLa
 	@VarType(type = EVarType.ATTRIBUTE)
 	@AccessType(type = EAccessType.FIELD)
 	private Boolean isIncorporated;
-	
+
 	// Backlink to Lexicon added for convenience
 	@VarType(type = EVarType.NONE)
 	private SemanticPredicate predicate;
-	
+
 	public SemanticPredicate getPredicate() {
 		return predicate;
 	}
@@ -88,23 +87,23 @@ public class SemanticArgument implements IHasID, IHasDefinitions, IHasSemanticLa
 
 	/**
 	 * Constructs an empty {@link SemanticArgument} instance.
-	 * 
+	 *
 	 * @since UBY 0.2.0
-	 * 
+	 *
 	 * @see #SemanticArgument(String)
 	 */
 	public SemanticArgument(){
 		// nothing to do
 	}
-	
+
 	/**
 	 * Constructs a {@link SemanticArgument} instance with the consumed
 	 * identifier.
-	 * 
+	 *
 	 * @param id the unique identifier of the constructed semantic argument
-	 * 
+	 *
 	 * @since UBY 0.2.0
-	 * 
+	 *
 	 * @see #SemanticArgument()
 	 */
 	public SemanticArgument(String id){
@@ -115,7 +114,7 @@ public class SemanticArgument implements IHasID, IHasDefinitions, IHasSemanticLa
 	 * Returns a {@link List} of {@link Definition} instances representing narrative description
 	 * of this {@link SemanticArgument} instance.
 	 * @return the list of definitons describing this semantic argument or an empty list
-	 * if the semantic argument does not have any definitions associated 
+	 * if the semantic argument does not have any definitions associated
 	 */
 	public List<Definition> getDefinitions() {
 		return definitions;
@@ -246,7 +245,7 @@ public class SemanticArgument implements IHasID, IHasDefinitions, IHasSemanticLa
 	public Boolean isIncorporated() {
 		return isIncorporated;
 	}
-	
+
 	/**
 	 * Sets the incorporated attribute of this {@link SemanticArgument} instance.
 	 * @param incorporated set to true if this semantic argument instance is incorporated
@@ -267,13 +266,13 @@ public class SemanticArgument implements IHasID, IHasDefinitions, IHasSemanticLa
 		sb.append("SemanticArgument ").append("id").append(id);
 		sb.append(" semanticRole: ").append(semanticRole);
 		sb.append(" coreType: ").append(coreType);
-		Collections.sort(argumentRelations);
+//		Collections.sort(argumentRelations);
 		sb.append( "argumentRelations: ").append(argumentRelations);
-		Collections.sort(frequencies);
+//		Collections.sort(frequencies);
 		sb.append(" frequencies: ").append(frequencies);
-		Collections.sort(semanticLabels);
+//		Collections.sort(semanticLabels);
 		sb.append(" semanticLabels: ").append(semanticLabels);
-		Collections.sort(definitions);
+//		Collections.sort(definitions);
 		sb.append(" definitions: ").append(definitions);
 		sb.append(" incorporated: ").append(isIncorporated);
 
