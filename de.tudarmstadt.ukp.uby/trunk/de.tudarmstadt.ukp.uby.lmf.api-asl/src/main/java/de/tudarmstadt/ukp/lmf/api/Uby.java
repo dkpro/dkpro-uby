@@ -1351,6 +1351,26 @@ public class Uby
 		}
 		return result;
 	}
+
+	/**
+	 * Returns a {@link List} of all {@link Sense} instances in the
+	 * database that are associated with a {@link SemanticPredicate} with the given semanticPredicateId
+	 * @param semanticPredicateid
+	 * 		UBY semanticPredicateId string
+	 * @return list of senses which matches the criteria or an empty list
+	 */
+	public List<Sense> getSensesBySemanticPredicateId(
+			String semanticPredicateId) {
+		Criteria criteria= session.createCriteria(PredicativeRepresentation.class);
+		criteria=criteria.add(Restrictions.sqlRestriction("predicate='"+ semanticPredicateId+"'"));
+		@SuppressWarnings("unchecked")
+		List<PredicativeRepresentation> representations = criteria.list();
+		List<Sense> result = new ArrayList<>();
+		for (PredicativeRepresentation predicative : representations){
+			result.add(predicative.getSense());
+		}
+		return result;
+	}
 	
     /**
      * Returns a {@link List} of all {@link PredicateArgumentAxis} instances contained in the database accessed

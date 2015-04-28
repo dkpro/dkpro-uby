@@ -25,13 +25,18 @@ import de.tudarmstadt.ukp.lmf.model.miscellaneous.VarType;
  * PredicativeRepresentation class is a class representing the link between the {@link Sense} instance
  *  and the {@link SemanticPredicate} instances.
  *   
- * @author Zijad Maksuti
+ * @author Zijad Maksuti, Silvana Hartmann
  *
  */
 public class PredicativeRepresentation {
 	// Semantic Predicate of this PredicativeRepresentation
 	@VarType(type = EVarType.IDREF)
 	private SemanticPredicate predicate;
+
+	
+	// Backlink to Sense added for convenience
+	@VarType(type = EVarType.NONE)
+	private Sense sense;
 
 	/**
 	 * Returns the {@link SemanticPredicate} pointed by this {@link PredicativeRepresentation} instance.
@@ -57,5 +62,23 @@ public class PredicativeRepresentation {
 	 */
 	public void setPredicate(SemanticPredicate predicate) {
 		this.predicate = predicate;
+	}
+	
+	/**
+	 * Returns the {@link Sense} containing this {@link PredicativeRepresentation} instance. <p>
+	 * <i>This backlink is not a part of Uby-LMF model and exists for convenience.</i>
+	 * @return the sense containing this predicative representation or null if the backlink is not set
+	 */
+	public Sense getSense() {
+		return sense;
+	}
+
+	/**
+	 * Sets the {@link Sense} containing this {@link PredicativeRepresentation} instance.<p>
+	 * <i> This backlink is not a part of Uby-LMF model and exists for convenience.</i>
+	 * @param sense the sense to set
+	 */
+	public void setSense(Sense sense) {
+		this.sense = sense;
 	}
 }
