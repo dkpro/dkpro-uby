@@ -13,6 +13,9 @@
      	column="predicate" node="@predicate" foreign-key="none" index="predicativerepresentation_predicate_IDX"/>
     
    
+         <!-- Not in the model, mapped for convenience -->	
+    <many-to-one name="sense" column="senseId" class="de.tudarmstadt.ukp.lmf.model.core.Sense"
+    		insert="false" update="false"/>
 </class>
 
 </hibernate-mapping>
