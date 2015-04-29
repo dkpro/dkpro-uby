@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -34,6 +35,7 @@ import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
+import de.tudarmstadt.ukp.lmf.model.meta.MetaData;
 import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 import de.tuebingen.uni.sfs.germanet.api.GermaNet;
 import de.tuebingen.uni.sfs.germanet.api.LexUnit;
@@ -70,18 +72,31 @@ public class GNConverter {
 	private final Log logger = LogFactory.getLog(getClass());
 
 	private final String resourceVersion;
+
+	private MetaData alignmentMetaData;
 	
 	/**
 	 * Constructs a {@link GNConverter} based on the consumed parameters
 	 * @param germaNet initialized {@link GermaNet} object
 	 * @param lexicalResource initialized object of  {@link LexicalResource}, which will be filled with GermaNet's data
+	 * @param alignmentMeta MetaData of ili Alignment
 	 * @param resourceVersion Version of this resource
 	 * @param dtd_version specifies the version of the .dtd which will be written to lexicalResource
 	 */
-	public GNConverter(GermaNet germaNet, LexicalResource lexicalResource, String resourceVersion, String dtd_version)
+	public GNConverter(GermaNet germaNet, LexicalResource lexicalResource, MetaData alignmentMeta, String resourceVersion, String dtd_version)
 	{
 		this.gnet = germaNet;
 		this.lexicalResource = lexicalResource;
+		this.alignmentMetaData = alignmentMeta;
+		
+		if (alignmentMetaData==null){
+			alignmentMetaData = InterlingualIndexConverter.getDefaultMetaData();
+		}
+		alignmentMetaData.setLexicalResource(this.lexicalResource);
+		List<MetaData> metaList = this.lexicalResource.getMetaData();
+		metaList.add(this.alignmentMetaData);
+		this.lexicalResource.setMetaData(metaList);
+		
 		this.dtd_version = dtd_version;
 		this.resourceVersion = resourceVersion;
 		try {
@@ -176,7 +191,7 @@ public class GNConverter {
 	 */
 	public void toLMF(Lexicon wordNetLexicon){
 		toLMF();
-		InterlingualIndexConverter iliConverter = new InterlingualIndexConverter(this, gnet, wordNetLexicon);
+		InterlingualIndexConverter iliConverter = new InterlingualIndexConverter(this, gnet, wordNetLexicon, alignmentMetaData);
 		iliConverter.convert();
 		lexicalResource.setSenseAxes(iliConverter.getSenseAxes());
 	}

@@ -41,6 +41,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import de.tudarmstadt.ukp.lmf.model.core.LexicalResource;
+import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
 import de.tudarmstadt.ukp.lmf.model.enums.ESenseAxisType;
@@ -81,8 +82,8 @@ import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 
 	@Before
 	public void initialize(){
-		gnConverter = new GNConverter(gnet, new LexicalResource(),"GermaNet_7.0_deu","test");
-		iliConverter = new InterlingualIndexConverter(gnConverter, gnet, wordNetLexicon);
+		gnConverter = new GNConverter(gnet, new LexicalResource(),null, "GermaNet_7.0_deu","test");
+		iliConverter = new InterlingualIndexConverter(gnConverter, gnet, wordNetLexicon, InterlingualIndexConverter.getDefaultMetaData());
 	}
 
 	/**
@@ -170,6 +171,8 @@ import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 		Synset synsetTwo = senseAxis.getSynsetTwo();
 		Sense senseOne = senseAxis.getSenseOne();
 		Sense senseTwo = senseAxis.getSenseTwo();
+		Lexicon lexiconOne = senseAxis.getLexiconOne();
+		Lexicon lexiconTwo = senseAxis.getLexiconTwo();
 
 		boolean synsetsLinked = synsetOne != null && synsetTwo != null;
 		boolean sensesLinked = senseOne != null && senseTwo != null;
@@ -184,6 +187,8 @@ import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 			sb.append("senseTwo: ").append(senseTwo).append("\n");
 			sb.append("synsetOne: ").append(synsetOne).append("\n");
 			sb.append("synsetTwo: ").append(synsetTwo).append("\n");
+			sb.append("lexiconOne: ").append(lexiconOne.getName()).append("\n");
+			sb.append("lexiconOne: ").append(lexiconTwo.getName()).append("\n");
 			sb.append("type: ").append(type).append("\n");
 			fail(sb.toString());
 		}
