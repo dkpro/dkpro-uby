@@ -18,7 +18,11 @@
  */
 package de.tudarmstadt.ukp.lmf.transform.germanet;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +35,7 @@ import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
 import de.tudarmstadt.ukp.lmf.model.enums.ESenseAxisType;
+import de.tudarmstadt.ukp.lmf.model.meta.MetaData;
 import de.tudarmstadt.ukp.lmf.model.morphology.FormRepresentation;
 import de.tudarmstadt.ukp.lmf.model.multilingual.SenseAxis;
 import de.tudarmstadt.ukp.lmf.model.semantics.MonolingualExternalRef;
@@ -55,6 +60,7 @@ public class InterlingualIndexConverter {
 	private final GermaNet gnet;
 	private final Lexicon wordNetLexicon;
 	private final List<SenseAxis> senseAxes = new ArrayList<SenseAxis>();
+	private final MetaData metaData;
 
 	// UBY-LMF synsets sorted by external reference
 	private final Map<EPartOfSpeech, Map<Long, Synset>> synsetMappings = new HashMap<EPartOfSpeech, Map<Long,Synset>>();
@@ -94,14 +100,16 @@ public class InterlingualIndexConverter {
 	 * @param gnConverter an instance of {@link GNConverter} associated with this generator
 	 *
 	 * @param gnet {@link GermaNet} instance used for accessing GermaNet data.
+	 * @param alignmentMetaData 
 	 *
 	 * @param wordNetLexicalResource {@link LexicalResource} instance containing
 	 * <a href="URL#https://wordnet.princeton.edu/wordnet/">WordNet 3.0</a>.
 	 */
-	public InterlingualIndexConverter(GNConverter gnConverter, GermaNet gnet, Lexicon wordNetLexicon) {
+	public InterlingualIndexConverter(GNConverter gnConverter, GermaNet gnet, Lexicon wordNetLexicon, MetaData alignmentMetaData) {
 		this.gnConverter = gnConverter;
 		this.gnet = gnet;
 		this.wordNetLexicon = wordNetLexicon;
+		this.metaData = alignmentMetaData;
 	}
 
 	/**
@@ -164,6 +172,9 @@ public class InterlingualIndexConverter {
 					senseAxisSynset.setSynsetTwo(wnUBYSynset);
 					senseAxisSynset.setSenseAxisType(ESenseAxisType.crosslingualSenseAlignment);
 					senseAxisSynset.setId("GN_WN_Synset_Alignment_Interlingual_Index_"+synsetAlignmentCounter++);
+					senseAxisSynset.setLexiconOne(gnConverter.getLexicalResource().getLexicons().get(0)); //available after calling toLMF?
+					senseAxisSynset.setLexiconTwo(wordNetLexicon);
+					senseAxisSynset.setMetaData(metaData);
 					senseAxes.add(senseAxisSynset);
 				 }
 
@@ -185,6 +196,10 @@ public class InterlingualIndexConverter {
 					senseAxisSense.setSenseTwo(wnUBYSense);
 					senseAxisSense.setSenseAxisType(ESenseAxisType.crosslingualSenseAlignment);
 					senseAxisSense.setId("GN_WN_Sense_Alignment_Interlingual_Index_"+senseAlignmentCounter++);
+					senseAxisSense.setLexiconOne(gnConverter.getLexicalResource().getLexicons().get(0)); //available after calling toLMF?
+					senseAxisSense.setLexiconTwo(wordNetLexicon);
+					senseAxisSense.setMetaData(metaData);
+
 					senseAxes.add(senseAxisSense);
 				}
 
@@ -284,6 +299,30 @@ public class InterlingualIndexConverter {
 	 */
 	public List<SenseAxis> getSenseAxes(){
 		return this.senseAxes;
+	}
+
+	//TODO fill in data
+	public static MetaData getDefaultMetaData() {
+		/*
+		 * Generate Metadata
+		 */
+		MetaData m = new MetaData();
+		m.setAutomatic(false);
+		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date creationDate;
+		try {
+			creationDate = formatter.parse("2014-04-01");
+			m.setCreationDate(creationDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		m.setCreationProcess("semi-automatic");
+		m.setCreationTool("http://www.sfs.uni-tuebingen.de/GermaNet/ili.shtml");
+		m.setVersion("GN 9.0");
+		m.setId("GNWN_ILI_0");//TODO
+		return m;
 	}
 
 }
