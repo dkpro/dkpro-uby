@@ -62,7 +62,7 @@ import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 public class VnFnSenseAlignmentXml extends SenseAlignmentXml {
     private final Log logger = LogFactory.getLog(VnFnSenseAlignmentXml.class);
     
-	private Uby ubySource;
+	private Uby uby;
 	private String lexiconName = "VerbNet";
 
 	public int inputsize = 0;
@@ -73,7 +73,7 @@ public class VnFnSenseAlignmentXml extends SenseAlignmentXml {
 			DBConfig dbConfig) throws FileNotFoundException {
 		super(alignmentFile, outFile);
 		// notAdded = new ArrayList<String>();
-		ubySource = new Uby(dbConfig);
+		uby = new Uby(dbConfig);
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class VnFnSenseAlignmentXml extends SenseAlignmentXml {
 	@Override
     public void toAlignmentXml(XmlMeta metadata) throws IOException {
 
-		Lexicon vn = ubySource.getLexiconByName(lexiconName);
+		Lexicon vn = uby.getLexiconByName(lexiconName);
 		TreeMap<String, Source> sourceMap = new TreeMap<>();
 
 		int noSource = 0;
@@ -114,7 +114,7 @@ public class VnFnSenseAlignmentXml extends SenseAlignmentXml {
 					// add output here
 					output.add(luId + "\t" + vnLemma + "\t" + vnClass + "\n");
 
-					List<LexicalEntry> vnentries = ubySource.getLexicalEntries(
+					List<LexicalEntry> vnentries = uby.getLexicalEntries(
 							vnLemma, EPartOfSpeech.verb, vn);
 					if (vnentries.size() > 0) {
 						for (LexicalEntry e : vnentries) {
@@ -122,7 +122,7 @@ public class VnFnSenseAlignmentXml extends SenseAlignmentXml {
 							for (Sense vns : vnSenses) {
 								String senseId = vns.getId();
 								// filter by VN-class
-								List<SemanticLabel> labels = ubySource
+								List<SemanticLabel> labels = uby
 										.getSemanticLabelsbySenseIdbyType(
 												senseId,
 												ELabelTypeSemantics.verbnetClass
@@ -234,7 +234,7 @@ public class VnFnSenseAlignmentXml extends SenseAlignmentXml {
 		String alignmentFile = UBY_HOME + "SemLink/1.2.2c/vn-fn/VNC-FNF.s";
 		String outFile = UBY_HOME
 				+ "/target/verbNetFrameNetAlignment22c_newXml.xml";
-		DBConfig dbConfig = new DBConfig("localhost/uby_clarin_0_7_0",
+		DBConfig dbConfig = new DBConfig("localhost/uby_clarin_0_7_0w",
 				"com.mysql.jdbc.Driver", "mysql", "root", "pass", false);
 		VnFnSenseAlignmentXml al = new VnFnSenseAlignmentXml(alignmentFile,
 				outFile, dbConfig);
