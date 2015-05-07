@@ -56,10 +56,10 @@
         <module>de.tudarmstadt.ukp.uby.doc-asl</module>
     </modules>
     <scm>
-        <connection>http://uby.googlecode.com/svn/de.tudarmstadt.ukp.uby/trunk/</connection>
-        <developerConnection>scm:svn:https://uby.googlecode.com/svn/de.tudarmstadt.ukp.uby/trunk/</developerConnection>
-        <url>http://code.google.com/p/uby/source/browse/de.tudarmstadt.ukp.uby/trunk</url>
-    </scm>
+  		<connection>scm:git:git://github.com/dkpro/dkpro-uby</connection>
+  		<developerConnection>scm:git:git@github.com:dkpro/dkpro-uby.git</developerConnection>
+  		<url>https://github.com/dkpro/dkpro-uby</url>
+	</scm> 
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -373,9 +373,10 @@
         </profile>
     </profiles>
     <issueManagement>
-        <system>GoogleCode</system>
-        <url>http://code.google.com/p/uby/issues/list</url>
+        <system>GitHub Issues</system>
+        <url>https://github.com/dkpro/dkpro-uby/issues</url>
     </issueManagement>
+    
     <inceptionYear>2012</inceptionYear>
 
     <build>
