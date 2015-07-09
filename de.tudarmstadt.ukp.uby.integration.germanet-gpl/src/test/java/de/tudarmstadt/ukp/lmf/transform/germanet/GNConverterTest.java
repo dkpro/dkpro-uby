@@ -69,7 +69,7 @@ import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 	 * Invokes {@link GNConverter#toLMF()} method.
 	 * @throws IOException
 	 * @throws XMLStreamException
-	 * @throws JWNLException
+	 * @throws IOException
 	 * @throws FileNotFoundException
 	 *
 	 * @since 0.2.0

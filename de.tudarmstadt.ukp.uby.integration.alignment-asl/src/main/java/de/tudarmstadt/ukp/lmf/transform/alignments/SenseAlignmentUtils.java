@@ -30,13 +30,13 @@ import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 public class SenseAlignmentUtils
 {
 
-	private DBConfig source;
-	private DBConfig dest;	
-	private int typeSource;
-	private int typeDest;
-	private MySQLDirectQueries sourceConnection;
-	private MySQLDirectQueries destConnection;
-	private String tempTable1, tempTable2;
+	private final DBConfig source;
+	private final DBConfig dest;
+	private final int typeSource;
+	private final int typeDest;
+	private final MySQLDirectQueries sourceConnection;
+	private final MySQLDirectQueries destConnection;
+	private final String tempTable1, tempTable2;
 
 	/**
 	 *
@@ -66,7 +66,7 @@ public class SenseAlignmentUtils
 
 		this.tempTable1 = tempTableSource;
 		this.tempTable2 = tempTableDest;
-		
+
 		this.source = source;
 		this.dest = dest;
 
@@ -86,7 +86,7 @@ public class SenseAlignmentUtils
 		// create temp table
 		String sql1 = null;
 		String sql2 = null;
-		
+
 		switch (source.getDBType()) {
 		case DBConfig.H2:
 			sql1 = "CREATE TEMPORARY TABLE "
@@ -113,7 +113,7 @@ public class SenseAlignmentUtils
 							: "") + "externalReference varchar(255) CHARACTER SET utf8)";
 			break;
 		}
-		
+
 		sourceConnection.executeUpdateQuery(sql1);
 		destConnection.executeUpdateQuery(sql2);
 
@@ -199,39 +199,39 @@ public class SenseAlignmentUtils
 		List<String> returnList = null;
 		String sql = "";
 		ResultSet rs = null;
-		
+
 		switch (DB) {
-		case 0:			
+		case 0:
 			switch (source.getDBType()) {
 			case DBConfig.H2:
 				sql = "SELECT senseId, writtenForm, externalReference " +
 				"FROM " + tempTable1 + " WHERE externalReference='" + refId + "' AND writtenForm='"+ wnLemma+ "'";
 				rs = sourceConnection.doQuery(sql);
-				break;			
+				break;
 			case DBConfig.MYSQL:
 				sql = "SELECT senseId, writtenForm, externalReference " +
 						"FROM " + tempTable1 + " WHERE externalReference=\"" + refId + "\" AND writtenForm=\""+ wnLemma+ "\"";
 				rs = sourceConnection.doQuery(sql);
 				break;
-			} 					
+			}
 			break;
-		case 1:			
+		case 1:
 			switch (source.getDBType()) {
-			case DBConfig.H2:			
+			case DBConfig.H2:
 				sql = "SELECT senseId, writtenForm, externalReference " +
 				"FROM " + tempTable1 + " WHERE externalReference='" + refId + "' AND writtenForm='"+ wnLemma+ "'";
 				rs = destConnection.doQuery(sql);
-				break;			
+				break;
 			case DBConfig.MYSQL:
 				sql = "SELECT senseId, writtenForm, externalReference " +
 					"FROM " + tempTable1 + " WHERE externalReference=\"" + refId + "\" AND writtenForm=\""+ wnLemma+ "\"";
 				rs = destConnection.doQuery(sql);
 				break;
-			} 									
+			}
 			break;
 		}
-		
-		
+
+
 		if (rs != null) {
 			returnList = new ArrayList<String>();
 			while (rs.next()) {
@@ -247,7 +247,7 @@ public class SenseAlignmentUtils
 	 *            : externalReference value
 	 * @param DB
 	 *            : O if source, 1 if dest RESOURCE
-	 * @return
+	 * @return list of senses by external reference ID
 	 * @throws SQLException
 	 */
 
@@ -265,16 +265,16 @@ public class SenseAlignmentUtils
 						+ ((usingSynsetId == true) ? ",synsetId" : " ") + " from "
 						+ tempTable1 + " where externalReference='" + referenceID
 						+ "'";
-				rs = sourceConnection.doQuery(sql);				
-				break;			
-			case DBConfig.MYSQL:				
+				rs = sourceConnection.doQuery(sql);
+				break;
+			case DBConfig.MYSQL:
 				sql = "Select senseId, externalReference "
 						+ ((usingSynsetId == true) ? ",synsetId" : " ") + " from "
 						+ tempTable1 + " where externalReference=\"" + referenceID
-						+ "\"";				
+						+ "\"";
 				rs = sourceConnection.doQuery(sql);
 				break;
-			} 					
+			}
 			break;
 		case 1:
 			switch (source.getDBType()) {
@@ -284,15 +284,15 @@ public class SenseAlignmentUtils
 						+ tempTable2 + " where externalReference='" + referenceID
 						+ "'";
 				rs = destConnection.doQuery(sql);
-				break;			
-			case DBConfig.MYSQL:				
+				break;
+			case DBConfig.MYSQL:
 				sql = "Select senseId, externalReference "
 						+ ((usingSynsetId == true) ? ",synsetId" : " ") + " from "
 						+ tempTable2 + " where externalReference=\"" + referenceID
-						+ "\"";				
+						+ "\"";
 				rs = destConnection.doQuery(sql);
 				break;
-			}		
+			}
 			break;
 		}
 

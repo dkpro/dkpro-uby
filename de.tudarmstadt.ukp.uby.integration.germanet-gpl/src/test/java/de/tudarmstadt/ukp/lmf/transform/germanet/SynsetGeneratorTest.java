@@ -55,7 +55,6 @@ private static SynsetGenerator synsetGenerator;
 
 	/**
 	 * Creates a {@link SynsetGenerator} instance.
-	 * @throws JWNLException
 	 * @throws IOException
 	 * @throws XMLStreamException
 	 * @throws FileNotFoundException

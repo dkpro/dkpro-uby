@@ -57,7 +57,6 @@ import de.tuebingen.uni.sfs.germanet.api.LexUnit;
 
 	/**
 	 * Creates a {@link SenseGenerator} instance.
-	 * @throws JWNLException
 	 * @throws IOException
 	 * @throws XMLStreamException
 	 * @throws FileNotFoundException

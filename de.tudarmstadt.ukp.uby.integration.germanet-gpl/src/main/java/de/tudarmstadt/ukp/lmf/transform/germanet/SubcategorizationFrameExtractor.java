@@ -82,7 +82,6 @@ public class SubcategorizationFrameExtractor {
 	/**
 	 * Constructs a {@link SubcategorizationFrameExtractor}
 	 * @param subcatStream stream of the File containing the SubcategorizationFrame-mappings
-	 * @return subcategorization-frame extractor based on the consumed subcatStream
 	 */
 	public SubcategorizationFrameExtractor(InputStream subcatStream){
 		this.subcatStream = subcatStream;

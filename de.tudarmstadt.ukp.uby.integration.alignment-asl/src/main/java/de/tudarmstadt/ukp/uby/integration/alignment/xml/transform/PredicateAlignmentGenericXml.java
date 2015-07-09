@@ -61,7 +61,7 @@ public class PredicateAlignmentGenericXml extends AlignmentGenericXml {
 	public static String axisType = "uby_predicate_axis";
 	public static String subAxisType = "uby_argument_axis";
 
-	private TreeMap<String, PredicateArgumentAxis> axisMap;
+	private final TreeMap<String, PredicateArgumentAxis> axisMap;
 
 	/*
 	 * protected final static Log logger = LogFactory
@@ -107,11 +107,12 @@ public class PredicateAlignmentGenericXml extends AlignmentGenericXml {
 
 	/**
 	 * Convert generic alignment xml format to LMF
-	 * 
+	 *
 	 * @param idPrefix
 	 * @throws ParseException
 	 */
-	public void getAlignment(String idPrefix) throws ParseException {
+	@Override
+    public void getAlignment(String idPrefix) throws ParseException {
 
 		String subIdPrefix = idPrefix + "_arg_";
 		logger.info("looking up alignment");
@@ -245,7 +246,7 @@ public class PredicateAlignmentGenericXml extends AlignmentGenericXml {
 	/**
 	 * Get {@link List} of {@link SemanticPredicate} for given lexicon, id and
 	 * type of id
-	 * 
+	 *
 	 * @param type
 	 * @param ref
 	 * @param lexicon
@@ -270,7 +271,7 @@ public class PredicateAlignmentGenericXml extends AlignmentGenericXml {
 	/**
 	 * Get {@link List} of {@link SemanticArgument} for given lexicon, id and
 	 * type of id
-	 * 
+	 *
 	 * @param type
 	 * @param ref
 	 * @param predicate
@@ -294,17 +295,15 @@ public class PredicateAlignmentGenericXml extends AlignmentGenericXml {
 
 	/**
 	 * Write alignments to UBY LMF xml
-	 * 
+	 *
 	 * @param idPrefix
-	 * @param crosslingual
-	 * @param usingSynsetAxis
 	 * @param dtdVersion
-	 * @param UBY_HOME
 	 * @throws IOException
 	 * @throws TransformerException
 	 * @throws SAXException
 	 */
-	public void toLMF(String idPrefix, String dtdVersion, String outfile)
+	@Override
+    public void toLMF(String idPrefix, String dtdVersion, String outfile)
 			throws IOException, TransformerException, SAXException {
 		LMFXmlWriter xmlWriter = new LMFXmlWriter(outfile, UBY_HOME
 				+ "/resources/dtd/DTD_unifiedModel_" + dtdVersion + ".dtd");
@@ -335,7 +334,7 @@ public class PredicateAlignmentGenericXml extends AlignmentGenericXml {
 
 	/**
 	 * Read UBY LMF XML to database
-	 * 
+	 *
 	 * @param dbConfig
 	 * @param xmlSource
 	 * @param idPrefix

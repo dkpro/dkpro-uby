@@ -17,19 +17,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package de.tudarmstadt.ukp.lmf.transform.germanet;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.dom4j.DocumentException;
-import org.xml.sax.SAXException;
 
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.Lexicon;
@@ -94,11 +90,6 @@ public class LexicalEntryGenerator {
 	 * consumed {@link Set} of LexicalUnits
 	 * @param luGroup a group of LexUnits from which a LexicalEntry should be created
 	 * @return LexicalEntry based on consumed group of LexUnits
-	 * @throws DocumentException
-	 * @throws ParserConfigurationException
-	 * @throws IOException
-	 * @throws SAXException
-	 * @see {@link LexUnit}
 	 */
 	public LexicalEntry createLexicalEntry(Set<LexUnit> luGroup){
 

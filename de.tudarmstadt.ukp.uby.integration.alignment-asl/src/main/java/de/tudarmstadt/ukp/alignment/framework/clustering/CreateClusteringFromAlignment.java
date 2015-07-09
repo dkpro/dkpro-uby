@@ -223,9 +223,6 @@ public class CreateClusteringFromAlignment
      *            The alignment file
      * @param extRef
      *            Is the alignment file given in external References or UBY ids?
-     * @throws ClassNotFoundException
-     * @throws SQLException
-     * @throws IOException
      */
 
     public static void splitSynsetsToSenses(OneResourceBuilder bg_1,
@@ -471,9 +468,6 @@ public class CreateClusteringFromAlignment
      *
      * @param input_file
      *            the clustering
-     * @throws ClassNotFoundException
-     * @throws SQLException
-     * @throws IOException
      */
     public static void checkForDupesInSameCluster(String input_file)
     {

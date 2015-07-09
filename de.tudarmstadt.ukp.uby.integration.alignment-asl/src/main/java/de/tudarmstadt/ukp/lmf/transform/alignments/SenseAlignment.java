@@ -58,12 +58,12 @@ abstract public class SenseAlignment
 	private final List<Sense> destinationsSenses;
 
 	protected Uby ubySource, ubyDest;
-	
+
 	protected HashMap<String, MetaData> metaData;
 
 	protected List<String> metaDataIds;
 	protected List<Double> confidences;
-	
+
 	public SenseAlignment(String sourceUrl, String destUrl, String alignmentFile)
 	{
 		this.sourceUrl = sourceUrl;
@@ -90,7 +90,7 @@ abstract public class SenseAlignment
 		metaData = new HashMap<String, MetaData>();
 		confidences = new ArrayList<Double>();
 		metaDataIds = new ArrayList<String>();
-		
+
 		DBConfig dbConfigSource = new DBConfig(
 				sourceUrl,dbDriver,dbVendor, user,
 				pass, false);
@@ -110,7 +110,7 @@ abstract public class SenseAlignment
 			ubyDest = ubySource;
 		}
 	}
-	
+
 	 public SenseAlignment(String sourceUrl, String destUrl,
 			 String dbDriver, String dbVendor, String alignmentFile, String user, String pass, String UBY_HOME)
 	 {
@@ -125,7 +125,7 @@ abstract public class SenseAlignment
 		metaData = new HashMap<String, MetaData>();
 		confidences = new ArrayList<Double>();
 		metaDataIds = new ArrayList<String>();
-		
+
 		if (!alignment.exists() && !alignment.isFile()) {
 			System.out.println("Alignment file: " + alignmentFile + " doesn't exist! ");
 			System.exit(1);
@@ -207,11 +207,11 @@ abstract public class SenseAlignment
 
 	/**
 	 * depending on each alignment file format.
-	 * @throws UbyInvalidArgumentException
+	 * @throws IllegalArgumentException
 	 */
 	abstract public void getAlignment() throws IllegalArgumentException;
 
-	
+
 	/**
 	 * Adds MetaData id and confidence to the current alignment
 	 * If one of attributes is not available set it to null.
@@ -222,30 +222,31 @@ abstract public class SenseAlignment
 		metaDataIds.add(metaDataId);
 		confidences.add(confidence);
 	}
-	
+
 	/**
 	 * Parses MetaData at the beginning of an alignment file.
 	 * Requires blocks with '::MetaData'- and '::Alignments'-headers in the alignment file.
 	 * If '::MetaData'-block is not found, returns BufferedReader pointing at the beginning of the file
 	 * @return BufferedReader pointing at the start of '::Alignments'-block
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	protected BufferedReader parseMetaData() throws IOException{
-		
+
 		BufferedReader reader = new BufferedReader(
 				new FileReader(getAlignmentFileLocation()));
-		
+
 		String line = reader.readLine();
 		if(line == null || !line.equals("::MetaData")){
 			reader.close();
 			return new BufferedReader(
 					new FileReader(getAlignmentFileLocation()));
 		}
-		
+
 		while ((line = reader.readLine()) != null) {
-			if(line.equals("::Alignments"))
-				break;
-			
+			if(line.equals("::Alignments")) {
+                break;
+            }
+
 			String[] lineParts = line.split("#");
 			MetaData meta = new MetaData();
 			if(lineParts.length == 6){
@@ -271,7 +272,7 @@ abstract public class SenseAlignment
 	 * @param UBY_HOME
 	 * @throws TransformerException
 	 * @throws IOException
-	 * @throws SAXException 
+	 * @throws SAXException
 	 */
 	public void toLMF(String idPrefix, boolean crosslingual, String dtdVersion,String UBY_HOME) throws IOException, TransformerException, SAXException
 	{
@@ -279,15 +280,15 @@ abstract public class SenseAlignment
 	}
 
 	/**
-	 * 
+	 *
 	 * @param idPrefix
 	 * @param crosslingual
-	 * @param usingSynsetAxis
+	 * @param usingSynsetAttribute
 	 * @param dtdVersion
 	 * @param UBY_HOME
 	 * @throws IOException
 	 * @throws TransformerException
-	 * @throws SAXException 
+	 * @throws SAXException
 	 */
 	public void toLMF(String idPrefix, boolean crosslingual, boolean usingSynsetAttribute,String dtdVersion,String UBY_HOME) throws IOException, TransformerException, SAXException
 	{
@@ -323,8 +324,8 @@ abstract public class SenseAlignment
 				senseAxis.setSynsetTwo(destinationsSenses.get(i).getSynset());
 			}
 			senseAxis.setId(idPrefix+"_"+i);
-			
-			
+
+
 			if(metaDataNotEmpty){
 				String metaDataId = metaDataIds.get(i);
 				if(metaDataId != null){
@@ -333,7 +334,7 @@ abstract public class SenseAlignment
 				}
 				senseAxis.setConfidence(confidences.get(i));
 			}
-			
+
 			senseAxes.add(senseAxis);
 			System.out.println(senseAxes.size());
 			//save them to database

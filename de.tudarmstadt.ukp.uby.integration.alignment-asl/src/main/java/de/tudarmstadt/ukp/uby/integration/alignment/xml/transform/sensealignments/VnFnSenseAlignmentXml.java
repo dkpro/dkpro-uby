@@ -29,7 +29,6 @@ import java.util.TreeMap;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLStreamException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -61,9 +60,9 @@ import de.tudarmstadt.ukp.lmf.transform.DBConfig;
  */
 public class VnFnSenseAlignmentXml extends SenseAlignmentXml {
     private final Log logger = LogFactory.getLog(VnFnSenseAlignmentXml.class);
-    
-	private Uby uby;
-	private String lexiconName = "VerbNet";
+
+	private final Uby uby;
+	private final String lexiconName = "VerbNet";
 
 	public int inputsize = 0;
 
@@ -77,11 +76,7 @@ public class VnFnSenseAlignmentXml extends SenseAlignmentXml {
 	}
 
 	/**
-	 * @param inFile
-	 * @param outFile
-	 * @throws XMLStreamException
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
+	 * @param metadata
 	 * @throws IOException
 	 */
 	@Override
@@ -162,19 +157,19 @@ public class VnFnSenseAlignmentXml extends SenseAlignmentXml {
 											source.targets.add(target);
 										}
 										count++;
-										sourceMap.put(source.ref, source); 
+										sourceMap.put(source.ref, source);
 									}
 								}
 							}
 						}
-					} 
+					}
 				}
 				lines++;
 			}
 		} catch (IOException | ParserConfigurationException | SAXException e) {
 			throw new IOException(e);
 		}
-		logString.append("Converted " + alignmentFile + ", statistics:" + LF); 
+		logString.append("Converted " + alignmentFile + ", statistics:" + LF);
 		logString.append("\tInput Lines: " + lines +LF);
 		logString.append("\tOutput: " + output.size()+LF);
 		logString.append("\tNo alignment target: " + noSource + LF);

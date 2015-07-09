@@ -49,19 +49,19 @@ import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 import de.tudarmstadt.ukp.lmf.transform.LMFXmlWriter;
 
 /**
- * Create uby lexical resource containing sense axes 
+ * Create uby lexical resource containing sense axes
  * directly from generic alignment xml file
  * Replaces SenseAlignment and children of SenseAlignment
  */
 public class SenseAlignmentGenericXml extends AlignmentGenericXml {
 
-	private TreeMap<String, SenseAxis> senseAxisMap;
+	private final TreeMap<String, SenseAxis> senseAxisMap;
 
 	/*
 	protected final static Log logger = LogFactory
 			.getLog(SenseAlignmentGenericXml.class);
 	*/
-	
+
 	public SenseAlignmentGenericXml(String sourceUrl, String dbDriver,
 			String dbVendor, String alignmentFile, String user, String pass) {
 		super(sourceUrl, dbDriver, dbVendor, alignmentFile, user, pass);
@@ -72,14 +72,15 @@ public class SenseAlignmentGenericXml extends AlignmentGenericXml {
 		super(dbconf,alignmentFile);
 		senseAxisMap = new TreeMap<>();
 	}
-	
+
 	/**
 	 * Convert sense alignment in generic alignment xml format to LMF
-	 * 
+	 *
 	 * @param idPrefix
 	 * @throws ParseException
 	 */
-	public void getAlignment(String idPrefix) throws ParseException {
+	@Override
+    public void getAlignment(String idPrefix) throws ParseException {
 
 		logger.info("looking up alignment");
 		// expect single decisiontype
@@ -103,7 +104,7 @@ public class SenseAlignmentGenericXml extends AlignmentGenericXml {
 		meta.setId(metadata.identifier);
 		meta.setVersion(metadata.version);
 
-		meta.setAutomatic(decisiontype.type == Decisiontype.Decision.AUTOMATIC); 
+		meta.setAutomatic(decisiontype.type == Decisiontype.Decision.AUTOMATIC);
 		meta.setCreationProcess(decisiontype.id);
 		meta.setCreationTool(metadata.description);
 		lmfMetaData.add(meta);
@@ -178,17 +179,15 @@ public class SenseAlignmentGenericXml extends AlignmentGenericXml {
 
 	/**
 	 * Write sense alignments to UBY LMF xml
-	 * 
+	 *
 	 * @param idPrefix
-	 * @param crosslingual
-	 * @param usingSynsetAxis
 	 * @param dtdVersion
-	 * @param UBY_HOME
 	 * @throws IOException
 	 * @throws TransformerException
 	 * @throws SAXException
 	 */
-	public void toLMF(String idPrefix, String dtdVersion, String outfile)
+	@Override
+    public void toLMF(String idPrefix, String dtdVersion, String outfile)
 			throws IOException, TransformerException, SAXException {
 		LMFXmlWriter xmlWriter = new LMFXmlWriter(outfile, UBY_HOME
 				+ "/resources/dtd/DTD_unifiedModel_" + dtdVersion + ".dtd");
@@ -219,7 +218,7 @@ public class SenseAlignmentGenericXml extends AlignmentGenericXml {
 
 	/**
 	 * Read UBY LMF XML to database
-	 * 
+	 *
 	 * @param dbConfig
 	 * @param xmlSource
 	 * @param idPrefix

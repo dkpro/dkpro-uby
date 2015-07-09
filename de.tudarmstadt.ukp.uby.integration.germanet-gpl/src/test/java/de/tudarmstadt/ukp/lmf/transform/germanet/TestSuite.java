@@ -65,7 +65,6 @@ public class TestSuite {
 	 * @throws IOException
 	 * @throws XMLStreamException
 	 * @throws FileNotFoundException
-	 * @throws JWNLException
 	 *
 	 * @since UBY 0.2.0
 	 */

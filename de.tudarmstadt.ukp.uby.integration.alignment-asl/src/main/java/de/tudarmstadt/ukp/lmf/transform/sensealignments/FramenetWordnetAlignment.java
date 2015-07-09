@@ -42,9 +42,9 @@ import de.tudarmstadt.ukp.lmf.transform.alignments.SenseAlignmentUtils;
 /**
  * Convert the FrameNet-WordNet alignments to UBY format. This class takes the
  * FrameNet 1.5 and WordNet 3.0 ids from a file and integrates them to UBY
- * 
+ *
  * @author Silvana Hartmann
- * 
+ *
  */
 public class FramenetWordnetAlignment extends SenseAlignment {
 
@@ -60,7 +60,7 @@ public class FramenetWordnetAlignment extends SenseAlignment {
 	DBConfig tempsource;
 
 	/**
-	 * 
+	 *
 	 * @param sourceUrl
 	 * @param destUrl
 	 * @param alignmentFile
@@ -93,8 +93,8 @@ public class FramenetWordnetAlignment extends SenseAlignment {
 	/**
 	 * Collect UBY SenseIds for the aligned senses based on synsetId and lemma
 	 * for WordNet and based on lexical unit id for FrameNet
-	 * 
-	 * @throws UbyInvalidArgumentException
+	 *
+	 * @throws IllegalArgumentException
 	 */
 	@Override
 	public void getAlignment()
@@ -188,7 +188,7 @@ public class FramenetWordnetAlignment extends SenseAlignment {
 	/**
 	 * Read alignment file in standard format, e.g.: fn_luId, wn_synset ID,
 	 * wn_lemma, fn_lemma
-	 * 
+	 *
 	 * @return
 	 * @throws IOException
 	 */
@@ -217,7 +217,7 @@ public class FramenetWordnetAlignment extends SenseAlignment {
 
 	/**
 	 * Write output lines to given file
-	 * 
+	 *
 	 * @param outFile
 	 * @param lines
 	 * @throws IOException

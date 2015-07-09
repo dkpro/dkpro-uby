@@ -74,7 +74,7 @@ public class GNConverter {
 	private final String resourceVersion;
 
 	private MetaData alignmentMetaData;
-	
+
 	/**
 	 * Constructs a {@link GNConverter} based on the consumed parameters
 	 * @param germaNet initialized {@link GermaNet} object
@@ -88,7 +88,7 @@ public class GNConverter {
 		this.gnet = germaNet;
 		this.lexicalResource = lexicalResource;
 		this.alignmentMetaData = alignmentMeta;
-		
+
 		if (alignmentMetaData==null){
 			alignmentMetaData = InterlingualIndexConverter.getDefaultMetaData();
 		}
@@ -96,7 +96,7 @@ public class GNConverter {
 		List<MetaData> metaList = this.lexicalResource.getMetaData();
 		metaList.add(this.alignmentMetaData);
 		this.lexicalResource.setMetaData(metaList);
-		
+
 		this.dtd_version = dtd_version;
 		this.resourceVersion = resourceVersion;
 		try {
@@ -187,7 +187,7 @@ public class GNConverter {
 
 	/**
 	 *
-	 * @param wordNetLexicalResource
+	 * @param wordNetLexicon
 	 */
 	public void toLMF(Lexicon wordNetLexicon){
 		toLMF();
@@ -206,7 +206,7 @@ public class GNConverter {
         }
 		for (WordCategory pos : WordCategory.values()) {
 			List<LexUnit> lus = gnet.getLexUnits(pos);
-			Map<String, Set<LexUnit>> orthFormLUGroupMappings = 
+			Map<String, Set<LexUnit>> orthFormLUGroupMappings =
 					new TreeMap<String, Set<LexUnit>>();
 			for (LexUnit lu : lus) {
 				String orthForm = lu.getOrthForm();

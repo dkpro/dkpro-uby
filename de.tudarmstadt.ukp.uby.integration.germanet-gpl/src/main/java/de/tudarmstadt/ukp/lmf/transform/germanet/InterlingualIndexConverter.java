@@ -100,9 +100,9 @@ public class InterlingualIndexConverter {
 	 * @param gnConverter an instance of {@link GNConverter} associated with this generator
 	 *
 	 * @param gnet {@link GermaNet} instance used for accessing GermaNet data.
-	 * @param alignmentMetaData 
+	 * @param alignmentMetaData
 	 *
-	 * @param wordNetLexicalResource {@link LexicalResource} instance containing
+	 * @param wordNetLexicon {@link LexicalResource} instance containing
 	 * <a href="URL#https://wordnet.princeton.edu/wordnet/">WordNet 3.0</a>.
 	 */
 	public InterlingualIndexConverter(GNConverter gnConverter, GermaNet gnet, Lexicon wordNetLexicon, MetaData alignmentMetaData) {
@@ -317,7 +317,7 @@ public class InterlingualIndexConverter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		m.setCreationProcess("semi-automatic");
 		m.setCreationTool("http://www.sfs.uni-tuebingen.de/GermaNet/ili.shtml");
 		m.setVersion("GN 9.0");

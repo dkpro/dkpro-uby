@@ -31,9 +31,6 @@ import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Random;
 
-import de.tudarmstadt.ukp.alignment.framework.Global;
-import de.tudarmstadt.ukp.alignment.framework.graph.OneResourceBuilder;
-import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.BayesNet;
@@ -42,9 +39,12 @@ import weka.core.Instances;
 import weka.core.SerializationHelper;
 import weka.core.converters.ConverterUtils.DataSource;
 import weka.filters.unsupervised.attribute.Remove;
+import de.tudarmstadt.ukp.alignment.framework.Global;
+import de.tudarmstadt.ukp.alignment.framework.graph.OneResourceBuilder;
+import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 
 public class WekaMachineLearning {
-	
+
 	public static void main(String[] args)
 	{
 		/* GLOBAL SETTINGS */
@@ -53,7 +53,7 @@ public class WekaMachineLearning {
 		final String language = ELanguageIdentifier.ENGLISH;
 		try
 		{
-			
+
 				/*RESOURCE 1*/
 
 				boolean synset1 = true;
@@ -64,12 +64,12 @@ public class WekaMachineLearning {
 				/*RESOURCE 2*/
 				boolean synset2 = true;
 				boolean usePos2 = true;
-				
+
 				final int prefix2 = Global.OW_EN_Synset_prefix;
 				OneResourceBuilder bg_2 = new OneResourceBuilder("uby_release_1_0","root","fortuna", prefix2,language,synset2,usePos2);
 
 //	Global.processExtRefGoldstandardFile(bg_1,bg_2,"target/WN_OW_alignment_gold_standard.csv",true);
-		
+
 //	createArffFile("target/ijcnlp2011-meyer-dataset_graph.csv","target/WN_WKT_dwsa_cos_gs.arff", "target/WN_synset_Pos_relationMLgraph_1000_MERGED_WktEn_sense_Pos_relationMLgraph_2000_trivial_result.txt","target/WN_WktEn_glossSimilarities_tagged_tfidf.txt");
 //	createModelFromGoldstandard("target/WN_WKT_dwsa_cos_gs.arff", "target/WN_WKT_dwsa_cos_model", true);
 //	applyModelToUnlabeledArff("target/WN_OW_dwsa_cos_unlabeled_full.arff", "target/WN_OW_dwsa_cos_model", "target/WN_OW_dwsa_cos_labeled_full.arff");
@@ -81,12 +81,12 @@ public class WekaMachineLearning {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 *  This method creates an arff file (readable by WEKA) from the earlier produced distance/similarity files
-	 *  
-	 * 
-	 * 
+	 *
+	 *
+	 *
 	 * @param goldstandard if not null, this is used as a filter, i.e. only instances present in the gold standard are written to the output
 	 * @param output The output file
 	 * @param filenames the (variable number of) files which hold similarities, DWSA distances and so on, as created by the other methods of this framework
@@ -102,7 +102,7 @@ public class WekaMachineLearning {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 		StringBuilder arffFile = new StringBuilder();
 		String[] attNames = filenames;
 		arffFile.append("@RELATION "+output+Global.LF+Global.LF);
@@ -112,9 +112,9 @@ public class WekaMachineLearning {
 			arffFile.append("@ATTRIBUTE "+attribute+" NUMERIC"+Global.LF);
 		}
 		arffFile.append("@ATTRIBUTE class {0,1}"+Global.LF+Global.LF+"@DATA"+Global.LF);
-		
-		HashMap<String, String[]> entities = new HashMap<String, String[]>(); 
-		HashMap<String, String> classes = new HashMap<String, String>();  
+
+		HashMap<String, String[]> entities = new HashMap<String, String[]>();
+		HashMap<String, String> classes = new HashMap<String, String>();
 		int filecount = 0;
 		for(String file : filenames)
 		{
@@ -125,8 +125,9 @@ public class WekaMachineLearning {
 				String line;
 				while ((line = input.readLine())!=null)
 				{
-					if(line.startsWith("f"))
-						continue;
+					if(line.startsWith("f")) {
+                        continue;
+                    }
 					String ids = line.split("\t")[0]+"###"+line.split("\t")[1];
 					System.out.println(ids);
 					String value = line.split("\t")[2];
@@ -149,7 +150,7 @@ public class WekaMachineLearning {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
+
 		}
 		if(goldstandard != null)
 		{
@@ -160,14 +161,15 @@ public class WekaMachineLearning {
 				String line;
 				while ((line = input.readLine())!=null)
 				{
-					if(line.startsWith("f"))
-						continue;
+					if(line.startsWith("f")) {
+                        continue;
+                    }
 					String ids = line.split("\t")[0]+"###"+line.split("\t")[1];
-					
+
 					String value = line.split("\t")[2];
-					
+
 					classes.put(ids, value);
-								
+
 				}
 				input.close();
 				filecount++;
@@ -177,7 +179,7 @@ public class WekaMachineLearning {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
+
 		}
 		for(String key : entities.keySet())
 		{
@@ -202,29 +204,30 @@ public class WekaMachineLearning {
 			}
 		p.println(arffFile);
 	}
-		
+
 	/**
-	 * 
+	 *
 	 * This method creates a serialized WEKA model file from an .arff file containing the annotated gold standard
-	 * 
-	 * 
+	 *
+	 *
 	 * @param gs_arff the annotated gold standard in an .arff file
 	 * @param model output file for the model
-	 * @param output_eval if true, the evaluation of the trained classifier is printed (10-fold cross validation) 
+	 * @param output_eval if true, the evaluation of the trained classifier is printed (10-fold cross validation)
 	 * @throws Exception
 	 */
-	
+
 	public static void createModelFromGoldstandard(String gs_arff, String model, boolean output_eval) throws Exception
 	{
 		 DataSource source = new DataSource(gs_arff);
 		 Instances data = source.getDataSet();
-		 if (data.classIndex() == -1)
-		   data.setClassIndex(data.numAttributes() - 1);
-		 
+		 if (data.classIndex() == -1) {
+            data.setClassIndex(data.numAttributes() - 1);
+        }
+
 		 Remove rm = new Remove();
 		 rm.setAttributeIndices("1");  // remove ID  attribute
-		
-		 BayesNet bn = new BayesNet();	 //Standard classifier; BNs proved most robust, but of course other classifiers are possible	  
+
+		 BayesNet bn = new BayesNet();	 //Standard classifier; BNs proved most robust, but of course other classifiers are possible
 		 // meta-classifier
 		 FilteredClassifier fc = new FilteredClassifier();
 		 fc.setFilter(rm);
@@ -239,37 +242,38 @@ public class WekaMachineLearning {
 			 System.out.println(eval.toMatrixString());
 			 System.out.println(eval.toClassDetailsString());
 		 }
-		 		
+
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * This method applies a serialized WEKA model file to an unlabeld .arff file for classification
-	 * 
-	 * 
+	 *
+	 *
 	 * @param input_arff the annotated gold standard in an .arff file
 	 * @param model output file for the model
-	 * @param output_eval if true, the evaluation of the trained classifier is printed (10-fold cross validation) 
+	 * @param output output file for evaluation of trained classifier (10-fold cross validation)
 	 * @throws Exception
 	 */
-	
+
 	public static void applyModelToUnlabeledArff(String input_arff, String model, String output) throws Exception
 	{
 		 DataSource source = new DataSource(input_arff);
 		 Instances unlabeled = source.getDataSet();
-		 if (unlabeled.classIndex() == -1)
-		   unlabeled.setClassIndex(unlabeled.numAttributes() - 1);
-		 
+		 if (unlabeled.classIndex() == -1) {
+            unlabeled.setClassIndex(unlabeled.numAttributes() - 1);
+        }
+
 		 Remove rm = new Remove();
 		 rm.setAttributeIndices("1");  // remove ID  attribute
-		
+
 		 ObjectInputStream ois = new ObjectInputStream(
            new FileInputStream(model));
 		Classifier cls = (Classifier) ois.readObject();
 		ois.close();
 		 // create copy
 		 Instances labeled = new Instances(unlabeled);
-		 
+
 		 // label instances
 		 for (int i = 0; i < unlabeled.numInstances(); i++) {
 		   double clsLabel = cls.classifyInstance(unlabeled.instance(i));
@@ -282,10 +286,10 @@ public class WekaMachineLearning {
 		 writer.newLine();
 		 writer.flush();
 		 writer.close();
-		
-		 		
+
+
 	}
-	
+
 	public static void createFinalAlignmentFile(String input_arff, String output) throws Exception
 	{
 
@@ -297,23 +301,25 @@ public class WekaMachineLearning {
 		 writer.write("f "+input_arff+" ML Alignment");
 		while ((line = input.readLine())!=null)
 		{
-			if(!line.endsWith(",1"))
-				continue;
+			if(!line.endsWith(",1")) {
+                continue;
+            }
 			String[] fields = line.split(",");
 			String ids = fields[0];
 			String id1 = ids.split("###")[0];
 			String id2 = ids.split("###")[1];
 			String values ="";
-			for(int i = 1; i< fields.length-1;i++)
-				values+=fields[i]+"###";
+			for(int i = 1; i< fields.length-1;i++) {
+                values+=fields[i]+"###";
+            }
 			writer.write(id1+"\t"+id2+"\t"+values.subSequence(0, values.length()-3));
 			writer.newLine();
-						
+
 		}
 		writer.flush();
 		writer.close();
 		 // label instances
-		
-		 		
+
+
 	}
 }

@@ -87,7 +87,7 @@ import de.tudarmstadt.ukp.lmf.model.semantics.Synset;
 	}
 
 	/**
-	 * Test method for {@link de.tudarmstadt.ukp.lmf.transform.germanet.InterlingualIndexConverter#InterlingualIndexConverter(de.tudarmstadt.ukp.lmf.transform.germanet.GNConverter, de.tuebingen.uni.sfs.germanet.api.GermaNet, de.tudarmstadt.ukp.lmf.model.core.Lexicon)}.
+	 * Test method for {@link de.tudarmstadt.ukp.lmf.transform.germanet.InterlingualIndexConverter#InterlingualIndexConverter(GNConverter, de.tuebingen.uni.sfs.germanet.api.GermaNet, Lexicon, de.tudarmstadt.ukp.lmf.model.meta.MetaData)}.
 	 * @throws SecurityException
 	 * @throws NoSuchFieldException
 	 * @throws IllegalAccessException

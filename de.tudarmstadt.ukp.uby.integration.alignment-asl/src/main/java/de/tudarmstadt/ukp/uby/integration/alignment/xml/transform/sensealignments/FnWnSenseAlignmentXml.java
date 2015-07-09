@@ -25,7 +25,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -51,9 +50,9 @@ import de.tudarmstadt.ukp.uby.integration.alignment.xml.transform.SenseAlignment
 /**
  * Convert the FrameNet-WordNet alignments to UBY format. This class takes the
  * FrameNet 1.5 and WordNet 3.0 ids from a file and integrates them to UBY
- * 
+ *
  * @author Silvana Hartmann
- * 
+ *
  */
 public class FnWnSenseAlignmentXml extends SenseAlignmentXml {
 
@@ -61,7 +60,7 @@ public class FnWnSenseAlignmentXml extends SenseAlignmentXml {
 	static String DKPRO_HOME = System.getenv("DKPRO_HOME");
 	protected static Log logger = LogFactory
 			.getLog(FnWnSenseAlignmentXml.class);
-	private Uby uby;
+	private final Uby uby;
 
 	ArrayList<String> notfoundWn = null;
 	ArrayList<String> notfoundFn = null;
@@ -69,17 +68,10 @@ public class FnWnSenseAlignmentXml extends SenseAlignmentXml {
 	int inputsize = 0;
 
 	/**
-	 * 
-	 * @param sourceUrl
-	 * @param destUrl
+	 *
 	 * @param alignmentFile
-	 * @param user
-	 * @param pass
-	 * @throws SQLException
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
-	 * @throws ClassNotFoundException
-	 * @throws FileNotFoundException
+	 * @param outFile
+	 * @param dbConfig
 	 */
 	public FnWnSenseAlignmentXml(String alignmentFile, String outFile,
 			DBConfig dbConfig) {
@@ -93,10 +85,11 @@ public class FnWnSenseAlignmentXml extends SenseAlignmentXml {
 	/**
 	 * Collect UBY SenseIds for the aligned senses based on synsetId and lemma
 	 * for WordNet and based on lexical unit id for FrameNet
-	 * 
-	 * @throws UbyInvalidArgumentException
+	 *
+	 * @throws IOException
 	 */
-	public void toAlignmentXml(XmlMeta metadata) throws IOException {
+	@Override
+    public void toAlignmentXml(XmlMeta metadata) throws IOException {
 		System.err.println("to Alignment Xml");
 		TreeMap<String, Source> sourceMap = new TreeMap<>();
 		List<String[]> data = null;
@@ -158,7 +151,7 @@ public class FnWnSenseAlignmentXml extends SenseAlignmentXml {
 	/**
 	 * Read alignment file in standard format, e.g.: fn_luId, wn_synset ID,
 	 * wn_lemma, fn_lemma
-	 * 
+	 *
 	 * @return
 	 * @throws IOException
 	 */
@@ -187,7 +180,7 @@ public class FnWnSenseAlignmentXml extends SenseAlignmentXml {
 
 	/**
 	 * Write output lines to given file
-	 * 
+	 *
 	 * @param outFile
 	 * @param lines
 	 * @throws IOException
