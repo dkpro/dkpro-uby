@@ -29,8 +29,6 @@
     <packaging>pom</packaging>
     <name>UBY</name>
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.target>1.6</java.target>
         <hibernate.version>4.1.9.Final</hibernate.version>
         <dkpro.core.version>1.7.0</dkpro.core.version>
         <jwpl.version>0.9.2</jwpl.version>
