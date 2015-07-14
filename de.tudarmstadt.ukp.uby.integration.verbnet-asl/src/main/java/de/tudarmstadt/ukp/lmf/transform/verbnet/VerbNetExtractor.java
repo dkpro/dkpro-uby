@@ -539,7 +539,7 @@ public class VerbNetExtractor {
 							semanticArgumentNumber++;
 							String semArg = splits[1];
 							if (semArg.matches("\\[")) {
-								String [] parts = att.split("[");
+								String [] parts = att.split("\\[");
 								String semRole = parts[0];
 								String selRes = "[" +parts[1];
 								semanticArgument.setSemanticRole(semRole);
