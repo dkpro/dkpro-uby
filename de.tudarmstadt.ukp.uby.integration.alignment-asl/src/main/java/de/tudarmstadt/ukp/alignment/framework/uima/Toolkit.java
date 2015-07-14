@@ -308,7 +308,7 @@ public class Toolkit
 
 	public static String[] lemmatizeGerman(String text) throws ResourceInitializationException {
 
-		if (text=="" || text==null) {
+		if (text == null || text.isEmpty()) {
 			return null;
 		}
 		AnalysisEngineDescription seg;
@@ -343,7 +343,7 @@ public class Toolkit
 
 	public static String[] lemmatizeEnglish(String text) throws ResourceInitializationException {
 
-		if (text=="" || text==null) {
+		if (text == null || text.isEmpty()) {
 			return null;
 		}
 
