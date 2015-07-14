@@ -16,7 +16,7 @@
  * limitations under the License.
  ******************************************************************************/
 /*
- * 
+ *
  */
 
 
@@ -47,7 +47,7 @@ import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 
 /*
  * This class is responsible for handling all operations concerning one singular resource
- * 
+ *
  *
  */
 
@@ -60,7 +60,7 @@ public class OneResourceBuilder
 	public TreeMap<String,Integer> lemmaFreqInGlosses;//Frequency of lemmas across all glosses
 	public TreeMap<String, String> senseIdGloss; //Index for the gloss of a senses
 	public TreeMap<String,String> senseIdGlossPos; //Index for the pos-tagged gloss of a sense
-	
+
 	//Basic characteristics of the resources
 	public Connection connection;
 	public int prefix;
@@ -69,7 +69,7 @@ public class OneResourceBuilder
 	public boolean pos;
 	public String language;
 	public int gloss_count;
-	
+
 	public OneResourceBuilder(String dbname, String user, String pass, int prefix, String language, boolean synset, boolean pos)
 	{
 		senseIdLemma = new TreeMap<String, HashSet<String>>();
@@ -104,7 +104,7 @@ public class OneResourceBuilder
 
 	/**
 	 * This method creates a graph from the semantic relations encoded in UBY
-	 * 
+	 *
 	 * param filterByGloss only considers relation targets that are contained within the gloss, or the first paragraph. This option mostly contains Wikipedia
 	 * as described in the paper.
 	 *
@@ -122,7 +122,7 @@ public class OneResourceBuilder
 		if(synset) {
 			rs =	statement.executeQuery("SELECT synsetId,target FROM SynsetRelation where synsetId like '"+prefix_string+"%'");
 		}
-		else { //Special handling of FrameNet, as relations are expressed differently here 
+		else { //Special handling of FrameNet, as relations are expressed differently here
 			if(prefix == Global.FN_prefix)
 			{
 				rs =	statement.executeQuery("SELECT distinct pr1.senseId, pr2.senseId FROM PredicativeRepresentation pr1  join PredicativeRepresentation pr2 where pr1.predicate = pr2.predicate and  pr1.senseId like 'FN%' and pr2.senseId like 'FN%' and pr1.senseId != pr2.senseId");
@@ -157,10 +157,12 @@ public class OneResourceBuilder
 			//HashSet<String> lemmas1 = senseIdLemma.get(id1);
 			HashSet<String> lemmas2 = senseIdLemma.get(id2);
 			String gloss1;
-			if(filterByGloss)
-				gloss1 = senseIdGloss.get(id1);
-			else
-				gloss1 = senseIdGlossPos.get(id1);
+			if(filterByGloss) {
+                gloss1 = senseIdGloss.get(id1);
+            }
+            else {
+                gloss1 = senseIdGlossPos.get(id1);
+            }
 			if(gloss1 == null) {
 				gloss1 = "";
 			}
@@ -210,14 +212,14 @@ public class OneResourceBuilder
 		statement.close();
 
 	}
-	
+
 	/**
 	 * This method outputs an analysis of how many lemmas and senses we have in the resource for each part of speech for a given list of lemmas.
-	 * 
+	 *
 	 *
 	 *
 	 */
-	
+
 	public void analyizeLemmaList(String input) throws ClassNotFoundException, SQLException, IOException
 	{
 
@@ -281,7 +283,7 @@ public class OneResourceBuilder
 				}
 
 		 }
-		 
+
 		 inp.close();
 		 System.out.println("Total:");
 		 System.out.println(total_count);
@@ -314,9 +316,9 @@ public class OneResourceBuilder
 
 	/**
 	 * This method outputs type-token-ratio of the glosses of the resource.
-	 * 
+	 *
 	 */
-	
+
 	public void typeTokenRatio() throws ClassNotFoundException, SQLException, IOException
 	{
 		double token_count = 0;
@@ -386,12 +388,12 @@ public class OneResourceBuilder
 
 	/**
 	 * This method outputs the gloss file for the resource
-	 * 
+	 *
 	 * @param createLexicalFieldIfEmpty states whether, in case the gloss is empty, an artificial gloss should be created by using related senses/synsets. This is in line with
 	 *  the Lexical Fields introduced by Henrich et al.
-	 * 
+	 *
 	 */
-	
+
 	public void createGlossFile(boolean createLexicalFieldIfEmpty) throws ClassNotFoundException, SQLException, IOException
 	{
 		FileOutputStream outstream;
@@ -470,7 +472,7 @@ public class OneResourceBuilder
 				{
 					lf+=l+" ";
 				}
-				lf.trim();
+				lf = lf.trim();
 				lf =  CLEANUP.matcher(lf).replaceAll(" ");
 				lf = lf.replace("\n", "").replace("\r", "").replace("\t", " ").trim();
 				String id = prefix+s.split("ense_")[1];
@@ -498,12 +500,12 @@ public class OneResourceBuilder
 		statement.close();
 		p.close();
 	}
-	
+
 	/**
 	 * This method lemmatizes and POS-tags the given gloss files
-	 * 
+	 *
 	 * @param chunk_size the chunk size to be processed at a time. The higher, the better, but also the more memory is consumed
-	 * 
+	 *
 	 */
 
 	public void lemmatizePOStagGlossFileInChunks(int chunk_size)
@@ -520,7 +522,7 @@ public class OneResourceBuilder
 			 FileReader in = new FileReader("target/"+prefix_string+"_"+(synset?"synset":"sense")+"_glosses.txt");
 			 BufferedReader input_reader =  new BufferedReader(in);
 			 String line;
-	 
+
 			 outstream = new FileOutputStream("target/"+prefix+"temp_"+i);
 				p = new PrintStream( outstream );
 			 while((line =input_reader.readLine())!=null)
@@ -599,12 +601,12 @@ public class OneResourceBuilder
 	}
 	/**
 	 * This method lemmatizes and POS-tags the given gloss files. This is the method which processes a given chunk
-	 * 
+	 *
 	 * /**
 	 * This method lemmatizes and POS-tags the given gloss files
-	 * 
-	 * 
-	 * 
+	 *
+	 *
+	 *
 	 *
 	 *
 	 */
@@ -671,7 +673,7 @@ public class OneResourceBuilder
 		resultline = resultline.replaceAll("TABULATOR#\\S*\\s", "\t");
 		resultline = resultline.replaceAll("ENDOFLINE#\\S*\\s", Global.LF);
 		p.print(resultline); System.out.println("resultline "+resultline);
-		 
+
 		 p.flush();
 		 p.close();
 		 for(String lexeme : lexemeFreqInGlosses.keySet())
@@ -689,7 +691,7 @@ public class OneResourceBuilder
 	}
 	/**
 	 * This method fills the index tables which are required for downstream processing
-	 * 
+	 *
 	 *
 	 */
 
@@ -698,22 +700,22 @@ public class OneResourceBuilder
 			String prefix_string  = Global.prefixTable.get(prefix);
 			Statement statement = connection.createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY, java.sql.ResultSet.CONCUR_READ_ONLY);
 			statement.setFetchSize(Integer.MIN_VALUE);
-			
+
 			int count =0;
 
 			if(lemmaIdWrittenForm == null || lemmaIdWrittenForm.size()==0)
-			{	
-			
-				
-		
+			{
+
+
+
 			ResultSet rs =	statement.executeQuery("select distinct LexicalEntry.lemmaId,writtenForm from FormRepresentation_Lemma join LexicalEntry where LexicalEntry.lexicalEntryId like '"+prefix_string+"%' and LexicalEntry.lemmaId = FormRepresentation_Lemma.lemmaId");
-			
+
 			while(rs.next())
 			{
 				String lemmaId = rs.getString(1);
 				String writtenForm = rs.getString(2);
 						lemmaIdWrittenForm.put(lemmaId,writtenForm);
-				
+
 			}
 			rs.close();
 			}
@@ -737,7 +739,7 @@ public class OneResourceBuilder
 			{
 			if(lexemeFreqInGlosses.size()==0) {
 				lexemeFreqInGlosses = new TreeMap<String, Integer>();
-				
+
 				 FileReader in = new FileReader("target/"+prefix_string+"_"+(synset?"synset":"sense")+"_lexeme_frequencies.txt");
 				 BufferedReader input_reader =  new BufferedReader(in);
 				 String line;
@@ -758,7 +760,7 @@ public class OneResourceBuilder
 			{
 				System.err.println("Lexeme frequencies not found, skipped");
 			}
-			
+
 			if(senseIdGloss == null || senseIdGloss.size()==0) {
 				senseIdGloss = new TreeMap<String, String>();
 				 FileReader in = new FileReader("target/"+prefix_string+"_"+(synset?"synset":"sense")+"_glosses.txt");
@@ -776,7 +778,7 @@ public class OneResourceBuilder
 				 }
 				input_reader.close();
 			}
-		
+
 			System.out.println("Glosses filled for "+this.prefix_string);
 			try
 			{
@@ -804,12 +806,12 @@ public class OneResourceBuilder
 			{
 				System.err.println("Tagged glosses not found, skipped");
 			}
-			
-			
-			
+
+
+
 			count = 0;
 			if(lemmaPosSenses == null || lemmaPosSenses.size()==0) {
-			
+
 			ResultSet rs =	statement.executeQuery("select distinct lemmaId,partOfSpeech, "+ (synset ? "synsetId" : "senseId") +" from LexicalEntry join Sense where LexicalEntry.lexicalEntryId like '"+prefix_string+"%' and LexicalEntry.lexicalEntryId = Sense.lexicalEntryId");
 			while(rs.next())
 			{
@@ -830,7 +832,9 @@ public class OneResourceBuilder
 				if(lemma == null) {
 					continue;
 				}
-				if(count++%1000==0) System.out.println(count);
+				if(count++%1000==0) {
+                    System.out.println(count);
+                }
 				String key = "";
 				if(pos) {
 
@@ -870,15 +874,15 @@ public class OneResourceBuilder
 			}
 		}
 
-	
-	
+
+
 	/**
 	 * This method creates monosemous links based on the POS-tagged glosses and the frequencies of the lexemes
-	 * 
+	 *
 	 *
 	 * @param phi the maximum frequency of a lexeme to be considered
 	 */
-	
+
 	public void createMonosemousLinks(int phi) throws ClassNotFoundException, SQLException, IOException
 		{
 
