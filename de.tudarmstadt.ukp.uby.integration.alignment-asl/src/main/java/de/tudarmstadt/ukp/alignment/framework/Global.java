@@ -51,7 +51,7 @@ public class Global
 	public static final int IMS_prefix =  24;
 	public static final int OntoWKT_DE_Synset_prefix =  25;
 	public static final int OntoWKT_DE_Sense_prefix =  26;
-	
+
 
 	public static  HashMap<Integer, String> prefixTableLong = new HashMap<Integer, String>();
 	public static  HashMap<Integer, String> prefixTable = new HashMap<Integer, String>();
@@ -177,9 +177,9 @@ public class Global
 	}
 	/**
 	 * This method maps an alignment file with numerical IDs to either UBY-IDs or the original IDs
-	 * 
+	 *
 	 * @param extRef states whether the original ids should be used
-	 * 
+	 *
 	 * */
 	public static void mapAlignmentToUby(OneResourceBuilder gb1, OneResourceBuilder gb2, String alignmentfile, boolean extRef)
 	{
@@ -240,15 +240,15 @@ public class Global
 
 			System.out.println("lines processed "+i++);
 		 }
-		 input_reader.close();
+         input_reader.close();
+         in.close();
+         p.close();
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-
-
 		}
-	
+
 		/*TODO: Conform to newly defined XML standard*/
 		/*
 		 *
@@ -258,9 +258,9 @@ public class Global
 	}
 	/**
 	 * This method streamlines proprietary alignment gold standard files
-	 * 
+	 *
 	 * @param graph states whether numerical ids for the graph should be created
-	 * 
+	 *
 	 * */
 	public static void processExtRefGoldstandardFile(OneResourceBuilder gb1, OneResourceBuilder gb2, String alignmentfile, boolean graph)
 	{
@@ -342,6 +342,8 @@ public class Global
 			System.out.println("lines processed "+i++);
 		 }
 		 input_reader.close();
+		 in.close();
+		 p.close();
 		}
 		catch(Exception e)
 		{
@@ -359,9 +361,9 @@ public class Global
 	}
 	/**
 	 * This method streamlines proprieatary alignment gold standard files as provided by EW and ChM
-	 * 
+	 *
 	 * @param graph states whether numerical ids for the graph should be created
-	 * 
+	 *
 	 * */
 	public static void processExtRefGoldstandardFileWKTWP(OneResourceBuilder gb1, OneResourceBuilder gb2, String alignmentfile, boolean graph)
 	{
@@ -403,7 +405,7 @@ public class Global
 			//	p.println(line);
 				continue;
 			}
-			
+
 			String[] temp = line.split(" ; ");
 			String id1 = temp[0];
 			String pos = temp[1];
@@ -437,9 +439,9 @@ public class Global
 			}
 			if(graph)
 			{
-				
+
 			System.out.println(uby_id2);				System.out.println(Global.prefixTableLong.get(gb2.prefix));
-				p.println(gb1.prefix+uby_id1.split(Global.prefixTableLong.get(gb1.prefix))[1] 
+				p.println(gb1.prefix+uby_id1.split(Global.prefixTableLong.get(gb1.prefix))[1]
 						+ "\t" +gb2.prefix+uby_id2.split(Global.prefixTableLong.get(gb2.prefix))[1]+"\t"+conf);
 			}
 			else
@@ -450,6 +452,8 @@ public class Global
 			System.out.println("lines processed "+i++);
 		 }
 		 input_reader.close();
+		 in.close();
+		 p.close();
 		}
 		catch(Exception e)
 		{

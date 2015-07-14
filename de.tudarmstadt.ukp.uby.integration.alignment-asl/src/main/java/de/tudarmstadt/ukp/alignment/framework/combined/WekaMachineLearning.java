@@ -203,6 +203,7 @@ public class WekaMachineLearning {
 		}
 			}
 		p.println(arffFile);
+		p.close();
 	}
 
 	/**
@@ -318,6 +319,8 @@ public class WekaMachineLearning {
 		}
 		writer.flush();
 		writer.close();
+		input.close();
+		in.close();
 		 // label instances
 
 

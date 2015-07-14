@@ -32,9 +32,9 @@ public class Evaluator
 	{
 
 		performEvaluation("target/wn_wp_alignment_babelnet", "target/wn_wp_goldstandard_extref", false);
-		
+
 	}
-	
+
 	/**
 	 * Here  we can perform the evaluation if we have the alignment and goldstandards are available
 	 */
@@ -63,6 +63,8 @@ public class Evaluator
 				 String[] info = line.split("\t");
 				 current.add(info[0]+"\t"+info[1]);
 			  }
+			 input.close();
+             in.close();
 
 			 input =  new BufferedReader(in2);
 			 while((line =input.readLine())!=null) {
@@ -76,7 +78,7 @@ public class Evaluator
 
 			 }
 			 input.close();
-			 in.close();
+			 in2.close();
 			 /*TODO* for later use*/
 			 String[] poses = {"noun","adjective","adverb","verb"};
 			 if(!pos)
@@ -160,7 +162,7 @@ public class Evaluator
 		}
 		}
 		catch (FileNotFoundException e) {
-		
+
 			 System.out.println("File not found");
 		}
 		catch (IOException e) {

@@ -133,6 +133,7 @@ public class CreateClusteringFromAlignment
 
             }
             p.close();
+            input.close();
             in.close();
         }
         catch (Exception e) {
@@ -379,6 +380,7 @@ public class CreateClusteringFromAlignment
                 p.println(out.trim());
             }
             p.close();
+            input.close();
             in.close();
         }
         catch (Exception e) {
@@ -453,6 +455,7 @@ public class CreateClusteringFromAlignment
 
             }
             p.close();
+            input.close();
             in.close();
         }
         catch (Exception e) {
@@ -499,6 +502,7 @@ public class CreateClusteringFromAlignment
                 p.println(out.trim());
             }
             p.close();
+            input.close();
             in.close();
         }
         catch (Exception e) {

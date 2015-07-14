@@ -59,9 +59,9 @@ public class CreateAlignmentFromGraphOutput
 
 		/*Alignment parameters*/
 		int depth = 5; // Manually set; exhaustive search can be triggered by depth >20
-		boolean allowMultiple = true; //allow 1:n alignments 
+		boolean allowMultiple = true; //allow 1:n alignments
 		boolean alignSingle = false; //allow instant alignment in case of only ine candidate
- 
+
 		boolean backoff=false;  //use a similarity-based backoff file in case no alignment can be found
 		String backoff_file = "target/"+"WN_OW_en_alignment_similarity_Pos_tfidf_nonZero.txt";
 
@@ -88,7 +88,7 @@ public class CreateAlignmentFromGraphOutput
 
 		HashMap<String,TreeSet<NodeWithDistance> > alignment_results = new HashMap<String, TreeSet<NodeWithDistance>>();
 		HashMap<String,HashSet<String> > candidates = new HashMap<String, HashSet<String>>();
-		
+
 		//Read the candidates and distance files
 		try
 		{
@@ -140,7 +140,7 @@ public class CreateAlignmentFromGraphOutput
 				{
 					alignment_results.put(current_id1, new TreeSet<NodeWithDistance>());
 				}
-				
+
 					if(distance.length()>3)
 					{
 						NodeWithDistance nwd = new NodeWithDistance(Integer.parseInt(current_id2),1000);
@@ -154,6 +154,8 @@ public class CreateAlignmentFromGraphOutput
 					}
 
 		}
+		input.close();
+		input2.close();
 		in.close();
 		in2.close();
 
@@ -188,7 +190,7 @@ public class CreateAlignmentFromGraphOutput
 				}
 				if(cands!=null && polled_out!= null && !polled_out.isEmpty()) {
 							cands.addAll(polled_out);
-							
+
 				/*HERE THE OUTPUT BEGINS*/
 				}
 				for(NodeWithDistance t : targets)
@@ -227,9 +229,11 @@ public class CreateAlignmentFromGraphOutput
 							p.println(id_1+"\t"+id_2+"\t"+conf);
 
 						}
+						input.close();
+						in.close();
 
 					}
-		
+
 					p.close();
 					}
 		}
@@ -248,7 +252,7 @@ public class CreateAlignmentFromGraphOutput
 
 		HashMap<String,TreeSet<NodeWithDistance> > alignment_results = new HashMap<String, TreeSet<NodeWithDistance>>();
 		HashMap<String,HashSet<String> > candidates = new HashMap<String, HashSet<String>>();
-		
+
 		//Read the candidates and distance files
 		try
 		{
@@ -263,7 +267,7 @@ public class CreateAlignmentFromGraphOutput
 		String current_id1 ="";
 		String current_id2 ="";
 		String distance ="";
-		
+
 		String line2 = "";
 		int i =0;
 		while( (line2 = input2.readLine())!=null)
@@ -283,7 +287,7 @@ public class CreateAlignmentFromGraphOutput
 				{
 					alignment_results.put(current_id1, new TreeSet<NodeWithDistance>());
 				}
-				
+
 					if(distance.length()>3)
 					{
 						NodeWithDistance nwd = new NodeWithDistance(Integer.parseInt(current_id2),1000);
@@ -294,11 +298,11 @@ public class CreateAlignmentFromGraphOutput
 						NodeWithDistance nwd = new NodeWithDistance(Integer.parseInt(current_id2), Integer.parseInt(distance));
 						alignment_results.get(current_id1).add(nwd);
 					}
-					
-			
+
+
 
 		}
-
+		input2.close();
 		in2.close();
 
 		/*HERE THE ACTUAL ANALYISIS BEGINS*/
@@ -330,7 +334,7 @@ public class CreateAlignmentFromGraphOutput
 				}
 				if(cands!=null && polled_out!= null && !polled_out.isEmpty()) {
 							cands.addAll(polled_out);
-							
+
 				/*HERE THE OUTPUT BEGINS*/
 				}
 				for(NodeWithDistance t : targets)
@@ -371,9 +375,9 @@ public class CreateAlignmentFromGraphOutput
 						}
 
 					}
-		
+
 					p.close();
-					
+
 		}
 		catch(Exception e)
 		{

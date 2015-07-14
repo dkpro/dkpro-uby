@@ -73,14 +73,14 @@ public class CandidateExtractor
 
 
 	}
-	
+
 
 	/**
 	 * This method extracts the possible alignment candidates (those with matching lemma and POS) from two resources
-	 * 
-	 * 
-	 * 
-	 * 
+	 *
+	 *
+	 *
+	 *
 	 */
 	public static void createCandidateFileFull(OneResourceBuilder gb1, OneResourceBuilder gb2) throws ClassNotFoundException, SQLException, IOException
 	{
@@ -127,27 +127,27 @@ public class CandidateExtractor
 	p.close();
 	}
 	/**
-	 * This method creates a list of alignment candidates (those with matching lemma and POS) from a given list 
-	 * 
-	 * 
-	 * 
-	 * 
+	 * This method creates a list of alignment candidates (those with matching lemma and POS) from a given list
+	 *
+	 *
+	 *
+	 *
 	 */
 	public static void createCandidateFileLemmaList(OneResourceBuilder gb1, OneResourceBuilder gb2,String input) throws ClassNotFoundException, SQLException, IOException
 	{
-		
+
 		HashMap<String, String> lemmaPosList = new HashMap<String,String>();
-		
+
 
 		FileReader in = new FileReader(input);
 		BufferedReader input_reader =  new BufferedReader(in);
 		String line;
-	
+
 		while((line =input_reader.readLine())!=null)
 		{
 			lemmaPosList.put(line.split("\t")[0],line.split("\t")[1]);
 		}
-		
+
 		StringBuilder sb = new StringBuilder();
 		int count = 0;
 		FileOutputStream outstream;
@@ -160,8 +160,9 @@ public class CandidateExtractor
 			String pos = lemmaPos.split("#")[1];
 			System.out.println(lemma);
 			System.out.println(pos);
-			if(!(lemmaPosList.containsKey(lemma) && lemmaPosList.get(lemma).equals(pos)))
-				continue;
+			if(!(lemmaPosList.containsKey(lemma) && lemmaPosList.get(lemma).equals(pos))) {
+                continue;
+            }
 			if(gb2.pos) {
 				if(gb2.lemmaPosSenses.get(lemmaPos)!= null)
 				{
@@ -177,7 +178,7 @@ public class CandidateExtractor
 			}
 			else
 			{
-		
+
 				if(gb2.lemmaPosSenses.get(lemma)!= null)
 				{
 					for(String id1 :gb1.lemmaPosSenses.get(lemmaPos))
@@ -195,15 +196,16 @@ public class CandidateExtractor
 	p.println("p aux sp p2p "+count);
 	p.print(sb.toString());
 	p.close();
+	input_reader.close();
 	in.close();
 	}
 
-	
+
 	/**
 	 * This method extracts the possible alignment candidates from a gold standard file
-	 * 
-	 * 
-	 * 
+	 *
+	 *
+	 *
 	 * @param checkIntegrity This parameter toggles if the gold standard should be checked for correctness of lemma/POS combinations. If unchecked, the GS is just output in the correct format
 	 */
 	public static void createCandidateFileGoldStandard(OneResourceBuilder gb1, OneResourceBuilder gb2,String input, boolean checkIntegrity) throws ClassNotFoundException, SQLException, IOException
@@ -228,7 +230,7 @@ public class CandidateExtractor
 				count++;
 			}
 		}
-			
+
 		FileOutputStream outstream;
 		PrintStream p;
 		outstream = new FileOutputStream("target/"+gb1.prefix_string+"_"+gb2.prefix_string+"_GScandidates_"+(!checkIntegrity? "noCheck":(gb2.pos ? "Pos": "noPos"))+".txt");
@@ -277,6 +279,7 @@ public class CandidateExtractor
 	p.println("p aux sp p2p "+count);
 	p.print(sb.toString());
 	p.close();
+	input_reader.close();
 	in.close();
 	}
 

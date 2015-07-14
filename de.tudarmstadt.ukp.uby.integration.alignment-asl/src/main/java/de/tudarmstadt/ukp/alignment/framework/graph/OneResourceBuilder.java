@@ -543,6 +543,7 @@ public class OneResourceBuilder
 				 p.println(line);
 				line_count++;
 			 }
+			 outstream.close();
 			 p.close();
 			 lemmatizePOStagGlossFile(prefix+"temp_"+i, prefix+"temp_tagged_"+i,prefix+"temp_freq_"+i, prefix, language);
 			 File f = new File("target/"+prefix+"temp_"+i);
@@ -561,6 +562,7 @@ public class OneResourceBuilder
 					  p.println(line);
 				 }
 				  f.delete();
+				  input_reader.close();
 				 in.close();
 			 }
 			lexemeFreqInGlosses = new TreeMap<String, Integer>();

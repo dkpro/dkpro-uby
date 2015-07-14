@@ -234,6 +234,7 @@ public class IMSlexExtractor {
 
 			System.out.println("done");
 		} finally {
+		    input.close();
 			r.close();
 		}
 	}

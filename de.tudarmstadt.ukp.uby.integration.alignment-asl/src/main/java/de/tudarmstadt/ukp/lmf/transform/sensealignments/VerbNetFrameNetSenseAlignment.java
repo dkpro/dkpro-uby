@@ -62,7 +62,7 @@ public class VerbNetFrameNetSenseAlignment
 		notAdded = new ArrayList<String>();
 	}
 
-	
+
 
 	public VerbNetFrameNetSenseAlignment(String sourceUrl, String destUrl,
 			String alignmentFile,String user, String pass) throws FileNotFoundException
@@ -137,15 +137,16 @@ public class VerbNetFrameNetSenseAlignment
 			}
 			System.out.println("number of alignments:" + count);
 			System.out.println("number of lines in infile:" + inputsize);
+			reader.close();
 		}	catch (IOException ex) {
 			ex.printStackTrace();
 		}
 	}
 
 
-	public static void convertVnFnSemlink(String inFile, String outFile) throws XMLStreamException, 
+	public static void convertVnFnSemlink(String inFile, String outFile) throws XMLStreamException,
 		ParserConfigurationException, SAXException, IOException{
-		
+
 		int noTarget = 0;
 		int lines = 0;
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -186,5 +187,5 @@ public class VerbNetFrameNetSenseAlignment
 				writer.close();
 			}
 		}
-	}	
+	}
 }

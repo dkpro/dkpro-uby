@@ -25,7 +25,7 @@ import de.tudarmstadt.ukp.integration.alignment.xml.model.XmlMeta;
 public class VnWnSenseAlignmentXml extends SenseAlignmentXml {
 
     private final Log logger = LogFactory.getLog(getClass());
-    
+
 	public VnWnSenseAlignmentXml(String alignmentFile, String outFile) {
 		super(alignmentFile, outFile);
 	}
@@ -97,6 +97,7 @@ public class VnWnSenseAlignmentXml extends SenseAlignmentXml {
 			alignments.source = sources;
 			writer.writeAlignments(alignments);
 			writer.close();
+			reader.close();
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}

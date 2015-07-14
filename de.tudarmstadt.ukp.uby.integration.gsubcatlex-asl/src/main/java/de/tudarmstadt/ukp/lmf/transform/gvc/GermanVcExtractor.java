@@ -170,6 +170,7 @@ public class GermanVcExtractor {
 			}
 			System.out.println("done");
 		} finally {
+		    input.close();
 			r.close();
 		}
 	}

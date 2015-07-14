@@ -77,7 +77,7 @@ public class GlossSimilarityCalculator
 //			bg_2.lemmatizePOStagGlossFileInChunks(chunksize2);
 			bg_2.fillIndexTables();
 
-		
+
 
 			boolean useTaggedGloss = true;
 			boolean tfidf = true;
@@ -170,7 +170,7 @@ public class GlossSimilarityCalculator
 
 	/**
 	 * This method calculates the cosine similarities between the glosses of two resources. Candidate files need to be created beforehand
-	 * 
+	 *
 	 * @param pos Consider pos-tagged lexemes or only lemmas
 	 * @param tfidf Use tfidf weighting
 	 */
@@ -180,19 +180,19 @@ public class GlossSimilarityCalculator
 		{
 		 FileReader in = new FileReader(candidatesFile); //+"_short"
 		 BufferedReader input_reader =  new BufferedReader(in);
-		 String line;	
+		 String line;
 		FileOutputStream outstream;
 		PrintStream p;
 		outstream = new FileOutputStream( "target/"+gb1.prefix_string+"_"+gb2.prefix_string+"_glossSimilarities"+(pos? "_tagged": "_plain")+(tfidf? "_tfidf": "")+".txt");
 		p = new PrintStream( outstream );
 		TextSimilarityMeasure measure = null;
 
-		/*TODO 
-		 * 
+		/*TODO
+		 *
 		 * Other similarity measures can be integrated here
-		 * 
-		 * 
-		 * 
+		 *
+		 *
+		 *
 		 * */
 		if(!tfidf)
 		{
@@ -221,9 +221,9 @@ public class GlossSimilarityCalculator
 			 } else if(line.startsWith("q"))
 			 {
 
-				 String id1 = line.split(" ")[1]; 
-				 String id2 = line.split(" ")[2]; 
-	
+				 String id1 = line.split(" ")[1];
+				 String id2 = line.split(" ")[2];
+
 				 String gloss1 = "";
 				 String gloss2 = "";
 				 if(pos)
@@ -236,8 +236,8 @@ public class GlossSimilarityCalculator
 					 gloss1 = gb1.senseIdGloss.get(id1);
 					 gloss2 = gb2.senseIdGloss.get(id2);
 				 }
-	
-	
+
+
 				 if(gloss1 == null || gloss2 ==null) {
 					p.println(id1+"\t"+id2+"\t"+0.0);
 				 }
@@ -266,7 +266,7 @@ public class GlossSimilarityCalculator
 
 	/**
 	 * This method creates an alignment from the similarity files in an unsupervised way by picking the candidate with the greatest value
-	 * 
+	 *
 	 * @param pos Consider pos-tagged lexemes or only lemmas
 	 * @param tfidf Use tfidf weighting
 	 * @param onlyGreaterZero only consider candidates with a non-zero similarity value
@@ -282,7 +282,7 @@ public class GlossSimilarityCalculator
 				String current_id2 ="";
 				Double similarity =0.0;
 				String line = "";
-				
+
 				FileOutputStream outstream_alignment = new FileOutputStream("target/"+gb1.prefix_string+"_"+gb2.prefix_string+"_alignment_similarity_"+(gb2.pos ? "Pos": "noPos")+""+(tfidf? "_tfidf"  :"")+(onlyGreaterZero ? "_nonZero":"")+".txt");
 				PrintStream p_align = new PrintStream( outstream_alignment );
 
@@ -309,6 +309,7 @@ public class GlossSimilarityCalculator
 						temp.add(current_id2+"#"+similarity);
 
 				}
+				input.close();
 				in.close();
 
 
@@ -353,8 +354,8 @@ public class GlossSimilarityCalculator
 
 								}
 
-							
-								
+
+
 							}
 				p_align.close();
 		}
