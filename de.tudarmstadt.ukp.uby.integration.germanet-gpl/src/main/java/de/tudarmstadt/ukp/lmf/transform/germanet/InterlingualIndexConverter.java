@@ -147,7 +147,7 @@ public class InterlingualIndexConverter {
 				}
 
 
-				long offset = Long.valueOf(offsetString);
+				long offset = Long.parseLong(offsetString);
 
 				LexUnit lexUnit = gnet.getLexUnitByID(iliRecord.getLexUnitId());
 
@@ -260,7 +260,7 @@ public class InterlingualIndexConverter {
 				continue; // skip
 			}
 
-			long offset = Long.valueOf(stringOffset);
+			long offset = Long.parseLong(stringOffset);
 			Map<Long, Synset> mapping = synsetMappings.get(pos);
 			mapping.put(offset, synset);
 		}
