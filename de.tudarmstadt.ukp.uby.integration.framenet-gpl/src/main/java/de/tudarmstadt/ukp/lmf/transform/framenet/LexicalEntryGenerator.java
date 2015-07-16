@@ -200,6 +200,7 @@ public class LexicalEntryGenerator {
 			StringBuffer sb = new StringBuffer(32);
 			sb.append("FN_Sense_").append(senseNumber++);
 			sense.setId(sb.toString());
+			sense.setIndex(senses.size() + 1);
 			// setting Definition
 			Definition definition = new Definition();
 			TextRepresentation textRepresentation = new TextRepresentation();
