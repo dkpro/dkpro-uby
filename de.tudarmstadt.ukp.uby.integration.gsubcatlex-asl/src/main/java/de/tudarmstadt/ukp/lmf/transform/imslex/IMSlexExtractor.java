@@ -68,8 +68,9 @@ import de.tudarmstadt.ukp.lmf.model.syntax.SyntacticBehaviour;
 /**
  * This class extracts information from a preprocessed version of IMSLex - Subcategorization Frames and fills in the corresponding LMF classes
  * @author Eckle-Kohler
- *
+ * @deprecated Use {@link org.dkpro.uby.imslex.IMSLexSubcatConverter} instead.
  */
+@Deprecated
 public class IMSlexExtractor {
 
 	public static final String SENSE = "sense";
