@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -389,7 +390,7 @@ public class IMSLexSubcatConverter {
 
 		// Sort.
 		List<IMSLexEntry> entries = new ArrayList<IMSLexEntry>(lexicalEntryIndex.values());
-		entries.sort(new Comparator<IMSLexEntry>() {
+		Collections.sort(entries, new Comparator<IMSLexEntry>() {
 			public int compare(final IMSLexEntry o1, final IMSLexEntry o2) {
 				String key1 = o1.getLemma() + "\t" + o1.getPos().name();
 				String key2 = o2.getLemma() + "\t" + o2.getPos().name();
@@ -421,7 +422,7 @@ public class IMSLexSubcatConverter {
 					scfs.add(scf);
 			}
 		}
-		scfs.sort(new Comparator<IMSLexSubcatFrame>() {
+		Collections.sort(scfs, new Comparator<IMSLexSubcatFrame>() {
 			public int compare(final IMSLexSubcatFrame o1, final IMSLexSubcatFrame o2) {
 				String key1 = o1.getSyntaxStr();
 				key1 = realizedSCFs.get(key1) + "\t1" + key1;
@@ -431,7 +432,7 @@ public class IMSLexSubcatConverter {
 			}
 		});
 
-		entries.sort(new Comparator<IMSLexEntry>() {
+		Collections.sort(entries, new Comparator<IMSLexEntry>() {
 			public String makePOSSort(final EPartOfSpeech pos) {
 				switch (pos) {
 					case verb:
@@ -499,7 +500,7 @@ public class IMSLexSubcatConverter {
 
 			// Senses (in IMSLex-Subcat defined by subcat frames).
 			List<IMSLexSubcatFrame> entrySCFs = new ArrayList<IMSLexSubcatFrame>(entry.getSubcatFrames());
-			entrySCFs.sort(new Comparator<IMSLexSubcatFrame>() {
+			Collections.sort(entrySCFs, new Comparator<IMSLexSubcatFrame>() {
 				public int compare(final IMSLexSubcatFrame o1, final IMSLexSubcatFrame o2) {
 					String key1 = (o1.getSemanticLabel() != null ? "9" : "0") + o1.getArgumentStr();
 					String key2 = (o2.getSemanticLabel() != null ? "9" : "0") + o2.getArgumentStr();
@@ -613,7 +614,7 @@ public class IMSLexSubcatConverter {
 			subcategorizationFrames.add(subcategorizationFrame);
 			subcategorizationFrameIndex.put(scf.getSyntaxStr(), subcategorizationFrame);
 		}
-		subcategorizationFrames.sort(new Comparator<SubcategorizationFrame>() {
+		Collections.sort(subcategorizationFrames, new Comparator<SubcategorizationFrame>() {
 			public int compare(final SubcategorizationFrame o1, final SubcategorizationFrame o2) {
 				return o1.getId().compareTo(o2.getId());
 			}
