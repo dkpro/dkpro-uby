@@ -158,7 +158,7 @@ public class IMSLexSubcatConverter {
 		loadIMSLexSubcatFile(new File(lexiconDir, "Subcat_PartV.txt"), EPartOfSpeech.verbMain,true);
 		loadIMSLexSubcatFile(new File(lexiconDir, "Subcat_ADJ.txt"), EPartOfSpeech.adjective, false);
 		loadIMSLexSubcatFile(new File(lexiconDir, "Subcat_NN.txt"), EPartOfSpeech.nounCommon, false);
-//	loadIMSLexSubcatFile(new File(lexiconDir, "Subcat_ADV.txt"), EPartOfSpeech.adverb, false); //TODO: activate
+		loadIMSLexSubcatFile(new File(lexiconDir, "Subcat_ADV.txt"), EPartOfSpeech.adverb, false);
 	}
 
 	protected void loadIMSLexSubcatFile(final File lexiconFile,
@@ -228,7 +228,6 @@ public class IMSLexSubcatConverter {
 					continue;
 
 				String argumentString = subcatMap.createArgumentString(subcatLabel);
-
 				/*
 				//TODO: Expand alternatives.
 				List<String> subcatKeys = new LinkedList<String>();
@@ -394,6 +393,10 @@ public class IMSLexSubcatConverter {
 			public int compare(final IMSLexEntry o1, final IMSLexEntry o2) {
 				String key1 = o1.getLemma() + "\t" + o1.getPos().name();
 				String key2 = o2.getLemma() + "\t" + o2.getPos().name();
+				if (o1.getPos() == EPartOfSpeech.adverb)
+					key1 = "\uFF00" + key1; // ensure adverbs are at the end.
+				if (o2.getPos() == EPartOfSpeech.adverb)
+					key2 = "\uFF00" + key2; // ensure adverbs are at the end.
 				return key1.compareTo(key2);
 			}
 		});
@@ -402,6 +405,8 @@ public class IMSLexSubcatConverter {
 		List<IMSLexSubcatFrame> scfs = new ArrayList<IMSLexSubcatFrame>();
 		for (IMSLexEntry entry : entries) {
 			String lemmaPos = entry.getLemma() + "\t" + entry.getPos().name();
+			if (entry.getPos() == EPartOfSpeech.adverb)
+				lemmaPos = "\uFF00" + lemmaPos; // ensure adverbs are at the end.
 			for (IMSLexSubcatFrame scf : entry.getSubcatFrames()) {
 				if (scf.getSemanticLabel() != null)
 					continue;
