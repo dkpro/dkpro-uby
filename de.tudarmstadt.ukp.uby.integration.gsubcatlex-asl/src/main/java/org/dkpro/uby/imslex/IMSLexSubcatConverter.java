@@ -10,6 +10,7 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import de.tudarmstadt.ukp.lmf.model.core.GlobalInformation;
@@ -22,6 +23,7 @@ import de.tudarmstadt.ukp.lmf.model.enums.EComplementizer;
 import de.tudarmstadt.ukp.lmf.model.enums.EDeterminer;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalFunction;
 import de.tudarmstadt.ukp.lmf.model.enums.EGrammaticalNumber;
+import de.tudarmstadt.ukp.lmf.model.enums.ELabelNameSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.ELabelTypeSemantics;
 import de.tudarmstadt.ukp.lmf.model.enums.ELanguageIdentifier;
 import de.tudarmstadt.ukp.lmf.model.enums.EPartOfSpeech;
@@ -90,17 +92,12 @@ public class IMSLexSubcatConverter {
 		protected String semanticLabel;
 
 		public IMSLexSubcatFrame(final String subcatLabel,
-				final String auxiliary, final String argumentStr) {
+				final String semanticLabel, final String auxiliary,
+				final String argumentStr) {
 			this.subcatLabel = subcatLabel;
 			this.auxiliary = auxiliary;
 			this.argumentStr = argumentStr;
-
-			semanticLabel = null;
-			if (subcatLabel.contains("n-type(measure)"))
-				semanticLabel = "semanticLabel=measureNoun";
-			else
-			if (subcatLabel.contains("n-type(mass)"))
-				semanticLabel = "semanticLabel=massNoun";
+			this.semanticLabel = semanticLabel;
 		}
 
 		public String getSubcatLabel() {
@@ -126,7 +123,7 @@ public class IMSLexSubcatConverter {
 	}
 
 
-	public static final String EXTREF_SENSE = "sense"; //TODO: shouldn't this be lemma?
+	public static final String EXTREF_LEMMA = "lemma";
 
 	protected Map<String, IMSLexEntry> lexicalEntryIndex;
 	protected Map<String, IMSLexSubcatFrame> subcatIndex;
@@ -137,6 +134,13 @@ public class IMSLexSubcatConverter {
 
 	protected int syntacticArgumentId = 0;
 
+	/** Reads the subcategorization frame files of IMSLexSubcat.
+	 *  Use {@link #toLMF()} to begin the actual conversion process.
+	 *  @param lexiconDir the directory path containing the IMSLexSubcat files.
+	 *  @param resourceName the resource name (e.g., "IMSLexSubcat")
+	 *  @param resourceVersion the resource name (e.g., "IMSLex_2012-06-17_deu")
+	 *  @param dtdVersion name of UBY's DTD file
+	 *  @throws IOException */
 	public IMSLexSubcatConverter(final File lexiconDir,
 			final String resourceName, final String resourceVersion,
 			final String dtdVersion) throws IOException {
@@ -159,6 +163,16 @@ public class IMSLexSubcatConverter {
 
 	protected void loadIMSLexSubcatFile(final File lexiconFile,
 			EPartOfSpeech pos, boolean particleVerbs) throws IOException {
+		Map<String, String> semanticMappings = new TreeMap<String, String>();
+		semanticMappings.put("n-type(measure)", ELabelNameSemantics.SEMANTIC_NOUN_CLASS_MEASURE_NOUN);
+		semanticMappings.put("n-type(mass)", ELabelNameSemantics.SEMANTIC_NOUN_CLASS_MASS_NOUN);
+		// Nouns with the following specifications have not been considered (very noisy):
+		semanticMappings.put("ntype(app-buchst-zahl)", "");
+		semanticMappings.put("ntype(name)", "");
+		semanticMappings.put("ntype(app)", "");
+		semanticMappings.put("ntype(beruf)", "");
+		semanticMappings.put("ntype(name-det)", "");
+
 		BufferedReader reader = new BufferedReader(new InputStreamReader(
 				new FileInputStream(lexiconFile), "UTF-8"));
 		try {
@@ -199,19 +213,20 @@ public class IMSLexSubcatConverter {
 
 				if (subcatLabel.isEmpty())
 					continue;
-				if (subcatLabel.contains("(ntype(app-buchst-zahl))")) //TODO: semantic labels?
-					continue;
-				if (subcatLabel.contains("(ntype(name))"))
-					continue;
-				if (subcatLabel.contains("(ntype(app))"))
-					continue;
-				if (subcatLabel.contains("(ntype(beruf))"))
-					continue;
-				if (subcatLabel.contains("(ntype(name-det))"))
-					continue;
-
 				if (subcatLabel.startsWith("(") && subcatLabel.endsWith(")"))
 					subcatLabel = subcatLabel.substring(1, subcatLabel.length() - 1);
+
+				String semanticLabel = null;
+				for (Entry<String, String> labelMapping : semanticMappings.entrySet()) {
+					if (!subcatLabel.contains(labelMapping.getKey()))
+						continue;
+
+					semanticLabel = labelMapping.getValue();
+					subcatLabel = subcatLabel.replace(labelMapping.getKey(), "");
+				}
+				if (semanticLabel != null && semanticLabel.isEmpty())
+					continue;
+
 				String argumentString = subcatMap.createArgumentString(subcatLabel);
 
 				/*
@@ -232,10 +247,10 @@ public class IMSLexSubcatConverter {
 					entry = new IMSLexEntry(lemma, pos);
 					lexicalEntryIndex.put(key, entry);
 				}
-				IMSLexSubcatFrame subcatFrame = new IMSLexSubcatFrame(subcatLabel, auxiliary, argumentString);
+				IMSLexSubcatFrame subcatFrame = new IMSLexSubcatFrame(subcatLabel,
+						semanticLabel, auxiliary, argumentString);
 				entry.addSubcatFrame(subcatFrame);
 			}
-
 		} finally {
 			reader.close();
 		}
@@ -356,7 +371,7 @@ public class IMSLexSubcatConverter {
 
 		// GlobalInformation.
 		GlobalInformation globalInformation = new GlobalInformation();
-		globalInformation.setLabel("IMSLex, see PhD thesis of Eckle-Kohler (1999), Version of 09/2011");
+		globalInformation.setLabel("IMSLex, see PhD thesis of Eckle-Kohler (1999), Version of 06/2012");
 		lexicalResource.setGlobalInformation(globalInformation);
 
 		// Lexicon.
@@ -392,6 +407,8 @@ public class IMSLexSubcatConverter {
 					continue;
 
 				String argStr = scf.getSyntaxStr();
+				if (argStr.isEmpty())
+					continue;
 				String scfId = realizedSCFs.get(argStr);
 				if (scfId == null || lemmaPos.compareTo(scfId) < 0)
 					realizedSCFs.put(argStr, lemmaPos);
@@ -486,50 +503,41 @@ public class IMSLexSubcatConverter {
 			});
 			List<SyntacticBehaviour> syntacticBehaviours = new LinkedList<SyntacticBehaviour>();
 			List <Sense> senses = new LinkedList<Sense>();
-			boolean hadSemanticLabel = false;
 			String previousArgumentStr = null;
 			for (IMSLexSubcatFrame scf : entrySCFs) {
 				String argumentStr = scf.getSyntaxStr();
 				if (argumentStr.equals(previousArgumentStr))
 					continue; //TODO: is that correct?
 				previousArgumentStr = argumentStr;
-				String semanticLabelText = scf.getSemanticLabel();
-				if (semanticLabelText != null) {
-					if (hadSemanticLabel)
-						break; //TODO: why?
-					hadSemanticLabel = true;
-				}
 
 				// Sense.
 				Sense sense = new Sense();
 				sense.setId("IMSLexSubcat_Sense_" + senseId);
-				sense.setIndex(senseId);
 				senseId++;
-				//TODO: sense.setIndex(senses.size() + 1);
+				sense.setIndex(senses.size() + 1);
 				senses.add(sense);
 
 				// MonolingualExternalRef.
 				MonolingualExternalRef monolingualExternalRef = new MonolingualExternalRef();
-				monolingualExternalRef.setExternalSystem(resourceVersion + "_" + EXTREF_SENSE);
+				monolingualExternalRef.setExternalSystem(resourceVersion + "_" + EXTREF_LEMMA);
 				monolingualExternalRef.setExternalReference(entry.getLemma());
 				List<MonolingualExternalRef> monolingualExternalRefs = new LinkedList<MonolingualExternalRef>();
 				monolingualExternalRefs.add(monolingualExternalRef);
 				sense.setMonolingualExternalRefs(monolingualExternalRefs);
 
 				// SemanticLabel.
+				String semanticLabelText = scf.getSemanticLabel();
 				if (semanticLabelText != null) {
 					List<SemanticLabel> semanticLabels = new ArrayList<SemanticLabel>();
 					SemanticLabel semanticLabel = new SemanticLabel();
-					//TODO: semanticLabel.setLabel(ELabelNameSemantics.SEMANTIC_NOUN_CLASS_MASS_NOUN);
 					semanticLabel.setLabel(semanticLabelText);
 					semanticLabel.setType(ELabelTypeSemantics.semanticNounClass);
 					semanticLabels.add(semanticLabel);
 					sense.setSemanticLabels(semanticLabels);
-					hadSemanticLabel = true;
 				}
 
 				// SubcategorizationFrame.
-				if (semanticLabelText == null && !scf.getArgumentStr().isEmpty()) {
+				if (!scf.getArgumentStr().isEmpty()) {
 					SubcategorizationFrame subcatFrame = subcategorizationFrameIndex.get(scf.getSyntaxStr());
 
 					// SyntacticBehavior.
@@ -596,7 +604,7 @@ public class IMSLexSubcatConverter {
 			SubcategorizationFrame subcategorizationFrame = parseArgumentStr(scf.getArgumentStr());
 			subcategorizationFrame.setId("IMSLexSubcat_SubcategorizationFrame_" + subcatFrameId);
 			subcatFrameId++;
-//			subcategorizationFrame.setSubcatLabel(scf.getSyntaxStr());
+			subcategorizationFrame.setSubcatLabel(scf.getSubcatLabel());
 			subcategorizationFrames.add(subcategorizationFrame);
 			subcategorizationFrameIndex.put(scf.getSyntaxStr(), subcategorizationFrame);
 		}
