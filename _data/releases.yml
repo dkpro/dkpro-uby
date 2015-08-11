@@ -2,8 +2,23 @@
 # 
 # Example: 
 #
-# - version: 1.7.0
-#   date: 2014-11-28
+# - version: 0.7.0
+#   date: 2015-04-10
 #   status: stable
 #
 # Possible status: "stable", "unstable"
+
+- version: 0.7.0
+  date: 2015-04-10
+  status: stable
+  groupId: de.tudarmstadt.ukp.uby
+  artifactId: de.tudarmstadt.ukp.uby
+
+
+- version: 0.8.0-SNAPSHOT
+  date: unknown
+  status: unstable
+  groupId: de.tudarmstadt.ukp.uby
+  artifactId: de.tudarmstadt.ukp.uby
+  user_guide_url: https://zoidberg.ukp.informatik.tu-darmstadt.de/jenkins/job/DKPro%20Uby%20(GitHub)/de.tudarmstadt.ukp.uby$de.tudarmstadt.ukp.uby.doc-asl/doclinks/1/
+  developer_guide_url: https://zoidberg.ukp.informatik.tu-darmstadt.de/jenkins/job/DKPro%20Uby%20(GitHub)/de.tudarmstadt.ukp.uby$de.tudarmstadt.ukp.uby.doc-asl/doclinks/2/
