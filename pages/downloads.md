@@ -43,7 +43,7 @@ Get the sources from [GitHub](https://github.com/dkpro/dkpro-uby).
 
 ## Databases
 
-We provide dumps of UBY databases for [download]([http://uby.ukp.informatik.tu-darmstadt.de/uby). 
+We provide dumps of UBY databases for [download](http://uby.ukp.informatik.tu-darmstadt.de/uby). 
 
 {% comment %}
 Get more information on the database dumps we offer on [http://code.google.com/p/uby/wiki/DbImportTutorial this Wiki page].
