@@ -38,7 +38,7 @@ permalink: "/downloads/"
 A full list of artifacts is available from [Maven Central][1]! 
   
 ## Sources
-Get the sources from [GitHub](https://github.com/dkpro/dkpro-uby/releases/tag/de.tudarmstadt.ukp.uby-{{stable.version}} ).
+Get the sources from [GitHub](https://github.com/dkpro/dkpro-uby/releases/tag/de.tudarmstadt.ukp.uby-0.7.0).
 
 ## Databases
 
