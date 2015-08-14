@@ -39,11 +39,11 @@ A full list of artifacts is available from [Maven Central][1]!
   
 ## Sources
 
-Get the sources from [GitHub](https://github.com/dkpro/dkpro-uby/releases/tag/dkpro-u-{{ stable.version }}).
+Get the sources from [GitHub](https://github.com/dkpro/dkpro-uby).
 
 ## Databases
 
-We provide [http://uby.ukp.informatik.tu-darmstadt.de/uby dumps of UBY databases for download]. 
+We provide dumps of UBY databases for [download]([http://uby.ukp.informatik.tu-darmstadt.de/uby). 
 
 {% comment %}
 Get more information on the database dumps we offer on [http://code.google.com/p/uby/wiki/DbImportTutorial this Wiki page].
