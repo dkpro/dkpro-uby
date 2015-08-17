@@ -13,7 +13,7 @@ title: "DKPro Uby"
 UBY combines a wide range of information from *10* expert-constructed and collaboratively constructed resources for English and German:
 
  * English [WordNet](http://wordnet.princeton.edu/), [Wiktionary](http://en.wiktionary.org), [Wikipedia](http://en.wikipedia.org/), [FrameNet](https://framenet.icsi.berkeley.edu/fndrupal/) and the syntactically rich [VerbNet](http://verbs.colorado.edu/~mpalmer/projects/verbnet.html), 
- * German [Wikipedia](http://de.wikipedia.org), [Wiktionary](http://de.wiktionary.org), [GermaNet](http://www.sfs.uni-tuebingen.de/lsd/), the syntactically rich [IMSLex-Subcat]()http://www.ims.uni-stuttgart.de/forschung/ressourcen/lexika/IMSLex.html, as well as multilingual [OmegaWiki](http://www.omegawiki.org/).
+ * German [Wikipedia](http://de.wikipedia.org), [Wiktionary](http://de.wiktionary.org), [GermaNet](http://www.sfs.uni-tuebingen.de/lsd/), the syntactically rich [IMSLex-Subcat](http://www.ims.uni-stuttgart.de/forschung/ressourcen/lexika/IMSLex.html), as well as multilingual [OmegaWiki](http://www.omegawiki.org/).
 
 A subset of these resources is *inter-linked at the word sense level*.
  
