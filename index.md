@@ -47,7 +47,7 @@ Learn these foundations and how to use UBY by walking through this detailed tuto
 
 ## About UBY
 
-This project was initiated under the auspices of Prof. Dr. Iryna Gurevych, Ubiquitous Knowledge Processing Lab (UKP), Technische Universität Darmstadt.
+This project was initiated under the auspices of Prof. Iryna Gurevych, Ubiquitous Knowledge Processing Lab (UKP), Technische Universität Darmstadt.
 We are grateful for the generous financial support from the Volkswagen Foundation and the German Research Foundation (DFG).
 
 Please post any questions or suggestions to the [UBY Developers Group](http://groups.google.com/group/uby-developers).
