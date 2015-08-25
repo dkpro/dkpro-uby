@@ -11,6 +11,13 @@ permalink: "/downloads/"
 {{ site.title }} is availble via the Maven infrastructure.
 
 {% highlight xml %}
+<repositories>
+  <repository>
+    <id>ukp-oss-releases</id>
+    <url>http://zoidberg.ukp.informatik.tu-darmstadt.de/artifactory/public-releases</url>
+   </repository>
+</repositories>
+
 <properties>
   <dkpro.uby.version>{{ stable.version }}</dkpro.uby.version>
 </properties>
@@ -35,7 +42,7 @@ permalink: "/downloads/"
 </dependencies>
 {% endhighlight xml %}
 
-A full list of artifacts is available from [Maven Central][1]! 
+<!-- A full list of artifacts is available from [Maven Central][1]! -->
   
 ## Sources
 Get the sources from [GitHub](https://github.com/dkpro/dkpro-uby/releases/tag/de.tudarmstadt.ukp.uby-0.7.0).
