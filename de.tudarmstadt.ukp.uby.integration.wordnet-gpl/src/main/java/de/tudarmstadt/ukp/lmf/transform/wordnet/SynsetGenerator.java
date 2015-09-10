@@ -122,8 +122,9 @@ public class SynsetGenerator {
 	/** Transforms WordNet synsets to UBY synsets and stores the result in
 	 *  member variables. Initialization is done only once. */
 	public void initialize() throws JWNLException {
-		if (initialized)
-			return;
+		if (initialized) {
+            return;
+        }
 
 		// Create UBY-LMF synsets.
 		for (POS pos : POS.getAllPOS()) {
@@ -213,16 +214,20 @@ public class SynsetGenerator {
 				senseDefinition = senseDefinition + gloss.substring(0, idx);
 				gloss = gloss.substring(idx + 1);
 				senseExamples = gloss;
-			} else
-				senseDefinition = senseDefinition + gloss + ";";
+			}
+            else {
+                senseDefinition = senseDefinition + gloss + ";";
+            }
 			String tmp = senseDefinition.trim();
 			endsWithDelim = (";:.,)".indexOf(tmp.charAt(tmp.length() - 1)) >= 0);
-			if (!endsWithDelim)
-				senseDefinition = senseDefinition + "\"";
+			if (!endsWithDelim) {
+                senseDefinition = senseDefinition + "\"";
+            }
 		} while (!endsWithDelim);
 		senseDefinition = senseDefinition.trim();
-		if (!senseDefinition.isEmpty())
-			senseDefinition = senseDefinition.substring(0, senseDefinition.length() - 1).trim();
+		if (!senseDefinition.isEmpty()) {
+            senseDefinition = senseDefinition.substring(0, senseDefinition.length() - 1).trim();
+        }
 
 		// Separate sense examples.
 		if (senseExamples != null) {
@@ -235,8 +240,9 @@ public class SynsetGenerator {
 					senseExamples = senseExamples.substring(idx + 1);
 
 					idx = senseExamples.indexOf("\"");
-					if (idx >= 0)
-						senseExamples = senseExamples.substring(idx + 1);
+					if (idx >= 0) {
+                        senseExamples = senseExamples.substring(idx + 1);
+                    }
 				}
 			} while (idx >= 0);
 		}
@@ -246,15 +252,17 @@ public class SynsetGenerator {
 	protected String cleanText(final String text) {
 		StringBuilder result = new StringBuilder();
 		boolean wasWhitespace = false;
-		for (char c : text.toCharArray())
-			if (" \t\n\r.,!?:;()`'-".indexOf(c) >= 0) {
-				if (!wasWhitespace)
-					result.append(' ');
+		for (char c : text.toCharArray()) {
+            if (" \t\n\r.,!?:;()`'-".indexOf(c) >= 0) {
+				if (!wasWhitespace) {
+                    result.append(' ');
+                }
 				wasWhitespace = true;
 			} else {
 				result.append(Character.toLowerCase(c));
 				wasWhitespace = false;
 			}
+        }
 		return result.toString().trim();
 	}
 
@@ -264,8 +272,9 @@ public class SynsetGenerator {
 		// Clean example and sense lemmas.
 		String example = " " + cleanText(senseExample) + " ";
 		List<ExampleMapping> mappings = new ArrayList<ExampleMapping>();
-		for (Word word : wnSynset.getWords())
-			mappings.add(new ExampleMapping(word.getSenseKey(), cleanText(word.getLemma())));
+		for (Word word : wnSynset.getWords()) {
+            mappings.add(new ExampleMapping(word.getSenseKey(), cleanText(word.getLemma())));
+        }
 
 		// Step 0: Check if there is a manual disambiguation.
 //		String senseKey = manualDisambiguation.get(wnSynset.getOffset() + wnSynset.getPOS().getKey());
@@ -348,11 +357,12 @@ public class SynsetGenerator {
 			String lemma = mapping.getLemma();
 			List<String> lemmaTokens = segmentTokens(lemma);
 			boolean hasMultiWordBaseFormMatch = true;
-			for (String lemmaToken : lemmaTokens)
-				if (!baseForms.contains(lemmaToken)) {
+			for (String lemmaToken : lemmaTokens) {
+                if (!baseForms.contains(lemmaToken)) {
 					hasMultiWordBaseFormMatch = false;
 					break;
 				}
+            }
 			if (hasMultiWordBaseFormMatch) {
 				mapping.addScore(1);
 				hasBaseFormMatch = true;
@@ -391,8 +401,9 @@ public class SynsetGenerator {
 				maxScore2 = maxScore1;
 				maxScore1 = score;
 			} else
-			if (score >= maxScore2)
-				maxScore2 = score;
+			if (score >= maxScore2) {
+                maxScore2 = score;
+            }
 		}
 
 		if (maxScore1 > 0 && maxScore2 == 0) {
@@ -404,11 +415,13 @@ public class SynsetGenerator {
 
 		// Step 5: This example requires manual disambiguation. Add it to the
 		// 	annotation list.
-		if (annotationList == null)
-			annotationList = new ArrayList<String>();
+		if (annotationList == null) {
+            annotationList = new ArrayList<String>();
+        }
 		annotationList.add(wnSynset.getOffset() + wnSynset.getPOS().getKey() + "\t" + senseExample);
-		for (Word word : wnSynset.getWords())
-			annotationList.add("\t\t" + word.getSenseKey() + "\t" + word.getLemma());
+		for (Word word : wnSynset.getWords()) {
+            annotationList.add("\t\t" + word.getSenseKey() + "\t" + word.getLemma());
+        }
 		annotationList.add("");
 
 		// Step 6: If we still have no clue about the example, add it to the
@@ -426,8 +439,10 @@ public class SynsetGenerator {
 			if (idx >= 0) {
 				token = remainingString.substring(0, idx);
 				remainingString = remainingString.substring(idx + 1);
-			} else
-				token = remainingString;
+			}
+            else {
+                token = remainingString;
+            }
 			result.add(token);
 		} while (idx >= 0);
 		return result;
@@ -435,8 +450,9 @@ public class SynsetGenerator {
 
 	protected Set<String> makeBaseFormList(final String example)
 			throws JWNLException {
-		if (morphProcessor == null)
-			morphProcessor = wordnet.getMorphologicalProcessor();
+		if (morphProcessor == null) {
+            morphProcessor = wordnet.getMorphologicalProcessor();
+        }
 
 		Set<String> result = new TreeSet<String>();
 		int idx;
@@ -447,14 +463,18 @@ public class SynsetGenerator {
 			if (idx >= 0) {
 				token = remainingString.substring(0, idx);
 				remainingString = remainingString.substring(idx + 1);
-			} else
-				token = remainingString;
+			}
+            else {
+                token = remainingString;
+            }
 
 			// Generate base forms for all POS to avoid POS tagging errors.
-			if (!token.isEmpty())
-				result.add(token);
-			for (POS pos : POS.values())
-				result.addAll(morphProcessor.lookupAllBaseForms(pos, token));
+			if (!token.isEmpty()) {
+                result.add(token);
+            }
+			for (POS pos : POS.values()) {
+                result.addAll(morphProcessor.lookupAllBaseForms(pos, token));
+            }
 		} while (idx >= 0);
 
 		return result;
@@ -465,9 +485,11 @@ public class SynsetGenerator {
 			final boolean preferLongerLemmas) {
 		// Select all senses that scored at least the minimal score.
 		List<ExampleMapping> selection = new ArrayList<ExampleMapping>();
-		for (ExampleMapping mapping : mappings)
-			if (mapping.getScore() >= minScore)
-				selection.add(mapping);
+		for (ExampleMapping mapping : mappings) {
+            if (mapping.getScore() >= minScore) {
+                selection.add(mapping);
+            }
+        }
 
 		// If there are ties, prefer the longer ones.
 		if (preferLongerLemmas) {
@@ -477,23 +499,26 @@ public class SynsetGenerator {
 				boolean select = true;
 				for (ExampleMapping mapping2 : selection) {
 					String lemma2 = mapping2.getLemma();
-					if (lemma1.equals(lemma2))
-						continue;
+					if (lemma1.equals(lemma2)) {
+                        continue;
+                    }
 
 					if (lemma2.contains(lemma1)) {
 						select = false;
 						break;
 					}
 				}
-				if (select)
-					temp.add(mapping1);
+				if (select) {
+                    temp.add(mapping1);
+                }
 			}
 			selection = temp;
 		}
 
 		// Save the selected example mappings.
-		for (ExampleMapping mapping : selection)
-			saveExampleMapping(example, mapping.getSenseKey());
+		for (ExampleMapping mapping : selection) {
+            saveExampleMapping(example, mapping.getSenseKey());
+        }
 	}
 
 	protected void saveExampleMapping(String example, String senseKey) {
@@ -544,7 +569,12 @@ public class SynsetGenerator {
 	 * @see net.sf.extjwnl.data.Synset
 	 */
 	public List<String> getExamples(Word lexeme){
-		return examples.get(lexeme.getSenseKey());
+		try {
+            return examples.get(lexeme.getSenseKey());
+        }
+        catch (JWNLException e) {
+            throw new IllegalArgumentException(e);
+        }
 	}
 
 }

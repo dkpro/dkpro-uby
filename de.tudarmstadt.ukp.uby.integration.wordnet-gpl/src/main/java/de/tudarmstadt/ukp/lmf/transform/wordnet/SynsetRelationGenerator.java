@@ -26,6 +26,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import net.sf.extjwnl.JWNLException;
 import net.sf.extjwnl.data.POS;
 import net.sf.extjwnl.data.Pointer;
 import net.sf.extjwnl.data.PointerTarget;
@@ -164,7 +165,13 @@ public class SynsetRelationGenerator {
 		synsetRelation.setRelName(relationName);
 
 		// Setting the target
-		PointerTarget pointerTarget = pointer.getTarget();
+		PointerTarget pointerTarget;
+        try {
+            pointerTarget = pointer.getTarget();
+        }
+        catch (JWNLException e) {
+            throw new IllegalArgumentException(e);
+        }
 		if(pointerTarget instanceof net.sf.extjwnl.data.Synset){
 			// the target is a Synset
 			synsetRelation.setTarget(synsetGenerator.getLMFSynset((net.sf.extjwnl.data.Synset)pointerTarget));
@@ -177,7 +184,13 @@ public class SynsetRelationGenerator {
 				// SenseGenerator is needed in order to obtain the Lexeme's corresponding Sense
 				SenseGenerator senseGenerator = lexicalEntryGenerator.getSenseGenerator();
 
-				net.sf.extjwnl.data.Synset targetSynset = (net.sf.extjwnl.data.Synset) pointer.getTarget();
+				net.sf.extjwnl.data.Synset targetSynset;
+                try {
+                    targetSynset = (net.sf.extjwnl.data.Synset) pointer.getTarget();
+                }
+                catch (JWNLException e) {
+                    throw new IllegalArgumentException(e);
+                }
 
 				// iterate over every lexeme of the source synset
 				for(Word lexeme : ((net.sf.extjwnl.data.Synset)pointer.getSource()).getWords()){

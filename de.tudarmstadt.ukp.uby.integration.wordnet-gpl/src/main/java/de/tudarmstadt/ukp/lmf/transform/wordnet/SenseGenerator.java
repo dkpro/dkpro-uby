@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import net.sf.extjwnl.JWNLException;
 import net.sf.extjwnl.data.Word;
 
 import org.apache.commons.logging.Log;
@@ -90,7 +91,12 @@ public class SenseGenerator {
 		lexemeSenseMappings = new TreeMap<Word, Sense>(new Comparator<Word>() {
 			@Override
 			public int compare(Word o1, Word o2) {
-				return o1.getSenseKey().compareTo(o2.getSenseKey());
+				try {
+                    return o1.getSenseKey().compareTo(o2.getSenseKey());
+                }
+                catch (JWNLException e) {
+                    throw new IllegalArgumentException(e);
+                }
 			}
 		});
 	}
@@ -125,7 +131,13 @@ public class SenseGenerator {
 			sense.setId(getNewID());
 			sense.setLexicalEntry(lexicalEntry);
 			// setting index of the Sense (lexeme's Position in the WN-Synset)
-			String senseNumber = isr.getSenseNumber(lexeme.getSenseKey());
+			String senseNumber;
+            try {
+                senseNumber = isr.getSenseNumber(lexeme.getSenseKey());
+            }
+            catch (JWNLException e) {
+                throw new IllegalArgumentException(e);
+            }
 			if(senseNumber != null){
 				int index = Integer.parseInt(senseNumber);
 				if(nextIndex <= index) {
@@ -138,7 +150,12 @@ public class SenseGenerator {
 				needDummySenseNumber.add(sense);
 				StringBuffer sb = new StringBuffer(128);
 				sb.append("IndexSenseReader did not provide sense number for senseKey ");
-				sb.append(lexeme.getSenseKey()).append('\n');
+				try {
+                    sb.append(lexeme.getSenseKey()).append('\n');
+                }
+                catch (JWNLException e) {
+                    throw new IllegalArgumentException(e);
+                }
 				sb.append("adding a dummy value of sense number");
 				logger.warn(sb.toString());
 			}
@@ -172,7 +189,12 @@ public class SenseGenerator {
 			StringBuffer sb = new StringBuffer(32);
 			sb.append(lexeme.getSynset().getPOS());
 			sb.append(" ");
-			sb.append(lexeme.getSenseKey());
+			try {
+                sb.append(lexeme.getSenseKey());
+            }
+            catch (JWNLException e) {
+                throw new IllegalArgumentException(e);
+            }
 			monolingualExternalRef.setExternalSystem("WordNet 3.0 part of speech and sense key");
 			monolingualExternalRef.setExternalReference(sb.toString());
 			/**/

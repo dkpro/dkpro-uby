@@ -114,10 +114,15 @@ public class LexicalEntryGenerator {
 		lexemeToGroupMappings = new TreeMap<Word, Set<Word>>(new Comparator<Word>() {
 			@Override
 			public int compare(Word o1, Word o2) {
-				return o1.getSenseKey().compareTo(o2.getSenseKey());
+				try {
+                    return o1.getSenseKey().compareTo(o2.getSenseKey());
+                }
+                catch (JWNLException e) {
+                    throw new IllegalArgumentException(e);
+                }
 			}
 		});
-		
+
 		if(!initialized){
 			this.extWordnet = extWordnet;
 			lexicalEntryNumber = 0;
@@ -160,7 +165,12 @@ public class LexicalEntryGenerator {
 						lexemeGroup = new TreeSet<Word>(new Comparator<Word>() {
 							@Override
 							public int compare(Word o1, Word o2) {
-								return o1.getSenseKey().compareTo(o2.getSenseKey());
+								try {
+                                    return o1.getSenseKey().compareTo(o2.getSenseKey());
+                                }
+                                catch (JWNLException e) {
+                                    throw new IllegalArgumentException(e);
+                                }
 							}
 						});
 						lemmaLexemeGroup.put(lemma, lexemeGroup);
@@ -243,13 +253,18 @@ public class LexicalEntryGenerator {
 			}
 			// extracting the subcat frame of an adjective
 			String synMarker;
-			if(lePOS.equals(EPartOfSpeech.adjective) && (synMarker = lexeme.getSenseKeyWithAdjClass()).contains("(")){
-				int start = synMarker.indexOf("(");
-				String adjFrameCode = synMarker.substring(start+1, synMarker.indexOf(")"));
-				Map<String, Word> codeLexeme = new TreeMap<String, Word>();
-				codeLexeme.put(adjFrameCode, lexeme); // the codes will be processed later
-				subcatCodes.add(codeLexeme);
-			}
+			try {
+                if(lePOS.equals(EPartOfSpeech.adjective) && (synMarker = lexeme.getSenseKeyWithAdjClass()).contains("(")){
+                	int start = synMarker.indexOf("(");
+                	String adjFrameCode = synMarker.substring(start+1, synMarker.indexOf(")"));
+                	Map<String, Word> codeLexeme = new TreeMap<String, Word>();
+                	codeLexeme.put(adjFrameCode, lexeme); // the codes will be processed later
+                	subcatCodes.add(codeLexeme);
+                }
+            }
+            catch (JWNLException e) {
+                throw new IllegalArgumentException(e);
+            }
 		}
 
 		//*** Creating Lemma ***//

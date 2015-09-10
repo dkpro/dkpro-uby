@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import net.sf.extjwnl.JWNLException;
 import net.sf.extjwnl.data.POS;
 import net.sf.extjwnl.data.Pointer;
 import net.sf.extjwnl.data.Word;
@@ -134,7 +135,13 @@ public class SenseRelationGenerator {
 		SenseRelation senseRelation = new SenseRelation();
 
 		// Setting the target
-		Word target = (Word) pointer.getTarget();
+		Word target;
+        try {
+            target = (Word) pointer.getTarget();
+        }
+        catch (JWNLException e) {
+            throw new IllegalArgumentException(e);
+        }
 		senseRelation.setTarget(lexicalEntryGenerator.getSenseGenerator().getSense(target));
 
 		String pointerKey = pointer.getType().getKey();
