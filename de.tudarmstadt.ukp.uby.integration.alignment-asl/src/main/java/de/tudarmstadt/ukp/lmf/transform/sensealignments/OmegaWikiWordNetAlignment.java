@@ -25,7 +25,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 
-import net.didion.jwnl.data.POS;
+import net.sf.extjwnl.data.POS;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
 import de.tudarmstadt.ukp.lmf.transform.DBConfig;
 import de.tudarmstadt.ukp.lmf.transform.alignments.SenseAlignment;
@@ -43,11 +43,11 @@ public class OmegaWikiWordNetAlignment extends SenseAlignment
 	private final OmegaWiki ow;
 	private final int owLanguage;
 	private final String owLanguageId;
-	
+
 	// the param alignmentFile is a dummy param that is not used; passing the name of any existing file is ok
-	public OmegaWikiWordNetAlignment(String sourceUrl, String destUrl,String dbDriver, String dbVendor, 
-			String alignmentFile, String user, String pass,OmegaWiki ow, int language) 
-		    throws SQLException, InstantiationException, IllegalAccessException, 
+	public OmegaWikiWordNetAlignment(String sourceUrl, String destUrl,String dbDriver, String dbVendor,
+			String alignmentFile, String user, String pass,OmegaWiki ow, int language)
+		    throws SQLException, InstantiationException, IllegalAccessException,
 		    ClassNotFoundException, FileNotFoundException
 	{
 		super(sourceUrl, destUrl,dbDriver,dbVendor, alignmentFile, user, pass,UBY_HOME);

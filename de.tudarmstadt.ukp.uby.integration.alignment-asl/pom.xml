@@ -69,10 +69,6 @@
             <artifactId>de.tudarmstadt.ukp.omegawikiapi-asl</artifactId>
         </dependency>
         <dependency>
-            <groupId>net.didion.jwnl</groupId>
-            <artifactId>jwnl</artifactId>
-        </dependency>
-        <dependency>
             <groupId>edu.mit.jwi</groupId>
             <artifactId>edu.mit.jwi</artifactId>
         </dependency>
@@ -120,6 +116,10 @@
         <dependency>
             <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
             <artifactId>de.tudarmstadt.ukp.dkpro.core.languagetool-asl</artifactId>
+        </dependency>
+        <dependency>
+        	<groupId>net.sf.extjwnl</groupId>
+        	<artifactId>extjwnl</artifactId>
         </dependency>
     </dependencies>
 </project>
