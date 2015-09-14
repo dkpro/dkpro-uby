@@ -398,4 +398,5 @@
         </snapshotRepository>
     </distributionManagement>
 
+    <url>https://dkpro.github.io/dkpro-uby/</url>
 </project>
