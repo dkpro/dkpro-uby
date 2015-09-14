@@ -399,4 +399,8 @@
     </distributionManagement>
 
     <url>https://dkpro.github.io/dkpro-uby/</url>
+    <organization>
+    	<url>https://www.ukp.tu-darmstadt.de/</url>
+    	<name>Ubiquitous Knowledge Processing (UKP) Lab, Technische Universität Darmstadt</name>
+    </organization>
 </project>
