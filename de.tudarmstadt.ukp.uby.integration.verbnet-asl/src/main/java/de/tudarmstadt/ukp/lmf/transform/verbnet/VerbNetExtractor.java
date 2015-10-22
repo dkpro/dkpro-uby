@@ -366,6 +366,7 @@ public class VerbNetExtractor {
 			List<FormRepresentation> formReps = new ArrayList<FormRepresentation>();
 			FormRepresentation formRep = new FormRepresentation();
 			formRep.setWrittenForm(verbLemma.replaceAll("_", " "));	// Extract FormRepresentation
+			formRep.setLanguageIdentifier(ELanguageIdentifier.ENGLISH);
 			formReps.add(formRep);				// Save FormRepresentation
 			lemma.setFormRepresentations(formReps);	// Save FormRepresentations
 			lexicalEntry.setLemma(lemma);			// Save Lemma
@@ -376,12 +377,14 @@ public class VerbNetExtractor {
 			List<SyntacticBehaviour> syntacticBehaviours = new LinkedList <SyntacticBehaviour>();
 
 			Iterator<VerbNetSense> senseIterator = LemmaVerbNetSenseMappings.get(verbLemma).iterator();
+			int senseIndex = 1; //starts with 1
 			while (senseIterator.hasNext()) {
 				VerbNetSense vnSense = senseIterator.next();
 				Sense sense = new Sense();
 
 				sense.setId("VN_Sense_".concat(Integer.toString(senseNumber)));
-				sense.setIndex(senseNumber);
+				sense.setIndex(senseIndex);
+				senseIndex++;
 				senseNumber++;
 				String [] classInfo = vnSense.classInformation.split("\\(");
 
