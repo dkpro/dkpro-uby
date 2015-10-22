@@ -304,6 +304,7 @@ public class GermanVcExtractor {
 			// Create FormRepresentation
 			List<FormRepresentation> formReps = new ArrayList<FormRepresentation>();
 			FormRepresentation formRep = new FormRepresentation();
+			formRep.setLanguageIdentifier(ELanguageIdentifier.GERMAN);
 			if (verbLemma.contains("#")) {
 				String[] parts = verbLemma.split("#");
 				String prefix = parts[0];

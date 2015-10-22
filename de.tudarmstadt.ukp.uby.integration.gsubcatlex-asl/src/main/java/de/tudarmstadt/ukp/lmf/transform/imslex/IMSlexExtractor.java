@@ -401,6 +401,7 @@ public class IMSlexExtractor {
 			// Create FormRepresentation
 			List<FormRepresentation> formReps = new ArrayList<FormRepresentation>();
 			FormRepresentation formRep = new FormRepresentation();
+			formRep.setLanguageIdentifier(ELanguageIdentifier.GERMAN);
 			if (sourceLemma.contains("#")) { // then it is a verb with separable prefix, the prefix marked by #
 				String[] parts = sourceLemma.split("#");
 				String prefix = parts[0];
