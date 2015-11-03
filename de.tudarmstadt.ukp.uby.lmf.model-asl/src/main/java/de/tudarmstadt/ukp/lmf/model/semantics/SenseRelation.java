@@ -17,8 +17,6 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.semantics;
 
-import java.util.Collections;
-
 import de.tudarmstadt.ukp.lmf.model.abstracts.SemanticRelation;
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
 import de.tudarmstadt.ukp.lmf.model.core.Sense;
@@ -104,7 +102,7 @@ public class SenseRelation extends SemanticRelation<Sense> implements Comparable
 		.append(" relType: ").append(this.relType).append("relName: ").append(this.relName);
 		sb.append("source: ").append(source);
 		sb.append("frequencies: ");
-		Collections.sort(frequencies);
+		// Collections.sort(frequencies);
 		sb.append(frequencies);
 		
 		return sb.toString();

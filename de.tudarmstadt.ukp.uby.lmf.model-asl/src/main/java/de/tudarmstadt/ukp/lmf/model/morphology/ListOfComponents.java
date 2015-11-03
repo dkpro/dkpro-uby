@@ -17,7 +17,6 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.morphology;
 
-import java.util.Collections;
 import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
@@ -48,8 +47,8 @@ public class ListOfComponents implements Comparable<ListOfComponents> {
 	
 	public String toString(){
 		StringBuffer sb = new StringBuffer(256);
-		if(this.components != null)
-			Collections.sort(components);
+		//if(this.components != null)
+			//Collections.sort(components);
 		sb.append("ListOfComponents: ").append(components);
 		return sb.toString();
 	}

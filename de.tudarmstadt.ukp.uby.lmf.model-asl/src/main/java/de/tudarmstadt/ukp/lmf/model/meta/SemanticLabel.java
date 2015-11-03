@@ -17,7 +17,6 @@
  ******************************************************************************/
 package de.tudarmstadt.ukp.lmf.model.meta;
 
-import java.util.Collections;
 import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.abstracts.HasMonolingualExternalRefs;
@@ -164,8 +163,8 @@ public class SemanticLabel extends HasMonolingualExternalRefs implements Compara
 		sb.append("SemanticLabel ").append("label: ").append(label);
 		sb.append(" type: ").append(type);
 		sb.append(" quantification: ").append(quantification);
-		if(monolingualExternalRefs != null)
-			Collections.sort(monolingualExternalRefs);
+		//if(monolingualExternalRefs != null)
+			//Collections.sort(monolingualExternalRefs);
 		sb.append(" monolingualExternalRefs: ").append(monolingualExternalRefs);
 		return sb.toString();
 	}

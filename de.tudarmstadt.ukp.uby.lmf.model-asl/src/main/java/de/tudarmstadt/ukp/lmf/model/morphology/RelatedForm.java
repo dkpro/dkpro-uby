@@ -18,7 +18,6 @@
 package de.tudarmstadt.ukp.lmf.model.morphology;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import de.tudarmstadt.ukp.lmf.model.core.LexicalEntry;
@@ -143,7 +142,7 @@ public class RelatedForm implements Comparable<RelatedForm> {
 	
 	public String toString(){
 		StringBuffer sb = new StringBuffer(256);
-		Collections.sort(formRepresentations);
+		//Collections.sort(formRepresentations);
 		sb.append("RelatedForm ").append("targetLexicalEntry: ");
 		if(this.targetLexicalEntry != null)
 			sb.append(targetLexicalEntry.toString());
