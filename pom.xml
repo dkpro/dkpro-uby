@@ -51,7 +51,8 @@
         <module>de.tudarmstadt.ukp.uby.distribution</module>
         <module>de.tudarmstadt.ukp.uby.testing-asl</module>
         <module>de.tudarmstadt.ukp.uby.uima-asl</module>
-        <module>de.tudarmstadt.ukp.uby.doc-asl</module>
+        <module>de.tudarmstadt.ukp.uby.doc-asl</module>       
+        <module>de.tudarmstadt.ukp.uby.ubycreate-gpl</module>
     </modules>
     <scm>
   		<connection>scm:git:git://github.com/dkpro/dkpro-uby</connection>
