@@ -16,13 +16,13 @@
 
 == FAQ
 
-=== Using the UBY version of !WordNet in your Java projects
+=== Using the UBY version of WordNet in your Java projects
 
-*Q*: I want to switch from the !WordNet JWNL API to the UBY-API and the UBY version of !WordNet in order be able to access all the sense alignments available for !WordNet senses. Are there any special things to be considered? 
+*Q*: I want to switch from the WordNet JWNL API to the UBY-API and the UBY version of WordNet in order be able to access all the sense alignments available for WordNet senses. Are there any special things to be considered? 
 
 *A*: Yes, there are several things to be aware of:
 
-IMPORTANT: The !WordNet semantic relations (i.e. the hypernym, hyponym relations etc. available in !WordNet) are encoded as !SynsetRelation in UBY. That means, when iterating over the senses, you have to first retrieve their Synset, and then get the related synsets via !SynsetRelation. Here is a code snippet that shows how this can be done:
+IMPORTANT: The WordNet semantic relations (i.e. the hypernym, hyponym relations etc. available in WordNet) are encoded as SynsetRelation in UBY. That means, when iterating over the senses, you have to first retrieve their Synset, and then get the related synsets via SynsetRelation. Here is a code snippet that shows how this can be done:
 
 [source,java]
 ----
