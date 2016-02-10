@@ -1,4 +1,4 @@
-package org.dkpro.uby.creation.tools;
+package de.tudarmstadt.ukp.uby.ubycreate;
 
 import java.io.File;
 
