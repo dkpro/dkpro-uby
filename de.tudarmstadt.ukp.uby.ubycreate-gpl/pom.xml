@@ -76,7 +76,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>2.3</version>
+				<version>2.4.1</version>
 				<executions>
 					<!-- Run shade goal on package phase -->
 					<execution>
@@ -85,7 +85,7 @@
 							<goal>shade</goal>
 						</goals>
 						<configuration>
-							<filters>
+							<!--  <filters>
 								<filter>
 									<artifact>mysql:mysql-connector-java</artifact>
 									<includes>
@@ -202,14 +202,17 @@
 										<include>**</include>
 									</includes>
 								</filter>
-							</filters>
+							</filters> -->
 							<minimizeJar>true</minimizeJar>
 							<transformers>
 								<!-- add Main-Class to manifest file -->
 								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>org.dkpro.uby.creation.tools.MainController</mainClass>
+									<mainClass>de.tudarmstadt.ukp.uby.ubycreate-gpl.MainController</mainClass>
 								</transformer>
 							</transformers>
+							<!-- Uncomment this to generate the fat JAR 
+							<outputFile>${project.build.directory}/${artifactId}-${version}-standalone.jar</outputFile> 
+							-->
 						</configuration>
 					</execution>
 				</executions>
