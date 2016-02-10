@@ -27,11 +27,11 @@ See also *[http://uby.googlecode.com/svn/de.tudarmstadt.ukp.uby/tags/de.tudarmst
 | Does not contain any java-code
 
 | de.tudarmstadt.ukp.uby.integration.framenet-gpl 
-| Converts !FrameNet to UBY-LMF (java object model) 
+| Converts FrameNet to UBY-LMF (java object model) 
 | Usage described in ConversionTutorial 
 
 | de.tudarmstadt.ukp.uby.integration.germanet-gpl
-| Converts !GermaNet to UBY-LMF (java object model)
+| Converts GermaNet to UBY-LMF (java object model)
 | Usage described in ConversionTutorial
 
 | de.tudarmstadt.ukp.uby.integration.gsubcatlex-asl 
@@ -39,11 +39,11 @@ See also *[http://uby.googlecode.com/svn/de.tudarmstadt.ukp.uby/tags/de.tudarmst
 | Usage described in ConversionTutorial
 
 | de.tudarmstadt.ukp.uby.integration.omegawiki-asl 
-| Converts !OmegaWiki to UBY-LMF (java object model) 
+| Converts OmegaWiki to UBY-LMF (java object model) 
 | Usage described in ConversionTutorial
 
 | de.tudarmstadt.ukp.uby.integration.verbnet-asl 
-| Converts !VerbNet to UBY-LMF (java object model) 
+| Converts VerbNet to UBY-LMF (java object model) 
 | Usage described in ConversionTutorial
 
 | de.tudarmstadt.ukp.uby.integration.wikipedia-asl 
@@ -55,7 +55,7 @@ See also *[http://uby.googlecode.com/svn/de.tudarmstadt.ukp.uby/tags/de.tudarmst
 | Requires existing UBY database. _Setting UBY_HOME environment varbiable recommended._ Usage described in ConversionTutorial.
 
 | de.tudarmstadt.ukp.uby.integration.wordnet-gpl 
-| Converts !WordNet to UBY-LMF (java object model) 
+| Converts WordNet to UBY-LMF (java object model) 
 | _Setting UBY_HOME environment variable recommended._ Usage described in ConversionTutorial.
 
 | de.tudarmstadt.ukp.uby.lmf.api-asl 
