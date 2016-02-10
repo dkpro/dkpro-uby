@@ -69,7 +69,36 @@
 			<artifactId>args4j</artifactId>
 			<version>2.0.29</version>
 		</dependency>
-	
 	</dependencies>
-	
+	<build>
+		<finalName>ubycreate</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.4.1</version>
+				<executions>
+					<!-- Run shade goal on package phase -->
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							
+							<minimizeJar>true</minimizeJar>
+							<transformers>
+								<!-- add Main-Class to manifest file -->
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>de.tudarmstadt.ukp.uby.ubycreate-gpl.MainController</mainClass>
+								</transformer>
+							</transformers>							
+							<outputFile>${project.build.directory}/${artifactId}-${version}-standalone.jar</outputFile> 							
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
 </project>
