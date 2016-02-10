@@ -42,9 +42,9 @@ To obtain the Lexicons you want to query, you can either
 . Get only those of a specific language: `getLexiconsByLanguage(ELanguageIdentifier lang)`
 . Or get a specific lexicon, specified by its name: `getLexiconByName(String name)`
 
-In a similiar manner, you can get an iterator over all !LexialEntries by using `getLexicalEntryIterator(EPartOfSpeech pos,Lexicon lexicon)`. Similar methods also exist for retrieving Senses and Synsets.
+In a similiar manner, you can get an iterator over all LexialEntries by using `getLexicalEntryIterator(EPartOfSpeech pos,Lexicon lexicon)`. Similar methods also exist for retrieving Senses and Synsets.
 
-!SenseAxis are sense alignments between different resources, thus they are not attached to a specific Lexicon. You can directly query them with you Uby object. While `getSenseAxis()` returns a List of all of them, you can also retrieve them with `getSenseAxisBySense(Sense sense)` or `getSenseAxisById(String ID)` if you're interested in one particular sense. !SenseAxis are explained in more detail below.
+SenseAxis are sense alignments between different resources, thus they are not attached to a specific Lexicon. You can directly query them with you Uby object. While `getSenseAxis()` returns a List of all of them, you can also retrieve them with `getSenseAxisBySense(Sense sense)` or `getSenseAxisById(String ID)` if you're interested in one particular sense. SenseAxis are explained in more detail below.
 
 === UBY Queries based on UBY-LMF
 
@@ -52,11 +52,11 @@ The UBY-LMF DTD is useful for writing Hibernate-based UBY queries, because the l
 
 === Lexicon
 
-The basic functionality offered by a particular Lexicon object is to retrieve the informational entities within this Lexicon: !LexicalEntry, Sense, Synset and so on. Note that you can only retrieve collections - for querying a single item, a !LexicalEntry retrieved via the Uby object is usually the entry point.
+The basic functionality offered by a particular Lexicon object is to retrieve the informational entities within this Lexicon: LexicalEntry, Sense, Synset and so on. Note that you can only retrieve collections - for querying a single item, a LexicalEntry retrieved via the Uby object is usually the entry point.
 
-=== !LexicalEntry
+=== LexicalEntry
 
-While the !LexicalEntry object offers methods for retrieving basic knowledge about it such as POS or Lemma, you can also retrieve the attached Senses / Synsets which are the core of the information encoded in UBY.
+While the LexicalEntry object offers methods for retrieving basic knowledge about it such as POS or Lemma, you can also retrieve the attached Senses / Synsets which are the core of the information encoded in UBY.
 
 === Sense / Synset
 
@@ -64,11 +64,11 @@ The basic and most frequently used information available for a Sense object via 
 
 Another important piece of information is offered by the method `getMonolingualExternalRefs()`. With this, you can retrieve the ID of a sense as it was represented in the original resource. This might be useful to make a connection to legacy experiments or data.
 
-Most of this (except for the sense examples) also holds for a Synset object, but per definition, a Synset consists of multiple senses, which can be accessed as a list via the `getSenses()` method. Note that the definition text for a Sense might be empty (e.g. for !WordNet), if the definition is given in the Synset the Sense belongs to instead. This can be easily handled by checking if the length of the definition is 0.
+Most of this (except for the sense examples) also holds for a Synset object, but per definition, a Synset consists of multiple senses, which can be accessed as a list via the `getSenses()` method. Note that the definition text for a Sense might be empty (e.g. for WordNet), if the definition is given in the Synset the Sense belongs to instead. This can be easily handled by checking if the length of the definition is 0.
 
-=== !SenseAxis
+=== SenseAxis
 
-!SenseAxis are a major asset of UBY, as they offer alignments between different resources on sense level, not only on lexical level. They can exist between Sense object as well as Synset objects, thus the !SenseAxis object offers method for retrieving the source Sense / Synset (`getSenseOne()` / `getSynsetOne()`) and the target Sense / Synset (`getSenseTwo()` / `getSynsetTwo()`). Note that usually only the Sense OR the Synset values are not null, only for few resources such as !OmegaWiki both values are defined, as in this case a Synset alignment trivially implies a Sense alignment and vice versa. Additionally, the type of the !SenseAxis can be queried, which is `monolingualSenseAlignment` or
+SenseAxis are a major asset of UBY, as they offer alignments between different resources on sense level, not only on lexical level. They can exist between Sense object as well as Synset objects, thus the SenseAxis object offers method for retrieving the source Sense / Synset (`getSenseOne()` / `getSynsetOne()`) and the target Sense / Synset (`getSenseTwo()` / `getSynsetTwo()`). Note that usually only the Sense OR the Synset values are not null, only for few resources such as OmegaWiki both values are defined, as in this case a Synset alignment trivially implies a Sense alignment and vice versa. Additionally, the type of the SenseAxis can be queried, which is `monolingualSenseAlignment` or
 `crosslingualSenseAlignment`. This information might be useful for tasks such as cross-lingual information retrieval.
 
 === Code example (tested for UBY database v0.2.0)
@@ -119,13 +119,13 @@ public static void main(String[] args)
 }
 ----
 
-=== !FrameNet and !VerbNet Code examples (tested for UBY database v0.2.0)
+=== FrameNet and VerbNet Code examples (tested for UBY database v0.2.0)
 
-To conclude, here are some code snippets to showcase how to retrieve more complex information from !FrameNet and !VerbNet.
+To conclude, here are some code snippets to showcase how to retrieve more complex information from FrameNet and VerbNet.
 
-==== !FrameNet
+==== FrameNet
 
-In this first example, you can see how multiword information is retrieved from !FrameNet for the entry "carry out".
+In this first example, you can see how multiword information is retrieved from FrameNet for the entry "carry out".
 
 [source,java]
 ----
@@ -149,7 +149,7 @@ for (Component c: loc)
 }
 ----
 
-Here we show how !SemanticPredicate information is obtained for a known !SemanticPredicate.
+Here we show how SemanticPredicate information is obtained for a known SemanticPredicate.
 
 [source,java]
 ----
@@ -186,7 +186,7 @@ Here we show how !SemanticPredicate information is obtained for a known !Semanti
                                         " \n its definition: " + relTarget.getDefinitions().get(0).getTextRepresentations().get(0).getWrittenText());
 ----
 
-Here the same for !SemanticArgument.
+Here the same for SemanticArgument.
 
 [source,java]
 ----
@@ -222,9 +222,9 @@ for (Frequency f: senseFreqs)
 }
 ----
 
-==== !VerbNet
+==== VerbNet
 
-Finally here an example snippet which shows how specific information from !VerbNet is retrieved for the verb "run". In particular, we show how to display the mapping between syntactic and semantic arguments provided by !VerbNet.
+Finally here an example snippet which shows how specific information from VerbNet is retrieved for the verb "run". In particular, we show how to display the mapping between syntactic and semantic arguments provided by VerbNet.
 
 [source,java]
 ----
