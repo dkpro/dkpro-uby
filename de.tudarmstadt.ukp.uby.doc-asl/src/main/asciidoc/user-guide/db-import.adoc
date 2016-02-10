@@ -23,35 +23,35 @@ The compressed SQL database dumps and H2 databases are available from the link:h
 
 The largest database dump uby_open_XXX contains the following resources:
 
-* !FrameNet
-* !WordNet
-* !OmegaWiki German
-* !OmegaWiki English
+* FrameNet
+* WordNet
+* OmegaWiki German
+* OmegaWiki English
 * Wikipedia English
 * Wikipedia German
-* !VerbNet
+* VerbNet
 * Wiktionary English
 * Wiktionary German
-* !OntoWiktionary English
-* !OntoWiktionary German 
+* OntoWiktionary English
+* OntoWiktionary German 
 * Monolingual Sense Alignments between
-** Wikipedia EN and !WordNet
-** Wiktionary EN and !WordNet
-** !WordNet and  !VerbNet
-** !WordNet and !FrameNet
-** !FrameNet and  !VerbNet
-** !FrameNet and Wiktionary EN
-** Wiktionary EN and !OmegaWiki EN
-** !OmegaWiki DE and Wikipedia DE
-** !OmegaWiki EN and Wikipedia EN
+** Wikipedia EN and WordNet
+** Wiktionary EN and WordNet
+** WordNet and  VerbNet
+** WordNet and FrameNet
+** FrameNet and  VerbNet
+** FrameNet and Wiktionary EN
+** Wiktionary EN and OmegaWiki EN
+** OmegaWiki DE and Wikipedia DE
+** OmegaWiki EN and Wikipedia EN
 * Crosslingual Sense Alignments between
-** !OmegaWiki DE and !WordNet
-** !OmegaWiki DE and !OmegaWiki EN
+** OmegaWiki DE and WordNet
+** OmegaWiki DE and OmegaWiki EN
 ** Wikipedia EN and  Wikipedia DE
 
-Databases marked as _medium_ do not contain Wikipedia (DE and EN) and !OntoWiktionary (DE and EN), but the other resources and links listed above.
+Databases marked as _medium_ do not contain Wikipedia (DE and EN) and OntoWiktionary (DE and EN), but the other resources and links listed above.
 
-The H2 database marked _lite_ only contains !WordNet, !FrameNet, !VerbNet and the alignments between them.
+The H2 database marked _lite_ only contains WordNet, FrameNet, VerbNet and the alignments between them.
 
 The suffixes in the names of the UBY databases correspond to a version number of UBY. These numbers should agree. For instance, the uby_medium_0_6_0 dump is compatible with the UBY-API 0.6.0
 
