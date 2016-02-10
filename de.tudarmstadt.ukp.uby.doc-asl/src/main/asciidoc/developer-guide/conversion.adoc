@@ -64,14 +64,14 @@ After the tables have been created, you can import resources as described in the
 
 ==== Prerequisites
 
-. For using this converter, you need a modified version of the Java !FrameNet API: `JFN_042_recompiled`, available from our public Maven repository.
+. For using this converter, you need a modified version of the Java FrameNet API: `JFN_042_recompiled`, available from our public Maven repository.
 . You also need the FN Data Release 1.5, available here: https://framenet.icsi.berkeley.edu/fndrupal/framenet_request_data
 
 ==== Usage
 
-After satisfying the prerequisites mentioned above, you can start converting !FrameNet:
+After satisfying the prerequisites mentioned above, you can start converting FrameNet:
 
-Initialize an instance of !FrameNet -fn- which will be used by the FNConverter to obtain the information from the !FrameNet files.
+Initialize an instance of FrameNet -fn- which will be used by the FNConverter to obtain the information from the FrameNet files.
 
 [source,java]
 ----
@@ -90,12 +90,12 @@ FNConverter converter = new FNConverter(fn, new LexicalResource(), dtd_version);
 converter.toLMF();
 ----
 
-The last argument of the constructor is the DTD-version of the UBY-LMF that will be written to the resulting instance of !LexicalResource class. Depending on your system, the conversion may take up to one day.
+The last argument of the constructor is the DTD-version of the UBY-LMF that will be written to the resulting instance of LexicalResource class. Depending on your system, the conversion may take up to one day.
 
-After the conversion has finished, you can obtain the resulting !LexicalResource by calling the following method: 
+After the conversion has finished, you can obtain the resulting LexicalResource by calling the following method: 
 `LexicalResource fnLexicalResource = converter.getLexicalResource();`
 
-At this point, you can right away start using the instance of !LexicalResource to access the converted information, or you can write it to a xml-file using `LMFXmlWriter`.
+At this point, you can right away start using the instance of LexicalResource to access the converted information, or you can write it to a xml-file using `LMFXmlWriter`.
 
 === Wikpedia
 
@@ -161,11 +161,11 @@ Note that, unlike for most other Converters, there is no XML output or directly 
 
 ==== Prerequisites
 
-You need a preprocessed version of !VerbNet, available here: http://uby.ukp.informatik.tu-darmstadt.de/verbnet/
+You need a preprocessed version of VerbNet, available here: http://uby.ukp.informatik.tu-darmstadt.de/verbnet/
 
 ==== Usage
 
-After satisfying the prerequisites mentioned above, you can start converting !VerbNet: Initialize an instance of `VerbNetExtractor` which will be used by the `VNConverter` to obtain the information from the (single) !VerbNet file.
+After satisfying the prerequisites mentioned above, you can start converting VerbNet: Initialize an instance of `VerbNetExtractor` which will be used by the `VNConverter` to obtain the information from the (single) VerbNet file.
 
 [source,java]
 ----
@@ -179,9 +179,9 @@ Call the `toLMF()` method with the extractor as parameter in order to start the 
 
 `converterVerbNet.toLMF(verbNetExtractor);`
 
-After the conversion has finished, you can obtain the resulting !LexicalResource by calling the following method `LexicalResource vnLexicalResource = converter.getLexicalResource();`
+After the conversion has finished, you can obtain the resulting LexicalResource by calling the following method `LexicalResource vnLexicalResource = converter.getLexicalResource();`
 
-At this point, you can right away start using the instance of !LexicalResource to access the converted information, or you can write it to a xml-file using `LMFXmlWriter`.
+At this point, you can right away start using the instance of LexicalResource to access the converted information, or you can write it to a xml-file using `LMFXmlWriter`.
 
 === IMSlexSubset and IMSlex-Subcat
 
@@ -220,10 +220,10 @@ Call the `toLMF()` method with the extractor as parameter in order to start the 
 
 `converterILS.toLMF(ilsExtractor);`
 
-After the conversion has finished, you can obtain the resulting !LexicalResource by calling the following method:
+After the conversion has finished, you can obtain the resulting LexicalResource by calling the following method:
 `LexicalResource ilsLexicalResource = converter.getLexicalResource();`
 
-At this point, you can right away start using the instance of !LexicalResource to access the converted information, or you can write it to a xml-file using `LMFXmlWriter`.
+At this point, you can right away start using the instance of LexicalResource to access the converted information, or you can write it to a xml-file using `LMFXmlWriter`.
 
 ==== Using IMSlex-Subcat converter
 
@@ -241,10 +241,10 @@ Call the `toLMF()` method with the extractor as parameter in order to start the 
 
 `converter.toLMF(extractor);`
 
-After the conversion has finished, you can obtain the resulting !LexicalResource by calling the following method:
+After the conversion has finished, you can obtain the resulting LexicalResource by calling the following method:
 `LexicalResource lexicalResource = converter.getLexicalResource();`
 
-At this point, you can right away start using the instance of !LexicalResource to access the converted information, or you can write it to a xml-file using `LMFXmlWriter`.
+At this point, you can right away start using the instance of LexicalResource to access the converted information, or you can write it to a xml-file using `LMFXmlWriter`.
 
 === GermaNet
 
@@ -252,12 +252,12 @@ At this point, you can right away start using the instance of !LexicalResource t
 
 . You need the GN-API version 7.0.1, available here: http://www.sfs.uni-tuebingen.de/lsd/tools.shtml
 . You also need the GN Data, release 7.0. GN is free for academic users but you have to sign a licence, available here: http://www.sfs.uni-tuebingen.de/lsd/licenses.shtml
-. If you want to include the Interlingual Index, you also need the converted !WordNet 3.0, see !WordNet-converter. *It is not possible to import the !GermaNet with the Interlingual Index into an existing openly distributed UBY database which already contains !WordNet. You have to create a new database where you import GermaNet with the Interlingual Index (and also the !WordNet created during conversion, if required). *
+. If you want to include the Interlingual Index, you also need the converted WordNet 3.0, see WordNet-converter. *It is not possible to import the GermaNet with the Interlingual Index into an existing openly distributed UBY database which already contains WordNet. You have to create a new database where you import GermaNet with the Interlingual Index (and also the WordNet created during conversion, if required). *
 
 
 ==== Usage
 
-After satisfying the prerequisites mentioned above, you can start converting !GermaNet: Initialize an instance of !GermaNet -gnet- which will be used by the GNConverter to obtain the information from the !GermaNet files.
+After satisfying the prerequisites mentioned above, you can start converting GermaNet: Initialize an instance of GermaNet -gnet- which will be used by the GNConverter to obtain the information from the GermaNet files.
 
 [source,java]
 ----
@@ -273,9 +273,9 @@ Initialize the GNConverter:
 GNConverter converter = new GNConverter(gnet, new LexicalResource(),dtd_version);
 ----
 
-The last argument of the constructor is the DTD-version of the Uby-LMF that will be written to the resulting instance of !LexicalResource  class.
+The last argument of the constructor is the DTD-version of the Uby-LMF that will be written to the resulting instance of LexicalResource  class.
 
-Evoke `toLMF()` method in order to start the conversion without !GermaNets Interlingual Index:
+Evoke `toLMF()` method in order to start the conversion without GermaNets Interlingual Index:
 
 [source,java]
 ----
@@ -284,50 +284,50 @@ converter.toLMF();
 
 *or*
 
-Evoke `toLMF(wordNetLexicon)` method in order to start the conversion with !GermaNets Interlingual Index:
+Evoke `toLMF(wordNetLexicon)` method in order to start the conversion with GermaNets Interlingual Index:
 
 [source,java]
 ----
 converter.toLMF(wordNetLexicon);
 ----
 
-The argument `wordNetLexicon` is an instance of !Lexicon class, containing WordNet 3.0 in UBY-LMF format. It is required for creating the !SenseAxis.
+The argument `wordNetLexicon` is an instance of Lexicon class, containing WordNet 3.0 in UBY-LMF format. It is required for creating the SenseAxis.
 
-After the conversion has finished, you can obtain the resulting !LexicalResource by calling the following method `LexicalResource lexicalResource = converter.getLexicalResource();`
+After the conversion has finished, you can obtain the resulting LexicalResource by calling the following method `LexicalResource lexicalResource = converter.getLexicalResource();`
 
-At this point, you can right away start using the instance of !LexicalResource to access the converted information, or you can write it to an XML-file using `LMFXmlWriter`.
+At this point, you can right away start using the instance of LexicalResource to access the converted information, or you can write it to an XML-file using `LMFXmlWriter`.
 
 === WordNet
 
 ==== Prerequisites
 
-. For using this converter, you need the extJWNL-API, avaliable on !SourceForge: http://extjwnl.sourceforge.net/
-. You also need the !WordNet 3.0 files available here: http://wordnet.princeton.edu/wordnet/download/current-version/
+. For using this converter, you need the extJWNL-API, avaliable on SourceForge: http://extjwnl.sourceforge.net/
+. You also need the WordNet 3.0 files available here: http://wordnet.princeton.edu/wordnet/download/current-version/
 
 ==== Setup
 
    * Make sure you have set UBY's home directory `UBY_HOME`
-   * Download !WordNet files and extract them to `.../UBY_HOME/WordNet/`
+   * Download WordNet files and extract them to `.../UBY_HOME/WordNet/`
    * Create a folder `.../UBY_HOME/WordNet/extJWNL` and copy `file_properties.xml` (can be obtained from http://uby.ukp.informatik.tu-darmstadt.de/wordnet/) to it.
    * Create a folder `/UBY_HOME/WordNet/cache` and copy the file `ExampleSentenceLexemeMapping.xml` (can be obtained from http://uby.ukp.informatik.tu-darmstadt.de/wordnet/) to it.
    * Folder structure should look like this:
 ----
 .../UBY_HOME/
-`- !WordNet/
+`- WordNet/
   `- wordnet3/
     `- dict/
       `- wordnet's files
   `- extJWNL/
     `- file_properties.xml
   `- cache/
-    `- !ExampleSentenceLexemeMapping.xml
+    `- ExampleSentenceLexemeMapping.xml
 ----
    * In `file_properties.xml` change the value of the dictionary_path variable (at the bottom of the file). It should point to `UBY_HOME/WordNet/wordnet3/dict`, where `UBY_HOME` is the absolute path of `UBY_HOME`.
    * Done
 
 ==== Usage
 
-After satisfying the prerequisites mentioned above, you can start converting !WordNet: Initialize an instance of !WordNet's Dictionary -wordnet- which will be used by the WNConverter to obtain the information from the !WordNet files.
+After satisfying the prerequisites mentioned above, you can start converting WordNet: Initialize an instance of WordNet's Dictionary -wordnet- which will be used by the WNConverter to obtain the information from the WordNet files.
 
 [source,java]
 ----
@@ -340,22 +340,22 @@ Initialize the WNConverter and call `toLMF()` method in order to start the conve
 
 `converterWN.toLMF();`
 
-After the conversion has finished, you can obtain the resulting !LexicalResource by calling the following method:
+After the conversion has finished, you can obtain the resulting LexicalResource by calling the following method:
 `LexicalResource wnLexicalResource = converterWN.getLexicalResource()`
 
-At this point, you can right away start using the instance of !LexicalResource to access the converted information, or you can write it to a xml-file using `LMFXmlWriter`.
+At this point, you can right away start using the instance of LexicalResource to access the converted information, or you can write it to a xml-file using `LMFXmlWriter`.
 
 === OmegaWiki
 
 ==== Prerequisites 
 
-. For using this converter, you need the !OmegaWiki-API, also avaliable on Google Code: http://code.google.com/p/jowkl/ or as a Maven dependency from our public repository.
-. You also need an !OmegaWiki database dump, available here: http://www.omegawiki.org/Help:Downloading_the_data
+. For using this converter, you need the OmegaWiki-API, also avaliable on Google Code: http://code.google.com/p/jowkl/ or as a Maven dependency from our public repository.
+. You also need an OmegaWiki database dump, available here: http://www.omegawiki.org/Help:Downloading_the_data
 ** Make sure the OW dump has properly been imported into a DB before you start
 
 ==== Usage
 
-After satisfying the prerequisites mentioned above, you can start converting !OmegaWiki: Open a connection to the  !OmegaWiki DB and create a new !OmegaWiki object, which will be used by the OWConverter to obtain the information from the DB.  Note that you can set the language when creating the Converter. Currently, English and German are supported for the conversion process.
+After satisfying the prerequisites mentioned above, you can start converting OmegaWiki: Open a connection to the  OmegaWiki DB and create a new OmegaWiki object, which will be used by the OWConverter to obtain the information from the DB.  Note that you can set the language when creating the Converter. Currently, English and German are supported for the conversion process.
 
 [source,java]
 ----
@@ -369,14 +369,14 @@ Call `toLMF()` method in order to start the conversion:
 
 `converter.toLMF();`
 
-After the conversion has finished, you can obtain the resulting !LexicalResource by calling the following method:
+After the conversion has finished, you can obtain the resulting LexicalResource by calling the following method:
 `LexicalResource owLexicalResource = converter.getLexicalResource();`
 
-At this point, you can right away start using the instance of !LexicalResource to access the converted information, or you can write it to a xml-file using `LMFXmlWriter`.
+At this point, you can right away start using the instance of LexicalResource to access the converted information, or you can write it to a xml-file using `LMFXmlWriter`.
 
 === LMFXmlWriter / XmlToDBTransformer
 
-After the resources have been transformed into LMF, the !LexicalResource object can be written into an XML file. In this example we do this for !WordNet, but it's the same procedure for all resources which are not directly written into the DB. Note that you need the DTD-file right now available from our homepage and the Downloads section.
+After the resources have been transformed into LMF, the LexicalResource object can be written into an XML file. In this example we do this for WordNet, but it's the same procedure for all resources which are not directly written into the DB. Note that you need the DTD-file right now available from our homepage and the Downloads section.
 
 [source,java]
 ----
@@ -451,6 +451,6 @@ connection.close();
 statement.close();
 ----
 
-What happens here, is that a new !LexicalResource with the correspondong !GlobalInformation is created with an ID larger than that of all existing resources. This new !LexicalResource becomes the parent of all Lexicons and !SenseAxis. Then, the "old" !LexicalResource entries are deleted. If a UBY instance already exist (e.g. because you are adding a resource later on) the creation of the new UBY is skipped.
+What happens here, is that a new LexicalResource with the correspondong GlobalInformation is created with an ID larger than that of all existing resources. This new LexicalResource becomes the parent of all Lexicons and SenseAxis. Then, the "old" LexicalResource entries are deleted. If a UBY instance already exist (e.g. because you are adding a resource later on) the creation of the new UBY is skipped.
 
 The database is now ready for usage with the API!
