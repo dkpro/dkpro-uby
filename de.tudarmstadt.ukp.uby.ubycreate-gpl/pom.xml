@@ -208,7 +208,7 @@
 								</transformer>
 							</transformers>
 							
-							<outputFile>${project.build.directory}/${artifactId}-${version}-standalone.jar</outputFile> 
+							<outputFile>${project.build.directory}/${project.artifactId}-${project.version}-standalone.jar</outputFile> 
 							
 						</configuration>
 					</execution>
