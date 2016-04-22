@@ -10,14 +10,12 @@ DKPro Uby is a Java framework for creating and accessing sense-linked lexical re
 Using UBY requires solid knowledge of lexical resources, such as WordNet and FrameNet and their underlying concepts. 
 For instance, you should be able to tell the difference between a sense and a synset. 
 
-Learn these foundations and how to use UBY by walking through this detailed tutorial on *Linked Lexical Resources*:
-  * Tutorial held at GSCL 2013 (pdf): http://www.ukp.tu-darmstadt.de/fileadmin/user_upload/Group_UKP/publikationen/2013/ubyTutorial_GSCL2013.pdf
-  * Tutorial Code http://code.google.com/p/dkpro-tutorials/wiki/UbyTutorial2013
- 
+Learn these foundations and how to use UBY by walking through a detailed tutorial on *Linked Lexical Resources*, see https://dkpro.github.io/dkpro-uby/
+
 
 ## Download a UBY database
 We provide dumps of UBY databases for download: http://uby.ukp.informatik.tu-darmstadt.de/uby. 
-Get more information on the database dumps we offer on this Wiki page: http://code.google.com/p/uby/wiki/DbImportTutorial.
+Get more information on https://dkpro.github.io/dkpro-uby/
 
 ## How to Cite
  * *Lexicon Data and Code* 
