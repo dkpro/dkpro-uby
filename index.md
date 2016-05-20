@@ -31,8 +31,9 @@ Using UBY requires solid knowledge of lexical resources, such as WordNet and Fra
 
 Learn these foundations and how to use UBY by walking through this detailed tutorial on *Linked Lexical Resources*:
 
-  * *NEW* [Tutorial held at TU Darmstadt in May 2015 (pdf)](http://uby.ukp.informatik.tu-darmstadt.de/uby/dkpro-uby-tutorial-aiphes.pdf), [Tutorial Code](http://uby.ukp.informatik.tu-darmstadt.de/uby/dkpro-uby-tutorial-aiphes.zip)
-  * [Tutorial held at GSCL 2013 (pdf)](http://www.ukp.tu-darmstadt.de/fileadmin/user_upload/Group_UKP/publikationen/2013/ubyTutorial_GSCL2013.pdf), [Tutorial Code](http://code.google.com/p/dkpro-tutorials/wiki/UbyTutorial2013)
+  * [Lexical Resources Tutorial held at GSCL 2015](http://uby.ukp.informatik.tu-darmstadt.de/uby/gscl2015/)
+  * [UBY Tutorial held at TU Darmstadt in May 2015 (pdf)](http://uby.ukp.informatik.tu-darmstadt.de/uby/dkpro-uby-tutorial-aiphes.pdf), [Tutorial Code](http://uby.ukp.informatik.tu-darmstadt.de/uby/dkpro-uby-tutorial-aiphes.zip)
+  * [UBY Tutorial held at GSCL 2013 (pdf)](http://www.ukp.tu-darmstadt.de/fileadmin/user_upload/Group_UKP/publikationen/2013/ubyTutorial_GSCL2013.pdf), [Tutorial Code](http://code.google.com/p/dkpro-tutorials/wiki/UbyTutorial2013)
   
 ## Citing UBY
 
