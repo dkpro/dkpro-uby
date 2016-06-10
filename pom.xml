@@ -282,6 +282,7 @@
                                 <exclude>CHANGES</exclude>
                                 <exclude>NOTICE</exclude>
                                 <exclude>README</exclude>
+                                <exclude>README.md</exclude>
                                 <exclude>LICENSE.txt</exclude>
                                 <exclude>src/main/resources/**/*</exclude>
                                 <exclude>src/test/resources/**/*</exclude>
@@ -358,6 +359,7 @@
                                         <exclude>release.properties</exclude>
                                         <exclude>CHANGES</exclude>
                                         <exclude>NOTICE</exclude>
+                                        <exclude>README.md</exclude>
                                         <exclude>README</exclude>
                                         <exclude>src/main/resources/**/*</exclude>
                                         <exclude>src/test/resources/**/*</exclude>
