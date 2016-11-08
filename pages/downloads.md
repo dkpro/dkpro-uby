@@ -8,7 +8,7 @@ permalink: "/downloads/"
 
 ## Maven
 
-{{ site.title }} is availble via the Maven infrastructure.
+{{ site.title }} is available via the Maven infrastructure.
 
 {% highlight xml %}
 <repositories>
@@ -25,7 +25,7 @@ permalink: "/downloads/"
 <dependencyManagement>
   <dependencies>
     <dependency>
-      <groupId>{{ stable.groupId }}<groupId>
+      <groupId>{{ stable.groupId }}</groupId>
       <artifactId>{{ stable.artifactId }}</artifactId>
       <version>${dkpro.uby.version}</version>
       <type>pom</type>
