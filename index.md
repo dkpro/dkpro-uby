@@ -5,7 +5,7 @@
 # this work, you have to use › layout: frontpage
 #
 layout: frontpage
-title: "DKPro Uby"
+title: "Welcome"
 ---
 
 ## UBY is a Linked Lexical Resource
